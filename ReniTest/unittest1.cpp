@@ -1,7 +1,5 @@
-#include "stdafx.h"
+#include "ReniTest.imp.h"
 #include "CppUnitTest.h"
-
-
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -13,7 +11,7 @@ namespace ReniTest
 		
 		TEST_METHOD(TestMethod1)
 		{
-            Compiler c;
+            HWLib::Print("Hallo");
 		}
 
 	};

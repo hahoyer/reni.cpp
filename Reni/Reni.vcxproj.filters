@@ -5,6 +5,9 @@
     <ClInclude Include="Reni.imp.h">
       <Filter>Admin</Filter>
     </ClInclude>
+    <ClInclude Include="Reni.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Compiler.cpp" />

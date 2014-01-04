@@ -11,4 +11,5 @@
 #include "CppUnitTest.h"
 
 // TODO: reference additional headers your program requires here
-#include "../Reni/Compiler.h"
+#include "../Reni/Reni.h"
+#include "../HWLib/HWLib.h"

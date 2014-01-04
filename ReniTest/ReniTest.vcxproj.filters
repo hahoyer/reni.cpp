@@ -7,14 +7,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Admin</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="ReniTest.imp.cpp">
       <Filter>Admin</Filter>
     </ClCompile>
-    <ClCompile Include="unittest1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ReniTest.imp.h">
+      <Filter>Admin</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
