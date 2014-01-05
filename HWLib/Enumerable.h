@@ -11,7 +11,7 @@ namespace HWLib
     public: 
         int Count(function<bool(T)> selector)const;
         int Count()const{ return Count([](T){return true; }); }
-        GET(int, Length){ return Count(); }
+        p(int, Length){ return Count(); }
     };
 }
 

@@ -57,11 +57,15 @@
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
+    <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.lib</TargetExt>
+    <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -76,7 +80,7 @@
     </ClCompile>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
-      <TargetEnvironment>Win32</TargetEnvironment>
+      <TargetEnvironment>Win32</TargetEnvironment>                                       
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <HeaderFileName>Reni_i.h</HeaderFileName>
       <InterfaceIdentifierFileName>Reni_i.c</InterfaceIdentifierFileName>

@@ -23,7 +23,7 @@ namespace HWLib
         Active = true;
 
         auto fff = CFile("..\\log\\print.log");
-
+                                                       
         static auto Open = false;
         if (!Open)
         {
@@ -40,9 +40,9 @@ namespace HWLib
             CString("\n").OutputDebug();
         };
 
-        text.OutputDebug();
-        fff.String = text;
-
-        Active = false;
+        text.OutputDebug();          
+        fff.String = text;                           
+                         
+        Active = false;                    
     };
 }

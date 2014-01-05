@@ -11,8 +11,8 @@ namespace HWLib
     public:
         CFile(CString const&name);
 
-        GET(CString, AbsolutePathName);
-        GETSET(CString, String);
+        p(CString, AbsolutePathName);
+        p_mutable(CString, String);
     };
 
 }
