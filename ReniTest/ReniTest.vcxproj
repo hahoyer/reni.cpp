@@ -24,8 +24,10 @@
     <ItemDefinitionGroup>
         <ClCompile>
             <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-            <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
         </ClCompile>
+        <Link>
+            <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+        </Link>
     </ItemDefinitionGroup>
 
     <Import Project="$(SolutionDir)sys.targets" />

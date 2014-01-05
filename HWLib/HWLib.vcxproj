@@ -13,6 +13,7 @@
     <ClInclude Include="PlacementNew.h" />
     <ClInclude Include="Print.h" />
     <ClInclude Include="Properties.h" />
+    <ClInclude Include="SetupWarnings.h" />
     <ClInclude Include="String.h" />
     <ClCompile Include="Enumerable.cpp" />
     <ClCompile Include="File.cpp" />
