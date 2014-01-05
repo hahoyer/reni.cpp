@@ -1,4 +1,4 @@
-#include "ReniTest.imp.h"
+#include "Import.h"
 #include "CppUnitTest.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

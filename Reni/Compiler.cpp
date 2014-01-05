@@ -1,12 +1,4 @@
-#include "Reni.imp.h"
+#include "Import.h"
 #include "Compiler.h"
 
 
-Compiler::Compiler()
-{
-}
-
-
-Compiler::~Compiler()
-{
-}
