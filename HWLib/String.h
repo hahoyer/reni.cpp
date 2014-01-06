@@ -5,15 +5,24 @@
 
 namespace HWLib
 {
-    class CString: public IEnumerable<char const>
+    class String: public IEnumerable<char const>
     {
-        char* const _data;
+        typedef IEnumerable<char const> base;
+        class local;
+        local& _data;
     public:
-        CString(const char* data);
-        CString(const CString& other);
-        DefaultAssignmentOperator(CString);
+        String(char const* data);
+        String(String const& other);
+        String(IEnumerable<char const> const& other);
+
+        DefaultAssignmentOperator(String);
+
+        p(char const*, Data);
+
         void OutputDebug() const;
-        CString const FilePosition(CString const&FileName, int Line, int Col, CString const&FunctionName)const;
+        String const FilePosition(String const&FileName, int Line, int Col, String const&FunctionName)const;
+
+        String const operator+ (String const& other)const{ return Concat(other); }
     };
 }
 

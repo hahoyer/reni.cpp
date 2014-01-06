@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Print.h"
 
+#include <windows.h>
 #include "File.h"
 #include "String.h"
 
@@ -8,13 +9,15 @@
 namespace HWLib
 {
 
-    CString const FilePosition(CString const&FileName, int Line, int Col, CString const&FunctionName)
+    String const FilePosition(String const&FileName, int Line, int Col, String const&FunctionName)
     {
-        return CString("").FilePosition(FileName, Line, Col, FunctionName);
+        return String("").FilePosition(FileName, Line, Col, FunctionName);
     };
 
 
-    void Print(const CString&text)
+    void OutputDebug(const String&text){::OutputDebugStringA(text.Data); }
+
+    void Print(const String&text)
     {
         static auto Active = false;
         if (Active)
@@ -22,26 +25,25 @@ namespace HWLib
 
         Active = true;
 
-        auto fff = CFile("..\\log\\print.log");
+        auto fff = File("..\\log\\print.log");
                                                        
         static auto Open = false;
         if (!Open)
         {
             Open = true;
 
-            CString("\n").OutputDebug();
-            FilePosition
+            OutputDebug("\n");
+            OutputDebug(FilePosition
                 (
-                fff.AbsolutePathName,
-                fff.String.Count([=](char const c){return c == '\n'; }) + 1, 1,
+                fff.FullName,
+                fff.Data.Count([=](char const c){return c == '\n'; }) + 1, 1,
                 "see also"
-                )
-                .OutputDebug();
-            CString("\n").OutputDebug();
+                ));
+            OutputDebug("\n");
         };
 
-        text.OutputDebug();          
-        fff.String = text;                           
+        OutputDebug(text);          
+        fff.Data = text;                           
                          
         Active = false;                    
     };

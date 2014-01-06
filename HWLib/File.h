@@ -4,16 +4,21 @@
 
 namespace HWLib
 {
-    class CString;
+    class String;
 
-    class CFile
+    class File
     {
+        class local;
+        local& _data;
     public:
-        CFile(CString const&name);
+        File(String const&name);
+        ~File();
 
-        p(CString, AbsolutePathName);
-        p_mutable(CString, String);
+        p(String, FullName);
+        p_mutable(String, Name);
+
+        p_mutable(String, Data);
     };
 
 }
-
+                           

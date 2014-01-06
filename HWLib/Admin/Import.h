@@ -1,3 +1,3 @@
 #pragma once
 #include <stdlib.h>
-#include "..\SetupWarnings.h"
+#include "../SetupWarnings.h"

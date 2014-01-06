@@ -2,8 +2,8 @@
 
 namespace HWLib
 {
-    class CString;
+    class String;
 
-    void Print(CString const&text);
+    void Print(String const&text);
 }
 

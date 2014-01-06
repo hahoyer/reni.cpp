@@ -7,13 +7,18 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="BreakHandling.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="DefaultAssignmentOperator.h" />
+    <ClInclude Include="DumpMacros.h" />
+    <ClInclude Include="DumpToString.h" />
     <ClInclude Include="Enumerable.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="PlacementNew.h" />
     <ClInclude Include="Print.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="SetupWarnings.h" />
+    <ClInclude Include="Storage.h" />
     <ClInclude Include="String.h" />
     <ClCompile Include="Enumerable.cpp" />
     <ClCompile Include="File.cpp" />
