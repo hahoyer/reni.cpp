@@ -16,7 +16,6 @@ namespace HWLib
 
         p(String, FullName);
         p_mutable(String, Name);
-
         p_mutable(String, Data);
     };
 

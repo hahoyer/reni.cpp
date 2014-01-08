@@ -11,7 +11,7 @@ namespace ReniTest
 		
 		TEST_METHOD(TestMethod1)
 		{
-            HWLib::Print("Hallo");
+            _console_ Write("Hallo");
 		}
 
 	};
