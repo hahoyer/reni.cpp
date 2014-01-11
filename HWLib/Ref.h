@@ -1,56 +1,44 @@
 #pragma once
-
-#include "DefaultAssignmentOperator.h"
-#include "Properties.h"
+#include <memory>
+using std::shared_ptr;
 
 namespace HWLib
 {
-    template<typename T> class Ref
+    class null
     {
-        T const*const _data;
     public:
-        Ref(T const& data) : _data(data){ OnCopy(); };
-        Ref(Ref<T> const& data) : _data(data._data){ OnCopy(); };
-
-        ~Ref(){ _data->RemoveRef(); };
-
-        DefaultAssignmentOperator(Ref<T>);
-
-        p(T const*, RawData){ return _data; }
-
-        T const& operator*()const { assert(_data); return *_data; };
-        T const* operator->()const { assert(_data); return _data; };
-        operator T const&()const { assert(_data); return *_data; };
-        template<class T2>
-        bool operator==(const Ref<T2>&x)const { return _data == x._data; };
-        template<class T2>
-        bool operator==(T2 const*x)const { return _data == x; };
-    private:
-        void OnCopy(){ _data->AddRef(); }
+        operator void* ()const{ return 0; }
     };
 
-    template<typename T> class RefCounted
+    template<typename T>
+    class Ref : public shared_ptr<T const>
     {
-        mutable T count;
+        typedef shared_ptr<T const> baseType;
     public:
-        RefCounted();
-        RefCounted(RefCounted const&x);
-        virtual ~RefCounted();
-
-        void* operator new(size_t size);
-        void* operator new (size_t s, void*p);
-        void operator delete(void*);
-
-        void AddRef() const; // Is const, since referencing is not realy a modifying operation
-        void RemoveRef() const;  // Is const, since removing a rerence is not realy a modifying operation
-
-        p(bool, IsAutomatic) { return count == -1; };
-
-    private:
-        void Initialize();
+        Ref(T const&data) :baseType(&data){}
+        Ref(Ref<T const> const&data) :baseType(data.get()){}
     };
 
-    template class RefCounted<__int32>;
-    template class RefCounted<__int64>;
+    template<typename T>
+    class OptRef : public shared_ptr<T const>
+    {
+        typedef shared_ptr<T const> baseType;
+    public:
+        OptRef(null) :baseType(0){}
+        OptRef(T const&data) :baseType(&data){}
+        OptRef(Ref<T const> const&data) :baseType(data.get()){}
+        OptRef(OptRef<T const> const&data) :baseType(data.get()){}
+        p(bool, IsValid){ return !get(); }
+    };
+
+    template<typename T>
+    class Var : public shared_ptr<T >
+    {
+        typedef shared_ptr<T > baseType;
+    public:
+        Var(T &data) :baseType(&data){}
+        Var(Var<T> &data) :baseType(data){}
+    };
 
 }
+

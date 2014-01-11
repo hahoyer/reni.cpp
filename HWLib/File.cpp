@@ -59,11 +59,11 @@ static int _openX(char const* name, int oflag, int pmode = _S_IREAD | _S_IWRITE)
 String const File::get_Data()const
 { 
     auto Handle = ::_openX(Name.ToArray.RawData, _O_RDONLY | _O_BINARY);
-    auto Length = ::_filelength(Handle);
-    if (Handle < 0) Length = 0;
-    auto cReturn = new char[Length + 1];
-    if (Handle >= 0) ::_read(Handle, cReturn, Length);
-    cReturn[Length] = 0;
+    auto Count = ::_filelength(Handle);
+    if (Handle < 0) Count = 0;
+    auto cReturn = new char[Count + 1];
+    if (Handle >= 0) ::_read(Handle, cReturn, Count);
+    cReturn[Count] = 0;
     ::_close(Handle);
     auto Return = String(cReturn);
     delete cReturn;
@@ -88,7 +88,7 @@ String const FormatErrorMessage()
 
 void File::set_Data(String const& value)
 {
-    auto Length = value.Length;
+    auto Count = value.Count;
 
     int Handle;
     do Handle = _openX(Name.ToArray.RawData, _O_CREAT | _O_TRUNC | _O_WRONLY | _O_BINARY);
@@ -99,8 +99,8 @@ void File::set_Data(String const& value)
 
     assertx(Handle >= 0, String("Error: ") + DumpToString(e) + ":" + Error);
 
-    auto WrLength = _write(Handle, value.ToArray.RawData, Length);
-    assert(WrLength == Length);
+    auto WrLength = _write(Handle, value.ToArray.RawData, Count);
+    assert(WrLength == Count);
 
     _close(Handle);
 }
