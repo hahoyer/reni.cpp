@@ -1,15 +1,10 @@
 #pragma once
+
 #include <memory>
 using std::shared_ptr;
 
 namespace HWLib
 {
-    class null
-    {
-    public:
-        operator void* ()const{ return 0; }
-    };
-
     template<typename T>
     class Ref : public shared_ptr<T const>
     {
@@ -24,7 +19,7 @@ namespace HWLib
     {
         typedef shared_ptr<T const> baseType;
     public:
-        OptRef(null) :baseType(0){}
+        OptRef() :baseType(){}
         OptRef(T const&data) :baseType(&data){}
         OptRef(Ref<T const> const&data) :baseType(data.get()){}
         OptRef(OptRef<T const> const&data) :baseType(data.get()){}
@@ -37,7 +32,7 @@ namespace HWLib
         typedef shared_ptr<T > baseType;
     public:
         Var(T &data) :baseType(&data){}
-        Var(Var<T> &data) :baseType(data){}
+        Var(T*data) :baseType(data){}
     };
 
 }

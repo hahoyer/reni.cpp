@@ -5,7 +5,6 @@
 #include "Common.h"
 #include "File.h"
 #include "String.h"
-#include "Storage.h"
 
 using namespace HWLib;
 

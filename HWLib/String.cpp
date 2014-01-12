@@ -1,25 +1,25 @@
 #include "Import.h"
 #include "String.h"
 
+#include "Common.h"
 #include "DumpMacros.h"
 #include "DumpToString.h"
 #include "Ref.h"
-#include "Storage.h"
 
 using namespace HWLib;
 
 String::String(char const* data)
-: _data(*new Array<char>(::strlen(data), [=](int i){return data[i]; }))
+: _data(*new Array<char const>(::strlen(data), [&](int i){return data[i]; }))
 {
 }
 
-String::String(Enumerable<char> const& other)
-: _data(*new Array<char>(other.ToArray))
+String::String(Array<char const> const& other)
+: _data(*new Array<char const>(other))
 {
 }
 
 String::String()
-: _data(*new Array<char>())
+: _data(*new Array<char const>())
 {
 }
 
@@ -34,13 +34,10 @@ String const String::FilePosition(String const&fileName, int line, int column, S
         + ": ";
 };
 
-bool const String::operator== (String const& other)const{ return _data->Compare(*other._data); }
+bool const String::operator== (String const& other)const{ return _data.Compare(other._data); }
 
 String const String::operator+ (String const& other)const{
-    Array<char> const&a = *_data;
-    Array<char> const&b = *other._data;
-    Array<char> const r = a + b;
-    return String(r);
+    return String(_data + other._data);
 }
 
 String const String::operator* (int count)const
@@ -51,7 +48,7 @@ String const String::operator* (int count)const
     return result;
 }
 
-char const String::operator[] (int index)const{ return (*_data)[index]; }
+char const String::operator[] (int index)const{ return _data[index]; }
 
 String const String::Indent(bool isLineStart, int count, String const &tabString)const
 {
@@ -64,8 +61,7 @@ OptRef<int> const String::Find(String const &target, int start)const
     for (auto end = Count - target.Count; start < end; start++)
     if (BeginsWith(target, start))
         return *new int(start);
-    return null();
-
+    return empty;
 }
 
 bool const String::BeginsWith(String const &target, int start)const
@@ -82,25 +78,52 @@ String const String::Replace(String const &oldValue, String const&newValue)const
     return Split(oldValue)->Stringify(newValue);
 }
 
-String const String::Part(int start)const{ return String(*_data->Skip(start)); }
-String const String::Part(int start, int count)const{ return String(*_data->Skip(start)->Take(count)); }
+String const String::Part(int start)const{ return _data.Skip(start)->ToArray; }
+String const String::Part(int start, int count)const{ return _data.Skip(start)->Take(count)->ToArray; }
 
-class SplitEnumerable final : public Enumerable<String>
+class SplitIterator final : public Enumerable<String>::Iterator
 {
-    using baseType = Enumerable<String>;
-    using thisType = SplitEnumerable;
-
-    String const _target;
+    using baseType = Enumerable<String>::Iterator;
+    using thisType = SplitIterator;
+    using parentType = Enumerable<char>::Iterator;
+    String const _parent;
     String const _delimiter;
-
+    int _index;
 public:
-    SplitEnumerable(String const& target, String const& delimiter) : _target(target), _delimiter(delimiter){}
-
-private:
-    mutable_p_function(Var<Iterator>, ToIterator) const override;
-
-
+    SplitIterator(String const& parent, String const& delimiter)
+        : _parent(parent)
+        , _delimiter(delimiter)
+    {
+        _index = 0;
+    }
+protected:
+    p_function(bool, IsValid) override{ return _index + _delimiter.Count < _parent.Count; }
+    
+    Iterator& operator++(int) override
+    {
+        auto newEnd = _parent.Find(_delimiter, _index);
+        if (newEnd.IsValid)
+            _index = *newEnd + _delimiter.Count;
+        else
+            _index = _parent.Count;
+        return *this; 
+    }
+    
+    String const operator*()const override
+    {
+        auto newEnd = _parent.Find(_delimiter, _index);
+        if (newEnd.IsValid)
+            return _parent.Part(_index, *newEnd - _index);
+        return _parent.Part(_index);
+    }
 };
 
-Ref<Enumerable<String>> const String::Split(String const& delimiter)const{ return *new SplitEnumerable(*this, delimiter); }
+Ref<Enumerable<String>> const String::Split(String const& delimiter)const
+{ 
+    return *new Enumerable<String>::Container
+        ([=]()
+    {
+        return Var<Enumerable<String>::Iterator>(*new SplitIterator(*this, delimiter)); 
+    });
+}
 

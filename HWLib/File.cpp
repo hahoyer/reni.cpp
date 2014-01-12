@@ -9,10 +9,10 @@
 #include <windows.h>
 
 #include "BreakHandling.h"
+#include "Common.h"
 #include "Console.h"
 #include "DumpMacros.h"
 #include "DumpToString.h"
-#include "Storage.h"
 #include "String.h"
 
 using namespace HWLib;
@@ -25,11 +25,11 @@ public:
 };
 
 File::File(String const& other)
-: _data(HeapAllocate local(other))
+: _data(*new local(other))
 {
 }
 
-File::~File(){ HeapFree _data; }
+File::~File(){ _(_data).Delete(); }
 
 String const File::get_FullName()const
 {

@@ -1,34 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <PropertyGroup Label="Globals">
-        <ProjectGuid>{F4E5DE84-370D-4D2D-8376-15591C3720BF}</ProjectGuid>
-    </PropertyGroup>
-
-    <PropertyGroup Label="Configuration">
-        <ConfigurationType>DynamicLibrary</ConfigurationType>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <ClCompile Include="unittest1.cpp" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\HWLib\HWLib.vcxproj">
-            <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
-        </ProjectReference>
-        <ProjectReference Include="..\Reni\Reni.vcxproj">
-            <Project>{bfcca11e-fcd1-483c-828c-7df6cde5aa85}</Project>
-        </ProjectReference>
-    </ItemGroup>
-
-    <ItemDefinitionGroup>
-        <ClCompile>
-            <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-        </ClCompile>
-        <Link>
-            <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-        </Link>
-    </ItemDefinitionGroup>
-
-    <Import Project="$(SolutionDir)sys.targets" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F4E5DE84-370D-4D2D-8376-15591C3720BF}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="unittest1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HWLib\HWLib.vcxproj">
+      <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(SolutionDir)sys.targets" />
 </Project>

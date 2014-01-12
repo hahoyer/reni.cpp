@@ -1,41 +1,50 @@
 #pragma once
 
-#include "Enumerable.h"
+#include <windows.h>
+
+#include "_.h"
 #include "BreakHandling.h"
+#include "Common.h"
+#include "Enumerable.h"
 
 namespace HWLib
 {
-    template<typename T> class Array : public Enumerable<T>, public Enumerable<T>::WithCount
+    template<typename T> class Array : public Enumerable<T>
     {
         using baseType = Enumerable<T>;
         using thisType = Array<T>;
 
         int const _count;
-        T const *const _data;
+        T const * const _data;
     public:
-        Array() : _count(0), _data(0){}
+        Array() : _count(0), _data(0){ }
 
-        Array(Array<T> const&& other)
+        Array(Array<T> && other)
             : _count(other.Count)
             , _data(other._data)
-        {};
+        {
+            const_cast<T const *&> (other._data) = nullptr;
+        };
 
         Array(int count, function<T(int)> creator)
             : _count(count)
             , _data(new T[count])
         {
-            auto data = const_cast<T*>(_data);
+            auto data = const_cast<remove_const<T>::type*>(_data);
             for (auto index = 0; index < count; index++)
-                data[index] = creator(index);
+            {
+                auto value = creator(index);
+                data[index] = value;
+            }
         }
 
         Array(Array<T> const&other)
-            : thisType(other.Count, [=](int index){return other[index]; })
+            : thisType(other.Count, [&](int index){return other[index]; })
         {
         }
 
-        ~Array(){ delete _data; }
-        
+        ~Array(){ _(_data).SmartDeleteArray();}
+
         DefaultAssignmentOperator;
 
         p(int, Count){ return _count; }
@@ -43,23 +52,27 @@ namespace HWLib
 
         T& operator[](int Index){ return _data[Index]; }
         T const& operator[](int Index)const{ return _data[Index]; }
-        thisType const operator+(thisType const& other)const
-        {
-            return Array<T>(Count + other.Count,
-                [=]
-            (int index)->T
-            {
-                if (index < Count)
-                    return (*this)[index];
-                index -= Count;
-                return other[index];
-            }
-            );
-        }
+        thisType const operator+(thisType const& other)const{ return baseType::operator+(other)->ToArray; }
 
         bool const Compare(Array<T> const& other)const;
     private:
-        mutable_p_function(Var<Iterator>, ToIterator) const override;
+        class LocalIterator final : public Iterator
+        {
+            Array<T> const& _parent;
+            int _index;
+        public:
+            LocalIterator(Array<T> const& parent)
+                : _parent(parent)
+                , _index(0)
+            {
+            }
+
+            p_function(bool, IsValid) override{ return _index >= 0 && _index < _parent.Count; }
+            Iterator& operator++(int) override{ _index++; return *this; }
+            T const operator*()const override{ return _parent[_index]; }
+        };
+
+        mutable_p_function(Var<Iterator>, ToIterator) const override{ return *new LocalIterator(*this); }
 
     };
 

@@ -20,11 +20,11 @@
     <ClInclude Include="Properties.h" />
     <ClInclude Include="Ref.h" />
     <ClInclude Include="SetupWarnings.h" />
-    <ClInclude Include="Storage.h" />
     <ClInclude Include="String.h" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="String.cpp" />
+    <ClInclude Include="_.h" />
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>
