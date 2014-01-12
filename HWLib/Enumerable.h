@@ -43,7 +43,10 @@ namespace HWLib
         {
             Var<Iterator> _data;
         public:
-            StandardIterator(Var<Iterator> data) : _data(data){}
+            StandardIterator(Var<Iterator> data) 
+                : _data(data)
+            {
+            }
 
             StandardIterator& operator++() { (*_data)++; return *this; };
             T const operator *()const { return **_data; }
@@ -59,7 +62,7 @@ namespace HWLib
             function<Var<Iterator>()> _iterator;
         public:
             Container(function<Var<Iterator>()> iterator) : _iterator(iterator){}
-            mutable_p_function(Var<Iterator>, ToIterator) const override{ return *_iterator(); }
+            mutable_p_function(Var<Iterator>, ToIterator) const override{ return _iterator(); }
         };
 
     protected:
@@ -196,7 +199,8 @@ template<typename T>
 p_implementation(Enumerable<T>, Array<T>, ToArray)
 {
     auto result = std::vector<T>();
-    for (auto i = ToIterator; i->IsValid; (*i)++)
+    auto i = ToIterator;
+    for (; i->IsValid; (*i)++)
         result.push_back(**i);
     return Array<T>(result.size(), [=](int i){return result[i]; });
 

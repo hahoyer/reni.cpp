@@ -9,17 +9,21 @@
 using namespace HWLib;
 
 String::String(char const* data)
-: _data(*new Array<char const>(::strlen(data), [&](int i){return data[i]; }))
+: _data(data)
+{
+}
+
+String::String(std::string const& data)
+: _data(data)
 {
 }
 
 String::String(Array<char const> const& other)
-: _data(*new Array<char const>(other))
+: _data(other.RawData, other.Count)
 {
 }
 
 String::String()
-: _data(*new Array<char const>())
 {
 }
 
@@ -34,7 +38,13 @@ String const String::FilePosition(String const&fileName, int line, int column, S
         + ": ";
 };
 
-bool const String::operator== (String const& other)const{ return _data.Compare(other._data); }
+p_implementation(String, Array<char const>, ToArray)
+{
+    char const* d = _data.c_str();
+    return Array<char const>(Count+1, [&](int i){return d[i]; }); 
+}
+
+bool const String::operator== (String const& other)const{ return _data==(other._data); }
 
 String const String::operator+ (String const& other)const{
     return String(_data + other._data);
@@ -78,8 +88,8 @@ String const String::Replace(String const &oldValue, String const&newValue)const
     return Split(oldValue)->Stringify(newValue);
 }
 
-String const String::Part(int start)const{ return _data.Skip(start)->ToArray; }
-String const String::Part(int start, int count)const{ return _data.Skip(start)->Take(count)->ToArray; }
+String const String::Part(int start)const{ return ToArray.Skip(start)->ToArray; }
+String const String::Part(int start, int count)const{ return ToArray.Skip(start)->Take(count)->ToArray; }
 
 class SplitIterator final : public Enumerable<String>::Iterator
 {
@@ -120,6 +130,7 @@ protected:
 
 Ref<Enumerable<String>> const String::Split(String const& delimiter)const
 { 
+    assert(delimiter != "");
     return *new Enumerable<String>::Container
         ([=]()
     {

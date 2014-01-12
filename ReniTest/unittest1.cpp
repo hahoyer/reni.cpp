@@ -1,21 +1,14 @@
 #include "Import.h"
 #include "CppUnitTest.h"
+#include <array>
+#include <string>
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace ReniTest
+int main()
 {
-    TEST_CLASS(UnitTest1)
-    {
-    public:
+    auto f = [](int i){return i; };
+    std::array<int, 3>x { 4, 8, 15 };
 
-        TEST_METHOD(TestMethod1)
-        {
-            auto f = [](int i){return i; };
-            auto x = Array<int>(3, f);
-
-            _console_ Write("Hallo");
-        }
-
-    };
+    _console_ Write("Hallo");
+    return 0;
 }

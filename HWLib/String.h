@@ -3,22 +3,24 @@
 #include "Array.h"
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
+#include <string>
 
 ; namespace HWLib
 {
     class String
     {
         using thisType = String;
-        Array<char const> const _data;
+        std::string const _data;
     public:
         String();
         String(char const* data);
+        String(std::string const & other);
         String(Array<char const> const& other);
 
         DefaultAssignmentOperator;
 
-        p(int, Count){ return _data.Count; }
-        p(Array<char const>, ToArray){ return _data + Array<char const>(1, [](int){return static_cast<char const>(0); }); }
+        p(int, Count){ return _data.length(); }
+        p(Array<char const>, ToArray);
 
         bool           const BeginsWith(String const &target, int start = 0)const;
         OptRef<int>     const Find(String const &target, int start = 0)const;

@@ -4,7 +4,7 @@
     <ProjectGuid>{F4E5DE84-370D-4D2D-8376-15591C3720BF}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="unittest1.cpp" />
