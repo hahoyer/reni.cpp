@@ -19,7 +19,7 @@ String::String(std::string const& data)
 }
 
 String::String(Array<char const> const& other)
-: _data(other.RawData, other.Count)
+: _data(other.RawData, other.Count - 1)
 {
 }
 
@@ -46,8 +46,10 @@ p_implementation(String, Array<char const>, ToArray)
 
 bool const String::operator== (String const& other)const{ return _data==(other._data); }
 
-String const String::operator+ (String const& other)const{
-    return String(_data + other._data);
+String const String::operator+ (String const& other)const
+{
+    auto result = _data + other._data;
+    return result;
 }
 
 String const String::operator* (int count)const
@@ -70,7 +72,7 @@ OptRef<int> const String::Find(String const &target, int start)const
 {
     for (auto end = Count - target.Count; start < end; start++)
     if (BeginsWith(target, start))
-        return *new int(start);
+        return OptRef<int>(start);
     return empty;
 }
 
@@ -85,7 +87,8 @@ bool const String::BeginsWith(String const &target, int start)const
 
 String const String::Replace(String const &oldValue, String const&newValue)const
 {
-    return Split(oldValue)->Stringify(newValue);
+    auto split = Split(oldValue);
+    return split->Stringify(newValue);
 }
 
 String const String::Part(int start)const{ return ToArray.Skip(start)->ToArray; }
@@ -131,10 +134,16 @@ protected:
 Ref<Enumerable<String>> const String::Split(String const& delimiter)const
 { 
     assert(delimiter != "");
-    return *new Enumerable<String>::Container
-        ([=]()
+    auto result = new Enumerable<String>::Container
+        ([&]()
     {
         return Var<Enumerable<String>::Iterator>(*new SplitIterator(*this, delimiter)); 
     });
+
+    return Ref<Enumerable<String>>(result);
 }
 
+String const String::Convert(int const&value)
+{
+    return std::to_string(value);
+};

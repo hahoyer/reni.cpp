@@ -1,7 +1,7 @@
 #pragma once
 
 //#define vardumpf(x,d) (String(#x) + "=" + ::dump(x,d) + ";")
-#define vardump(x) (String(#x) + "=" + DumpToString(x) + ";")
+#define vardump(x) (String(#x) + "=" + HWLib::DumpToString(x) + ";")
 //#define varxdump(x) (String(#x) + "=0x" + String(x,16) + ";")
 //#define structdump(x) (String(#x ":\n").print(),(x).dumpprint(),String("\n").print())
 

@@ -6,6 +6,8 @@
 
 namespace HWLib
 {
+    class String; 
+
     template<typename T>
     class Box_
     {
@@ -18,7 +20,7 @@ namespace HWLib
         void Delete() { delete &_data; };
         template<typename TDestination>
         TDestination Convert(){ return convert<TDestination>(_data); };
-
+        String const DumpToString()const;
     };
 
     template<typename TPointer>
@@ -57,4 +59,6 @@ namespace HWLib
 
     template<typename T>
     Box_<T> _(T&data){ return data; }
+
 }
+

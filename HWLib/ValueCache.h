@@ -1,7 +1,7 @@
 #pragma once
 #include "Properties.h"
 
-namespace HLib
+namespace HWLib
 {
     template<typename T>
     class ValueCache
@@ -11,7 +11,10 @@ namespace HLib
         mutable bool _isBusy;
 
     public:
-        ValueCache(function<T()> getValue) :_getValue(getValue), _value(null), _isBusy(false){}
+        ValueCache(function<T()> getValue) 
+            :_getValue(getValue)
+            , _value()
+            , _isBusy(false){}
 
         p_mutable(bool, IsValid){ return _value.IsValid; }
         p(bool, IsBusy){ return _isBusy; }
@@ -23,7 +26,7 @@ namespace HLib
         T const* Value()const 
         {
             Ensure();
-            return _value;
+            return _value.operator->();
         };
 
         void Ensure()const
@@ -39,7 +42,7 @@ namespace HLib
         void Reset()const
         {
             assert(!_isBusy);
-            _value = null;
+            _value = OptRef<T>();
         }
 
     };

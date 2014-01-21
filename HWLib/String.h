@@ -35,6 +35,7 @@
         Ref<Enumerable<String> > const Split(String const& delimiter)const;
 
         static String const FilePosition(String const&fileName, int line, int column, String const&flag);
+        static String const Convert(int const&value);
         void OutputDebug() const;
 
     };

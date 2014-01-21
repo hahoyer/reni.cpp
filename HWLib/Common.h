@@ -16,7 +16,8 @@ namespace HWLib
     public:
         template<typename T>
         operator T const*const ()const{ return 0; };
-        operator decltype(nullptr) const*const ()const{ return nullptr; };
+        operator std::nullptr_t ()const{ return nullptr; };
+        operator std::nullptr_t(){ return nullptr; };
     } null;
 
     const class

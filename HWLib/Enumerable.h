@@ -162,24 +162,24 @@ namespace HWLib
     public:
         Ref<thisType> const Skip(int count) const
         {
-            return *new Container([=](){return SkipIterator(count); });
+            return Ref<thisType>(new Container([=](){return SkipIterator(count); }));
         }
 
         Ref<thisType> const Take(int count) const
         {
-            return *new Container([=](){return Var<Iterator>(*new TakeIterator(ToIterator, count)); });
+            return Ref<thisType>(new Container([=](){return Var<Iterator>(*new TakeIterator(ToIterator, count)); }));
         }
 
         Ref<thisType> const operator+(thisType const& right)const
         {
             auto leftIterator = ToIterator;
             auto rightIterator = right.ToIterator;
-            return *new Container([=](){return Var<Iterator>(*new PlusIterator(leftIterator, rightIterator)); });
+            return Ref<thisType>(new Container([=](){return Var<Iterator>(*new PlusIterator(leftIterator, rightIterator)); }));
         }
 
         Ref<thisType> const Where(function<bool(T)> selector)const
         {
-            return *new Container([=](){return Var<Iterator>(*new WhereIterator(ToIterator, selector)); });
+            return Ref<thisType>(new Container([=](){return Var<Iterator>(*new WhereIterator(ToIterator, selector)); }));
         }
 
         T const Stringify(T const&delimiter)const;
