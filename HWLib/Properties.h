@@ -7,7 +7,7 @@
 #define SET_FUNCTION(TYPE, NAME) void set_##NAME(TYPE const&value)
 
 #define p_implementation(CLASS, TYPE, NAME) TYPE const CLASS::get_##NAME()const
-#define SET_IMPLEMENTATION(CLASS, TYPE, NAME) void CLASS::set_##NAME(TYPE const&value)
+#define p_mutator_imlementation(CLASS, TYPE, NAME) void CLASS::set_##NAME(TYPE const&value)
 
 #define p(TYPE, NAME) p_definition(TYPE,NAME); p_function(TYPE,NAME)
 #define virtual_p(TYPE, NAME) p_definition(TYPE,NAME); virtual p_function(TYPE,NAME)
