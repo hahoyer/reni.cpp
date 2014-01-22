@@ -15,7 +15,7 @@ namespace HWLib
         using thisType = Array<T>;
 
         int const _count;
-        T const * const _data;
+        T * const _data;
     public:
         Array() : _count(0), _data(0){ }
 
@@ -50,8 +50,8 @@ namespace HWLib
         p(int, Count){ return _count; }
         p(T const*, RawData){ return _data; }
 
-        T& operator[](int Index){ return _data[Index]; }
         T const& operator[](int Index)const{ return _data[Index]; }
+        T& operator[](int Index){ return _data[Index]; }
         thisType const operator+(thisType const& other)const{ return baseType::operator+(other)->ToArray; }
 
         bool const Compare(Array<T> const& other)const;
@@ -70,6 +70,8 @@ namespace HWLib
             p_function(bool, IsValid) override{ return _index >= 0 && _index < _parent.Count; }
             Iterator& operator++(int) override{ _index++; return *this; }
             T const operator*()const override{ return _parent[_index]; }
+
+            void operator=(LocalIterator const&) = delete;
         };
 
         mutable_p_function(Var<Iterator>, ToIterator) const override{ return *new LocalIterator(*this); }

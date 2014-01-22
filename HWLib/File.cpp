@@ -33,7 +33,7 @@ File::~File(){ _(_data).Delete(); }
 
 String const File::get_FullName()const
 {
-    auto tReturn = ::_fullpath(0, Name.ToArray.RawData, 0);
+    auto tReturn = ::_fullpath(0, Name.RawData, 0);
     auto Return = String(tReturn);
     delete [] tReturn;
     return Return;
@@ -43,7 +43,7 @@ void File::set_Name(String const& value)
 {
     if (Name == value)
         return;
-    auto rc = ::rename(Name.ToArray.RawData, value.ToArray.RawData);
+    auto rc = ::rename(Name.RawData, value.RawData);
     if (rc == 0)
         _data._name = value;
     assertx(rc == 0, vardump(rc));
@@ -58,7 +58,7 @@ static int _openX(char const* name, int oflag, int pmode = _S_IREAD | _S_IWRITE)
 
 String const File::get_Data()const
 { 
-    auto Handle = ::_openX(Name.ToArray.RawData, _O_RDONLY | _O_BINARY);
+    auto Handle = ::_openX(Name.RawData, _O_RDONLY | _O_BINARY);
     auto Count = ::_filelength(Handle);
     if (Handle < 0) Count = 0;
     auto cReturn = new char[Count + 1];
@@ -91,7 +91,7 @@ void File::set_Data(String const& value)
     auto Count = value.Count;
 
     int Handle;
-    do Handle = _openX(Name.ToArray.RawData, _O_CREAT | _O_TRUNC | _O_WRONLY | _O_BINARY);
+    do Handle = _openX(Name.RawData, _O_CREAT | _O_TRUNC | _O_WRONLY | _O_BINARY);
     while (Handle < 0 && errno == EACCES);
 
     auto Error = FormatErrorMessage();
@@ -99,7 +99,7 @@ void File::set_Data(String const& value)
 
     assertx(Handle >= 0, String("Error: ") + DumpToString(e) + ":" + Error);
 
-    auto WrLength = _write(Handle, value.ToArray.RawData, Count);
+    auto WrLength = _write(Handle, value.RawData, Count);
     assert(WrLength == Count);
 
     _close(Handle);

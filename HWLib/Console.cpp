@@ -19,9 +19,9 @@ Console::Console()
 static void OutputDebug(const String&text)
 {
     if (::IsDebuggerPresent())
-        ::OutputDebugStringA(text.ToArray.RawData);
+        ::OutputDebugStringA(text.RawData);
     else
-        ::printf("%s", text.ToArray.RawData);
+        ::printf("%s", text.RawData);
 }
 
 void Console::Write(String const&text, bool isLine)

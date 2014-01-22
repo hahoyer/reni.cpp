@@ -11,9 +11,12 @@ namespace HWLib
     template<typename T>
     class Box_
     {
+        using thisType = Box_<T>;
         T & _data;
     public:
         Box_(T & data) : _data(data){}
+        Box_(thisType const& data) = delete;
+
         p_definition(T&, Data);
         mutable_p_function(T&, Data){ return _data; }
 
@@ -26,11 +29,14 @@ namespace HWLib
     template<typename TPointer>
     class Box_<TPointer*>
     {
+        using thisType = Box_<TPointer*>;
         using T = TPointer*;
 
         T & _data;
     public:
         Box_(T & data) : _data(data){}
+        Box_(thisType const& data) = delete;
+
         p_definition(T&, Data);
         mutable_p_function(T&, Data){ return _data; }
 
@@ -43,11 +49,16 @@ namespace HWLib
     template<typename TPointer>
     class Box_<TPointer*const>
     {
+        using thisType = Box_<TPointer*const>;
         using T = TPointer*const;
 
         T & _data;
     public:
         Box_(T & data) : _data(data){}
+        Box_(thisType const& data) = delete;
+
+        thisType& operator=(thisType const&x) = delete;
+
         p_definition(T&, Data);
         mutable_p_function(T&, Data){ return _data; }
 

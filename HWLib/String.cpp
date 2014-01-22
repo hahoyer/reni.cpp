@@ -19,7 +19,7 @@ String::String(std::string const& data)
 }
 
 String::String(Array<char const> const& other)
-: _data(other.RawData, other.Count - 1)
+: _data(other.RawData, other.Count)
 {
 }
 
@@ -41,10 +41,15 @@ String const String::FilePosition(String const&fileName, int line, int column, S
 p_implementation(String, Array<char const>, ToArray)
 {
     char const* d = _data.c_str();
-    return Array<char const>(Count+1, [&](int i){return d[i]; }); 
+    return Array<char const>(Count, [&](int i){return d[i]; }); 
 }
 
-bool const String::operator== (String const& other)const{ return _data==(other._data); }
+p_implementation(String, char const*, RawData)
+{
+    return _data.c_str();
+}
+
+bool const String::operator== (String const& other)const{ return _data == (other._data); }
 
 String const String::operator+ (String const& other)const
 {
@@ -92,7 +97,10 @@ String const String::Replace(String const &oldValue, String const&newValue)const
 }
 
 String const String::Part(int start)const{ return ToArray.Skip(start)->ToArray; }
-String const String::Part(int start, int count)const{ return ToArray.Skip(start)->Take(count)->ToArray; }
+String const String::Part(int start, int count)const
+{ 
+    return ToArray.Skip(start)->Take(count)->ToArray;
+}
 
 class SplitIterator final : public Enumerable<String>::Iterator
 {
@@ -110,7 +118,10 @@ public:
         _index = 0;
     }
 protected:
-    p_function(bool, IsValid) override{ return _index + _delimiter.Count < _parent.Count; }
+    p_function(bool, IsValid) override
+    {
+        return _index + _delimiter.Count <= _parent.Count; 
+    }
     
     Iterator& operator++(int) override
     {

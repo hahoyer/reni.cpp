@@ -7,12 +7,17 @@
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="HWLib.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HWLib\HWLib.vcxproj">
       <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HWLib.h" />
+    <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemDefinitionGroup>
     <ClCompile>

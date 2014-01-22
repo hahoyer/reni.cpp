@@ -21,6 +21,7 @@
 
         p(int, Count){ return _data.length(); }
         p(Array<char const>, ToArray);
+        p(char const*, RawData);
 
         bool           const BeginsWith(String const &target, int start = 0)const;
         OptRef<int>     const Find(String const &target, int start = 0)const;
