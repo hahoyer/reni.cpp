@@ -1,11 +1,12 @@
 #pragma once
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "Array.h"
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
 #include <string>
 
-; namespace HWLib
+namespace HWLib
 {
     class String
     {
@@ -37,11 +38,10 @@
 
         static String const FilePosition(String const&fileName, int line, int column, String const&flag);
         static String const Convert(int const&value);
-        void OutputDebug() const;
-
     };
 
     static String const operator+ (char const*left, String const& right){ return String(left) + right; };
 
 }
 
+//#pragma message(__FILE__ "(" STRING(__LINE__) "):")
