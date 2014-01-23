@@ -1,7 +1,5 @@
 #pragma once
-
-#include <functional>
-using std::function;
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
@@ -220,3 +218,5 @@ T const Enumerable<T>::Stringify(T const&delimiter)const
     }
     return result;
 }
+
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

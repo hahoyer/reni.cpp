@@ -1,4 +1,5 @@
 #pragma once
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "Properties.h"
 
@@ -73,3 +74,4 @@ namespace HWLib
 
 }
 
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

@@ -1,6 +1,5 @@
 #pragma once
-
-#include <windows.h>
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "_.h"
 #include "BreakHandling.h"
@@ -90,3 +89,4 @@ namespace HWLib
         };
 
 }
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
