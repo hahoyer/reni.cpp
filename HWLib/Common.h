@@ -4,7 +4,7 @@
 
 #undef min
 #undef max
-#undef NULL
+//#undef NULL
 
 namespace HWLib
 {
