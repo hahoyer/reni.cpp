@@ -19,31 +19,34 @@ class File::internal
 {
 public:
     String _name;
-    internal(String const& other);
+    internal(String const& name) : _name(name){};
 };
 
-File::File(String const& other)
-: _internal(*new internal(other))
+File::File(String const& name)
+: _internal(new internal(name))
 {
 }
 
-File::~File(){ _(_internal).Delete(); }
-
-String const File::get_FullName()const
+p_implementation(File, String, FullName)
 {
     auto tReturn = ::_fullpath(0, Name.RawData, 0);
     auto Return = String(tReturn);
-    delete [] tReturn;
+    delete[] tReturn;
     return Return;
 }
 
-void File::set_Name(String const& value)
+p_implementation(File, String, Name)
+{
+    return _internal->_name;
+}
+
+p_mutator_imlementation(File, String, Name)
 {
     if (Name == value)
         return;
     auto rc = ::rename(Name.RawData, value.RawData);
     if (rc == 0)
-        _internal._name = value;
+        _internal->_name = value;
     assertx(rc == 0, vardump(rc));
 }
 
@@ -55,7 +58,7 @@ static int _openX(char const* name, int oflag, int pmode = _S_IREAD | _S_IWRITE)
 };
 
 String const File::get_Data()const
-{ 
+{
     auto Handle = ::_openX(Name.RawData, _O_RDONLY | _O_BINARY);
     auto Count = ::_filelength(Handle);
     if (Handle < 0) Count = 0;
@@ -82,7 +85,7 @@ String const FormatErrorMessage()
     return Buffer;
 };
 
-void File::set_Data(String const& value)
+p_mutator_imlementation(File, String, Data)
 {
     auto Count = value.Count;
 
@@ -100,3 +103,4 @@ void File::set_Data(String const& value)
 
     _close(Handle);
 }
+

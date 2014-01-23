@@ -60,12 +60,12 @@ namespace _Ref
         OptRef<int> c;
 
         assert(!c.IsValid);
-        c = 1;
+        c = new int(1);
         assert(c.IsValid);
         c = OptRef<int>();
         assert(!c.IsValid);
 
-        c = 12;
+        c = new int(12);
         assert(*c == 12);
         assert(c.IsValid);
     }

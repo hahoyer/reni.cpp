@@ -35,7 +35,7 @@ namespace HWLib
             if (_value.IsValid)
                 return;
             _isBusy = true;
-            _value = _getValue();
+            _value = new T(_getValue());
             _isBusy = false;
         }
 

@@ -12,8 +12,12 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="Source.cpp" />
     <ClInclude Include="Compiler.h" />
     <ClCompile Include="Compiler.cpp" />
+    <ClInclude Include="Compiler.internal.h" />
+    <ClInclude Include="Admin\Export.Test.h" />
+    <ClInclude Include="Source.h" />
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>

@@ -2,14 +2,16 @@
 
 namespace Reni
 {
+    class Source;
     class Compiler
     {
         class internal;
-        internal const & _internal;
+        Ref<internal> _internal;
     public:
         Compiler() = delete;
         Compiler(Compiler const&) = delete;
         Compiler(String const&fileName);
-        ~Compiler();
+    
+        p(Source, source);
     };
 }

@@ -26,6 +26,8 @@ namespace HWLib
         Ref<Enumerable<TResult>> const Select(function<TResult(T)> selector) const;
         template<typename TResult>
         Ref<Enumerable<TResult>> const SelectMany(function<TResult(T)> selector) const;
+        template<typename TSplitter>
+        Ref<Enumerable<Enumerable<T>>> const Split() const;
 
         p(Array<T>, ToArray);
 
@@ -217,6 +219,20 @@ inline T const Enumerable<T>::Stringify(T const&delimiter)const
         result = result + element;
     }
     return result;
+}
+
+
+template<typename T>
+template<typename TSplitter>
+inline Ref<Enumerable<Enumerable<T>>> const Enumerable<T>::Split()const
+{
+    auto result = new Enumerable<Enumerable<T>>::Container
+        ([&]()
+    {
+        return Var<Enumerable<Enumerable<T>>::Iterator>(*new TSplitter(*this));
+    });
+
+    return Ref<Enumerable<Enumerable<T>>>(result);
 }
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

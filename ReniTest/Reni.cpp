@@ -7,5 +7,7 @@ using namespace Reni;
 void _Reni::RunAll()
 {
     Compiler c = __FILE__;
-    src;
+    auto s = c.source;
+    auto t = s.Text;
+    assertx(t == "", t);
 }

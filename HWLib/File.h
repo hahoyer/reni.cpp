@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Properties.h"
+#include "Ref.h"
 
 namespace HWLib
 {
@@ -9,10 +10,9 @@ namespace HWLib
     class File
     {
         class internal;
-        internal& _internal;
+        Var<internal> _internal;
     public:
         File(String const&name);
-        ~File();
 
         p(String, FullName);
         p_mutable(String, Name);

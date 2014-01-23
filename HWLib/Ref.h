@@ -15,8 +15,8 @@ namespace HWLib
         shared_ptr<T const> const _data;
         Ref(): _data(nullptr) {}
     public:
-        explicit Ref(T const*data) :_data(data){}
-        Ref(T const&data) :_data(new T(data)){}
+        Ref(T const*data) :_data(data){}
+        explicit Ref(T const&data) :_data(new T(data)){}
         Ref(Ref<T const> const&data) :_data(data._data){}
         DefaultAssignmentOperator;
 
@@ -31,8 +31,8 @@ namespace HWLib
         using baseType = Ref<T>;
     public:
         OptRef() = default;
-        explicit OptRef(T const*data) :baseType(data){}
-        OptRef(T const&data) :baseType(data){}
+        OptRef(T const*data) :baseType(data){}
+        explicit OptRef(T const&data) :baseType(data){}
         OptRef(Ref<T const> const&data) :baseType(data){}
         OptRef(OptRef<T const> const&data) :baseType(data){}
         p(bool, IsValid){ return !!_data.get(); }

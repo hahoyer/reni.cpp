@@ -110,12 +110,15 @@ class SplitIterator final : public Enumerable<String>::Iterator
     String const _parent;
     String const _delimiter;
     int _index;
+    OptRef<int> _delimiterIndex;
+
 public:
     SplitIterator(String const& parent, String const& delimiter)
         : _parent(parent)
         , _delimiter(delimiter)
     {
         _index = 0;
+        _delimiterIndex = new int(0);
     }
 protected:
     p_function(bool, IsValid) override
