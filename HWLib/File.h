@@ -8,8 +8,8 @@ namespace HWLib
 
     class File
     {
-        class local;
-        local& _data;
+        class internal;
+        internal& _internal;
     public:
         File(String const&name);
         ~File();

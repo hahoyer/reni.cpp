@@ -15,19 +15,19 @@
 
 using namespace HWLib;
 
-class File::local
+class File::internal
 {
 public:
     String _name;
-    local(String const& other);
+    internal(String const& other);
 };
 
 File::File(String const& other)
-: _data(*new local(other))
+: _internal(*new internal(other))
 {
 }
 
-File::~File(){ _(_data).Delete(); }
+File::~File(){ _(_internal).Delete(); }
 
 String const File::get_FullName()const
 {
@@ -43,7 +43,7 @@ void File::set_Name(String const& value)
         return;
     auto rc = ::rename(Name.RawData, value.RawData);
     if (rc == 0)
-        _data._name = value;
+        _internal._name = value;
     assertx(rc == 0, vardump(rc));
 }
 
