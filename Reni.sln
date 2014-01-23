@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reni", "Reni\Reni.vcxproj", "{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReniTest", "ReniTest\ReniTest.vcxproj", "{F4E5DE84-370D-4D2D-8376-15591C3720BF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85} = {BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HWLib", "HWLib\HWLib.vcxproj", "{90A37787-7696-487C-BF22-8987CE007CAD}"
 EndProject
@@ -16,6 +19,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}.Debug|Win32.Build.0 = Debug|Win32
 		{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}.Release|Win32.ActiveCfg = Release|Win32
 		{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}.Release|Win32.Build.0 = Release|Win32
 		{F4E5DE84-370D-4D2D-8376-15591C3720BF}.Debug|Win32.ActiveCfg = Debug|Win32
