@@ -1,19 +1,15 @@
 #pragma once
 
-#include "String.h"
-
 namespace HWLib
 {
+    class String;
+
     template<typename T>
-    String const DumpToString(T const&) { return String(typeid(T).name()); }
+    String const DumpToString(T const&target);
     template<typename T>
-    String const DumpToString(T const&target, int radix) = delete;
+    String const DumpToString(T const&target, int radix);
     template<>
-    inline String const DumpToString<int>(int const&target) { return String::Convert(target); }
+    String const DumpToString<int>(int const&target);
+
 }
-
-using namespace HWLib;
-
-template<typename T>
-String const Box_<T>::DumpToString()const{ return HWLib::DumpToString(_data); }
-
+    
