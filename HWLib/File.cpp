@@ -1,19 +1,17 @@
 #include "Import.h"
 #include "File.h"
 
-#include <errno.h>
-#include <fcntl.h>
-#include <io.h>
-#include <share.h>
-#include <sys/stat.h>
-#include <windows.h>
-
 #include "BreakHandling.h"
 #include "Common.h"
 #include "Console.h"
+#include "String.h"
 #include "DumpMacros.h"
 #include "DumpToString.h"
-#include "String.h"
+
+#include <sys/stat.h>
+#include <io.h>
+#include <fcntl.h>
+#include <windows.h>
 
 using namespace HWLib;
 
@@ -70,7 +68,6 @@ String const File::get_Data()const
     return Return;
 }
 
-
 String const FormatErrorMessage()
 {
     DWORD rc = ::GetLastError();
@@ -84,7 +81,6 @@ String const FormatErrorMessage()
         NULL);
     return Buffer;
 };
-
 
 void File::set_Data(String const& value)
 {
