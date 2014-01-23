@@ -1,5 +1,5 @@
 #pragma once
-#pragma message(__FILE__ "(2): start")
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 using namespace HWLib;
 
@@ -11,4 +11,5 @@ template<typename T>
 String const Box_<T>::DumpToString()const{ return HWLib::DumpToString(_data); }
 template<>
 inline String const HWLib::DumpToString<int>(int const&target) { return String::Convert(target); }
-#pragma message(__FILE__ "(2): end")
+
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
