@@ -194,7 +194,7 @@ namespace HWLib
 using namespace HWLib;
 
 template<typename T>
-p_implementation(Enumerable<T>, Array<T>, ToArray)
+inline p_implementation(Enumerable<T>, Array<T>, ToArray)
 {
     auto result = std::vector<T>();
     auto i = ToIterator;
@@ -205,7 +205,7 @@ p_implementation(Enumerable<T>, Array<T>, ToArray)
 }
 
 template<typename T>
-T const Enumerable<T>::Stringify(T const&delimiter)const
+inline T const Enumerable<T>::Stringify(T const&delimiter)const
 {
     auto result = T();
     auto useDelimiter = false;
