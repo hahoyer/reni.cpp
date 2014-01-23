@@ -8,15 +8,20 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="HWLib.cpp" />
+    <ClCompile Include="Reni.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HWLib\HWLib.vcxproj">
       <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Reni\Reni.vcxproj">
+      <Project>{bfcca11e-fcd1-483c-828c-7df6cde5aa85}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HWLib.h" />
+    <ClInclude Include="Reni.h" />
     <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemDefinitionGroup>

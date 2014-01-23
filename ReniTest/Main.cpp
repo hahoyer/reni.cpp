@@ -2,6 +2,7 @@
 #include "Main.h"
 
 #include "HWLib.h"
+#include "Reni.h"
 
 int main()
 {
@@ -12,5 +13,6 @@ int main()
 void Test::RunAll()
 {
     _HWLib::RunAll();
+    _Reni::RunAll();
 }
 
