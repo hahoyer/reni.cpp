@@ -1,22 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-    <PropertyGroup Label="Globals">
-        <ProjectGuid>{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}</ProjectGuid>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\HWLib\HWLib.vcxproj">
-            <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
-        </ProjectReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ClInclude Include="Compiler.h" />
-        <ClCompile Include="Compiler.cpp" />
-    </ItemGroup>
-
-    <Import Project="$(SolutionDir)sys.targets" />
-
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HWLib\HWLib.vcxproj">
+      <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClInclude Include="Compiler.h" />
+    <ClCompile Include="Compiler.cpp" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)sys.targets" />
 </Project>
