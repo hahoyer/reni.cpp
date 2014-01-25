@@ -10,7 +10,7 @@ namespace HWLib
     class File
     {
         class internal;
-        Var<internal> _internal;
+        Ref<internal> _internal;
     public:
         File(String const&name);
 

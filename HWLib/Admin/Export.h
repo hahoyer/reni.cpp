@@ -5,6 +5,7 @@
 #include "../DefaultAssignmentOperator.h"
 #include "../DumpMacros.h"
 #include "../DumpToString.h"
+#include "../Enumerable.h"
 #include "../File.h"
 #include "../String.h"
 #include "../ValueCache.h"

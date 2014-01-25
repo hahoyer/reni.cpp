@@ -27,14 +27,11 @@ namespace HWLib
 
         Array(int count, function<T(int)> creator)
             : _count(count)
-            , _data(new T[count])
+            , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*count]))
         {
             auto data = const_cast<remove_const<T>::type*>(_data);
             for (auto index = 0; index < count; index++)
-            {
-                auto value = creator(index);
-                data[index] = value;
-            }
+                new (data + index) T(creator(index));
         }
 
         Array(Array<T> const&other)
@@ -57,6 +54,8 @@ namespace HWLib
     private:
         class LocalIterator final : public Iterator
         {
+            using baseType = Iterator;
+            using thisType = LocalIterator;
             Array<T> const& _parent;
             int _index;
         public:
@@ -67,13 +66,14 @@ namespace HWLib
             }
 
             p_function(bool, IsValid) override{ return _index >= 0 && _index < _parent.Count; }
-            Iterator& operator++(int) override{ _index++; return *this; }
+            void operator++(int) override{ _index++; }
             T const operator*()const override{ return _parent[_index]; }
+            p_function(Ref<Iterator>, Clone) override{ return new thisType(*this); }
 
             void operator=(LocalIterator const&) = delete;
         };
 
-        mutable_p_function(Var<Iterator>, ToIterator) const override{ return *new LocalIterator(*this); }
+        mutable_p_function(Ref<Iterator>, ToIterator) const override{ return new LocalIterator(*this); }
 
     };
 

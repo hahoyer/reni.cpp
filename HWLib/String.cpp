@@ -110,30 +110,32 @@ class SplitIterator final : public Enumerable<String>::Iterator
     String const _parent;
     String const _delimiter;
     int _index;
-    OptRef<int> _delimiterIndex;
 
 public:
     SplitIterator(String const& parent, String const& delimiter)
         : _parent(parent)
         , _delimiter(delimiter)
+        , _index(0)
     {
-        _index = 0;
-        _delimiterIndex = new int(0);
     }
+
+    SplitIterator(thisType const& other) = default;
+
 protected:
     p_function(bool, IsValid) override
     {
         return _index + _delimiter.Count <= _parent.Count; 
     }
     
-    Iterator& operator++(int) override
+    p_function(Ref<Iterator>, Clone) override{return new thisType(*this);}
+
+    void operator++(int) override
     {
         auto newEnd = _parent.Find(_delimiter, _index);
         if (newEnd.IsValid)
             _index = *newEnd + _delimiter.Count;
         else
             _index = _parent.Count;
-        return *this; 
     }
     
     String const operator*()const override
@@ -143,18 +145,13 @@ protected:
             return _parent.Part(_index, *newEnd - _index);
         return _parent.Part(_index);
     }
+
 };
 
 Ref<Enumerable<String>> const String::Split(String const& delimiter)const
 { 
     assert(delimiter != "");
-    auto result = new Enumerable<String>::Container
-        ([&]()
-    {
-        return Var<Enumerable<String>::Iterator>(*new SplitIterator(*this, delimiter)); 
-    });
-
-    return Ref<Enumerable<String>>(result);
+    return new Enumerable<String>::Container(new SplitIterator(*this, delimiter));
 }
 
 String const String::Convert(int const&value)

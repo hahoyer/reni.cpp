@@ -27,7 +27,7 @@ namespace HWLib
         template<typename TResult>
         Ref<Enumerable<TResult>> const SelectMany(function<TResult(T)> selector) const;
         template<typename TSplitter>
-        Ref<Enumerable<Enumerable<T>>> const Split() const;
+        Ref<Enumerable<Ref<Enumerable<T>>>> const Split() const;
 
         p(Array<T>, ToArray);
 
@@ -35,15 +35,16 @@ namespace HWLib
         {
         public:
             virtual_p(bool, IsValid) = 0;
-            virtual Iterator& operator++(int) = 0;
+            virtual void operator++(int) = 0;
             virtual T const operator*()const = 0;
+            virtual_p(Ref<Iterator>, Clone) = 0;
         };
 
         class StandardIterator
         {
-            Var<Iterator> _data;
+            Ref<Iterator> _data;
         public:
-            StandardIterator(Var<Iterator> data) 
+            StandardIterator(Ref<Iterator> data)
                 : _data(data)
             {
             }
@@ -59,15 +60,14 @@ namespace HWLib
 
         class Container : public Enumerable<T>
         {
-            function<Var<Iterator>()> _iterator;
+            Ref<Iterator> _iterator;
         public:
-            Container(function<Var<Iterator>()> iterator) : _iterator(iterator){}
-            mutable_p_function(Var<Iterator>, ToIterator) const override{ return _iterator(); }
+            Container(Iterator* iterator) : _iterator(iterator){}
+            mutable_p_function(Ref<Iterator>, ToIterator) const override{ return _iterator; }
         };
 
-    protected:
-        p_definition(Var<Iterator>, ToIterator);
-        virtual mutable_p_function(Var<Iterator>, ToIterator)const = 0;
+        p_definition(Ref<Iterator>, ToIterator);
+        virtual mutable_p_function(Ref<Iterator>, ToIterator)const = 0;
 
     private:
         template <typename TLeft>
@@ -79,7 +79,7 @@ namespace HWLib
             return other.get(index - parent.Count);
         }
 
-        Var<Iterator> SkipIterator(int count)const
+        Ref<Iterator> SkipIterator(int count)const
         {
             auto result = ToIterator;
             while (count > 0 && result->IsValid)
@@ -90,149 +90,21 @@ namespace HWLib
             return result;
         }
 
-        class TakeIterator final : public Iterator
-        {
-            Var<Iterator> _parent;
-            int _count;
-        public:
-            TakeIterator(Var<Iterator> parent, int count)
-                : _parent(parent)
-                , _count(count)
-            {
-            }
-        protected:
-            p_function(bool, IsValid) override{ return _count > 0 && _parent->IsValid; }
-            Iterator& operator++(int) override{ --_count; (*_parent)++; return *this; }
-            T const operator*()const override{ return **_parent; }
-        };
-
-        class PlusIterator final : public Iterator
-        {
-            Var<Iterator> _left;
-            Var<Iterator> _right;
-        public:
-            PlusIterator(Var<Iterator> left, Var<Iterator> right)
-                : _left(left)
-                , _right(right)
-            {
-            }
-        private:
-            p_function(bool, IsValid) override{ return _left->IsValid || _right->IsValid; }
-
-            Iterator& operator++(int) override
-            {
-                if (_left->IsValid)
-                    (*_left)++;
-                else
-                    (*_right)++;
-                return *this;
-            }
-
-            T const operator*()const override
-            {
-                if (_left->IsValid)
-                    return **_left;
-                return **_right;
-            }
-        };
-
-        class WhereIterator final : public Iterator
-        {
-            Var<Iterator> _parent;
-            function<bool(T)> _selector;
-        public:
-            WhereIterator(Var<Iterator> parent, function<bool(T)> selector)
-                : _parent(parent)
-                , _selector(selector)
-            {
-                Align();
-            }
-
-            void Align()
-            {
-                while (_parent->IsValid && !selector(**_parent))
-                    (*_parent)++;
-            }
-        protected:
-            p_function(bool, IsValid) override{ return _parent->IsValid; }
-            Iterator& operator++(int) override{ (*_parent)++; Align(); return *this; }
-            T const operator*()const override{ return **_parent; }
-        };
+        class TakeIterator;
+        class PlusIterator;
+        class WhereIterator;
 
     public:
-        Ref<thisType> const Skip(int count) const
-        {
-            return Ref<thisType>(new Container([=](){return SkipIterator(count); }));
-        }
-
-        Ref<thisType> const Take(int count) const
-        {
-            return Ref<thisType>(new Container([=](){return Var<Iterator>(*new TakeIterator(ToIterator, count)); }));
-        }
-
-        Ref<thisType> const operator+(thisType const& right)const
-        {
-            auto leftIterator = ToIterator;
-            auto rightIterator = right.ToIterator;
-            return Ref<thisType>(new Container([=](){return Var<Iterator>(*new PlusIterator(leftIterator, rightIterator)); }));
-        }
-
-        Ref<thisType> const Where(function<bool(T)> selector)const
-        {
-            return Ref<thisType>(new Container([=](){return Var<Iterator>(*new WhereIterator(ToIterator, selector)); }));
-        }
-
+        Ref<thisType> const Skip(int count) const;
+        Ref<thisType> const Take(int count) const;
+        Ref<thisType> const operator+(thisType const& right)const;
+        Ref<thisType> const Where(function<bool(T)> selector)const;
         T const Stringify(T const&delimiter)const;
 
         StandardIterator const begin()const{ return ToIterator; }
-        StandardIterator const end()const{ return StandardIterator(nullptr); }
+        StandardIterator const end()const{ return StandardIterator(); }
     };
 
-}
-
-#include "Array.h"
-#include <vector>
-
-using namespace HWLib;
-
-template<typename T>
-inline p_implementation(Enumerable<T>, Array<T>, ToArray)
-{
-    auto result = std::vector<T>();
-    auto i = ToIterator;
-    for (; i->IsValid; (*i)++)
-        result.push_back(**i);
-    return Array<T>(result.size(), [=](int i){return result[i]; });
-
-}
-
-template<typename T>
-inline T const Enumerable<T>::Stringify(T const&delimiter)const
-{
-    auto result = T();
-    auto useDelimiter = false;
-    for (auto element : *this)
-    {
-        if (useDelimiter)
-            result = result + delimiter;
-        useDelimiter = true;
-        result = result + element;
-    }
-    return result;
-}
-
-
-template<typename T>
-template<typename TSplitter>
-inline Ref<Enumerable<Enumerable<T>>> const Enumerable<T>::Split()const
-{
-    auto result = new Enumerable<Enumerable<T>>::Container
-        ([&]()
-    {
-        return Var<Enumerable<Enumerable<T>>::Iterator>(*new TSplitter(*this));
-    });
-
-    return Ref<Enumerable<Enumerable<T>>>(result);
 }
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
