@@ -144,9 +144,9 @@ inline T const Enumerable<T>::Stringify(T const&delimiter)const
 
 template<typename T>
 template<typename TSplitter>
-inline Ref<Enumerable<Ref<Enumerable<T>>>> const Enumerable<T>::Split()const
+inline Ref<Enumerable<int>> const Enumerable<T>::Split()const
 {
-    return new Enumerable<Ref<Enumerable<T>>>::Container(new TSplitter(*this));
+    return new Enumerable<int>::Container(new TSplitter(*this));
 }
 
 
