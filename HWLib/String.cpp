@@ -119,15 +119,13 @@ public:
     {
     }
 
-    SplitIterator(thisType const& other) = default;
-
 protected:
     p_function(bool, IsValid) override
     {
         return _index + _delimiter.Count <= _parent.Count; 
     }
     
-    p_function(Ref<Iterator>, Clone) override{return new thisType(*this);}
+    p_function(Ref<Iterator>, Clone) override{ return new thisType(*this); }
 
     void operator++(int) override
     {
