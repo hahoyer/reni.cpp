@@ -1,6 +1,8 @@
 #pragma once
 
+#include "BreakHandling.h"
 #include "DefaultAssignmentOperator.h"
+#include "String.h"
 #include "Common.h"
 #include <memory>
 using std::shared_ptr;
@@ -8,22 +10,22 @@ using std::shared_ptr;
 namespace HWLib
 {
     template<typename T>
-    class Ref 
+    class Ref
     {
         using thisType = Ref<T>;
     protected:
-        shared_ptr<T> _data;
-        Ref(): _data(nullptr) {}
+        shared_ptr<T> _value;
+        Ref() : _value(nullptr) {}
     public:
-        Ref(T *data) :_data(data){}
-        explicit Ref(T const& data) :_data(new T(data)){}
-        Ref(Ref<T> const&data) :_data(data._data){}
+        Ref(T *value) :_value(value){}
+        explicit Ref(T const& value) :_value(new T(value)){}
+        Ref(Ref<T> const&value) :_value(value._value){}
         DefaultAssignmentOperator;
 
-        T const& operator*()const { return _data.operator*(); };
-        T const* operator->()const { return _data.operator->(); };
-        T & operator*(){ return _data.operator*(); };
-        T * operator->(){ return _data.operator->(); };
+        T const& operator*()const { return _value.operator*(); };
+        T const* operator->()const { return _value.operator->(); };
+        T & operator*(){ return _value.operator*(); };
+        T * operator->(){ return _value.operator->(); };
     };
 
     template<typename T>
@@ -33,22 +35,54 @@ namespace HWLib
         using baseType = Ref<T>;
     public:
         OptRef() = default;
-        OptRef(T *data) :baseType(data){}
-        explicit OptRef(T const&data) :baseType(new T(data)){}
-        OptRef(Ref<T> &data) :baseType(data){}
-        OptRef(OptRef<T> const&data) :baseType(data){}
-        p(bool, IsValid){ return !!_data.get(); }
+        OptRef(T *value) :baseType(value){}
+        explicit OptRef(T const&value) :baseType(new T(value)){}
+        OptRef(Ref<T> &value) :baseType(value){}
+        OptRef(OptRef<T> const&value) :baseType(value){}
+        p(bool, IsValid){ return !!_value.get(); }
         DefaultAssignmentOperator;
+
+        friend OptRef<T> operator||(OptRef<T> left, function<T*()> right)
+        {
+            return left.IsValid ? left : right();
+        }
     };
 
     template<typename T>
-    class VarY : public shared_ptr<T>
+    class Value{};
+
+    template<typename T>
+    class Optional
     {
-        typedef shared_ptr<T> baseType;
+        using thisType = Optional;
+
+        T const _value;
     public:
-        VarY(T&data) : baseType(&data){}
-        VarY(T*data) : baseType(data){}
-        VarY(VarY<T> const&data) : baseType(data){}
+        Optional() : _value(Value<T>::NotValid){}
+        Optional(decltype(null)) : _value(Value<T>::NotValid){}
+        Optional(T const value) :_value(value){}
+
+        p(bool, IsValid){ return _value != Value<T>::NotValid; }
+        
+        DefaultAssignmentOperator;
+
+        operator T const ()const
+        {
+            assert(IsValid);
+            return _value;
+        };
+
+        friend Optional<T> operator||(Optional<T> left, function<T()> right)
+        {
+            return left.IsValid ? left: right();
+        }
+    };
+
+    template<>
+    class Value<int>
+    {
+    public:
+        static int const NotValid = 0x80000000;
     };
 
 }
