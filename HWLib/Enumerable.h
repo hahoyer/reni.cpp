@@ -3,12 +3,13 @@
 
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
-#include "Ref.h"
 #include "BreakHandling.h"
 
 namespace HWLib
 {
     template<typename T> class Array;
+    template<typename T> class OptRef;
+    template<typename T> class Ref;
 
     template<typename T>
     class Enumerable
@@ -16,6 +17,8 @@ namespace HWLib
         using thisType = Enumerable<T>;
 
     public:
+        template<typename TResult>
+        TResult             const Aggregate     (TResult start, function<TResult(TResult,T)> selector)const;
         T                    const First         (function<bool(T)> selector = [](T){return true; })const;
         OptRef<T>             const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
         int                    const Count       (function<bool(T)> selector = [](T){return true; })const;
@@ -27,8 +30,6 @@ namespace HWLib
         T                       const Single       (function<bool(T)> selector = [](T){return true; })const;
         OptRef<T>              const SingleOrDefault(function<bool(T)> selector = [](T){return true; })const;
         Ref<thisType>         const Skip           (int count) const;
-        template<typename TSplitter>
-        Ref<Enumerable<int>> const Split          () const;
         T                   const Stringify      (T const&delimiter)const;
         Ref<thisType>      const Take           (int count) const;
         Ref<thisType>     const Where          (function<bool(T)> selector)const;
@@ -44,6 +45,17 @@ namespace HWLib
             virtual_p(Ref<Iterator>, Clone) = 0;
         };
 
+        class EndPosition final : public Iterator
+        {
+        public:
+            static EndPosition Instance;
+
+            p_function(bool, IsValid) override{ return false; }
+            p_function(Ref<Iterator>, Clone) override{ return &Instance; }
+            void operator++(int) override{}
+            T const operator*()const override{ throw *this; }
+        };
+
         class StandardIterator
         {
             Ref<Iterator> _data;
@@ -57,12 +69,13 @@ namespace HWLib
             T const operator *()const { return **_data; }
             bool operator !=(StandardIterator other)
             {
-                assert(other._data.get() == nullptr);
+                assert(&*_data == &EndPosition::Instance);
                 return _data->IsValid;
             }
+
         };
 
-        class Container : public Enumerable<T>
+        class Container final : public Enumerable<T>
         {
             Ref<Iterator> _iterator;
         public:
@@ -74,7 +87,7 @@ namespace HWLib
         virtual mutable_p_function(Ref<Iterator>, ToIterator)const = 0;
 
         StandardIterator const begin()const{ return ToIterator; }
-        StandardIterator const end()const{ return StandardIterator(); }
+        StandardIterator const end()const;
 
     private:
         template <typename TLeft>
@@ -86,20 +99,10 @@ namespace HWLib
             return other.get(index - parent.Count);
         }
 
-        Ref<Iterator> SkipIterator(int count)const
-        {
-            auto result = ToIterator;
-            while (count > 0 && result->IsValid)
-            {
-                (*result)++;
-                count--;
-            }
-            return result;
-        }
-
         class TakeIterator;
         class PlusIterator;
         class WhereIterator;
+        class SkipIterator;
     };
 
 }

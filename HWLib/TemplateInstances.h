@@ -17,8 +17,32 @@ inline String const HWLib::DumpToString<int>(int const&target) { return String::
 
 
 template<typename T>
+class Enumerable<T>::SkipIterator final : public Enumerable<T>::Iterator
+{
+    Ref<Iterator> _parent;
+public:
+    SkipIterator(Enumerable<T> const& parent, int count)
+        : _parent(parent.ToIterator)
+    {
+        while (count > 0 && _parent->IsValid)
+        {
+            (*_parent)++;
+            --count;
+        }
+    }
+
+protected:
+    p_function(bool, IsValid) override{ return _parent->IsValid; }
+    void operator++(int) override{ (*_parent)++;}
+    T const operator*()const override{ return **_parent; }
+    p_function(Ref<Iterator>, Clone) override{ return _parent->Clone; }
+};
+
+
+template<typename T>
 class Enumerable<T>::TakeIterator final : public Enumerable<T>::Iterator
 {
+    using thisType = TakeIterator;
     Ref<Iterator> _parent;
     int _count;
 public:
@@ -27,10 +51,17 @@ public:
         , _count(count)
     {
     }
+
+    TakeIterator(TakeIterator const& other)
+        : _parent(other._parent->Clone)
+        , _count(other._count)
+    {
+    }
 protected:
     p_function(bool, IsValid) override{ return _count > 0 && _parent->IsValid; }
-    Iterator& operator++(int) override{ --_count; (*_parent)++; return *this; }
+    void operator++(int) override{ --_count; (*_parent)++; }
     T const operator*()const override{ return **_parent; }
+    p_function(Ref<Iterator>, Clone) override{ return new thisType(*this); }
 };
 
 
@@ -48,7 +79,7 @@ public:
 private:
     p_function(bool, IsValid) override{ return _left->IsValid || _right->IsValid; }
 
-    Iterator& operator++(int) override
+    void operator++(int) override
     {
         if (_left->IsValid)
             (*_left)++;
@@ -86,7 +117,7 @@ public:
     }
 protected:
     p_function(bool, IsValid) override{ return _parent->IsValid; }
-    Iterator& operator++(int) override{ (*_parent)++; Align(); return *this; }
+    void operator++(int) override{ (*_parent)++; Align(); return *this; }
     T const operator*()const override{ return **_parent; }
 };
 
@@ -94,25 +125,25 @@ protected:
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::Skip(int count) const
 {
-    return new Container([=](){return SkipIterator(count); });
+    return new Container(new SkipIterator(*this, count));
 }
 
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::Take(int count) const
 {
-    return new Container([=](){return new TakeIterator(*this, count); });
+    return new Container(new TakeIterator(*this, count));
 }
 
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::operator+(thisType const& right)const
 {
-    return new Container([=](){return new PlusIterator(*this, right); });
+    return new Container(new PlusIterator(*this, right));
 }
 
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)const
 {
-    return new Container([=](){return new WhereIterator(*this, selector); });
+    return new Container(new WhereIterator(*this, selector));
 }
 
 template<typename T>
@@ -143,11 +174,12 @@ inline T const Enumerable<T>::Stringify(T const&delimiter)const
 
 
 template<typename T>
-template<typename TSplitter>
-inline Ref<Enumerable<int>> const Enumerable<T>::Split()const
+typename Enumerable<T>::StandardIterator const Enumerable<T>::end()const
 {
-    return new Enumerable<int>::Container(new TSplitter(*this));
+    return StandardIterator(&EndPosition::Instance);
 }
 
+template<typename T>
+typename Enumerable<T>::EndPosition Enumerable<T>::EndPosition::Instance;
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
