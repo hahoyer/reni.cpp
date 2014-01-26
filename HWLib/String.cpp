@@ -5,6 +5,7 @@
 #include "DumpMacros.h"
 #include "DumpToString.h"
 #include "Ref.h"
+#include "TemplateInstances.h"
 
 using namespace HWLib;
 
@@ -73,11 +74,11 @@ String const String::Indent(bool isLineStart, int count, String const &tabString
     return (isLineStart ? effectiveTabString : "") + Replace("\n", "\n" + effectiveTabString);
 }
 
-OptRef<int> const String::Find(String const &target, int start)const
+Optional<int> const String::Find(String const &target, int start)const
 {
     for (auto end = Count - target.Count; start < end; start++)
     if (BeginsWith(target, start))
-        return OptRef<int>(start);
+        return Optional<int>(start);
     return empty;
 }
 
@@ -88,7 +89,6 @@ bool const String::BeginsWith(String const &target, int start)const
         return false;
     return true;
 }
-
 
 String const String::Replace(String const &oldValue, String const&newValue)const
 {
@@ -131,7 +131,7 @@ protected:
     {
         auto newEnd = _parent.Find(_delimiter, _index);
         if (newEnd.IsValid)
-            _index = *newEnd + _delimiter.Count;
+            _index = newEnd + _delimiter.Count;
         else
             _index = _parent.Count;
     }
@@ -140,7 +140,7 @@ protected:
     {
         auto newEnd = _parent.Find(_delimiter, _index);
         if (newEnd.IsValid)
-            return _parent.Part(_index, *newEnd - _index);
+            return _parent.Part(_index, newEnd - _index);
         return _parent.Part(_index);
     }
 

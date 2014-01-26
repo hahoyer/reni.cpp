@@ -8,6 +8,8 @@
 
 namespace HWLib
 {
+    template<typename T> class Optional;
+
     class String
     {
         using thisType = String;
@@ -25,7 +27,7 @@ namespace HWLib
         p(char const*, RawData);
 
         bool           const BeginsWith(String const &target, int start = 0)const;
-        OptRef<int>     const Find(String const &target, int start = 0)const;
+        Optional<int>   const Find(String const &target, int start = 0)const;
         String           const Indent(bool          isLineStart = false, int count = 1, String const &tabString = "    ")const;
         String            const operator+  (String const& other)const;
         String             const operator*  (int           count)const;
