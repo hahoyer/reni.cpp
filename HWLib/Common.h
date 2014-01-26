@@ -40,7 +40,7 @@ namespace HWLib
     template <class t> inline t min(t x, t y) { return (x < y) ? x : y; };
     template <class t> inline t max(t x, t y) { return (x < y) ? y : x; };
 
-    int const NoANumber = 0x80000000l;
+    int const NotANumber = 0x80000000l;
 
     /* Alignment: get the next number that is not less and a mutilple of 2^AlignBits
     examples:
@@ -52,4 +52,5 @@ namespace HWLib
     align(9,3) --> 16
     */
     template<class t> inline t align(t x, int AlignBits){ return (((x - 1) >> AlignBits) + 1) << AlignBits; };
+
 }
