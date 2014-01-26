@@ -7,6 +7,7 @@
 #include "../DumpToString.h"
 #include "../Enumerable.h"
 #include "../File.h"
+#include "../Ref.h"
 #include "../String.h"
 #include "../ValueCache.h"
 #include "../TemplateInstances.h"
