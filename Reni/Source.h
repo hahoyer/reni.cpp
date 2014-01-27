@@ -2,6 +2,8 @@
 
 namespace Reni
 {
+    class SourcePosition;
+
     class Source
     {
         using thisType = Source;
@@ -9,16 +11,20 @@ namespace Reni
         ValueCache<String> const _textCache;
 
     public:
-        Source(String const& fileName)
-            : _fileName(fileName)
-            , _textCache([&]{return HWLib::File(_fileName).Data; })
-        {}
-        Source(Source const& other) 
-            :Source(other._fileName)
-        {}
-
+        Source(String const& fileName);
+        Source(Source const& other);
         DefaultAssignmentOperator;
-
-        p(String, Text){ return *_textCache; }
+        p(String, Text);
+        p(int, Count);
+        bool const IsEnd(int position)const;
+        String const Part(int start, int count)const;
+        String const FilePosition(int position, String flagText, String tag = "")const;
+        int const LineNr(int position)const;
+        int const ColNr(int position)const;
+        friend SourcePosition const operator +(Ref<Source const> const source, int position);
     };
+
 }
+
+template<>
+String const HWLib::DumpToString<Reni::Source>(Reni::Source const&target);

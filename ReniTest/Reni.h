@@ -1,3 +1,7 @@
 #pragma once
 
-namespace _Reni{ void RunAll(); }
+namespace _Reni
+{
+    void Split();
+    void RunAll();
+}

@@ -8,6 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="HWLib.cpp" />
+    <ClCompile Include="Split.cpp" />
     <ClCompile Include="Reni.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>

@@ -15,7 +15,7 @@ namespace _String
     {
         String a = "Hallo";
         auto b = a.Find("a");
-        assert(*b == 1);
+        assert(b == 1);
         auto c = a.Find("c");
         assert(!c.IsValid);
     }
