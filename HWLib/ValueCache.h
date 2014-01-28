@@ -22,7 +22,7 @@ namespace HWLib
         p(Ref<T>, Value)
         {
             Ensure();
-            return _value.operator->();
+            return _value;
         };
 
     private:
