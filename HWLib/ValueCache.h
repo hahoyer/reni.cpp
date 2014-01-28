@@ -19,16 +19,13 @@ namespace HWLib
         p_mutable(bool, IsValid){ return _value.IsValid; }
         p(bool, IsBusy){ return _isBusy; }
 
-        T const& operator*()const { return *Value(); };
-        T const* operator->()const { return Value(); };
-
-    private:
-        T const* Value()const 
+        p(Ref<T>, Value)
         {
             Ensure();
             return _value.operator->();
         };
 
+    private:
         void Ensure()const
         {
             assert(!_isBusy);
