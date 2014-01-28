@@ -23,6 +23,7 @@ namespace HWLib
             , _data(other._data)
         {
             const_cast<T const *&> (other._data) = nullptr;
+            const_cast<int&> (other._count) = 0;
         };
 
         Array(int count, function<T(int)> creator)
@@ -39,7 +40,13 @@ namespace HWLib
         {
         }
 
-        ~Array(){ _(_data).SmartDeleteArray();}
+        ~Array()
+        { 
+            for (auto i = 0; i < _count; i++)
+                _data[i].~T();
+            if (_data)
+                delete[] reinterpret_cast<__int8 const*>(_data); 
+        }
 
         DefaultAssignmentOperator;
 
