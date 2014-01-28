@@ -18,7 +18,9 @@ namespace HWLib
 
     public:
         template<typename TResult>
-        TResult             const Aggregate     (TResult start, function<TResult(TResult,T)> selector)const;
+        TResult            const Aggregate(function<TResult(TResult, T)> selector)const{ return Aggregate(TResult(), selector); }
+        template<typename TResult>
+        TResult             const Aggregate     (TResult start, function<TResult(TResult, T)> selector)const;
         T                    const First         (function<bool(T)> selector = [](T){return true; })const;
         OptRef<T>             const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
         int                    const Count       (function<bool(T)> selector = [](T){return true; })const;

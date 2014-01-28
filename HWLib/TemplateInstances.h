@@ -172,6 +172,25 @@ inline T const Enumerable<T>::Stringify(T const&delimiter)const
     return result;
 }
 
+template<typename T>
+inline int const Enumerable<T>::Count(function<bool(T)> selector)const
+{
+    auto result = 0;
+    for (auto element : *this)
+        if(selector(element))
+            result++;
+    return result;
+}
+
+template<typename T>
+template<typename TResult>
+TResult const Enumerable<T>::Aggregate(TResult start, function<TResult(TResult, T)> selector)const
+{
+    auto result = start;
+    for (auto element : *this)
+        result = selector(result,element);
+    return result;
+}
 
 template<typename T>
 typename Enumerable<T>::StandardIterator const Enumerable<T>::end()const
