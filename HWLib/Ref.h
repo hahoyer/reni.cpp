@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BreakHandling.h"
-#include "DefaultAssignmentOperator.h"
 #include "String.h"
 #include "Common.h"
 #include <memory>
@@ -18,7 +17,7 @@ namespace HWLib
         Ref() : _value(nullptr) {}
     public:
         Ref(T *value) :_value(value){}
-        explicit Ref(T const& value) :_value(new T(value)){}
+        Ref(T & value) :_value(new T(value)){}
         Ref(Ref<T> const&value) :_value(value._value){}
         DefaultAssignmentOperator;
 
@@ -36,9 +35,10 @@ namespace HWLib
     public:
         OptRef() = default;
         OptRef(T *value) :baseType(value){}
-        explicit OptRef(T const&value) :baseType(new T(value)){}
-        OptRef(Ref<T> &value) :baseType(value){}
-        OptRef(OptRef<T> const&value) :baseType(value){}
+        OptRef(T &value) :baseType(value){}
+        OptRef(Ref<T> const&other) :baseType(other){}
+        OptRef(OptRef<T> const&other) :baseType(other){}
+
         p(bool, IsValid){ return !!_value.get(); }
         DefaultAssignmentOperator;
 
