@@ -70,6 +70,9 @@ char const String::operator[] (int index)const{ return _data[index]; }
 
 String const String::Indent(bool isLineStart, int count, String const &tabString)const
 {
+    if (count == 0)
+        return *this;
+
     auto effectiveTabString = tabString*count;
     return (isLineStart ? effectiveTabString : "") + Replace("\n", "\n" + effectiveTabString);
 }
