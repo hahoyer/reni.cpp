@@ -3,6 +3,7 @@
 namespace Reni
 {
     class Source;
+    class SourcePart;
 
     class SourcePosition
     {
@@ -19,6 +20,7 @@ namespace Reni
         void operator+=(int index){ _position += index; }
         bool const operator==(SourcePosition constother)const;
 
+        SourcePart const Span(int count)const;
         String const Part(int count)const;
     };
 

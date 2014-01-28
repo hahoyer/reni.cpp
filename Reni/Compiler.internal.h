@@ -13,9 +13,9 @@ public:
 
     internal(String const&fileName)
         : _fileName(fileName)
-        , SourceCache([&]{return _fileName; })
+        , sourceCache([&]{return _fileName; })
     {
     }
 
-    ValueCache<Source> SourceCache;
+    ValueCache<Source const> sourceCache;
 };

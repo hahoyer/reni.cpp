@@ -19,7 +19,7 @@ Source::Source(Source const& other)
 
 p_implementation(Source, String, Text)
 {
-    return *_textCache;
+    return *_textCache.Value;
 }
 
 

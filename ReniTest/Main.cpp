@@ -16,3 +16,8 @@ void Test::RunAll()
     _Reni::RunAll();
 }
 
+void Test::RunSpecial()
+{
+    _HWLib::RunSpecial();
+}
+

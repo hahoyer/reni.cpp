@@ -92,18 +92,20 @@ namespace _Array
         WriteHallo();
     }
 }
+
 namespace _ValueCache
 {
     void Simple()
     {
-        auto c = ValueCache<int>([]()->int{return 12; });
+        ValueCache<int> c ([](){return 12; });
         assert(!c.IsValid);
         c.IsValid = true;
         assert(c.IsValid);
         c.IsValid = false;
         assert(!c.IsValid);
-        auto z = *c;
-        assert(*c == 12);
+        auto z = *c.Value;
+        auto zz = *c.Value;
+        assert(*c.Value == 12);
         assert(c.IsValid);
     }
 
@@ -111,19 +113,19 @@ namespace _ValueCache
     void Context()
     {
         _value = 12;
-        auto c = ValueCache<int>([&]{return _value; });
+        ValueCache<int>c = ([&]{return _value; });
         c.IsValid = true;
-        assert(*c == 12);
+        assert(*c.Value == 12);
         _value = 13;
-        assert(*c == 12);
+        assert(*c.Value == 12);
         c.IsValid = true;
-        assert(*c == 12);
+        assert(*c.Value == 12);
         c.IsValid = false;
         c.IsValid = true;
-        assert(*c == 13);
+        assert(*c.Value == 13);
         _value = 14;
         c.IsValid = false;
-        assertx(*c == 14, vardump(*c));
+        assertx(*c.Value == 14, vardump(*c.Value));
     }
 
     void RunAll()
@@ -139,4 +141,9 @@ void _HWLib::RunAll()
     _Array::RunAll();
     _Ref::RunAll();
     _ValueCache::RunAll();
+}
+
+void _HWLib::RunSpecial()
+{
+    _String::Split();
 }

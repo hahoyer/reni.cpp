@@ -8,7 +8,7 @@ void SimpleFile()
 {
     Compiler c = __FILE__;
     auto s = c.source;
-    auto t = s.Text;
+    auto t = s->Text;
     assertx(t.Part(0, 8) == "#include", t);
 };
 

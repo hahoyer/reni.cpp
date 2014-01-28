@@ -10,9 +10,9 @@ using namespace Reni;
 void _Reni::Split()
 {
     Compiler c = __FILE__;
-    auto s = c.source.Text.ToArray;
+    //auto s = c.source;
 
-    Scanner scanner;
+    //Scanner<BaseScanner,MainTokenFactory,Token> scanner =  s;
 
 
 

@@ -9,7 +9,7 @@ Compiler::Compiler(String const&fileName)
 : _internal(new internal(fileName))
 {}
 
-p_implementation(Compiler, Source, source)
+p_implementation(Compiler, Ref<Source const>, source)
 {
-    return *_internal->SourceCache;
+    return _internal->sourceCache.Value;
 }
