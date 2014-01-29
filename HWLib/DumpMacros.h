@@ -8,7 +8,7 @@
 #define src HWLib::String::FilePosition(__FILE__,__LINE__,0,__FUNCTION__)
 #define srcprint() _fsrcprint(__FILE__,__LINE__,0,__FUNCTION__)
 #define srcprintln() _fsrcprintln(__FILE__,__LINE__,0,__FUNCTION__)
-#define dumpo if(Trace) _console_ FunctionTrace
+#define dumpo if(Trace) _console_ _console_ FunctionTrace
 #define argdump(x) {if(Trace)_console_ Write(vardump(x)+"\n");}
 #define argxdump(x) {if(Trace)_console_ Write(varxdump(x)+"\n");}
 #define srcargdump(x) {if(Trace)_console_ (vardump(x)+"\n").fsrcprint();}
@@ -41,7 +41,7 @@
 #define ni_mdumpc4(a,b,c,d)  bool Trace=true;mdumpc4(a,b,c,d);bp;throw CAssertionException()
 #define ni_mdumpc5(a,b,c,d,e) bool Trace=true;mdumpc5(a,b,c,d,e);bp;throw CAssertionException()
 
-#define fdump()           if(Trace) FunctionTrace(__FUNCTION__)
+#define fdump()           if(Trace) _console_ FunctionTrace(__FUNCTION__)
 #define fdumpc(a)        fdump(); argdump(a);
 #define fdumpc2(a,b)    fdump(); argdump(a); argdump(b);
 #define fdumpc3(a,b,c)   fdump(); argdump(a); argdump(b); argdump(c);
