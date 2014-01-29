@@ -49,5 +49,5 @@ namespace HWLib
 #define xassert_failx(q) {xassertx(false,q); throw CAssertionException();}
 #define xassert_fail xassertx(false,"")
 
-
+#define errorabort(t) return (t)null
 
