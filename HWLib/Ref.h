@@ -49,7 +49,14 @@ namespace HWLib
     };
 
     template<typename T>
-    class Value{};
+    class Constants{};
+
+    template<>
+    class Constants<int>
+    {
+    public:
+        static int const NotValid = 0x80000000;
+    };
 
     template<typename T>
     class Optional
@@ -58,31 +65,26 @@ namespace HWLib
 
         T const _value;
     public:
-        Optional() : _value(Value<T>::NotValid){}
-        Optional(decltype(null)) : _value(Value<T>::NotValid){}
+        Optional() : _value(Constants<T>::NotValid){}
+        Optional(decltype(null)) : _value(Constants<T>::NotValid){}
         Optional(T const value) :_value(value){}
 
-        p(bool, IsValid){ return _value != Value<T>::NotValid; }
+        p(bool, IsValid){ return _value != Constants<T>::NotValid; }
         
         DefaultAssignmentOperator;
 
-        operator T const ()const
+        p(T, Value)
         {
             assert(IsValid);
             return _value;
         };
 
+        operator T const ()const{ return Value; };
+
         friend Optional<T> operator||(Optional<T> left, function<T()> right)
         {
             return left.IsValid ? left: right();
         }
-    };
-
-    template<>
-    class Value<int>
-    {
-    public:
-        static int const NotValid = 0x80000000;
     };
 
 }
