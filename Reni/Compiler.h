@@ -1,8 +1,9 @@
 #pragma once
 
+using namespace HWLib::Match;
+
 namespace Reni
 {
-    class Source;
     class Compiler
     {
         class internal;

@@ -1,11 +1,9 @@
 #pragma once
 
-#include "SourcePart.h"
-
 using namespace Reni;
 
 template <typename TScanner, typename TTokenFactory, typename TToken>
-Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::CreateTokenAndAdvance()
+Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::Step()
 {
     try
     {
@@ -13,27 +11,27 @@ Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::CreateTokenAndAdvanc
 
         auto count = _position.End;
         if (count.IsValid)
-            return CreateAndAdvance(count, TTokenFactory::EndOfText);
+            return Step(count, TTokenFactory::EndOfText);
 
         count = TScanner::Number(_position);
         if (count.IsValid)
-            return CreateAndAdvance(count, TTokenFactory::Number);
+            return Step(count, TTokenFactory::Number);
 
         count = TScanner::Text(_position);
         if (count.IsValid)
-            return CreateAndAdvance(count, TTokenFactory::Text);
+            return Step(count, TTokenFactory::Text);
 
         count = TScanner::Any(_position);
         if (count.IsValid)
-            return CreateAndAdvance(count, TTokenFactory::TokenClass(_position.Part(count)));
+            return Step(count, TTokenFactory::TokenClass(_position.Part(count)));
 
         mdump();
-        bp();
-        return null;
+        assert_fail;
+        errorabort(Ref<TToken>);
     }
     catch (TScanner::Error const& error)
     {
-        return CreateAndAdvance(error.Count, TTokenFactory::Error(error.Id));
+        return Step(error.Count, TTokenFactory::Error(error.Id));
     }
 }
 
@@ -41,9 +39,9 @@ Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::CreateTokenAndAdvanc
 template <typename TScanner, typename TTokenFactory, typename TToken>
 Ref<TToken> const
 Scanner<TScanner, TTokenFactory, TToken>
-::CreateTokenAndAdvance(int count, typename TTokenFactory::Class const& tokenClass)
+::Step(int count, typename TTokenFactory::Class const& tokenClass)
 {
-    auto part = _position.Part(count);
-    position += count;
+    auto part = _position.Span(count);
+    _position += count;
     return new TToken(tokenClass, part);
 }
