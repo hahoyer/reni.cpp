@@ -6,3 +6,5 @@
 #include "../../Reni/Admin/Export.h"
 #include "../../Reni/Admin/Export.Test.h"
 
+using namespace HWLib;
+using namespace HWLib::Match;
