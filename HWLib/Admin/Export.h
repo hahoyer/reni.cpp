@@ -7,7 +7,12 @@
 #include "../DumpToString.h"
 #include "../Enumerable.h"
 #include "../File.h"
+#include "../Match/Pattern.h"
+#include "../Match/Source.h"
+#include "../Match/SourcePart.h"
+#include "../Match/SourcePosition.h"
 #include "../Ref.h"
 #include "../String.h"
 #include "../ValueCache.h"
 #include "../TemplateInstances.h"
+
