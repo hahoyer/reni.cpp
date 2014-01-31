@@ -45,3 +45,37 @@ bool const SourcePosition::BeginsWith(String value)const
 SourcePart::operator String const()const{ return _source->Part(_position, _count); }
 
 
+p_implementation(SourcePosition, String, DumpCurrent)
+{
+    return IsEnd ? String() : String(First);
+}
+
+const int DumpWidth = 10;
+
+p_implementation(SourcePosition, String, DumpAfterCurrent)
+{
+    if (IsEnd)
+        return "";
+    auto length = min(DumpWidth, _source->Count - _position - 1);
+    auto result = _source->Part(_position + 1, length);
+    if (length == DumpWidth)
+        result += "...";
+    return result;
+}
+
+p_implementation(SourcePosition, String, DumpBeforeCurrent)
+{
+    auto start = max(0, _position - DumpWidth);
+    auto result = _source->Part(start, _position - start);
+    if (_position >= DumpWidth)
+        result = "..." + result;
+    return result;
+}
+
+
+p_implementation(SourcePosition, std::string, Dump)
+{
+    return (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent).RawData;
+}
+
+
