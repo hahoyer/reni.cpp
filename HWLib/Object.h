@@ -9,9 +9,9 @@ namespace HWLib
     {
         mutable std::string _dumpString;
     public:
-        Object(){ _dumpString = "Hallo"; }
+        Object(){ _dumpString = ""; }
         virtual_p(std::string, Dump) = 0;
     protected:
-        void SetDumpString(){ _dumpString = Dump; }
+        void SetDumpString();
     };
 }

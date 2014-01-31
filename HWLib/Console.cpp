@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "File.h"
 #include "String.h"
+#include "Object.h"
 
 using namespace HWLib;
 
@@ -45,3 +46,9 @@ void Console::FunctionTrace(String const&function)
     Write("\n");
 };
   
+
+void Object::SetDumpString()
+{
+    if (::IsDebuggerPresent())
+        _dumpString = Dump;
+}
