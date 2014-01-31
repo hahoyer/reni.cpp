@@ -16,6 +16,7 @@ namespace HWLib
         std::string const _data;
     public:
         String();
+        String(char const data);
         String(char const* data);
         String(std::string const & other);
         String(Array<char const> const& other);
@@ -26,14 +27,15 @@ namespace HWLib
         p(Array<char const>, ToArray);
         p(char const*, RawData);
 
-        bool          const BeginsWith(String const &target, int start = 0)const;
-        bool           const Contains(char const &target, int start = 0)const;
-        Optional<int>   const Find(String const &target, int start = 0)const;
-        String           const Indent(bool          isLineStart = false, int count = 1, String const &tabString = "    ")const;
-        String            const operator+  (String const& other)const;
-        String             const operator*  (int           count)const;
-        char                const operator[]  (int           count)const;
-        bool                 const operator== (String const& other)const;
+        bool         const BeginsWith (String const &target, int start = 0)const;
+        bool          const Contains   (char const &target, int start = 0)const;
+        Optional<int>  const Find       (String const &target, int start = 0)const;
+        String          const Indent     (bool isLineStart = false, int count = 1, String const &tabString = "    ")const;
+        String           const operator+  (String const& other)const;
+        String            const operator*  (int           count)const;
+        char               const operator[] (int           count)const;
+        bool                const operator== (String const& other)const;
+        void                       operator+= (String const& other){*this = *this + other;};
         String                const Part(int start, int length)const;
         String                 const Part(int start)const;
         String                  const Replace(String const& oldValue, String const&newValue)const;

@@ -9,6 +9,11 @@
 
 using namespace HWLib;
 
+String::String(char const data)
+: _data(1,data)
+{
+}
+
 String::String(char const* data)
 : _data(data)
 {
