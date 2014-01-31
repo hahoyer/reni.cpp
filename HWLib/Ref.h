@@ -3,12 +3,12 @@
 #include "BreakHandling.h"
 #include "String.h"
 #include "Common.h"
-#include <memory>
-using std::shared_ptr;
+using boost::shared_ptr;
 
 namespace HWLib
 {
     template<typename T>
+
     class Ref
     {
         using thisType = Ref<T>;
@@ -81,9 +81,11 @@ namespace HWLib
 
         operator T const ()const{ return Value; };
 
-        friend Optional<T> operator||(Optional<T> left, function<T()> right)
+        friend Optional<T> operator||(Optional<T> left, function<Optional<T>()> right)
         {
-            return left.IsValid ? left: right();
+            if (left.IsValid)
+                return left;
+            return right();
         }
     };
 
