@@ -8,17 +8,17 @@ namespace HWLib
     namespace Match
     {
         class SourcePosition;
-        class PatternContainer;
+        class Pattern;
         using r = Optional<int> const;
-        using pr = PatternContainer const;
+        using pr = Pattern const;
 
-        class Pattern
+        class IPattern
         {
         public:
             virtual r Match(SourcePosition const&position)const = 0;
         };
 
-        class EndPattern : public Pattern
+        class EndPattern : public IPattern
         {
             virtual r Match(SourcePosition const&position)const override;
         };
@@ -35,29 +35,26 @@ namespace HWLib
             {}
         };
 
-        class PatternContainer
+        class Pattern
         {
-            using thisType = PatternContainer;
-            Ref<Pattern const> const _value;
+            using thisType = Pattern;
+            Ref<IPattern const> const _value;
         public:
-            PatternContainer(Pattern const* value)
+            Pattern(IPattern const* value)
                 : _value(value)
             {}
 
             DefaultAssignmentOperator;
 
             p(pr, Find);
-            pr Else(PatternContainer const& right)const;
+            pr Else(Pattern const& right)const;
             pr Else(String right)const;
             pr Repeat(int minCount= 0, Optional<int> maxCount = null)const;
             pr Value(function<pr(String)> func)const;
 
-            pr operator+(PatternContainer right)const;
+            pr operator+(Pattern right)const;
             pr operator+(String right)const;
-
-            template<typename T>
-            pr operator+(T const& right)const;
-            friend pr operator+(String left, PatternContainer right);
+            friend pr operator+(String left, Pattern right);
 
             r Match(SourcePosition const&position)const{ return _value->Match(position); }
         };
@@ -77,7 +74,7 @@ namespace HWLib
         pr LineEnd = AnyChar("\n\r").Else(End);
 
         template<typename T>
-        class ErrorMatch : public Pattern
+        class ErrorMatch : public IPattern 
         {
             T const& _value;
         public:
@@ -97,13 +94,7 @@ using namespace HWLib;
 using namespace Match;
 
 template<typename T>
-pr PatternContainer::operator+(T const& right)const
-{ 
-    return *this + Error(right);
-};
-
-template<typename T>
 pr HWLib::Match::Error(T const&value)
-{ 
+{
     return new ErrorMatch<T>(value); 
 };

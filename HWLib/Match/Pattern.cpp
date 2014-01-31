@@ -11,11 +11,11 @@ r EndPattern::Match(SourcePosition const&position)const
     return position.End;
 };
 
-class FindMatcher : public Pattern
+class FindMatcher : public IPattern 
 {
-    Ref<Pattern const> const _value;
+    Ref<IPattern const> const _value;
 public:
-    FindMatcher(Ref<Pattern const> value) : _value(value){}
+    FindMatcher(Ref<IPattern const> value) : _value(value){}
 private:
     virtual r Match(SourcePosition const&position)const override
     {
@@ -31,14 +31,14 @@ private:
     }
 };
 
-p_implementation(PatternContainer, pr, Find){ return new FindMatcher(_value); };
+p_implementation(Pattern, pr, Find){ return new FindMatcher(_value); };
 
-class ElseMatcher : public Pattern
+class ElseMatcher : public IPattern 
 {
-    Ref<Pattern const> const _left;
-    Ref<Pattern const> const _right;
+    Ref<IPattern  const> const _left;
+    Ref<IPattern  const> const _right;
 public:
-    ElseMatcher(Ref<Pattern const> left, Ref<Pattern const> right)
+    ElseMatcher(Ref<IPattern  const> left, Ref<IPattern  const> right)
         : _left(left)
         , _right(right)
     {}
@@ -46,21 +46,21 @@ private:
     virtual r Match(SourcePosition const&position)const override
     {
         return _left->Match(position)
-            || [=]{return _right->Match(position); };
+            || [&]{return _right->Match(position); };
     }
 };
 
-pr PatternContainer::Else(PatternContainer const& right)const{ return new ElseMatcher(_value, right._value); }
-pr PatternContainer::Else(String right)const{ return Else(Box(right)); }
+pr Pattern::Else(Pattern const& right)const{ return new ElseMatcher(_value, right._value); }
+pr Pattern::Else(String right)const{ return Else(Box(right)); }
 
-class RepeatMatch : public Pattern
+class RepeatMatch : public IPattern 
 {
-    Ref<Pattern const> const _data;
+    Ref<IPattern  const> const _data;
     int  const _minCount;
     Optional<int> const _maxCount;
 
 public:
-    RepeatMatch(Ref<Pattern const> data, int minCount, Optional<int> maxCount)
+    RepeatMatch(Ref<IPattern  const> data, int minCount, Optional<int> maxCount)
         :_data(data)
         , _minCount(minCount)
         , _maxCount(maxCount)
@@ -76,7 +76,7 @@ private:
         for (auto count = 0;; count++)
         {
             auto result = current - position;
-            if (count == _maxCount)
+            if (_maxCount.IsValid && count == _maxCount)
                 return result;
 
             auto length = _data->Match(current);
@@ -89,15 +89,15 @@ private:
     }
 };
 
-pr PatternContainer::Repeat(int minCount, Optional<int> maxCount)const{ return new RepeatMatch(_value, minCount, maxCount); }
+pr Pattern::Repeat(int minCount, Optional<int> maxCount)const{ return new RepeatMatch(_value, minCount, maxCount); }
 
-class ValueMatch : public Pattern
+class ValueMatch : public IPattern 
 {
-    Ref<Pattern const> const _data;
+    Ref<IPattern  const> const _data;
     function<pr(String)> _func;
 
 public:
-    ValueMatch(Ref<Pattern const> data, function<pr(String)> func)
+    ValueMatch(Ref<IPattern  const> data, function<pr(String)> func)
         : _data(data)
         , _func(func)
     {}
@@ -113,14 +113,14 @@ public:
     }
 };
 
-pr PatternContainer::Value(function<pr(String)> func)const{ return new ValueMatch(_value, func); }
+pr Pattern::Value(function<pr(String)> func)const{ return new ValueMatch(_value, func); }
 
-class SequenceMatch : public Pattern
+class SequenceMatch : public IPattern 
 {
-    Ref<Pattern const> const _left;
-    Ref<Pattern const> const _right;
+    Ref<IPattern  const> const _left;
+    Ref<IPattern  const> const _right;
 public:
-    SequenceMatch(Ref<Pattern const> left, Ref<Pattern const> right)
+    SequenceMatch(Ref<IPattern  const> left, Ref<IPattern  const> right)
         : _left(left)
         , _right(right)
     {}
@@ -139,11 +139,11 @@ private:
     }
 };
 
-pr PatternContainer::operator+ (PatternContainer right)const{ return new SequenceMatch(_value, right._value); };
-pr PatternContainer::operator+(String right)const{ return *this + Box(right); };
-pr HWLib::Match::operator+(String left, PatternContainer right){ return Box(left) + right; };
+pr Pattern::operator+ (Pattern right)const{ return new SequenceMatch(_value, right._value); };
+pr Pattern::operator+(String right)const{ return *this + Box(right); };
+pr HWLib::Match::operator+(String left, Pattern right){ return Box(left) + right; };
 
-class CharMatch : public Pattern
+class CharMatch : public IPattern 
 {
     String const _value;
 public:
@@ -152,13 +152,13 @@ public:
 private:
     virtual r Match(SourcePosition const&position)const override
     {
-        return position.BeginsWith(_value) ? _value.Count : r();
+        return position.BeginsWith(_value) ? r(_value.Count) : r();
     }
 };
 
 pr HWLib::Match::Box(String value){ return new CharMatch(value); };
 
-class FunctionalMatch : public Pattern
+class FunctionalMatch : public IPattern 
 {
     function<bool(char)> const _func;
     bool const _isTrue;
@@ -171,13 +171,13 @@ public:
 private:
     virtual r Match(SourcePosition const&position)const override
     {
-        return _func(position.First) == _isTrue ? 1: r();
+        return _func(position.First) == _isTrue ? r(1): r();
     }
 };
 
 pr HWLib::Match::Box(function<bool(char)> value){ return new FunctionalMatch(value, true); };
 
-class AnyCharMatch : public Pattern
+class AnyCharMatch : public IPattern 
 {
     String const _value;
 public:
@@ -185,7 +185,7 @@ public:
 private:
     virtual r Match(SourcePosition const&position)const override
     {
-        return _value.Contains(position.First) ? 1 : r();
+        return _value.Contains(position.First) ? r(1) : r();
     }
 };
 
