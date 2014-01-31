@@ -48,8 +48,8 @@
         <ShowAllFiles>true</ShowAllFiles>
         <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
         <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
-        <XIncludePath>$(Boost);$(IncludePath)</XIncludePath>
-        <XLibraryPath>$(Boost)\libs;$(LibraryPath)</XLibraryPath>
+        <IncludePath>$(Boost);$(IncludePath)</IncludePath>
+        <LibraryPath>$(Boost)\libs;$(LibraryPath)</LibraryPath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
