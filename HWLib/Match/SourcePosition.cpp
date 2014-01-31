@@ -19,6 +19,12 @@ p_implementation(SourcePosition, Optional<int>, End)
     return Optional<int>();
 }
 
+p_implementation(SourcePosition, char, First)
+{
+    if (IsEnd)
+        return 0;
+    return Part(1)[0];
+}
 
 SourcePart const SourcePosition::Span(int count)const
 {
@@ -30,6 +36,12 @@ String const SourcePosition::Part(int count)const
     return _source->Part(_position, count);
 }
 
+bool const SourcePosition::BeginsWith(String value)const
+{
+    return _source->BeginsWith(_position, value);
+}
+
 
 SourcePart::operator String const()const{ return _source->Part(_position, _count); }
+
 

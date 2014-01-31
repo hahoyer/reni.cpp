@@ -21,18 +21,26 @@ namespace HWLib
 
             p(Optional<int>, End);
             p(bool, IsEnd);
+            p(char, First);
             void operator+=(int index){ _position += index; }
+
+            SourcePosition const operator+(int other)const
+            {
+                return SourcePosition(_source, _position +other);
+            }
 
             int const operator-(SourcePosition const&other)const
             {
                 assert(&*_source == &*other._source);
                 return _position - other._position;
             }
+
             bool const operator==(SourcePosition constother)const;
 
             SourcePart const Span(int count)const;
             String const Part(int count)const;
 
+            bool const BeginsWith(String value)const;
         };
     }
 }

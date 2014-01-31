@@ -28,6 +28,7 @@ namespace HWLib
             int const LineNr(int position)const;
             int const ColNr(int position)const;
             friend SourcePosition const operator +(Ref<Source const> const source, int position);
+            bool const BeginsWith(int position, String value)const;
         };
 
     }

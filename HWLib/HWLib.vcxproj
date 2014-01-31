@@ -17,6 +17,7 @@
     <ClInclude Include="Enumerable.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="FunctionCache.h" />
+    <ClInclude Include="Match\Pattern.h" />
     <ClInclude Include="Match\Source.h" />
     <ClInclude Include="Match\SourcePart.h" />
     <ClInclude Include="Match\SourcePosition.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="String.h" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Match\Pattern.cpp" />
     <ClCompile Include="Match\Source.cpp" />
     <ClCompile Include="Match\SourcePosition.cpp" />
     <ClCompile Include="String.cpp" />

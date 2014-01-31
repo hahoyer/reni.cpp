@@ -72,7 +72,16 @@ int const Source::ColNr(int position)const
 }
 
 
-SourcePosition const operator +(Ref<Source const> const source, int position)
+SourcePosition const HWLib::Match::operator +(Ref<Source const> const source, int position)
 {
     return SourcePosition(source, position);
 }
+
+
+bool const Source::BeginsWith(int position, String value)const
+{
+    return Text.BeginsWith(value, position);
+}
+
+
+#include "../TemplateInstances.h"

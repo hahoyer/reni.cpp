@@ -85,6 +85,14 @@ Optional<int> const String::Find(String const &target, int start)const
     return empty;
 }
 
+bool const String::Contains(char const &target, int start)const
+{
+    for (; start < Count; start++)
+        if ((*this)[start] == target)
+            return true;
+    return false;
+}
+
 bool const String::BeginsWith(String const &target, int start)const
 {
     for (auto i = 0; i < target.Count; i++)

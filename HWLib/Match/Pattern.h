@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../Ref.h"
+#include "SourcePosition.h"
+
 namespace HWLib
 {
     namespace Match
@@ -17,23 +20,28 @@ namespace HWLib
 
         class EndPattern : public Pattern
         {
-        public:
             virtual r Match(SourcePosition const&position)const override;
         };
 
-        class Error : public Pattern
+        template<typename T>
+        class Exception
         {
         public:
-            virtual r Match(SourcePosition const&position)const override;
+            SourcePosition const Position;
+            T const& Error;
+            Exception(SourcePosition const position, T const& error)
+                : Error(error)
+                , Position(position)
+            {}
         };
 
         class PatternContainer
         {
             using thisType = PatternContainer;
-            Ref<Pattern const> const _data;
+            Ref<Pattern const> const _value;
         public:
-            PatternContainer(Pattern const* data)
-                : _data(data)
+            PatternContainer(Pattern const* value)
+                : _value(value)
             {}
 
             DefaultAssignmentOperator;
@@ -44,23 +52,58 @@ namespace HWLib
             pr Repeat(int minCount= 0, Optional<int> maxCount = null)const;
             pr Value(function<pr(String)> func)const;
 
-            friend pr operator+(PatternContainer left, PatternContainer right);
-            friend pr operator+(PatternContainer left, String right);
-            friend pr operator+(String left, PatternContainer right);
-            friend pr operator+(PatternContainer left, Error const& right);
+            pr operator+(PatternContainer right)const;
+            pr operator+(String right)const;
 
-            r Match(SourcePosition const&position)const;
+            template<typename T>
+            pr operator+(T const& right)const;
+            friend pr operator+(String left, PatternContainer right);
+
+            r Match(SourcePosition const&position)const{ return _value->Match(position); }
         };
 
 
         pr Box(String);
-        pr Box(function<r(char)>);
+        pr Box(function<bool(char)>);
+
+        template<typename T>
+        pr Error(T const&);
+        
         pr AnyChar(char const*);
-        pr Digit = Box([](char c){return ::isdigit(c); });
-        pr Letter = Box([](char c){return ::isalpha(c); });
-        pr WhiteSpace = Box([](char c){return ::isspace(c); });
+        pr Digit = Box([](char c){return !!::isdigit(c); });
+        pr Letter = Box([](char c){return !!::isalpha(c); });
+        pr WhiteSpace = Box([](char c){return !!::isspace(c); });
         pr End = new EndPattern;
         pr LineEnd = AnyChar("\n\r").Else(End);
 
+        template<typename T>
+        class ErrorMatch : public Pattern
+        {
+            T const& _value;
+        public:
+            ErrorMatch(T const&value) : _value(value) {}
+        private:
+            virtual r Match(SourcePosition const&position)const override
+            {
+                throw Exception<T>(position, _value);
+            }
+        };
+
+
     }
 }
+
+using namespace HWLib;
+using namespace Match;
+
+template<typename T>
+pr PatternContainer::operator+(T const& right)const
+{ 
+    return *this + Error(right);
+};
+
+template<typename T>
+pr HWLib::Match::Error(T const&value)
+{ 
+    return new ErrorMatch<T>(value); 
+};

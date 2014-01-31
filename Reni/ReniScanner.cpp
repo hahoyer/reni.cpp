@@ -5,24 +5,11 @@ static bool Trace = true;
 
 using namespace Reni;
 
-class MatchException
+class SyntaxError 
 {
 public:
-    MatchException(SourcePosition const &position, String const& id)
-        : Position(position)
-        , Id(id)
-    {}
-
-    SourcePosition const Position;
     String const Id;
-};
-
-
-String const ConvertErrorId(String const & matchId)
-{
-    fdumpc(matchId);
-    bp;
-    returndump(matchId);
+    SyntaxError(String id) : Id(id){}
 };
 
 Optional<int> const ExceptionGuard(SourcePosition const&position, PatternContainer pattern)
@@ -31,16 +18,10 @@ Optional<int> const ExceptionGuard(SourcePosition const&position, PatternContain
     {
         return pattern.Match(position);
     }
-    catch (MatchException exception)
+    catch (Exception<SyntaxError> exception)
     {
-        throw ReniScanner::Error(exception.Position - position, ConvertErrorId(exception.Id));
+        throw ReniScanner::Error(exception.Position - position, exception.Error.Id);
     }
-};
-
-class SyntaxError : public Error
-{
-public:
-    SyntaxError(String id);
 };
 
 

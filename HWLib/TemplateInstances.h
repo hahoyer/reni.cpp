@@ -1,6 +1,7 @@
 #pragma once
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
+#include "DumpToString.h"
 #include "Ref.h"
 #include <vector>
 
