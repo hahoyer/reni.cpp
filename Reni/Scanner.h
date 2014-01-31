@@ -1,38 +1,24 @@
 #pragma once
 
+#include "MainTokenFactory.h"
+
 namespace Reni
 {
     template <typename TScanner, typename TTokenFactory, typename TToken>
     class Scanner
     {
         SourcePosition _position;
+        TTokenFactory const& _factory;
     public: 
-        Scanner(Ref<Source const> source)
+        Scanner(Ref<Source const> source, TTokenFactory const&factory)
             : _position(source)
+            , _factory(factory)
         {}
 
         Ref<TToken> const Step();
     private:
         Ref<TToken> const Step(int count, typename TTokenFactory::Class const& tokenClass);
 
-    };
-
-    class MainTokenFactory
-    {
-    public:
-        class Class{};
-        static Class const& EndOfText;
-        static Class const& Number;
-        static Class const& Text;
-        static Class const& TokenClass(String const&name);
-        static Class const& Error(String const&name);
-    };
-
-
-    class Token
-    {
-    public:
-        Token(MainTokenFactory::Class const&Class, SourcePart const& part);
     };
 
 }

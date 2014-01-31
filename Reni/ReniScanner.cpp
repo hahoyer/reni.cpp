@@ -5,42 +5,31 @@ static bool Trace = true;
 
 using namespace Reni;
 
-class SyntaxError 
-{
-public:
-    String const Id;
-    SyntaxError(String id) : Id(id){}
-};
-
-Optional<int> const ExceptionGuard(SourcePosition const&position, PatternContainer pattern)
+Optional<int> const ExceptionGuard(SourcePosition const&position, Pattern pattern)
 {
     try
     {
         return pattern.Match(position);
     }
-    catch (Exception<SyntaxError> exception)
+    catch (Exception<String> exception)
     {
-        throw ReniScanner::Error(exception.Position - position, exception.Error.Id);
+        throw ReniScanner::Error(exception.Position - position, exception.Error);
     }
 };
 
 
-class ReniScanner::internal
+struct ReniScanner::internal
 {
-public:
-    SyntaxError const _invalidLineComment;
-    SyntaxError const _invalidComment;
-    SyntaxError const _invalidTextEnd;
-    PatternContainer const _any;
-    PatternContainer const _whiteSpaces;
-    PatternContainer const _number;
-    PatternContainer const _text;
-
+    Pattern const _any;
+    Pattern const _whiteSpaces;
+    Pattern const _number;
+    Pattern const _text;
+    
     static internal const*const Create()
     {
-        auto invalidLineComment = SyntaxError("EOFInLineComment");
-        auto invalidComment = SyntaxError("EOFInComment");
-        auto invalidTextEnd = SyntaxError("invalidTextEnd");
+        auto invalidLineComment = Match::Error("EOFInLineComment");
+        auto invalidComment = Match::Error("EOFInComment");
+        auto invalidTextEnd = Match::Error("invalidTextEnd");
         auto alpha = Letter.Else("_");
         auto symbol1 = AnyChar("({[)}];,");
         auto textFrame = AnyChar("'\"");
@@ -70,23 +59,17 @@ public:
             return textEnd.Find + (head + textEnd.Find).Repeat();
         });
 
-        return new internal(invalidLineComment, invalidComment, invalidTextEnd, any, whiteSpaces, number, text);
+        return new internal(any, whiteSpaces, number, text);
     };
 
     internal(
-        SyntaxError const&invalidLineComment,
-        SyntaxError const&invalidComment,
-        SyntaxError const&invalidTextEnd,
-        PatternContainer const &any,
-        PatternContainer const &whiteSpaces,
-        PatternContainer const &number,
-        PatternContainer const &text
+        Pattern const &any,
+        Pattern const &whiteSpaces,
+        Pattern const &number,
+        Pattern const &text
         )
 
-        : _invalidLineComment(invalidLineComment)
-        , _invalidComment(invalidComment)
-        , _invalidTextEnd(invalidTextEnd)
-        , _any(any)
+        : _any(any)
         , _whiteSpaces(whiteSpaces)
         , _number(number)
         , _text(text)

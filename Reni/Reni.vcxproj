@@ -12,6 +12,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="ReniScanner.cpp" />
     <ClInclude Include="Compiler.h" />
     <ClCompile Include="Compiler.cpp" />
@@ -19,7 +20,7 @@
     <ClInclude Include="Admin\Export.Test.h" />
     <ClInclude Include="ReniScanner.h" />
     <ClInclude Include="Scanner.instance.h" />
-    <ClInclude Include="TokenFactory.h" />
+    <ClInclude Include="MainTokenFactory.h" />
     <ClInclude Include="Scanner.h" />
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />

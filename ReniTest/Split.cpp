@@ -11,7 +11,8 @@ void _Reni::Split()
 {
     Compiler c = __FILE__;
     auto s = c.source;
-    Scanner<ReniScanner,MainTokenFactory,Token> scanner =  s;
+    auto tf = MainTokenFactory();
+    Scanner<ReniScanner,MainTokenFactory,Token> scanner (s,tf);
 
     auto ss = scanner.Step();
 }

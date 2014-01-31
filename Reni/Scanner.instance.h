@@ -11,19 +11,19 @@ Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::Step()
 
         auto count = _position.End;
         if (count.IsValid)
-            return Step(count, TTokenFactory::EndOfText);
+            return Step(count, _factory.EndOfText);
 
         count = TScanner::Number(_position);
         if (count.IsValid)
-            return Step(count, TTokenFactory::Number);
+            return Step(count, _factory.Number);
 
         count = TScanner::Text(_position);
         if (count.IsValid)
-            return Step(count, TTokenFactory::Text);
+            return Step(count, _factory.Text);
 
         count = TScanner::Any(_position);
         if (count.IsValid)
-            return Step(count, TTokenFactory::TokenClass(_position.Part(count)));
+            return Step(count, _factory.TokenClass(_position.Part(count)));
 
         mdump();
         assert_fail;
@@ -31,7 +31,7 @@ Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::Step()
     }
     catch (TScanner::Error const& error)
     {
-        return Step(error.Count, TTokenFactory::Error(error.Id));
+        return Step(error.Count, _factory.Error(error.Id));
     }
 }
 
