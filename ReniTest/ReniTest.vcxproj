@@ -9,6 +9,7 @@
   <ItemGroup>
     <ClCompile Include="HWLib.cpp" />
     <ClCompile Include="Compiler.cpp" />
+    <ClCompile Include="CompilerTest.cpp" />
     <ClCompile Include="Reni.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -22,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HWLib.h" />
+    <ClInclude Include="CompilerTest.h" />
     <ClInclude Include="Reni.h" />
     <ClInclude Include="Main.h" />
   </ItemGroup>
