@@ -18,6 +18,7 @@
     <ClCompile Include="Compiler.cpp" />
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="Admin\Export.Test.h" />
+    <ClInclude Include="PrioParser.h" />
     <ClInclude Include="ReniScanner.h" />
     <ClInclude Include="Scanner.instance.h" />
     <ClInclude Include="MainTokenFactory.h" />
