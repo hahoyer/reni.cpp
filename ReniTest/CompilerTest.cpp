@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "CompilerTest.h"
 
-using namespace _Reni;
 using namespace Reni;
 using namespace _Compiler;
 
