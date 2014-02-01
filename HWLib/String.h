@@ -23,9 +23,10 @@ namespace HWLib
 
         DefaultAssignmentOperator;
 
-        p(int, Count){ return _data.length(); }
+        p(int,            Count  ){ return _data.length(); }
+        p(String,          Quote  );
+        p(char const*,      RawData);
         p(Array<char const>, ToArray);
-        p(char const*, RawData);
 
         bool         const BeginsWith (String const &target, int start = 0)const;
         bool          const Contains   (char const &target, int start = 0)const;

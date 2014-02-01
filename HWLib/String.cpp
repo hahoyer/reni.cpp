@@ -55,6 +55,13 @@ p_implementation(String, char const*, RawData)
     return _data.c_str();
 }
 
+p_implementation(String, String, Quote)
+{
+    return "\"" 
+        + Replace("\\", "\\\\").Replace("\"", "\\\"") 
+        + "\"";
+}
+
 bool const String::operator== (String const& other)const{ return _data == (other._data); }
 
 String const String::operator+ (String const& other)const
