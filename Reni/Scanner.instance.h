@@ -47,4 +47,14 @@ Scanner<TScanner, TTokenFactory, TToken>
     auto part = _position.Span(count);
     _position += count;
     return TToken(tokenClass, part);
+};
+
+
+template <typename TScanner, typename TTokenFactory, typename TToken>
+String const
+Scanner<TScanner, TTokenFactory, TToken>
+::get_Dump()const
+{
+    return vardump(_position);
 }
+

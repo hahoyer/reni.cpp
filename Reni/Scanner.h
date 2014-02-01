@@ -5,7 +5,7 @@
 namespace Reni
 {
     template <typename TScanner, typename TTokenFactory, typename TToken>
-    class Scanner final: public Enumerable<TToken>::Iterator
+    class Scanner final: public Enumerable<TToken>::Iterator, public DumpableObject
     {
         using thisType = Scanner;
         using baseType = typename Enumerable<TToken>::Iterator;
@@ -27,7 +27,7 @@ namespace Reni
 
     private:
         TToken const Step(int count, typename TTokenFactory::Class const& tokenClass);
-
+        virtual p_function(String, Dump)override;
     };
 
 }
