@@ -38,7 +38,7 @@ namespace HWLib
 
         p(Array<T>, ToArray);
 
-        class Iterator // It's a one-time-access-forward-read-only-clonable iterator
+        class Iterator // It's a one-time-access-forward-read-only iterator
         {
         public:
             virtual ~Iterator(){};
