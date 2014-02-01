@@ -5,6 +5,7 @@
 #include "BreakHandling.h"
 #include "Common.h"
 #include "Enumerable.h"
+#include <initializer_list>
 
 namespace HWLib
 {
@@ -35,9 +36,17 @@ namespace HWLib
                 new (data + index) T(creator(index));
         }
 
-        Array(Array<T> const&other)
-            : thisType(other.Count, [&](int index){return other[index]; })
+        Array(std::initializer_list<T> const&other)
+            : _count(other.size())
+            , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {
+            auto data = const_cast<remove_const<T>::type*>(_data);
+            auto index = 0;
+            for (auto element: other)
+            {
+                new (data + index) T(element); 
+                index++;
+            }
         }
 
         ~Array()
