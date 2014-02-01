@@ -46,7 +46,7 @@ namespace HWLib
     };
 
     template<typename T>
-    inline p_mutator_imlementation(ValueCache<T>, bool, IsValid)
+    inline p_mutator_implementation(ValueCache<T>, bool, IsValid)
     {
         if (value)
             Ensure();

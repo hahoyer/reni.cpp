@@ -40,7 +40,7 @@ p_implementation(File, String, Name)
     return _internal->_name;
 }
 
-p_mutator_imlementation(File, String, Name)
+p_mutator_implementation(File, String, Name)
 {
     if (Name == value)
         return;
@@ -85,7 +85,7 @@ String const FormatErrorMessage()
     return Buffer;
 };
 
-p_mutator_imlementation(File, String, Data)
+p_mutator_implementation(File, String, Data)
 {
     auto Count = value.Count;
 
