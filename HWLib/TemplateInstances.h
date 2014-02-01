@@ -196,10 +196,7 @@ TResult const Enumerable<T>::Aggregate(TResult start, function<TResult(TResult, 
 template<typename T>
 typename Enumerable<T>::StandardIterator const Enumerable<T>::end()const
 {
-    return StandardIterator(&EndPosition::Instance);
+    return StandardIterator();
 }
-
-template<typename T>
-typename Enumerable<T>::EndPosition Enumerable<T>::EndPosition::Instance;
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

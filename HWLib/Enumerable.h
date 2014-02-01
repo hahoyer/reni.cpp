@@ -41,37 +41,30 @@ namespace HWLib
         class Iterator
         {
         public:
+            virtual ~Iterator(){};
             virtual_p(bool, IsValid) = 0;
             virtual void operator++(int) = 0;
             virtual T const operator*()const = 0;
             virtual_p(Ref<Iterator>, Clone) = 0;
         };
 
-        class EndPosition final : public Iterator
-        {
-        public:
-            static EndPosition Instance;
-
-            p_function(bool, IsValid) override{ return false; }
-            p_function(Ref<Iterator>, Clone) override{ return &Instance; }
-            void operator++(int) override{}
-            T const operator*()const override{ throw *this; }
-        };
-
         class StandardIterator
         {
-            Ref<Iterator> _data;
+            OptRef<Iterator> _data;
         public:
             StandardIterator(Ref<Iterator> data)
                 : _data(data)
             {
             }
+            StandardIterator(){}
 
-            StandardIterator& operator++() { (*_data)++; return *this; };
-            T const operator *()const { return **_data; }
-            bool operator !=(StandardIterator other)
+            virtual ~StandardIterator(){}
+
+            void operator++() { assert(_data.IsValid); (*_data)++; };
+            T const operator *()const { assert(_data.IsValid); return **_data; }
+            bool operator !=(StandardIterator other)const
             {
-                assert(&*_data == &EndPosition::Instance);
+                assert(!other._data.IsValid);
                 return _data->IsValid;
             }
 
