@@ -13,7 +13,7 @@ public:
 
     internal(String const&fileName)
         : _fileName(fileName)
-        , sourceCache([&]{return _fileName; })
+        , sourceCache([&]{return Source::FromFile(_fileName); })
         , scannerCache([&]{return Scanner(sourceCache.Value, tokenFactory); })
     {
     }
