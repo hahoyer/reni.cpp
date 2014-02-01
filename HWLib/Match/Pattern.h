@@ -81,7 +81,7 @@ namespace HWLib
         template<typename T>
         class ErrorMatch final : public IPattern 
         {
-            T const& _value;
+            T const _value;
         public:
             ErrorMatch(T const&value) : _value(value) {}
         private:
