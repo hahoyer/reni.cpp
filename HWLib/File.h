@@ -7,7 +7,7 @@ namespace HWLib
 {
     class String;
 
-    class File
+    class File final
     {
         class internal;
         Ref<internal> _internal;

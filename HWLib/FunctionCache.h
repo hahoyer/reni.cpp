@@ -11,7 +11,7 @@ using std::map;
 namespace HWLib
 {
     template <typename TKey, typename TValue>
-    class FunctionCache
+    class FunctionCache final
     {
         using thisType = FunctionCache;
         function<TValue(TKey)> const _createValue;

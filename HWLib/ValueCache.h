@@ -5,7 +5,7 @@
 namespace HWLib
 {
     template<typename T>
-    class ValueCache
+    class ValueCache final
     {
         mutable OptRef<T> _value;
         function<T()> const _getValue;

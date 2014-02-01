@@ -48,7 +48,7 @@ namespace HWLib
             virtual_p(Ref<Iterator>, Clone) = 0;
         };
 
-        class StandardIterator
+        class StandardIterator final
         {
             OptRef<Iterator> _data;
         public:

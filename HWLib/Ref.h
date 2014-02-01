@@ -29,7 +29,7 @@ namespace HWLib
     };
 
     template<typename T>
-    class OptRef : public Ref<T>
+    class OptRef final : public Ref<T>
     {
         using thisType = OptRef<T>;
         using baseType = Ref<T>;
@@ -51,17 +51,17 @@ namespace HWLib
     };
 
     template<typename T>
-    class Constants{};
+    class Constants final{};
 
     template<>
-    class Constants<int>
+    class Constants <int>
     {
     public:
         static int const NotValid = 0x80000000;
     };
 
     template<typename T>
-    class Optional
+    class Optional final
     {
         using thisType = Optional;
 

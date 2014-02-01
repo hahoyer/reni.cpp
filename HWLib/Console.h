@@ -4,7 +4,7 @@ namespace HWLib
 {
     class String;
 
-    class Console
+    class Console  final
     {
         bool _isLineStart;
     public:

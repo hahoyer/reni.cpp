@@ -10,7 +10,7 @@ namespace HWLib
 {
     template<typename T> class Optional;
 
-    class String
+    class String final
     {
         using thisType = String;
         std::string const _data;

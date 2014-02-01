@@ -11,9 +11,9 @@ namespace HWLib
     {
         mutable std::string _dumpString;
     public:
-        DumpableObject(){ _dumpString = "<not set>"; }
         virtual_p(String, Dump) = 0;
     protected:
+        DumpableObject(){ _dumpString = "<not set>"; }
         void SetDumpString();
     };
 }
