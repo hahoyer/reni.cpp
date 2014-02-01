@@ -73,9 +73,7 @@ namespace HWLib
             }
 
             p_function(bool, IsValid) override{ return _index >= 0 && _index < _parent.Count; }
-            void operator++(int) override{ _index++; }
-            T const operator*()const override{ return _parent[_index]; }
-            p_function(Ref<Iterator>, Clone) override{ return new thisType(*this); }
+            T const Step() override{return _parent[_index++]; }
 
             void operator=(LocalIterator const&) = delete;
         };

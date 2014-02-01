@@ -38,30 +38,45 @@ namespace HWLib
 
         p(Array<T>, ToArray);
 
-        class Iterator
+        class Iterator // It's a one-time-access-forward-read-only-clonable iterator
         {
         public:
             virtual ~Iterator(){};
             virtual_p(bool, IsValid) = 0;
-            virtual void operator++(int) = 0;
-            virtual T const operator*()const = 0;
-            virtual_p(Ref<Iterator>, Clone) = 0;
+            virtual T const Step() = 0;
+            Array<T> const ToArray();
         };
 
         class StandardIterator final
         {
             OptRef<Iterator> _data;
+            mutable bool _hasBeenAccessed;
+
         public:
             StandardIterator(Ref<Iterator> data)
                 : _data(data)
+                , _hasBeenAccessed(false)
             {
             }
             StandardIterator(){}
 
             virtual ~StandardIterator(){}
 
-            void operator++() { assert(_data.IsValid); (*_data)++; };
-            T const operator *()const { assert(_data.IsValid); return **_data; }
+            void operator++() 
+            {
+                if (_hasBeenAccessed)
+                    _hasBeenAccessed = false;
+                else
+                    _data->Step();
+            };
+            
+            T const operator *()const 
+            { 
+                assert(!_hasBeenAccessed);
+                _hasBeenAccessed = true;
+                return const_cast<StandardIterator&>(*this)._data->Step();
+            }
+            
             bool operator !=(StandardIterator other)const
             {
                 assert(!other._data.IsValid);

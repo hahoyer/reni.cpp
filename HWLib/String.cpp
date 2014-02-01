@@ -148,23 +148,14 @@ protected:
         return _index + _delimiter.Count <= _parent.Count; 
     }
     
-    p_function(Ref<Iterator>, Clone) override{ return new thisType(*this); }
-
-    void operator++(int) override
+    String const Step() override
     {
-        auto newEnd = _parent.Find(_delimiter, _index);
-        if (newEnd.IsValid)
-            _index = newEnd + _delimiter.Count;
-        else
-            _index = _parent.Count;
-    }
-    
-    String const operator*()const override
-    {
-        auto newEnd = _parent.Find(_delimiter, _index);
-        if (newEnd.IsValid)
-            return _parent.Part(_index, newEnd - _index);
-        return _parent.Part(_index);
+        auto start = _index;
+        auto newEnd = _parent.Find(_delimiter, start);
+        if (!newEnd.IsValid)
+            newEnd = _parent.Count;
+        _index = newEnd + _delimiter.Count;
+        return _parent.Part(start, newEnd - start);
     }
 
 };

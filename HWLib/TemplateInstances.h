@@ -27,16 +27,14 @@ public:
     {
         while (count > 0 && _parent->IsValid)
         {
-            (*_parent)++;
+            _parent->Step();
             --count;
         }
     }
 
 protected:
     p_function(bool, IsValid) override{ return _parent->IsValid; }
-    void operator++(int) override{ (*_parent)++;}
-    T const operator*()const override{ return **_parent; }
-    p_function(Ref<Iterator>, Clone) override{ return _parent->Clone; }
+    T const Step()override{ return _parent->Step(); }
 };
 
 
@@ -60,9 +58,7 @@ public:
     }
 protected:
     p_function(bool, IsValid) override{ return _count > 0 && _parent->IsValid; }
-    void operator++(int) override{ --_count; (*_parent)++; }
-    T const operator*()const override{ return **_parent; }
-    p_function(Ref<Iterator>, Clone) override{ return new thisType(*this); }
+    T const Step()override{ --_count; return _parent->Step(); }
 };
 
 
@@ -150,10 +146,15 @@ Ref<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)const
 template<typename T>
 inline p_implementation(Enumerable<T>, Array<T>, ToArray)
 {
+    return ToIterator->ToArray();
+}
+
+template<typename T>
+inline Array<T> const Enumerable<T>::Iterator::ToArray()
+{
     auto result = std::vector<T>();
-    auto i = ToIterator;
-    for (; i->IsValid; (*i)++)
-        result.push_back(**i);
+    while (IsValid)
+        result.push_back(Step());
     return Array<T>(result.size(), [=](int i){return result[i]; });
 
 }
