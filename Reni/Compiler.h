@@ -4,7 +4,7 @@ using namespace HWLib::Match;
 
 namespace Reni
 {
-    class Compiler
+    class Compiler final
     {
         class internal;
         Ref<internal> _internal;

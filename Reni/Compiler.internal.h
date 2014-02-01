@@ -3,7 +3,7 @@
 
 using namespace Reni;
 
-class Compiler::internal
+class Compiler::internal final
 {
     String const _fileName;
 public:

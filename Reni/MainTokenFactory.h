@@ -2,7 +2,7 @@
 
 namespace Reni
 {
-    struct MainTokenFactory
+    struct MainTokenFactory final
     {
         class Class{};
     private:
@@ -16,7 +16,7 @@ namespace Reni
         Class const& Error(String const&name)const;
     };
 
-    struct Token
+    struct Token final
     {
         MainTokenFactory::Class const&Class;
         SourcePart const Part;

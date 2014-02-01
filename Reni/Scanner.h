@@ -5,7 +5,7 @@
 namespace Reni
 {
     template <typename TScanner, typename TTokenFactory, typename TToken>
-    class Scanner
+    class Scanner final
     {
         SourcePosition _position;
         TTokenFactory const& _factory;

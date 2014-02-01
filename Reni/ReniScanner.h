@@ -2,7 +2,7 @@
 
 namespace Reni
 {
-    class ReniScanner
+    class ReniScanner final
     {
         class internal;
         Ref<internal const> const _internal;
@@ -15,7 +15,7 @@ namespace Reni
         static Optional<int> const Text(SourcePosition const&position);
         static Optional<int> const Any(SourcePosition const&position);
 
-        class Error
+        class Error final
         {
         public:
             Error(int const count, String const& id)
