@@ -15,12 +15,14 @@ namespace HWLib
     class Enumerable
     {
         using thisType = Enumerable<T>;
-
     public:
         template<typename TResult>
-        TResult            const Aggregate(function<TResult(TResult, T)> selector)const{ return Aggregate(TResult(), selector); }
+        using AggregateFunction = function<TResult const(TResult, T)>;
+
         template<typename TResult>
-        TResult             const Aggregate     (TResult start, function<TResult(TResult, T)> selector)const;
+        TResult            const Aggregate     (TResult start, AggregateFunction<TResult> selector)const;
+        template<typename TResult>
+        TResult             const Aggregate     (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
         T                    const First         (function<bool(T)> selector = [](T){return true; })const;
         OptRef<T>             const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
         int                    const Count       (function<bool(T)> selector = [](T){return true; })const;

@@ -187,7 +187,7 @@ inline int const Enumerable<T>::Count(function<bool(T)> selector)const
 
 template<typename T>
 template<typename TResult>
-TResult const Enumerable<T>::Aggregate(TResult start, function<TResult(TResult, T)> selector)const
+TResult const Enumerable<T>::Aggregate(TResult start, AggregateFunction<TResult> selector)const
 {
     auto result = start;
     for (auto element : *this)
