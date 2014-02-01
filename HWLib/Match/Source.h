@@ -11,15 +11,18 @@ namespace HWLib
     {
         class SourcePosition;
 
-        class Source final : DumpableObject
+        class Source final : public DumpableObject
         {
             using thisType = Source;
+            String const _text;
             String const _fileName;
             ValueCache<String> const _textCache;
 
+            Source(String const& fileName, String const& text);
         public:
-            Source(String const& fileName);
             Source(Source const& other);
+            static Source const FromFile(String const& fileName);
+            static Source const FromText(String const& text);
 
             virtual ~Source(){};
 
@@ -42,6 +45,3 @@ namespace HWLib
 
     }
 }
-
-template<>
-String const HWLib::DumpToString<HWLib::Match::Source>(HWLib::Match::Source const&target);

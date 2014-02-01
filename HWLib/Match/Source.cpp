@@ -6,14 +6,27 @@
 
 using namespace HWLib::Match;
 
-Source::Source(String const& fileName)
+Source::Source(String const& fileName, String const&text)
 : _fileName(fileName)
-, _textCache([&]{return HWLib::File(_fileName).Data; })
-{}
+, _text(text)
+, _textCache([&]{return _fileName=="" ? _text:HWLib::File(_fileName).Data; })
+{
+}
+
+
+Source const Source::FromFile(String const& fileName)
+{
+    return Source(fileName,"");
+}
+
+Source const Source::FromText(String const& text)
+{
+    return Source("", text);
+}
 
 
 Source::Source(Source const& other)
-: Source(other._fileName)
+: Source(other._fileName, other._text)
 {}
 
 
