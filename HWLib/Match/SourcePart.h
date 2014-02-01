@@ -8,7 +8,7 @@ namespace HWLib
     {
         class Source;
 
-        class SourcePart
+        class SourcePart: DumpableObject
         {
             Ref<Source const> const _source;
             int const _position;
@@ -18,9 +18,16 @@ namespace HWLib
                 : _source(source)
                 , _position(position)
                 , _count(count)
-            {};
+            {
+                SetDumpString();
+            };
 
             operator String const()const;
+        private:
+            virtual p_function(String, Dump)override;
+            p(String, DumpCurrent);
+            p(String, DumpAfterCurrent);
+            p(String, DumpBeforeCurrent);
         };
     }
 }

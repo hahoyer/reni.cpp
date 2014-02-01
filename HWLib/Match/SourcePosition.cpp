@@ -41,10 +41,6 @@ bool const SourcePosition::BeginsWith(String value)const
     return _source->BeginsWith(_position, value);
 }
 
-
-SourcePart::operator String const()const{ return _source->Part(_position, _count); }
-
-
 p_implementation(SourcePosition, String, DumpCurrent)
 {
     return IsEnd ? String() : String(First);
@@ -72,9 +68,44 @@ p_implementation(SourcePosition, String, DumpBeforeCurrent)
     return result;
 }
 
-
 p_implementation(SourcePosition, String, Dump)
 {
     return (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent)
         .Quote;
 }
+
+//////////////////////////////////////
+
+SourcePart::operator String const()const{ return _source->Part(_position, _count); }
+
+p_implementation(SourcePart, String, DumpCurrent)
+{
+    return *this;
+}
+
+p_implementation(SourcePart, String, DumpAfterCurrent)
+{
+    if (_source->IsEnd(_position+_count))
+        return "";
+    auto length = min(DumpWidth, _source->Count - _position - _count);
+    auto result = _source->Part(_position + _count, length);
+    if (length == DumpWidth)
+        result += "...";
+    return result;
+}
+
+p_implementation(SourcePart, String, DumpBeforeCurrent)
+{
+    auto start = max(0, _position - DumpWidth);
+    auto result = _source->Part(start, _position - start);
+    if (_position >= DumpWidth)
+        result = "..." + result;
+    return result;
+}
+
+p_implementation(SourcePart, String, Dump)
+{
+    return (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent)
+        .Quote;
+}
+
