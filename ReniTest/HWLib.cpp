@@ -43,12 +43,34 @@ namespace _String
 
     }
 
+    void Stringify()
+    {
+        String a = "A B C";
+        auto split = a.Split(" ")->ToArray;
+        assertx(split.Count == 3, vardump(split.Count));
+
+        auto b = split.Stringify(".");
+        assert(b == "A.B.C");
+
+    }
+
+    void Replace()
+    {
+        String a = "A B C";
+        auto b = a.Replace(" ", ".");
+        assertx(b.Count == a.Count, vardump(b.Count));
+        assert(b == "A.B.C");
+
+    }
+
     void RunAll()
     {
         Part();
         Find();
         Plus();
         Split();
+        Stringify();
+        Replace();
         WriteHallo();
     }
 }
