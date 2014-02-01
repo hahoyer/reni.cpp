@@ -19,7 +19,7 @@ namespace Reni
     struct Token
     {
         MainTokenFactory::Class const&Class;
-        SourcePart const& Part;
+        SourcePart const Part;
 
         Token(MainTokenFactory::Class const&class_, SourcePart const& part)
             : Class(class_)
