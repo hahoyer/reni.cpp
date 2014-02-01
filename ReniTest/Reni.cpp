@@ -4,17 +4,13 @@
 using namespace _Reni;
 using namespace Reni;
 
-void SimpleFile()
+namespace _Compiler
 {
-    Compiler c = __FILE__;
-    auto s = c.source;
-    auto t = s->Text;
-    assertx(t.Part(0, 8) == "#include", t);
-};
-
+    void RunAll();
+}
 
 void _Reni::RunAll()
 {
-    SimpleFile();
-    Split();
+    _Compiler::RunAll();
+
 }

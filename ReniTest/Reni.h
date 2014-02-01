@@ -2,6 +2,5 @@
 
 namespace _Reni
 {
-    void Split();
     void RunAll();
 }
