@@ -36,7 +36,7 @@ namespace HWLib
             {}
         };
 
-        class Pattern
+        class Pattern final
         {
             using thisType = Pattern;
             Ref<IPattern const> const _value;
@@ -44,7 +44,7 @@ namespace HWLib
             Pattern(IPattern const* value)
                 : _value(value)
             {}
-            
+
             virtual ~Pattern(){};
 
             DefaultAssignmentOperator;
