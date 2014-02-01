@@ -15,6 +15,7 @@ namespace HWLib
         class IPattern
         {
         public:
+            virtual ~IPattern(){};
             virtual r Match(SourcePosition const&position)const = 0;
         };
 
@@ -43,6 +44,8 @@ namespace HWLib
             Pattern(IPattern const* value)
                 : _value(value)
             {}
+            
+            virtual ~Pattern(){};
 
             DefaultAssignmentOperator;
 

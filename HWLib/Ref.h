@@ -19,6 +19,7 @@ namespace HWLib
         Ref(T *value) :_value(value){}
         Ref(T & value) :_value(new T(value)){}
         Ref(Ref<T> const&value) :_value(value._value){}
+        virtual ~Ref(){};
         DefaultAssignmentOperator;
 
         T const& operator*()const { return _value.operator*(); };
@@ -38,6 +39,7 @@ namespace HWLib
         OptRef(T &value) :baseType(value){}
         OptRef(Ref<T> const&other) :baseType(other){}
         OptRef(OptRef<T> const&other) :baseType(other){}
+        virtual ~OptRef(){};
 
         p(bool, IsValid){ return !!_value.get(); }
         DefaultAssignmentOperator;

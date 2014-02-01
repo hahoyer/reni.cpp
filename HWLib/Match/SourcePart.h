@@ -8,7 +8,6 @@ namespace HWLib
     {
         class Source;
 
-
         class SourcePart
         {
             Ref<Source const> const _source;
@@ -23,6 +22,5 @@ namespace HWLib
 
             operator String const()const;
         };
-
     }
 }
