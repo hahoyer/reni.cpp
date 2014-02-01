@@ -30,6 +30,7 @@ struct ReniScanner::internal
         auto invalidLineComment = Match::Error(String("EOFInLineComment"));
         auto invalidComment = Match::Error(String("EOFInComment"));
         auto invalidTextEnd = Match::Error(String("invalidTextEnd"));
+        auto invalidCharacter = Match::Error(String("invalidCharacter"));
         auto alpha = Letter.Else("_");
         auto symbol1 = AnyChar("({[)}];,");
         auto textFrame = AnyChar("'\"");
@@ -42,11 +43,14 @@ struct ReniScanner::internal
         auto any = symbol1.Else(identifier);
 
         auto whiteSpaces = Match::WhiteSpace
-            .Else("#" + AnyChar(" \t") + LineEnd.Find)
-            .Else("#(" + Match::WhiteSpace + (Match::WhiteSpace + ")#").Find)
-            .Else("#(" + any.Value([](String id){return (Match::WhiteSpace + id + ")#").Find; }))
-            .Else("#(" + End.Find + invalidComment)
-            .Else("#" + End.Find + invalidLineComment)
+            .Else("#"
+                + ("#" + AnyChar("\n\r").Find)
+                  .Else("(" + Match::WhiteSpace + (Match::WhiteSpace + ")#").Find)
+                  .Else("(" + any.Value([](String id){return (Match::WhiteSpace + id + ")#").Find; }))
+                  .Else("(" + End.Find + invalidComment)
+                  .Else("#" + End.Find + invalidLineComment)
+                  .Else(invalidCharacter)
+                  )
             .Repeat();
 
         auto number = Digit.Repeat(1);
