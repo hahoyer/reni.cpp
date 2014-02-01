@@ -8,7 +8,7 @@ namespace HWLib
     {
         class Source;
 
-        class SourcePart final : DumpableObject
+        class SourcePart final : public DumpableObject
         {
             Ref<Source const> const _source;
             int const _position;

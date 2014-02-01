@@ -16,4 +16,5 @@ namespace HWLib
         DumpableObject(){ _dumpString = "<not set>"; }
         void SetDumpString();
     };
+
 }
