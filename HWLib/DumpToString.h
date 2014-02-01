@@ -3,13 +3,11 @@
 namespace HWLib
 {
     class String;
+    class DumpableObject;
 
-    template<typename T>
-    String const DumpToString(T const&target);
-    template<typename T>
-    String const DumpToString(T const&target, int radix);
-    template<>
-    String const DumpToString<int>(int const&target);
+    String const DumpToString(DumpableObject const&target);
+    String const DumpToString(int const&target);
+    String const DumpToString(String const&target);
 
 }
     

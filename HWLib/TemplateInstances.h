@@ -2,19 +2,20 @@
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "DumpToString.h"
+#include "DumpableObject.h"
 #include "Ref.h"
 #include <vector>
 
 using namespace HWLib;
 
-template<typename T>
-String const HWLib::DumpToString(T const&) { return String(typeid(T).name()); }
-template<typename T>
-String const HWLib::DumpToString(T const&target, int radix) = delete;
+inline String const HWLib::DumpToString(DumpableObject const&target){ return target.Dump; };
+inline String const HWLib::DumpToString(int const&target) { return String::Convert(target); }
+inline String const HWLib::DumpToString(String const&target){ return target.Quote; };
+
 template<typename T>
 String const Box_<T>::DumpToString()const{ return HWLib::DumpToString(_data); }
-template<>
-inline String const HWLib::DumpToString<int>(int const&target) { return String::Convert(target); }
+
+
 
 
 template<typename T>
