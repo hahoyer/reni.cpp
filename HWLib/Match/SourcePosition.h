@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Ref.h"
-#include "../Object.h"
+#include "../DumpableObject.h"
 
 namespace HWLib
 {
@@ -10,7 +10,7 @@ namespace HWLib
         class Source;
         class SourcePart;
 
-        class SourcePosition: Object
+        class SourcePosition: DumpableObject
         {
             Ref<Source const> const _source;
             int _position;
@@ -56,7 +56,6 @@ namespace HWLib
             p(String, DumpCurrent);
             p(String, DumpAfterCurrent);
             p(String, DumpBeforeCurrent);
-
         };
     }
 }

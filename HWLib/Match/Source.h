@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Object.h"
+#include "../DumpableObject.h"
 #include "../String.h"
 #include "../ValueCache.h"
 #include "../DumpToString.h"
@@ -11,7 +11,7 @@ namespace HWLib
     {
         class SourcePosition;
 
-        class Source  : Object
+        class Source  : DumpableObject
         {
             using thisType = Source;
             String const _fileName;

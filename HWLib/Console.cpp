@@ -5,7 +5,7 @@
 #include "Common.h"
 #include "File.h"
 #include "String.h"
-#include "Object.h"
+#include "DumpableObject.h"
 
 using namespace HWLib;
 
@@ -47,7 +47,7 @@ void Console::FunctionTrace(String const&function)
 };
   
 
-void Object::SetDumpString()
+void DumpableObject::SetDumpString()
 {
     if (::IsDebuggerPresent())
         _dumpString = Dump.RawData;

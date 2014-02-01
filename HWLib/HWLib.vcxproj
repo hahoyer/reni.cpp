@@ -22,7 +22,7 @@
     <ClInclude Include="Match\SourcePart.h" />
     <ClInclude Include="Match\SourcePosition.h" />
     <ClInclude Include="TemplateInstances.h" />
-    <ClInclude Include="Object.h" />
+    <ClInclude Include="DumpableObject.h" />
     <ClInclude Include="PlacementNew.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="Ref.h" />

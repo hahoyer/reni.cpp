@@ -7,11 +7,11 @@ namespace HWLib
 {
     class String;
 
-    class Object
+    class DumpableObject
     {
         mutable std::string _dumpString;
     public:
-        Object(){ _dumpString = ""; }
+        DumpableObject(){ _dumpString = "<not set>"; }
         virtual_p(String, Dump) = 0;
     protected:
         void SetDumpString();
