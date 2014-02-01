@@ -4,6 +4,17 @@
 using namespace ::HWLib;
 using namespace _HWLib;
 
+namespace _File
+{
+    void RunAll()
+    {
+        Compiler c = __FILE__;
+        auto s = c.source;
+        auto t = s->Text;
+        assertx(t.Part(0, 8) == "#include", t);
+    };
+}
+
 namespace _String
 {
     void WriteHallo()
@@ -163,6 +174,7 @@ void _HWLib::RunAll()
     _Array::RunAll();
     _Ref::RunAll();
     _ValueCache::RunAll();
+    _File::RunAll();
 }
 
 void _HWLib::RunSpecial()
