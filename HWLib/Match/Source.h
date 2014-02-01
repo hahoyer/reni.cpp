@@ -11,7 +11,7 @@ namespace HWLib
     {
         class SourcePosition;
 
-        class Source  : DumpableObject
+        class Source final : DumpableObject
         {
             using thisType = Source;
             String const _fileName;

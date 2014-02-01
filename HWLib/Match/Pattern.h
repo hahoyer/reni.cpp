@@ -14,18 +14,20 @@ namespace HWLib
 
         class IPattern
         {
+        protected:
+            IPattern(){};
         public:
-            virtual ~IPattern(){};
             virtual r Match(SourcePosition const&position)const = 0;
+            virtual ~IPattern(){};
         };
 
-        class EndPattern : public IPattern
+        class EndPattern final : public IPattern
         {
             virtual r Match(SourcePosition const&position)const override;
         };
 
         template<typename T>
-        class Exception
+        class Exception final
         {
         public:
             SourcePosition const Position;
@@ -77,7 +79,7 @@ namespace HWLib
         pr LineEnd = AnyChar("\n\r").Else(End);
 
         template<typename T>
-        class ErrorMatch : public IPattern 
+        class ErrorMatch final : public IPattern 
         {
             T const& _value;
         public:

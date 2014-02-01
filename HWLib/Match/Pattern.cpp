@@ -11,7 +11,7 @@ r EndPattern::Match(SourcePosition const&position)const
     return position.End;
 };
 
-class FindMatcher : public IPattern 
+class FindMatcher final: public IPattern 
 {
     Ref<IPattern const> const _value;
 public:
@@ -33,7 +33,7 @@ private:
 
 p_implementation(Pattern, pr, Find){ return new FindMatcher(_value); };
 
-class ElseMatcher : public IPattern 
+class ElseMatcher final : public IPattern
 {
     Ref<IPattern  const> const _left;
     Ref<IPattern  const> const _right;
@@ -53,7 +53,7 @@ private:
 pr Pattern::Else(Pattern const& right)const{ return new ElseMatcher(_value, right._value); }
 pr Pattern::Else(String right)const{ return Else(Box(right)); }
 
-class RepeatMatch : public IPattern 
+class RepeatMatch final : public IPattern
 {
     Ref<IPattern  const> const _data;
     int  const _minCount;
@@ -91,7 +91,7 @@ private:
 
 pr Pattern::Repeat(int minCount, Optional<int> maxCount)const{ return new RepeatMatch(_value, minCount, maxCount); }
 
-class ValueMatch : public IPattern 
+class ValueMatch final : public IPattern
 {
     Ref<IPattern  const> const _data;
     function<pr(String)> _func;
@@ -115,7 +115,7 @@ public:
 
 pr Pattern::Value(function<pr(String)> func)const{ return new ValueMatch(_value, func); }
 
-class SequenceMatch : public IPattern 
+class SequenceMatch final : public IPattern
 {
     Ref<IPattern  const> const _left;
     Ref<IPattern  const> const _right;
@@ -143,7 +143,7 @@ pr Pattern::operator+ (Pattern right)const{ return new SequenceMatch(_value, rig
 pr Pattern::operator+(String right)const{ return *this + Box(right); };
 pr HWLib::Match::operator+(String left, Pattern right){ return Box(left) + right; };
 
-class CharMatch : public IPattern 
+class CharMatch final : public IPattern
 {
     String const _value;
 public:
@@ -158,7 +158,7 @@ private:
 
 pr HWLib::Match::Box(String value){ return new CharMatch(value); };
 
-class FunctionalMatch : public IPattern 
+class FunctionalMatch final : public IPattern
 {
     function<bool(char)> const _func;
     bool const _isTrue;
@@ -177,7 +177,7 @@ private:
 
 pr HWLib::Match::Box(function<bool(char)> value){ return new FunctionalMatch(value, true); };
 
-class AnyCharMatch : public IPattern 
+class AnyCharMatch final : public IPattern
 {
     String const _value;
 public:
