@@ -3,7 +3,7 @@
 using namespace Reni;
 
 template <typename TScanner, typename TTokenFactory, typename TToken>
-Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::Step()
+TToken const Scanner<TScanner, TTokenFactory, TToken>::Step()
 {
     try
     {
@@ -11,7 +11,10 @@ Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::Step()
 
         auto count = _position.End;
         if (count.IsValid)
+        {
+            _endTokenReturned = true;
             return Step(count, _factory.EndOfText);
+        }
 
         count = TScanner::Number(_position);
         if (count.IsValid)
@@ -27,7 +30,7 @@ Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::Step()
 
         mdump();
         assert_fail;
-        errorabort(Ref<TToken>);
+        errorabort(TToken const&);
     }
     catch (TScanner::Error const& error)
     {
@@ -37,11 +40,11 @@ Ref<TToken> const Scanner<TScanner, TTokenFactory, TToken>::Step()
 
 
 template <typename TScanner, typename TTokenFactory, typename TToken>
-Ref<TToken> const
+TToken const
 Scanner<TScanner, TTokenFactory, TToken>
 ::Step(int count, typename TTokenFactory::Class const& tokenClass)
 {
     auto part = _position.Span(count);
     _position += count;
-    return new TToken(tokenClass, part);
+    return TToken(tokenClass, part);
 }

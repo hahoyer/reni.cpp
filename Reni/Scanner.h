@@ -5,19 +5,28 @@
 namespace Reni
 {
     template <typename TScanner, typename TTokenFactory, typename TToken>
-    class Scanner final
+    class Scanner final: public Enumerable<TToken>::Iterator
     {
+        using thisType = Scanner;
+        using baseType = typename Enumerable<TToken>::Iterator;
+
         SourcePosition _position;
+        bool _endTokenReturned;
         TTokenFactory const& _factory;
     public: 
         Scanner(Ref<Source const> source, TTokenFactory const&factory)
             : _position(source)
             , _factory(factory)
+            , _endTokenReturned(false)
         {}
 
-        Ref<TToken> const Step();
+        DefaultAssignmentOperator;
+
+        p_function(bool, IsValid) override{ return !_endTokenReturned; }
+        TToken const Step() override;
+
     private:
-        Ref<TToken> const Step(int count, typename TTokenFactory::Class const& tokenClass);
+        TToken const Step(int count, typename TTokenFactory::Class const& tokenClass);
 
     };
 
