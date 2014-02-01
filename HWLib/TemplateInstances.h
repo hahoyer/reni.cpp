@@ -195,9 +195,9 @@ TResult const Enumerable<T>::Aggregate(TResult start, function<TResult(TResult, 
 }
 
 template<typename T>
-typename Enumerable<T>::StandardIterator const Enumerable<T>::end()const
+typename Enumerable<T>::RangeBasedForLoopSimulator const Enumerable<T>::end()const
 {
-    return StandardIterator();
+    return RangeBasedForLoopSimulator();
 }
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

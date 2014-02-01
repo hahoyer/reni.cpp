@@ -47,20 +47,20 @@ namespace HWLib
             Array<T> const ToArray();
         };
 
-        class StandardIterator final
+        class RangeBasedForLoopSimulator final
         {
             OptRef<Iterator> _data;
             mutable bool _hasBeenAccessed;
 
         public:
-            StandardIterator(Ref<Iterator> data)
+            RangeBasedForLoopSimulator(Ref<Iterator> data)
                 : _data(data)
                 , _hasBeenAccessed(false)
             {
             }
-            StandardIterator(){}
+            RangeBasedForLoopSimulator(){}
 
-            virtual ~StandardIterator(){}
+            virtual ~RangeBasedForLoopSimulator(){}
 
             void operator++() 
             {
@@ -74,10 +74,10 @@ namespace HWLib
             { 
                 assert(!_hasBeenAccessed);
                 _hasBeenAccessed = true;
-                return const_cast<StandardIterator&>(*this)._data->Step();
+                return const_cast<RangeBasedForLoopSimulator&>(*this)._data->Step();
             }
             
-            bool operator !=(StandardIterator other)const
+            bool operator !=(RangeBasedForLoopSimulator other)const
             {
                 assert(!other._data.IsValid);
                 return _data->IsValid;
@@ -96,8 +96,8 @@ namespace HWLib
         p_definition(Ref<Iterator>, ToIterator);
         virtual mutable_p_function(Ref<Iterator>, ToIterator)const = 0;
 
-        StandardIterator const begin()const{ return ToIterator; }
-        StandardIterator const end()const;
+        RangeBasedForLoopSimulator const begin()const{ return ToIterator; }
+        RangeBasedForLoopSimulator const end()const;
 
     private:
         template <typename TLeft>
