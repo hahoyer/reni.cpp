@@ -22,6 +22,8 @@ namespace HWLib
                 SetDumpString();
             }
 
+            virtual ~SourcePosition(){};
+
             p(Optional<int>, End);
             p(bool, IsEnd);
             p(char, First);
@@ -50,7 +52,7 @@ namespace HWLib
 
             bool const BeginsWith(String value)const;
         private:
-            virtual p_function(std::string, Dump)override;
+            virtual p_function(String, Dump)override;
             p(String, DumpCurrent);
             p(String, DumpAfterCurrent);
             p(String, DumpBeforeCurrent);

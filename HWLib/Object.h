@@ -5,12 +5,14 @@
 
 namespace HWLib
 {
+    class String;
+
     class Object
     {
         mutable std::string _dumpString;
     public:
         Object(){ _dumpString = ""; }
-        virtual_p(std::string, Dump) = 0;
+        virtual_p(String, Dump) = 0;
     protected:
         void SetDumpString();
     };

@@ -83,5 +83,9 @@ bool const Source::BeginsWith(int position, String value)const
     return Text.BeginsWith(value, position);
 }
 
+p_implementation(Source, String, Dump)
+{
+    return FilePosition(0,"","");
+}
 
 #include "../TemplateInstances.h"

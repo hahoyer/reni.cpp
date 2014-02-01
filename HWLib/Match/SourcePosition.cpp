@@ -50,7 +50,7 @@ p_implementation(SourcePosition, String, DumpCurrent)
     return IsEnd ? String() : String(First);
 }
 
-const int DumpWidth = 10;
+const int DumpWidth = 100;
 
 p_implementation(SourcePosition, String, DumpAfterCurrent)
 {
@@ -73,9 +73,8 @@ p_implementation(SourcePosition, String, DumpBeforeCurrent)
 }
 
 
-p_implementation(SourcePosition, std::string, Dump)
+p_implementation(SourcePosition, String, Dump)
 {
-    return (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent).RawData;
+    return (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent)
+        .Quote;
 }
-
-
