@@ -55,10 +55,39 @@ p_implementation(String, char const*, RawData)
     return _data.c_str();
 }
 
+String const CharQuote(char const c)
+{
+    switch (c)
+    {
+    case '\\':
+        return "\\\\";
+    case '"':
+        return "\\\"";
+    case '\n':
+        return "\\n";
+    case '\t':
+        return "\\t";
+    case '\r':
+        return "\\r";
+    case '\f':
+        return "\\f";
+    }
+
+    static char const* hex = "0123456789ABCDEF";
+    if (c < 16)
+        return "\\0x0" + String(hex[c]);
+    return String(c);
+}
+
 p_implementation(String, String, Quote)
 {
-    return "\"" 
-        + Replace("\\", "\\\\").Replace("\"", "\\\"") 
+    return  
+        ToArray
+        .Aggregate<String>
+        (
+            "\"", 
+            [=](String head, char const next){return head + CharQuote(next); }
+        )
         + "\"";
 }
 
