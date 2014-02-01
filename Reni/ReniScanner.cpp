@@ -27,9 +27,9 @@ struct ReniScanner::internal
     
     static internal const*const Create()
     {
-        auto invalidLineComment = Match::Error("EOFInLineComment");
-        auto invalidComment = Match::Error("EOFInComment");
-        auto invalidTextEnd = Match::Error("invalidTextEnd");
+        auto invalidLineComment = Match::Error(String("EOFInLineComment"));
+        auto invalidComment = Match::Error(String("EOFInComment"));
+        auto invalidTextEnd = Match::Error(String("invalidTextEnd"));
         auto alpha = Letter.Else("_");
         auto symbol1 = AnyChar("({[)}];,");
         auto textFrame = AnyChar("'\"");
