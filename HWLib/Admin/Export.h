@@ -12,6 +12,7 @@
 #include "../Match/SourcePart.h"
 #include "../Match/SourcePosition.h"
 #include "../Ref.h"
+#include "../Stack.h"
 #include "../String.h"
 #include "../ValueCache.h"
 #include "../TemplateInstances.h"
