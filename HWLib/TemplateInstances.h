@@ -4,7 +4,7 @@
 #include "DumpToString.h"
 #include "DumpableObject.h"
 #include "Ref.h"
-#include <vector>
+#include <boost/numeric/ublas/vector.hpp>
 
 using namespace HWLib;
 
