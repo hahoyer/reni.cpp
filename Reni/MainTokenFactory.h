@@ -9,6 +9,7 @@ namespace Reni
         Class const _;
     public:
         MainTokenFactory();
+        Class const& BeginOfText;
         Class const& EndOfText;
         Class const& Number;
         Class const& Text;
@@ -25,6 +26,12 @@ namespace Reni
             : Class(class_)
             , Part(part)
         {}
+
+        p(String, Name);
+        p(bool, IsEnd);
+
+        template<typename T>
+        Ref<T const> const Create(OptRef<T const> const left, OptRef<T const> right)const;
     };
 
 }

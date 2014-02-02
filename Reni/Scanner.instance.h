@@ -7,6 +7,7 @@ TToken const Scanner<TScanner, TTokenFactory, TToken>::Step()
 {
     try
     {
+        static bool Trace = true;
         _position += TScanner::WhiteSpace(_position);
 
         auto count = _position.End;

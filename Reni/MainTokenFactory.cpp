@@ -8,6 +8,7 @@ MainTokenFactory::MainTokenFactory()
 : EndOfText(_)
 , Number(_)
 , Text(_)
+, BeginOfText(_)
 {}
 
 Class const& MainTokenFactory::TokenClass(String const&name)const

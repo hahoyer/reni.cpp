@@ -1,13 +1,11 @@
 #pragma once
 
 #include "PrioTable.h"
+#include "MainTokenFactory.h"
 
 
 namespace Reni
 {
-    template <typename T>
-    struct IPosition{};
-
     template <typename T>
     struct Item;
 
@@ -17,39 +15,43 @@ namespace Reni
         using thisType = OpenItem;
 
         OptRef<T const> const _left; 
-        Item<T> const _right;
+        Token const _token;
     public:
         OpenItem() = delete;
-        OpenItem(OptRef<T const> left, Item<T> right)
+        OpenItem(OptRef<T const> left, Token token)
             :_left(left)
-            , _right(right)
+            , _token(token)
         {}
 
         DefaultAssignmentOperator;
 
-        static OpenItem const StartItem(IPosition<T> current){ return OpenItem<T>(null, current); };
-        char const Relation(String newTokenName, PrioTable prioTable)const{ return prioTable.Relation(newTokenName, _right.Name); };
-        Ref<T const> const Create(OptRef<T const> args)const{ return _right.Create(_left, args); }
+        static OpenItem const StartItem(Token startToken){ return OpenItem<T>(null, startToken); };
+        char const Relation(String newTokenName, PrioTable prioTable)const{ return prioTable.Relation(newTokenName, _token.Name); };
+        Ref<T const> const Create(OptRef<T const> right)const{ return _token.Create(_left, right); }
     };
 
     template <typename T>
     struct Item
     {
         String const Name;
-        Item(IPosition<T> current);
+        Item(SourcePosition current);
 
         Ref<T const> const Create(OptRef<T const> const left, OptRef<T const> args)const;
         p(bool, IsEnd);
     };
 
     template <typename T>
-    struct PositionManager
+    class PositionManager
     {
-        IPosition<T> const StartItem;
+        Scanner<ReniScanner, MainTokenFactory, Token> _scanner;
+    public:
+        PositionManager(Ref<Source const> source, MainTokenFactory const&factory, Token const startToken)
+            : _scanner(source, factory)
+            , StartToken(startToken)
+        {};
 
-        PositionManager();
-
-        Item<T> const GetItemAndAdvance(Stack<OpenItem<T>>*stack);
+        Token const StartToken;
+        Token const Step(Stack<OpenItem<T>>*){ return _scanner.Step(); }
     };
 
 
@@ -60,12 +62,12 @@ namespace Reni
         if (stack == null)
         {
             stack = new Stack<OpenItem<T>>();
-            stack->Push(OpenItem<T>::StartItem(manager.StartItem));
+            stack->Push(OpenItem<T>::StartItem(manager.StartToken));
         }
 
         do
         {
-            auto item = manager.GetItemAndAdvance(stack);
+            auto item = manager.Step(stack);
             OptRef<T const> result;
             do
             {
