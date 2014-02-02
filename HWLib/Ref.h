@@ -35,6 +35,7 @@ namespace HWLib
         using baseType = Ref<T>;
     public:
         OptRef() = default;
+        OptRef(decltype(null)) : thisType(){}
         OptRef(T *value) :baseType(value){}
         OptRef(T &value) :baseType(value){}
         OptRef(Ref<T> const&other) :baseType(other){}
