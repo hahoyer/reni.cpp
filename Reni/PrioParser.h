@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boost/lockfree/stack.hpp>
-#include <boost/type_traits.hpp>
+#include "PrioTable.h"
+
 
 namespace Reni
 {
@@ -10,44 +10,35 @@ namespace Reni
 
     template <typename T>
     struct Item;
-    
-    class PrioTable{};
 
     template <typename T>
     class OpenItem final
     {
         using thisType = OpenItem;
 
+        OptRef<T const> const _left; 
+        Item<T> const _right;
     public:
-        OpenItem(OptRef<T const> left, Item<T> right);
+        OpenItem() = delete;
+        OpenItem(OptRef<T const> left, Item<T> right)
+            :_left(left)
+            , _right(right)
+        {}
 
-        //DefaultAssignmentOperator;
+        DefaultAssignmentOperator;
 
-        static OpenItem const StartItem(IPosition<T> current);
-        char const Relation(String newToken, PrioTable prioTable)const;
-        Ref<T const> const Create(OptRef<T const> args)const;
-    };
-
-    template <typename T>
-    class Stack final
-    {
-        boost::lockfree::stack<T> _internal;
-    public:
-        Stack() = default;
-        Stack(Stack const&) = delete;
-
-        void Push(T target);
-        T const Pop();
-        p(T, Top);
-        p(bool, IsEmpty);
+        static OpenItem const StartItem(IPosition<T> current){ return OpenItem<T>(null, current); };
+        char const Relation(String newTokenName, PrioTable prioTable)const{ return prioTable.Relation(newTokenName, _right.Name); };
+        Ref<T const> const Create(OptRef<T const> args)const{ return _right.Create(_left, args); }
     };
 
     template <typename T>
     struct Item
     {
         String const Name;
-        Item();
+        Item(IPosition<T> current);
 
+        Ref<T const> const Create(OptRef<T const> const left, OptRef<T const> args)const;
         p(bool, IsEnd);
     };
 
