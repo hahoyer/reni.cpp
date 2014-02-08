@@ -34,6 +34,7 @@
     <ClCompile Include="Match\Pattern.cpp" />
     <ClCompile Include="Match\Source.cpp" />
     <ClCompile Include="Match\SourcePosition.cpp" />
+    <ClCompile Include="DumpableObject.cpp" />
     <ClCompile Include="String.cpp" />
     <ClInclude Include="ValueCache.h" />
     <ClInclude Include="_.h" />

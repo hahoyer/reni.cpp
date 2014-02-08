@@ -26,7 +26,7 @@ namespace Reni
         TToken const Step() override;
 
     private:
-        TToken const Step(int count, typename TTokenFactory::Class const& tokenClass);
+        TToken const Step(int count, TokenClass const& tokenClass);
         virtual p_function(String, Dump)override;
     };
 

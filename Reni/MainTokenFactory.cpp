@@ -1,22 +1,26 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
+#include "TokenClass.h"
 
 using namespace Reni;
-using Class = MainTokenFactory::Class;
+
+static TokenClass t1;
 
 MainTokenFactory::MainTokenFactory()
-: EndOfText(_)
-, Number(_)
-, Text(_)
-, BeginOfText(_)
-{}
+: EndOfText(t1)
+, Number(t1)
+, Text(t1)
+, BeginOfText(t1)
+{};
 
-Class const& MainTokenFactory::TokenClass(String const&name)const
+TokenClass const& MainTokenFactory::GetTokenClass(String const&name)const
 {
-    return _;
+    return t1;
 };
 
-Class const& MainTokenFactory::Error(String const&name)const
+TokenClass const& MainTokenFactory::GetError(String const&name)const
 {
-    return _;
+    return t1;
 };
+
+

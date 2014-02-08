@@ -47,8 +47,3 @@ void Console::FunctionTrace(String const&function)
 };
   
 
-void DumpableObject::SetDumpString()
-{
-    if (::IsDebuggerPresent())
-        _dumpString = Dump.RawData;
-}

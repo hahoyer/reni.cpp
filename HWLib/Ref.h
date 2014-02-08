@@ -15,10 +15,12 @@ namespace HWLib
     protected:
         shared_ptr<T> _value;
         Ref() : _value(nullptr) {}
+        Ref(shared_ptr<T> value) :_value(value){}
     public:
         Ref(T *value) :_value(value){}
         Ref(T & value) :_value(new T(value)){}
         Ref(Ref<T> const&value) :_value(value._value){}
+        Ref(OptRef<T> const&value) :_value(value._value){ assert(!!_value.get()); }
         virtual ~Ref(){};
         DefaultAssignmentOperator;
 
@@ -27,6 +29,9 @@ namespace HWLib
         T & operator*(){ return _value.operator*(); };
         T * operator->(){ return _value.operator->(); };
     };
+
+    template<typename T>
+    String const DumpToString(Ref<T> const&target);
 
     template<typename T>
     class OptRef final : public Ref<T>
@@ -50,6 +55,9 @@ namespace HWLib
             return left.IsValid ? left : right();
         }
     };
+
+    template<typename T>
+    String const DumpToString(OptRef<T> const&target);
 
     template<typename T>
     class Constants final{};
@@ -91,6 +99,10 @@ namespace HWLib
             return right();
         }
     };
+
+    template<typename T>
+    String const DumpToString(Optional<T> const&target);
+
 
 }
 

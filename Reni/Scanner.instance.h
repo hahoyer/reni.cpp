@@ -27,7 +27,7 @@ TToken const Scanner<TScanner, TTokenFactory, TToken>::Step()
 
         count = TScanner::Any(_position);
         if (count.IsValid)
-            return Step(count, _factory.TokenClass(_position.Part(count)));
+            return Step(count, _factory.GetTokenClass(_position.Part(count)));
 
         mdump();
         assert_fail;
@@ -35,7 +35,7 @@ TToken const Scanner<TScanner, TTokenFactory, TToken>::Step()
     }
     catch (TScanner::Error const& error)
     {
-        return Step(error.Count, _factory.Error(error.Id));
+        return Step(error.Count, _factory.GetError(error.Id));
     }
 }
 
@@ -43,7 +43,7 @@ TToken const Scanner<TScanner, TTokenFactory, TToken>::Step()
 template <typename TScanner, typename TTokenFactory, typename TToken>
 TToken const
 Scanner<TScanner, TTokenFactory, TToken>
-::Step(int count, typename TTokenFactory::Class const& tokenClass)
+::Step(int count, TokenClass const& tokenClass)
 {
     auto part = _position.Span(count);
     _position += count;

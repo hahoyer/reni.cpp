@@ -2,6 +2,7 @@
 
 #include "Scanner.h"
 #include "ReniScanner.h"
+#include "Token.h"
 
 using namespace HWLib::Match;
 

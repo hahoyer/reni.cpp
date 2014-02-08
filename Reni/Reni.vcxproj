@@ -12,12 +12,18 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="Syntax.cpp" />
+    <ClCompile Include="TokenClass.cpp" />
+    <ClCompile Include="Token.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="ReniScanner.cpp" />
     <ClInclude Include="Compiler.h" />
     <ClCompile Include="Compiler.cpp" />
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="Admin\Export.Test.h" />
+    <ClInclude Include="Syntax.h" />
+    <ClInclude Include="TokenClass.h" />
+    <ClInclude Include="Token.h" />
     <ClInclude Include="PrioTable.h" />
     <ClInclude Include="PrioParser.h" />
     <ClInclude Include="ReniScanner.h" />

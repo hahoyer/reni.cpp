@@ -1,4 +1,5 @@
 #pragma once
+#include "Properties.h"
 
 namespace HWLib
 {
@@ -17,6 +18,7 @@ namespace HWLib
         template <typename T>
         void FunctionTrace(String const&function, T const& object);
 
+        p(bool, IsDebuggerPresent);
         static Console Instance;
     };
 }

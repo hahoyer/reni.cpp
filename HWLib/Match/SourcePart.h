@@ -22,6 +22,7 @@ namespace HWLib
                 SetDumpString();
             };
 
+            p(bool, IsEnd);
             operator String const()const;
         private:
             virtual p_function(String, Dump)override;

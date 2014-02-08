@@ -83,6 +83,8 @@ p_implementation(SourcePart, String, DumpCurrent)
     return *this;
 }
 
+p_implementation(SourcePart, bool, IsEnd){ return _source->IsEnd(_position); }
+
 p_implementation(SourcePart, String, DumpAfterCurrent)
 {
     if (_source->IsEnd(_position+_count))

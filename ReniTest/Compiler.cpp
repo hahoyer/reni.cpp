@@ -6,9 +6,6 @@ static bool Trace = true;
 
 namespace _Compiler
 {
-    class Syntax{};
-
-
     void RunAll()
     {
         Ref<Source const> s = new Source(Source::FromText("asdf"));
