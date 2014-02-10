@@ -20,11 +20,13 @@ namespace HWLib
         using AggregateFunction = function<TResult const(TResult, T)>;
 
         template<typename TResult>
-        TResult            const Aggregate     (TResult start, AggregateFunction<TResult> selector)const;
+        TResult                const Aggregate (TResult start, AggregateFunction<TResult> selector)const;
         template<typename TResult>
-        TResult             const Aggregate     (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
-        T                    const First         (function<bool(T)> selector = [](T){return true; })const;
-        OptRef<T>             const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
+        TResult                 const Aggregate (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
+        template<typename TResult>
+        Ref<Enumerable<TResult>> const Convert   () const;
+        T                       const First       (function<bool(T)> selector = [](T){return true; })const;
+        OptRef<T>              const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
         int                    const Count       (function<bool(T)> selector = [](T){return true; })const;
         Ref<thisType>           const operator+ (thisType const& right)const;
         template<typename TResult>
@@ -111,10 +113,6 @@ namespace HWLib
             return other.get(index - parent.Count);
         }
 
-        class TakeIterator;
-        class PlusIterator;
-        class WhereIterator;
-        class SkipIterator;
     };
 
 }

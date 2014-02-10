@@ -5,7 +5,6 @@
 #include "BreakHandling.h"
 #include "Common.h"
 #include "Enumerable.h"
-#include <initializer_list>
 
 namespace HWLib
 {
@@ -27,6 +26,15 @@ namespace HWLib
             const_cast<int&> (other._count) = 0;
         };
 
+        Array(Array<T> const& other)
+            : _count(other.Count)
+            , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.Count]))
+        {
+            auto data = const_cast<remove_const<T>::type*>(_data);
+            for (auto index = 0; index < Count; index++)
+                new (data + index) T(other[index]);
+        };
+
         Array(int count, function<T(int)> creator)
             : _count(count)
             , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*count]))
@@ -36,7 +44,8 @@ namespace HWLib
                 new (data + index) T(creator(index));
         }
 
-        Array(std::initializer_list<T> const&other)
+        template <typename TInit>
+        Array(List<TInit> const&other)
             : _count(other.size())
             , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {

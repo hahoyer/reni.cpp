@@ -15,13 +15,10 @@ inline String const HWLib::DumpToString(String const&target){ return target.Quot
 template<typename T>
 String const Box_<T>::DumpToString()const{ return HWLib::DumpToString(_data); }
 
-
-
-
 template<typename T>
-class Enumerable<T>::SkipIterator final : public Enumerable<T>::Iterator
+class SkipIterator final : public Enumerable<T>::Iterator
 {
-    Ref<Iterator> _parent;
+    Ref<typename Enumerable<T>::Iterator> _parent;
 public:
     SkipIterator(Enumerable<T> const& parent, int count)
         : _parent(parent.ToIterator)
@@ -40,10 +37,10 @@ protected:
 
 
 template<typename T>
-class Enumerable<T>::TakeIterator final : public Enumerable<T>::Iterator
+class TakeIterator final : public Enumerable<T>::Iterator
 {
     using thisType = TakeIterator;
-    Ref<Iterator> _parent;
+    Ref<typename Enumerable<T>::Iterator> _parent;
     int _count;
 public:
     TakeIterator(Enumerable<T> const& parent, int count)
@@ -64,10 +61,10 @@ protected:
 
 
 template<typename T>
-class Enumerable<T>::PlusIterator final : public Enumerable<T>::Iterator
+class PlusIterator final : public Enumerable<T>::Iterator
 {
-    Ref<Iterator> _left;
-    Ref<Iterator> _right;
+    Ref<typename Enumerable<T>::Iterator> _left;
+    Ref<typename Enumerable<T>::Iterator> _right;
 public:
     PlusIterator(Enumerable<T> const& left, Enumerable<T> const& right)
         : _left(left.ToIterator)
@@ -96,9 +93,9 @@ private:
 
 
 template<typename T>
-class Enumerable<T>::WhereIterator final : public Enumerable<T>::Iterator
+class WhereIterator final : public Enumerable<T>::Iterator
 {
-    Ref<Iterator> _parent;
+    Ref<typename Enumerable<T>::Iterator> _parent;
     function<bool(T)> _selector;
 public:
     WhereIterator(Enumerable<T> const& parent, function<bool(T)> selector)
@@ -120,22 +117,54 @@ protected:
 };
 
 
+template<typename T, typename TResult>
+class SelectIterator final : public Enumerable<TResult>::Iterator
+{
+    Ref<typename Enumerable<T>::Iterator> _parent;
+    function<TResult(T)> _selector;
+public:
+    SelectIterator(Enumerable<T> const& parent, function<TResult(T)> selector)
+        : _parent(parent.ToIterator)
+        , _selector(selector)
+    {
+    }
+protected:
+    p_function(bool, IsValid) override{ return _parent->IsValid; }
+    TResult const Step()override{ return _selector(_parent->Step()); }
+};
+
+
+template<typename T,typename TResult>
+class ConvertIterator final : public Enumerable<TResult>::Iterator
+{
+    Ref<typename Enumerable<T>::Iterator> _parent;
+public:
+    ConvertIterator(Enumerable<T> const& parent)
+        : _parent(parent.ToIterator)
+    {
+    }
+protected:
+    p_function(bool, IsValid) override{ return _parent->IsValid; }
+    TResult const Step()override{ return _parent->Step(); }
+};
+
+
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::Skip(int count) const
 {
-    return new Container(new SkipIterator(*this, count));
+    return new Container(new SkipIterator<T>(*this, count));
 }
 
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::Take(int count) const
 {
-    return new Container(new TakeIterator(*this, count));
+    return new Container(new TakeIterator<T>(*this, count));
 }
 
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::operator+(thisType const& right)const
 {
-    return new Container(new PlusIterator(*this, right));
+    return new Container(new PlusIterator<T>(*this, right));
 }
 
 template<typename T>
@@ -221,5 +250,16 @@ String const HWLib::DumpToString(Ref<T> const&target){
     return DumpToString(*target);
 };
 
+template<typename T>
+template<typename TResult>
+Ref<Enumerable<TResult>> const Enumerable<T>::Select(function<TResult(T)> selector) const{
+    return new Container(new SelectIterator<TResult>(*this, selector));
+};
+
+template<typename T>
+template<typename TResult>
+Ref<Enumerable<TResult>> const Enumerable<T>::Convert() const{
+    return new Container(new ConvertIterator<TResult>(*this, selector));
+};
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
