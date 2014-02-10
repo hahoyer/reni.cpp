@@ -3,7 +3,6 @@
 
 #include "Reni.h"
 #include "CompilerTest.h"
-#include <initializer_list>
 
 
 static bool Trace = true;

@@ -29,6 +29,6 @@ Ref<Syntax const> const TokenClass::Create(SourcePart part)const
 }
 
 p_implementation(TokenClass, Array<String>, DumpData){
-    return{};
+    return List<String>{};
 };
 
