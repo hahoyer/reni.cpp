@@ -11,7 +11,7 @@ namespace Reni
     class Compiler final
     {
     public:
-        using Scanner = Scanner<ReniScanner, MainTokenFactory, Token>;
+        using Scanner = Scanner<MainTokenFactory>;
     private:
         class internal;
         Ref<internal> _internal;

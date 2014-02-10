@@ -4,11 +4,13 @@
 
 namespace Reni
 {
-    template <typename TScanner, typename TTokenFactory, typename TToken>
-    class Scanner final: public Enumerable<TToken>::Iterator, public DumpableObject
+    class Token;
+
+    template <typename TTokenFactory>
+    class Scanner final: public Enumerable<Token>::Iterator, public DumpableObject
     {
         using thisType = Scanner;
-        using baseType = typename Enumerable<TToken>::Iterator;
+        using baseType = typename Enumerable<Token>::Iterator;
 
         SourcePosition _position;
         bool _endTokenReturned;
@@ -23,11 +25,11 @@ namespace Reni
         DefaultAssignmentOperator;
 
         p_function(bool, IsValid) override{ return !_endTokenReturned; }
-        TToken const Step() override;
+        Token const Step() override;
 
     private:
-        TToken const Step(int count, TokenClass const& tokenClass);
-        virtual p_function(String, Dump)override;
+        Token const Step(int count, TokenClass const& tokenClass);
+        virtual p_function(Array<String>, DumpData)override;
     };
 
 }

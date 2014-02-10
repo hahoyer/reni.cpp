@@ -20,7 +20,7 @@ void _Scanner::SimpleAndDetailed()
     Compiler c = file.Name;
     auto s = c.source;
     auto tf = MainTokenFactory();
-    Scanner<ReniScanner, MainTokenFactory, Token> scanner(s, tf);
+    Scanner<MainTokenFactory> scanner(s, tf);
 
     auto ss = scanner.Step();
     auto pp = ss.Part;

@@ -2,13 +2,13 @@
 
 using namespace Reni;
 
-template <typename TScanner, typename TTokenFactory, typename TToken>
-TToken const Scanner<TScanner, TTokenFactory, TToken>::Step()
+template <typename TTokenFactory>
+Token const Scanner<TTokenFactory>::Step()
 {
     try
     {
         static bool Trace = true;
-        _position += TScanner::WhiteSpace(_position);
+        _position += ReniScanner::WhiteSpace(_position);
 
         auto count = _position.End;
         if (count.IsValid)
@@ -17,45 +17,47 @@ TToken const Scanner<TScanner, TTokenFactory, TToken>::Step()
             return Step(count, _factory.EndOfText);
         }
 
-        count = TScanner::Number(_position);
+        count = ReniScanner::Number(_position);
         if (count.IsValid)
             return Step(count, _factory.Number);
 
-        count = TScanner::Text(_position);
+        count = ReniScanner::Text(_position);
         if (count.IsValid)
             return Step(count, _factory.Text);
 
-        count = TScanner::Any(_position);
+        count = ReniScanner::Any(_position);
         if (count.IsValid)
             return Step(count, _factory.GetTokenClass(_position.Part(count)));
 
         mdump();
         assert_fail;
-        errorabort(TToken const&);
+        errorabort(Token const&);
     }
-    catch (TScanner::Error const& error)
+    catch (ReniScanner::Error const& error)
     {
         return Step(error.Count, _factory.GetError(error.Id));
     }
 }
 
 
-template <typename TScanner, typename TTokenFactory, typename TToken>
-TToken const
-Scanner<TScanner, TTokenFactory, TToken>
+template <typename TTokenFactory>
+Token const
+Scanner<TTokenFactory>
 ::Step(int count, TokenClass const& tokenClass)
 {
     auto part = _position.Span(count);
     _position += count;
-    return TToken(tokenClass, part);
+    return Token(tokenClass, part);
 };
 
 
-template <typename TScanner, typename TTokenFactory, typename TToken>
-String const
-Scanner<TScanner, TTokenFactory, TToken>
-::get_Dump()const
+template <typename TTokenFactory>
+Array<String> const
+Scanner<TTokenFactory>
+::get_DumpData()const
 {
-    return vardump(_position);
+    return{
+        vardump(_position)
+    };
 }
 

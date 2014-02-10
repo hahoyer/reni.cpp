@@ -16,4 +16,13 @@ Ref<Syntax const> const Token::Create(OptRef<Syntax const> const left, OptRef<Sy
             return Class.Create(Part, right);
         else
             return Class.Create(Part);
-}
+};
+
+p_implementation(Token, Array<String>, DumpData){
+    return
+    {
+        vardump(Class),
+        vardump(Part)
+    };
+};
+

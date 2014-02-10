@@ -12,7 +12,9 @@ namespace Reni
         Token(TokenClass const&class_, SourcePart const& part)
             : Class(class_)
             , Part(part)
-        {}
+        {
+            SetDumpString();
+        }
 
         p(String, Name){ return Part; };
         p(bool, IsEnd){ return Part.IsEnd; };
@@ -20,7 +22,7 @@ namespace Reni
         Ref<Syntax const> const Create(OptRef<Syntax const> const left, OptRef<Syntax const> right)const;
 
     private:
-        p_function(String, Dump)override;
+        virtual p_function(Array<String>, DumpData)override;
     };
 
 }

@@ -27,3 +27,8 @@ Ref<Syntax const> const TokenClass::Create(SourcePart part)const
     mdumpc(part);
     returndump(Ref<Syntax const>(new Syntax));
 }
+
+p_implementation(TokenClass, Array<String>, DumpData){
+    return{};
+};
+

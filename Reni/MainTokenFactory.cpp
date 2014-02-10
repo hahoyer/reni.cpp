@@ -13,12 +13,13 @@ MainTokenFactory::MainTokenFactory()
 , BeginOfText(t1)
 {};
 
-TokenClass const& MainTokenFactory::GetTokenClass(String const&name)const
+
+TokenClass const & MainTokenFactory::GetTokenClass(String const &)const
 {
     return t1;
 };
 
-TokenClass const& MainTokenFactory::GetError(String const&name)const
+TokenClass const& MainTokenFactory::GetError(String const&)const
 {
     return t1;
 };

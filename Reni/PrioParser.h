@@ -43,7 +43,7 @@ namespace Reni
     template <typename T>
     class PositionManager
     {
-        Scanner<ReniScanner, MainTokenFactory, Token> _scanner;
+        Scanner<MainTokenFactory> _scanner;
     public:
         PositionManager(Ref<Source const> source, MainTokenFactory const&factory, Token const startToken)
             : _scanner(source, factory)
