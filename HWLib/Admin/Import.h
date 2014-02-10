@@ -14,3 +14,4 @@ using namespace boost;
 
 #define STRING2(x) #x
 #define STRING(x) STRING2(x)
+#define ID(x) x

@@ -25,7 +25,7 @@ namespace HWLib
             p(bool, IsEnd);
             operator String const()const;
         private:
-            virtual p_function(String, Dump)override;
+            virtual p_function(Array<String>, DumpData)override;
             p(String, DumpCurrent);
             p(String, DumpAfterCurrent);
             p(String, DumpBeforeCurrent);

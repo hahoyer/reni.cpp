@@ -13,21 +13,21 @@ namespace HWLib
     {
         using thisType = Ref<T>;
     protected:
-        shared_ptr<T> _value;
-        Ref() : _value(nullptr) {}
-        Ref(shared_ptr<T> value) :_value(value){}
+        shared_ptr<T> value;
+        Ref() : value(nullptr) {}
+        Ref(shared_ptr<T> value) :value(value){}
     public:
-        Ref(T *value) :_value(value){}
-        Ref(T & value) :_value(new T(value)){}
-        Ref(Ref<T> const&value) :_value(value._value){}
-        Ref(OptRef<T> const&value) :_value(value._value){ assert(!!_value.get()); }
+        Ref(T *value) :value(value){}
+        Ref(T & value) :value(new T(value)){}
+        Ref(Ref<T> const&value) :value(value.value){}
+        Ref(OptRef<T> const&value) :value(value.value){ assert(!!this->value.get()); }
         virtual ~Ref(){};
         DefaultAssignmentOperator;
 
-        T const& operator*()const { return _value.operator*(); };
-        T const* operator->()const { return _value.operator->(); };
-        T & operator*(){ return _value.operator*(); };
-        T * operator->(){ return _value.operator->(); };
+        T const& operator*()const { return value.operator*(); };
+        T const* operator->()const { return value.operator->(); };
+        T & operator*(){ return value.operator*(); };
+        T * operator->(){ return value.operator->(); };
     };
 
     template<typename T>
@@ -44,10 +44,10 @@ namespace HWLib
         OptRef(T *value) :baseType(value){}
         OptRef(T &value) :baseType(value){}
         OptRef(Ref<T> const&other) :baseType(other){}
-        OptRef(OptRef<T> const&other) :baseType(other){}
+        OptRef(OptRef<T> const&other) :baseType(other.value){}
         virtual ~OptRef(){};
 
-        p(bool, IsValid){ return !!_value.get(); }
+        p(bool, IsValid){ return !!value.get(); }
         DefaultAssignmentOperator;
 
         friend OptRef<T> operator||(OptRef<T> left, function<T*()> right)
@@ -74,20 +74,20 @@ namespace HWLib
     {
         using thisType = Optional;
 
-        T const _value;
+        T const value;
     public:
-        Optional() : _value(Constants<T>::NotValid){}
-        Optional(decltype(null)) : _value(Constants<T>::NotValid){}
-        Optional(T const value) :_value(value){}
+        Optional() : value(Constants<T>::NotValid){}
+        Optional(decltype(null)) : value(Constants<T>::NotValid){}
+        Optional(T const value) :value(value){}
 
-        p(bool, IsValid){ return _value != Constants<T>::NotValid; }
+        p(bool, IsValid){ return value != Constants<T>::NotValid; }
         
         DefaultAssignmentOperator;
 
         p(T, Value)
         {
             assert(IsValid);
-            return _value;
+            return value;
         };
 
         operator T const ()const{ return Value; };

@@ -201,4 +201,25 @@ typename Enumerable<T>::RangeBasedForLoopSimulator const Enumerable<T>::end()con
     return RangeBasedForLoopSimulator();
 }
 
+template <typename T>
+String const HWLib::ClassName(T const& object){
+    return
+        String(typeid(object).name())
+        .Replace("class ", "")
+        ;
+};
+
+template<typename T>
+String const HWLib::DumpToString(OptRef<T> const&target){
+    return target.IsValid
+        ? DumpToString(Ref<T>(target))
+        : "null";
+};
+
+template<typename T>
+String const HWLib::DumpToString(Ref<T> const&target){
+    return DumpToString(*target);
+};
+
+
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

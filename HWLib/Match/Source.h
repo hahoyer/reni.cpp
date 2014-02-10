@@ -40,7 +40,7 @@ namespace HWLib
             bool const BeginsWith(int position, String value)const;
 
         private:
-            virtual p_function(String, Dump)override;
+            virtual p_function(Array<String>, DumpData)override;
         };
 
     }

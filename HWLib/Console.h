@@ -35,7 +35,7 @@ void Console::FunctionTrace(String const&function, T const& object)
     {
         auto header
             = String(" *** ")
-            + String(typeid(object).name()).Replace("class ", "")
+            + ClassName(object)
             + " *** ";
         Write(header);
     }
@@ -43,3 +43,4 @@ void Console::FunctionTrace(String const&function, T const& object)
     IndentLevel++;
     Write(String("[ ") + DumpToString(object) + " ]\n");
 };
+

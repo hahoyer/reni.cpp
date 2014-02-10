@@ -44,10 +44,10 @@ namespace HWLib
 
         static String const FilePosition(String const&fileName, int line, int column, String const&flag);
         static String const Convert(int const&value);
+        static String const Surround(String const&left, Array<String> const&list, String const&right);
     };
 
     static String const operator+ (char const*left, String const& right){ return String(left) + right; };
-
 }
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "):")

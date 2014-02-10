@@ -199,3 +199,17 @@ String const String::Convert(int const&value)
 {
     return std::to_string(value);
 };
+
+
+String const String::Surround(String const&left, Array<String> const&list, String const&right)
+{
+    switch (list.Count)
+    {
+    case 0:
+        return left + right;
+    case 1:
+        return left + " " + list[0] +" " + right;
+    };
+
+    return "\n" + left + ("\n" + list.Stringify("\n")).Indent() + "\n" + right + "\n";
+};

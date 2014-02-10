@@ -17,6 +17,10 @@ Console::Console()
 {
 }
 
+p_implementation(Console, bool, IsDebuggerPresent){
+    return !!::IsDebuggerPresent();
+};
+
 static void OutputDebug(const String&text)
 {
     if (::IsDebuggerPresent())

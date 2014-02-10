@@ -96,9 +96,9 @@ bool const Source::BeginsWith(int position, String value)const
     return Text.BeginsWith(value, position);
 }
 
-p_implementation(Source, String, Dump)
+p_implementation(Source, Array<String>, DumpData)
 {
-    return FilePosition(0,"","");
+    return Array<String>{ FilePosition(0, "", "")};
 }
 
 #include "../TemplateInstances.h"

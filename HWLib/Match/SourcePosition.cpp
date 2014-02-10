@@ -68,10 +68,10 @@ p_implementation(SourcePosition, String, DumpBeforeCurrent)
     return result;
 }
 
-p_implementation(SourcePosition, String, Dump)
+p_implementation(SourcePosition, Array<String>, DumpData)
 {
-    return (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent)
-        .Quote;
+    auto result = (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent).Quote;
+    return{ result };
 }
 
 //////////////////////////////////////
@@ -105,9 +105,9 @@ p_implementation(SourcePart, String, DumpBeforeCurrent)
     return result;
 }
 
-p_implementation(SourcePart, String, Dump)
+p_implementation(SourcePart, Array<String>, DumpData)
 {
-    return (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent)
-        .Quote;
+    auto result = (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent).Quote;
+    return{ result };
 }
 
