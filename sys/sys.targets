@@ -72,7 +72,7 @@
     <ItemDefinitionGroup>
         <ClCompile>
             <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <FunctionLevelLinking>false</FunctionLevelLinking>
             <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
             <IntrinsicFunctions>true</IntrinsicFunctions>
             <MinimalRebuild>false</MinimalRebuild>
@@ -87,7 +87,7 @@
         </ClCompile>
         <Link>
             <GenerateDebugInformation>true</GenerateDebugInformation>
-            <OptimizeReferences>true</OptimizeReferences>
+            <OptimizeReferences>false</OptimizeReferences>
         </Link>
     </ItemDefinitionGroup>
 
