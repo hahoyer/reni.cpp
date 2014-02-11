@@ -5,11 +5,19 @@ namespace HWLib
     class String;
     class DumpableObject;
 
+    template <typename T>
+    String const DumpToString(T const&target);
+
+    template <>
     String const DumpToString(DumpableObject const&target);
+    template <>
     String const DumpToString(int const&target);
+    template <>
     String const DumpToString(String const&target);
 
+
     template <typename T>
-    String const ClassName(T const& object);
+    String const TypeName(T const& object);
+
 }
     

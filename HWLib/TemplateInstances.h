@@ -8,9 +8,14 @@
 
 using namespace HWLib;
 
+template <>
 inline String const HWLib::DumpToString(DumpableObject const&target){ return target.Dump; };
+template <>
 inline String const HWLib::DumpToString(int const&target) { return String::Convert(target); }
+template <>
 inline String const HWLib::DumpToString(String const&target){ return target.Quote; };
+template <typename T>
+inline String const HWLib::DumpToString<T>(T const&target){ return TypeName(target); };
 
 template<typename T>
 String const Box_<T>::DumpToString()const{ return HWLib::DumpToString(_data); }
@@ -231,23 +236,16 @@ typename Enumerable<T>::RangeBasedForLoopSimulator const Enumerable<T>::end()con
 }
 
 template <typename T>
-String const HWLib::ClassName(T const& object){
+String const HWLib::TypeName(T const& object){
+    auto localObject = &object;
+    auto result = std::string(typeid(object).name());
+    if (result.substr(0, 6) == "class ")
+        result.erase(0, 6);
+    else if (result.substr(0, 7) == "struct ")
+            result.erase(0, 7);
     return
-        String(typeid(object).name())
-        .Replace("class ", "")
+        String(result)
         ;
-};
-
-template<typename T>
-String const HWLib::DumpToString(OptRef<T> const&target){
-    return target.IsValid
-        ? DumpToString(Ref<T>(target))
-        : "null";
-};
-
-template<typename T>
-String const HWLib::DumpToString(Ref<T> const&target){
-    return DumpToString(*target);
 };
 
 template<typename T>
@@ -261,5 +259,25 @@ template<typename TResult>
 Ref<Enumerable<TResult>> const Enumerable<T>::Convert() const{
     return new Container(new ConvertIterator<TResult>(*this, selector));
 };
+
+template<typename T>
+p_implementation(Ref<T>, Array<String>, DumpData)
+{
+    if (!value.get())
+        return Array<String>();
+    return Array<String>{ DumpToString<T>(*value) };
+};
+
+template<typename T>
+p_implementation(Ref<T>, String, DumpHeader)
+{
+    if (!value.get())
+        return "null";
+    return "{" + Features<T>::DumpToStringShort(*value) + "}";
+};
+
+template<typename T>
+inline String const Features<T>::DumpToStringShort(T const&value){ return TypeName(value); };
+
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

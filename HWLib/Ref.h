@@ -3,24 +3,26 @@
 #include "BreakHandling.h"
 #include "String.h"
 #include "Common.h"
+#include "DumpableObject.h"
 using boost::shared_ptr;
 
 namespace HWLib
 {
-    template<typename T>
 
-    class Ref
+    template<typename T>
+    class Ref : public DumpableObject
     {
+        using baseType = DumpableObject;
         using thisType = Ref<T>;
     protected:
         shared_ptr<T> value;
-        Ref() : value(nullptr) {}
-        Ref(shared_ptr<T> value) :value(value){}
+        Ref() : value() { SetDumpString(); }
+        Ref(shared_ptr<T> value) :value(value){ SetDumpString(); }
     public:
-        Ref(T *value) :value(value){}
-        Ref(T & value) :value(new T(value)){}
-        Ref(Ref<T> const&value) :value(value.value){}
-        Ref(OptRef<T> const&value) :value(value.value){ assert(!!this->value.get()); }
+        Ref(T *value) :value(value){ SetDumpString(); }
+        Ref(T const& value) :value(new T(value)){ SetDumpString(); }
+        Ref(Ref<T> const&value) :value(value.value){ }
+        Ref(OptRef<T> const&value) :value(value.value){ assert(!!this->value.get()); SetDumpString(); }
         virtual ~Ref(){};
         DefaultAssignmentOperator;
 
@@ -28,10 +30,15 @@ namespace HWLib
         T const* operator->()const { return value.operator->(); };
         T & operator*(){ return value.operator*(); };
         T * operator->(){ return value.operator->(); };
-    };
 
-    template<typename T>
-    String const DumpToString(Ref<T> const&target);
+        virtual p_function(Array<String>, DumpData)override;
+        virtual p_function(String, DumpHeader)override;
+    protected:
+        void SetDumpString(){
+            if (Features<T>::EnableDumpFromRef())
+                baseType::SetDumpString();
+        };
+    };
 
     template<typename T>
     class OptRef final : public Ref<T>
@@ -39,12 +46,12 @@ namespace HWLib
         using thisType = OptRef<T>;
         using baseType = Ref<T>;
     public:
-        OptRef() = default;
-        OptRef(decltype(null)) : thisType(){}
-        OptRef(T *value) :baseType(value){}
-        OptRef(T &value) :baseType(value){}
-        OptRef(Ref<T> const&other) :baseType(other){}
-        OptRef(OptRef<T> const&other) :baseType(other.value){}
+        OptRef(){};
+        OptRef(decltype(null)) : thisType(){ }
+        OptRef(T *value) :baseType(value){ }
+        OptRef(T const&value) :baseType(value){ }
+        OptRef(Ref<T> const&other) :baseType(other){ }
+        OptRef(OptRef<T> const&other) :baseType(other.value){ }
         virtual ~OptRef(){};
 
         p(bool, IsValid){ return !!value.get(); }
@@ -55,9 +62,6 @@ namespace HWLib
             return left.IsValid ? left : right();
         }
     };
-
-    template<typename T>
-    String const DumpToString(OptRef<T> const&target);
 
     template<typename T>
     class Constants final{};
@@ -99,10 +103,6 @@ namespace HWLib
             return right();
         }
     };
-
-    template<typename T>
-    String const DumpToString(Optional<T> const&target);
-
 
 }
 

@@ -33,16 +33,19 @@ p_implementation(DumpableObjectBase, String, DumpShort){
 static int nextObjectId = 0;
 
 DumpableObject::DumpableObject()
-: ObjectId(nextObjectId++)
+: DumpableObject(nextObjectId++)
 {};
 
 
 DumpableObject::DumpableObject(int objectId) 
 : ObjectId(objectId++)
+, isInDump(false)
 {};
 
 p_implementation(DumpableObject, String, DumpHeader){
-    return HWLib::ClassName(*this) + ".Id" + DumpToString(ObjectId);
+    auto typeName = HWLib::TypeName(*this);
+    auto objectId = DumpToString(ObjectId);
+    return typeName + ".Id" + objectId;
 }
 
 p_implementation(DumpableObject, String, Dump){
@@ -52,14 +55,14 @@ p_implementation(DumpableObject, String, Dump){
     if (!isInDump)
     {
         LevelValue<bool> inDump (isInDump, true);
-
+        dataResult = DumpData;
     }
     
     return DumpHeader + String::Surround("{", dataResult, "}");
 }
 
 p_implementation(DumpableObject, String, DumpShort){
-    return Dump;
+    return DumpHeader;
 }
 
 #include "TemplateInstances.h"

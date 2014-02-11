@@ -7,6 +7,12 @@ namespace HWLib
 {
     class String;
 
+    template <typename T>
+    struct Features{
+        static inline bool EnableDumpFromRef(){ return false; };
+        static String const DumpToStringShort(T const&value);
+    };
+
     class DumpableObjectBase
     {
         mutable std::string dumpString;
@@ -22,10 +28,11 @@ namespace HWLib
 
     template<typename T> class Array;
 
-    struct DumpableObject: public DumpableObjectBase
+    class DumpableObject: public DumpableObjectBase
     {
         using baseType = DumpableObjectBase;
         using thisType = DumpableObject;
+    public:
         int const ObjectId;
     protected:
         DumpableObject();
@@ -33,10 +40,11 @@ namespace HWLib
         virtual_p(Array<String>, DumpData) = 0;
         virtual_p(String, DumpHeader);
     public:
+        p_function(String, DumpShort)override;
         p(bool, IsInDump){ return isInDump; }
     private:
         p_function(String, Dump)override final;
-        p_function(String, DumpShort)override final;
         mutable bool isInDump;
     };
+
 };

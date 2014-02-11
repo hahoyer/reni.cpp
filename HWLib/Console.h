@@ -35,7 +35,7 @@ void Console::FunctionTrace(String const&function, T const& object)
     {
         auto header
             = String(" *** ")
-            + ClassName(object)
+            + TypeName(object)
             + " *** ";
         Write(header);
     }
