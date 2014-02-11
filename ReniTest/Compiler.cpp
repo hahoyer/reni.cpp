@@ -11,7 +11,7 @@ namespace _Compiler
         Ref<Source const> s = new Source(Source::FromText("asdf"));
         auto tf = MainTokenFactory();
         auto m = PositionManager<Syntax>(s, tf, Token(tf.BeginOfText, SourcePart(s, 0, 0)));
-        auto pt = PrioTable();
+        auto pt = PrioTable::Left({ PrioTableConst::Any });
         auto syntax = Parse(m, pt);
     }
 }
