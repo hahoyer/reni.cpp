@@ -26,3 +26,6 @@ p_implementation(Token, Array<String>, DumpData){
     };
 };
 
+p_implementation(Token, String, DumpShort){
+    return baseType::get_DumpShort() + "{"+Name + "}";
+};

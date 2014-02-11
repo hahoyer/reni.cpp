@@ -6,6 +6,7 @@
 #include "../PrioParser.h"
 #include "../ReniScanner.h"
 #include "../Scanner.h"
+#include "../Syntax.h"
 #include "../TokenClass.h"
 
 #include "../Scanner.instance.h"

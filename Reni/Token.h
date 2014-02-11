@@ -4,8 +4,11 @@ namespace Reni
 {
     class Syntax;
     class TokenClass;
-    struct Token final: public DumpableObject
+    class Token final: public DumpableObject
     {
+        using baseType = DumpableObject;
+        using thisType = Token;
+    public:
         TokenClass const&Class;
         SourcePart const Part;
 
@@ -14,7 +17,9 @@ namespace Reni
             , Part(part)
         {
             SetDumpString();
-        }
+        };
+
+        DefaultAssignmentOperator;
 
         p(String, Name){ return Part; };
         p(bool, IsEnd){ return Part.IsEnd; };
@@ -23,6 +28,7 @@ namespace Reni
 
     private:
         virtual p_function(Array<String>, DumpData)override;
+        virtual p_function(String, DumpShort)override;
     };
 
 }

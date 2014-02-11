@@ -2,49 +2,86 @@
 
 namespace Reni
 {
+    namespace PrioTableConst{
+        static char const* Any = "(any)";
+        static char const* EndOfText = "(eot)";
+        static char const* BeginOfText = "(bot)";
+        static char const* Error = "(err)";
+        char const LeftTag = '-';
+        char const RightTag = '+';
+        char const MatchTag = '=';
+        char const UnknownTag = ' ';
+    };
+
     struct PrioTable final
     {
-        const String Any = "(any)";
-        const String EndOfText = "(eot)";
-        const String BeginOfText = "(bot)";
-        const String Error = "(err)";
+        using thisType = PrioTable;
 
         PrioTable()
-            : _dataCache([&]{return AllocData(); })
-        {}
+            : data(AllocData(0, PrioTableConst::UnknownTag))
+        {
+        }
+
+        PrioTable(PrioTable const&other)
+            : tokens(other.tokens)
+            , data(other.data)
+        {
+        };
+
+    private:
+        PrioTable(char tag, List<char const*> tokens)
+            : tokens(tokens)
+            , data(AllocData(tokens.end() - tokens.begin(), tag))
+        {
+        }
+
+    public:
+        DefaultAssignmentOperator;
+
+        static PrioTable const Left(List<char const*> tokens){
+            auto result = PrioTable(PrioTableConst::LeftTag, tokens);
+            return result;
+        }
 
         char const Relation(String newTokenName, String recentTokenName)const
         {
-            if (newTokenName == BeginOfText || recentTokenName == EndOfText)
+            if (newTokenName == PrioTableConst::BeginOfText || recentTokenName == PrioTableConst::EndOfText)
                 return ' ';
 
-            return (*_dataCache.Value)[Index(newTokenName)][Index(recentTokenName)];
+            return data[Index(newTokenName)][Index(recentTokenName)];
         }
     private:
-        Array<String> const _token;
-        ValueCache<Array<Array<char>>> const _dataCache;
+        Array<String const> const tokens;
+        Array<Array<char>> const data;
 
-        p(int, Count){ return _token.Count; };
+        p(int, Count){ return tokens.Count; };
 
         int const Index(String name)const
         {
             for (auto i = 0; i < Count; i++)
-                if (_token[i] == name)
+                if (tokens[i] == name)
                     return (i);
 
             for (auto i = 0; i < Count; i++)
-                if (_token[i] == Any)
+                if (tokens[i] == PrioTableConst::Any)
                     return (i);
 
-            throw "missing " + Any + " entry in priority table";
+            throw String("missing ") + PrioTableConst::Any + " entry in priority table";
 
         }
 
-        Array<Array<char>> const AllocData()const
+        static Array<Array<char>> const AllocData(int count, char tag)
         {
-            return Array<Array<char>>(Count, [=](int){return Array<char>(Count, [](int){return ' '; }); });
+            return Array<Array<char>>(count, [=](int)
+            {
+                return Array<char>(count, [=](int)
+                {
+                    return tag; 
+                }); 
+            });
         }
 
     };
+
 }
 
