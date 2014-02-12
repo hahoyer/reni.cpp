@@ -126,6 +126,60 @@ namespace _Array
     }
 }
 
+namespace _Enumerable
+{
+    void FromInt0()
+    {
+        Array<Array<int>> c ;
+        auto cc = c.ConvertMany<int>()->ToArray;
+        assert(cc.Count == 0);
+    }
+
+    void FromInt1()
+    {
+        Array<Array<int>> c = { { 12 } };
+        auto cc = c.ConvertMany<int>()->ToArray;
+        assert(cc.Count == 1);
+        assert(cc[0]== 12);
+    }
+
+    void FromInt1_1()
+    {
+        Array<Array<int>> c = { { 12 }, { 13 } };
+        auto cc = c.ConvertMany<int>()->ToArray;
+        assert(cc.Count == 2);
+        assert(cc[0] == 12);
+        assert(cc[1] == 13);
+    }
+
+    void FromInt1_2()
+    {
+        Array<Array<int>> c = { { 12 }, { 13, 14 } };
+        auto cc = c.ConvertMany<int>()->ToArray;
+        assert(cc.Count == 3);
+        assert(cc[0] == 12);
+        assert(cc[1] == 13);
+        assert(cc[2] == 14);
+    }
+
+    void FromString()
+    {
+        Array<Array<String>> c = { { "asdf" } };
+        auto cc = c.ConvertMany<String>()->ToArray;
+        assert(cc.Count == 1);
+        assert(cc[0] == "asdf");
+    }
+
+    void RunAll()
+    {
+        FromInt0();
+        FromInt1();
+        FromInt1_1();
+        FromInt1_2();
+        FromString();
+    }
+}
+
 namespace _ValueCache
 {
     void Simple()
@@ -172,6 +226,7 @@ void _HWLib::RunAll()
 {
     _String::RunAll();
     _Array::RunAll();
+    _Enumerable::RunAll();
     _Ref::RunAll();
     _ValueCache::RunAll();
     _File::RunAll();
