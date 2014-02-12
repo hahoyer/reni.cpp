@@ -44,8 +44,7 @@ namespace HWLib
                 new (data + index) T(creator(index));
         }
 
-        template <typename TInit>
-        Array(List<TInit> const&other)
+        Array(List<T> const&other)
             : _count(other.size())
             , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {
