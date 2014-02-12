@@ -16,6 +16,7 @@ namespace HWLib
     {
         using thisType = Enumerable<T>;
     public:
+        using targetType = T;
         template<typename TResult>
         using AggregateFunction = function<TResult const(TResult, T)>;
 
@@ -25,20 +26,22 @@ namespace HWLib
         TResult                 const Aggregate (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
         template<typename TResult>
         Ref<Enumerable<TResult>> const Convert   () const;
+        template<typename TResult>
+        Ref<Enumerable<TResult>> const ConvertMany() const;
         T                       const First       (function<bool(T)> selector = [](T){return true; })const;
         OptRef<T>              const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
-        int                    const Count       (function<bool(T)> selector = [](T){return true; })const;
-        Ref<thisType>           const operator+ (thisType const& right)const;
+        int                    const Count        (function<bool(T)> selector = [](T){return true; })const;
+        Ref<thisType>           const operator+  (thisType const& right)const;
         template<typename TResult>
-        Ref<Enumerable<TResult>> const Select    (function<TResult(T)> selector) const;
+        Ref<Enumerable<TResult>> const Select   (function<TResult(T)> selector) const;
         template<typename TResult>
         Ref<Enumerable<TResult>> const SelectMany (function<TResult(T)> selector) const;
         T                       const Single       (function<bool(T)> selector = [](T){return true; })const;
         OptRef<T>              const SingleOrDefault(function<bool(T)> selector = [](T){return true; })const;
         Ref<thisType>         const Skip           (int count) const;
-        T                   const Stringify      (T const&delimiter)const;
-        Ref<thisType>      const Take           (int count) const;
-        Ref<thisType>     const Where          (function<bool(T)> selector)const;
+        T                    const Stringify      (T const&delimiter)const;
+        Ref<thisType>       const Take           (int count) const;
+        Ref<thisType>      const Where          (function<bool(T)> selector)const;
 
         p(Array<T>, ToArray);
 

@@ -139,7 +139,37 @@ protected:
 };
 
 
-template<typename T,typename TResult>
+template<typename T, typename TResult>
+class ConvertManyIterator final : public Enumerable<TResult>::Iterator
+{
+    Ref<typename Enumerable<T>::Iterator> _parent;
+    OptRef<typename T> _subData;
+    OptRef<typename Enumerable<TResult>::Iterator> _subParent;
+public:
+    ConvertManyIterator(Enumerable<T> const& parent)
+        : _parent(parent.ToIterator)
+    {
+    }
+protected:
+    p_function(bool, IsValid) override
+    { 
+        return _parent->IsValid
+            || _subParent.IsValid && _subParent->IsValid;
+    }
+
+    TResult const Step()override
+    {
+        if (!(_subParent.IsValid && _subParent->IsValid))
+        {
+            _subData = new T(_parent->Step());
+            _subParent = _subData->ToIterator;
+        }
+        return _subParent->Step(); 
+    }
+};
+
+
+template<typename T, typename TResult>
 class ConvertIterator final : public Enumerable<TResult>::Iterator
 {
     Ref<typename Enumerable<T>::Iterator> _parent;
@@ -189,7 +219,10 @@ inline Array<T> const Enumerable<T>::Iterator::ToArray()
 {
     auto result = std::vector<T>();
     while (IsValid)
-        result.push_back(Step());
+    {
+        auto value = Step();
+        result.push_back(value);
+    }
     return Array<T>(result.size(), [=](int i){return result[i]; });
 
 }
@@ -252,6 +285,12 @@ template<typename T>
 template<typename TResult>
 Ref<Enumerable<TResult>> const Enumerable<T>::Select(function<TResult(T)> selector) const{
     return new Container(new SelectIterator<TResult>(*this, selector));
+};
+
+template<typename T>
+template<typename TResult>
+Ref<Enumerable<TResult>> const Enumerable<T>::ConvertMany() const{
+    return new Enumerable<TResult>::Container(new ConvertManyIterator<T, TResult>(*this));
 };
 
 template<typename T>
