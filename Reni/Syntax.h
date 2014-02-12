@@ -15,7 +15,7 @@ namespace Reni
 }
 
 template<>              
-static inline bool HWLib::Features<Reni::Syntax const>::EnableDumpFromRef(){ return true; };
+static inline bool Features<Reni::Syntax const>::EnableDumpFromRef(){ return true; };
 
 template<>
 inline String const Features<Reni::Syntax const>::DumpToStringShort(Reni::Syntax const&value){ return value.DumpShort; };

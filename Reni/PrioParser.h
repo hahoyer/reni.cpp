@@ -26,7 +26,7 @@ namespace Reni
         DefaultAssignmentOperator;
 
         static OpenItem const StartItem(Token startToken){ return OpenItem<T>(null, startToken); };
-        char const Relation(String newTokenName, PrioTable prioTable)const{ return prioTable.Relation(newTokenName, _token.Name); };
+        PrioTableConst::Tag const Relation(String newTokenName, PrioTable prioTable)const{ return prioTable.Relation(newTokenName, _token.Name); };
         Ref<T const> const Create(OptRef<T const> right)const{ return _token.Create(_left, right); }
     };
 
@@ -74,10 +74,10 @@ namespace Reni
                 auto topItem = stack->Top;
                 auto relation = topItem.Relation(item.Name, prioTable);
 
-                if (relation != '+')
+                if (relation != PrioTableConst::LeftTag)
                     result = stack->Pop().Create(result);
 
-                if (relation == '-')
+                if (relation == PrioTableConst::RightTag)
                     continue;
 
                 if (item.IsEnd)
