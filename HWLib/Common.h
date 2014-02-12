@@ -37,9 +37,9 @@ namespace HWLib
 
     template <typename T0, typename T1> bool const operator!=(T0 const&x, T1 const&y){ return !(x == y); };
 
-    template <class t> inline t min(t x, t y) { return (x < y) ? x : y; };
-    template <class t> inline t max(t x, t y) { return (x < y) ? y : x; };
-
+    template <class T> inline T min(T x, T y) { return (x < y) ? x : y; };
+    template <class T> inline T max(T x, T y) { return (x < y) ? y : x; };
+    template <class T> inline T sign(T x) { return x < 0 ? -1 : x > 0 ? 1 : 0; };
     int const NotANumber = 0x80000000l;
 
     /* Alignment: get the next number that is not less and a mutilple of 2^AlignBits
