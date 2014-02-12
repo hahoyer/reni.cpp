@@ -12,6 +12,8 @@ namespace _Compiler
         auto tf = MainTokenFactory();
         auto m = PositionManager<Syntax>(s, tf, Token(tf.BeginOfText, SourcePart(s, 0, 0)));
         auto pt = PrioTable::Left({ PrioTableConst::Any });
+        pt = pt.ParenthesisLevel(PrioTableConst::BeginOfText, PrioTableConst::EndOfText);
+
         auto syntax = Parse(m, pt);
     }
 }
