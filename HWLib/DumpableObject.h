@@ -44,8 +44,3 @@ namespace HWLib
 
 };
 
-#define DumpFromRef(type) //template<> static inline bool HWLib::Features<type const>::EnableDumpFromRef(){ return true; }
-#define DetailedDump(type) //template <> static inline String const HWLib::DumpToString(type const&target){ return target.Dump; }
-
-
-

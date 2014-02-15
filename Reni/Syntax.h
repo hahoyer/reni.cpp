@@ -76,15 +76,3 @@ namespace Reni
 
 }
 
-DumpFromRef(Reni::Syntax);
-DumpFromRef(Reni::InfixSyntax);
-DumpFromRef(Reni::PrefixSyntax);
-DumpFromRef(Reni::SuffixSyntax);
-DumpFromRef(Reni::TerminalSyntax);
-
-DetailedDump(Reni::Syntax);
-DetailedDump(Reni::InfixSyntax);
-DetailedDump(Reni::PrefixSyntax);
-DetailedDump(Reni::SuffixSyntax);
-DetailedDump(Reni::TerminalSyntax);
-
