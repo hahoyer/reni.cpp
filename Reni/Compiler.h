@@ -14,7 +14,7 @@ namespace Reni
         using Scanner = Scanner<MainTokenFactory>;
     private:
         class internal;
-        Ref<internal> _internal;
+        Pointer<internal> _internal;
     public:
         Compiler() = delete;
         Compiler(Compiler const&) = delete;
