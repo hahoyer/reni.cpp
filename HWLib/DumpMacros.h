@@ -1,13 +1,13 @@
 #pragma once
 
 //#define vardumpf(x,d) (String(#x) + "=" + ::dump(x,d) + ";")
-#define vardump(x) (HWLib::String(#x) + " = " + HWLib::DumpToString(x) + ";")
+#define vardump(x) (HWLib::String(#x) + " = " + HWLib::Dump(x) + ";")
 //#define varxdump(x) (String(#x) + "=0x" + String(x,16) + ";")
 //#define structdump(x) (String(#x ":\n").print(),(x).dumpprint(),String("\n").print())
 
 #define src HWLib::String::FilePosition(__FILE__,__LINE__,0,__FUNCTION__)
-#define srcprint() _fsrcprint(__FILE__,__LINE__,0,__FUNCTION__)
-#define srcprintln() _fsrcprintln(__FILE__,__LINE__,0,__FUNCTION__)
+#define writeFilePosition _console_ Write(src)
+#define writeLineFilePosition  _console_ WriteLine(src)
 #define dumpo if(Trace) _console_ FunctionTrace
 #define argdump(x) {if(Trace)_console_ Write(vardump(x)+"\n");}
 #define argxdump(x) {if(Trace)_console_ Write(varxdump(x)+"\n");}
