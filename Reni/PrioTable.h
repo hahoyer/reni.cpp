@@ -16,39 +16,42 @@ namespace Reni
         static char const* BeginOfText = "(bot)";
         static char const* Error = "(err)";
 
-        Tag const LeftTag('-');
-        Tag const RightTag('+');
+        Tag const LowerTag('-');
+        Tag const HigherTag('+');
         Tag const MatchTag('=');
         Tag const UnknownTag(' ');
 
         static TagTable const ParenthesisTable =
         { 
-            { RightTag, RightTag,   LeftTag }, 
-            { RightTag,  UnknownTag, LeftTag }, 
-            { UnknownTag, LeftTag,  LeftTag }
+            { HigherTag, HigherTag, LowerTag }, 
+            { HigherTag, UnknownTag, LowerTag }, 
+            { UnknownTag, LowerTag, LowerTag }
         };
 
         static TagTable const ThenElseTable = 
         {
-            { RightTag, LeftTag,    LeftTag  },
-            { RightTag,  UnknownTag, RightTag },
-            { UnknownTag, LeftTag,  RightTag }
+            { HigherTag, LowerTag,  LowerTag  },
+            { HigherTag, UnknownTag, HigherTag },
+            { UnknownTag, LowerTag, HigherTag }
         };
     };
 
-    class PrioTable final
+    class PrioTable final : DumpableObject
     {
+        using baseType = DumpableObject;
         using thisType = PrioTable;
 
     public:
         PrioTable()
         {
+            SetDumpString();
         }
 
         PrioTable(PrioTable const&other)
             : tokens(other.tokens)
             , data(other.data)
         {
+            SetDumpString();
         };
 
     private:
@@ -56,18 +59,20 @@ namespace Reni
             : tokens(tokens)
             , data(AllocData(tokens.size(), [=](int,int){return tag; }))
         {
+            SetDumpString();
         }
 
         PrioTable(Array<String const>const& tokens, PrioTable const&base, PrioTableConst::TagTable const& subTable, int leftCount)
             : tokens(tokens)
             , data(AllocData(tokens.Count, [=](int i, int j){return PrioChar(base, subTable, leftCount, i, j); }))
         {
+            SetDumpString();
         };
     public:
         DefaultAssignmentOperator;
 
         static PrioTable const Left(List<String const> const& tokens){
-            return PrioTable(PrioTableConst::LeftTag, tokens);
+            return PrioTable(PrioTableConst::LowerTag, tokens);
         }
 
         PrioTable const ParenthesisLevel(char const* leftToken, char const* rightToken){
@@ -99,20 +104,41 @@ namespace Reni
             return PrioTable(AllocTokens(leftToken, tokens, rightToken), *this, subTable, leftToken.size());
         }
 
-        PrioTableConst::Tag const Relation(String newTokenName, String recentTokenName)const
+        PrioTableConst::Tag const Relation(String const&newTokenName, String const&recentTokenName)const
         {
             if (newTokenName == PrioTableConst::BeginOfText || recentTokenName == PrioTableConst::EndOfText)
                 return PrioTableConst::UnknownTag;
 
             return data[Index(newTokenName)][Index(recentTokenName)];
         }
+
+        p_function(Array<String>, DumpData)override
+        {
+            auto maxlen = *tokens.Select<int>([](String const&t){return t.Count; })->Max();
+            auto head0 = String().PadLeft(maxlen);
+            head0 += "    ";
+            auto head1 = head0;
+            String result;
+            for (auto i = 0; i < Count; i++)
+            {
+                auto ii = HWLib::Dump(i + 10000);
+                head0 += ii[3];
+                head1 += ii[4];
+                result += tokens[i].PadLeft(maxlen) + " " + ii.Part(3, 2) + " ";
+                for (auto j = 0; j < Count; j++)
+                    result += String(data[i][j].value);
+                result += "\n";
+            }
+            return{ "\n" + head0 + "\n" + head1 + "\n" + result + "\n" };
+        }
+
     private:
         Array<String const> const tokens;
         Array<Array<PrioTableConst::Tag const>const> const data;
 
         p(int, Count){ return tokens.Count; };
 
-        int const Index(String name)const
+        int const Index(String const&name)const
         {
             for (auto i = 0; i < Count; i++)
                 if (tokens[i] == name)
@@ -125,6 +151,7 @@ namespace Reni
             throw String("missing ") + PrioTableConst::Any + " entry in priority table";
 
         }
+
 
         static Array<String const> const AllocTokens(List<String const>const&left, Array<String const> const &tokens, List<String const>const&right)
         {
@@ -158,11 +185,11 @@ namespace Reni
                 switch (sign(leftCount + baseCount - i + j))
                 {
                 case -1:
-                    return PrioTableConst::LeftTag;
+                    return PrioTableConst::LowerTag;
                 case 0:
                     return PrioTableConst::MatchTag;
                 case 1:
-                    return PrioTableConst::RightTag;
+                    return PrioTableConst::HigherTag;
                 default:
                     throw "Unexpected sign";
                 }
@@ -182,6 +209,20 @@ namespace Reni
             };
             return result;
         }
+    };
+
+}
+
+namespace HWLib{
+    template<>
+    struct Ref<Reni::PrioTable const>::traits
+        : public default_ref_traits<Reni::PrioTable const>{
+        static bool const EnableSetDumpString = true;
+    };
+
+    template <class TResult>
+    TResult const* const DynamicConvert(Reni::PrioTable const&){
+        return 0;
     };
 
 }

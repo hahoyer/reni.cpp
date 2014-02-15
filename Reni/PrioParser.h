@@ -26,7 +26,7 @@ namespace Reni
         DefaultAssignmentOperator;
 
         static OpenItem const StartItem(Token startToken){ return OpenItem<T>(null, startToken); };
-        PrioTableConst::Tag const Relation(String newTokenName, PrioTable prioTable)const{ return prioTable.Relation(newTokenName, _token.Name); };
+        PrioTableConst::Tag const Relation(String const&newTokenName, PrioTable const&prioTable)const{ return prioTable.Relation(newTokenName, _token.Name); };
         Ref<T const> const Create(OptRef<T const> right)const{ return _token.Create(_left, right); }
     };
 
@@ -56,35 +56,33 @@ namespace Reni
 
 
     template <typename T>
-    OptRef<T const> const Parse(PositionManager<T>& manager, PrioTable prioTable, Stack<OpenItem<T>>* initialStack = null)
+    OptRef<T const> const Parse(PositionManager<T>& manager, PrioTable prioTable)
     {
-        Stack<OpenItem<T>>* stack = initialStack;
-        if (stack == null)
-        {
-            stack = new Stack<OpenItem<T>>();
-            stack->Push(OpenItem<T>::StartItem(manager.StartToken));
-        }
+        Stack<OpenItem<T>> stack;
+        stack.Push(OpenItem<T>::StartItem(manager.StartToken));
 
         do
         {
-            auto item = manager.Step(stack);
+            auto item = manager.Step(&stack);
             OptRef<T const> result;
             do
             {
-                auto topItem = stack->Top;
+                auto topItem = stack.Top;
                 auto relation = topItem.Relation(item.Name, prioTable);
 
-                if (relation != PrioTableConst::LeftTag)
-                    result = stack->Pop().Create(result);
+                if (relation != PrioTableConst::HigherTag)
+                    result = stack.Pop().Create(result);
 
-                if (relation == PrioTableConst::RightTag)
+                if (relation == PrioTableConst::LowerTag)
                     continue;
 
                 if (item.IsEnd)
+                {
+                    assert(stack.IsEmpty);
                     return result;
-
-                stack->Push(OpenItem<T>(result, item));
-                result = OptRef<T const>();
+                };
+                stack.Push(OpenItem<T>(result, item));
+                result = null;
             } while (result.IsValid);
         } while (true);
     }
