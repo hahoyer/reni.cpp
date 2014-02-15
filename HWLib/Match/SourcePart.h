@@ -10,6 +10,9 @@ namespace HWLib
 
         class SourcePart final : public DumpableObject
         {
+            using baseType = DumpableObject;
+            using thisType = SourcePart;
+
             Ref<Source const> const _source;
             int const _position;
             int const _count;
@@ -22,6 +25,7 @@ namespace HWLib
                 SetDumpString();
             };
 
+            p(bool, IsStart);
             p(bool, IsEnd);
             operator String const()const;
         private:
@@ -32,3 +36,4 @@ namespace HWLib
         };
     }
 }
+

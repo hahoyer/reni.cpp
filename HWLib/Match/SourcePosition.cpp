@@ -83,11 +83,12 @@ p_implementation(SourcePart, String, DumpCurrent)
     return *this;
 }
 
+p_implementation(SourcePart, bool, IsStart){ return _position == 0 && _count == 0; }
 p_implementation(SourcePart, bool, IsEnd){ return _source->IsEnd(_position); }
 
 p_implementation(SourcePart, String, DumpAfterCurrent)
 {
-    if (_source->IsEnd(_position+_count))
+    if (_source->IsEnd(_position + _count))
         return "";
     auto length = min(DumpWidth, _source->Count - _position - _count);
     auto result = _source->Part(_position + _count, length);
