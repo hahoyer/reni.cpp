@@ -4,8 +4,9 @@ namespace Reni
 {
     class Syntax;
 
-    struct TokenClass: public DumpableObject
+    class TokenClass: public DumpableObject
     {
+    public:
         Ref<Syntax const> const Create(Ref<Syntax const>const left, SourcePart part, Ref<Syntax const>const right)const;
         Ref<Syntax const> const Create(Ref<Syntax const>const left, SourcePart part)const;
         Ref<Syntax const> const Create(SourcePart part, Ref<Syntax const>const right)const;

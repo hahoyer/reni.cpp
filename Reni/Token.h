@@ -21,8 +21,9 @@ namespace Reni
 
         DefaultAssignmentOperator;
 
-        p(String, Name){ return Part; };
+        p(String, Name);
         p(bool, IsEnd){ return Part.IsEnd; };
+        p(bool, IsStart){ return Part.IsStart; };
 
         Ref<Syntax const> const Create(OptRef<Syntax const> const left, OptRef<Syntax const> right)const;
 

@@ -1,6 +1,8 @@
 #include "Import.h"
 #include "Token.h"
 #include "TokenClass.h"
+#include "PrioTable.h"
+#include "Syntax.h"
 
 using namespace Reni;
 
@@ -16,6 +18,16 @@ Ref<Syntax const> const Token::Create(OptRef<Syntax const> const left, OptRef<Sy
             return Class.Create(Part, right);
         else
             return Class.Create(Part);
+};
+
+p_implementation(Token, String, Name)
+{
+    if (IsEnd)
+        return PrioTableConst::EndOfText;
+    if (IsStart)
+        return PrioTableConst::BeginOfText;
+    return Part;
+
 };
 
 p_implementation(Token, Array<String>, DumpData){

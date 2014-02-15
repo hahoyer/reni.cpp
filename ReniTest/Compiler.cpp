@@ -15,5 +15,7 @@ namespace _Compiler
         pt = pt.ParenthesisLevel(PrioTableConst::BeginOfText, PrioTableConst::EndOfText);
 
         auto syntax = Parse(m, pt);
+        argdump(syntax);
+
     }
 }
