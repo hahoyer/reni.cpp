@@ -9,16 +9,17 @@
 using namespace HWLib;
 
 template <>
-inline String const HWLib::DumpToString(DumpableObject const&target){ return target.Dump; };
+inline String const HWLib::Dump(int const&target) { return String::Convert(target); };
 template <>
-inline String const HWLib::DumpToString(int const&target) { return String::Convert(target); }
-template <>
-inline String const HWLib::DumpToString(String const&target){ return target.Quote; };
-template <typename T>
-inline String const HWLib::DumpToString<T>(T const&target){ return TypeName(target); };
+inline String const HWLib::Dump(String const&target){ return target.Quote; };
 
-template<typename T>
-String const Box_<T>::DumpToString()const{ return HWLib::DumpToString(_data); }
+template <typename T>
+inline String const HWLib::Dump(T const&target){ 
+    auto dumpable = DynamicConvert<DumpableObject>(target);
+    if (dumpable)
+        return dumpable->Dump;
+    return HWLib::DumpTypeName(target); 
+};
 
 template<typename T>
 class SkipIterator final : public Enumerable<T>::Iterator
@@ -253,6 +254,15 @@ inline int const Enumerable<T>::Count(function<bool(T)> selector)const
 }
 
 template<typename T>
+OptRef<T> const Enumerable<T>::Max() const{
+    OptRef<T> result;
+    for (auto element : *this)
+        if (!result.IsValid || *result < element)
+            result = element;
+    return result;
+};
+
+template<typename T>
 template<typename TResult>
 TResult const Enumerable<T>::Aggregate(TResult start, AggregateFunction<TResult> selector)const
 {
@@ -269,7 +279,7 @@ typename Enumerable<T>::RangeBasedForLoopSimulator const Enumerable<T>::end()con
 }
 
 template <typename T>
-String const HWLib::TypeName(T const& object){
+String const HWLib::DumpTypeName(T const& object){
     auto localObject = &object;
     auto result = std::string(typeid(object).name());
     if (result.substr(0, 6) == "class ")
@@ -284,7 +294,7 @@ String const HWLib::TypeName(T const& object){
 template<typename T>
 template<typename TResult>
 Ref<Enumerable<TResult>> const Enumerable<T>::Select(function<TResult(T)> selector) const{
-    return new Container(new SelectIterator<TResult>(*this, selector));
+    return new Enumerable<TResult>::Container(new SelectIterator<T, TResult>(*this, selector));
 };
 
 template<typename T>
@@ -300,23 +310,34 @@ Ref<Enumerable<TResult>> const Enumerable<T>::Convert() const{
 };
 
 template<typename T>
-p_implementation(Ref<T>, Array<String>, DumpData)
-{
+p_implementation(Ref<T>, Array<String>, DumpData){
     if (!value.get())
         return Array<String>();
-    return Array<String>{ DumpToString<T>(*value) };
+    return Array<String>{ Ref<T>::traits::DumpValue(*value) };
 };
 
 template<typename T>
-p_implementation(Ref<T>, String, DumpHeader)
-{
+p_implementation(Ref<T>, String, DumpHeader){
     if (!value.get())
         return "null";
-    return "{" + Features<T>::DumpToStringShort(*value) + "}";
+    return "Ref";
 };
 
 template<typename T>
-inline String const Features<T>::DumpToStringShort(T const&value){ return TypeName(value); };
+p_implementation(OptRef<T>, String, DumpHeader){
+    if (!value.get())
+        return "null";
+    return "OptRef";
+};
 
+template<typename T>
+inline String const default_ref_traits<T>::DumpValueHeader(T const&value){
+    return HWLib::DumpTypeName(value);
+};
+
+template<typename T>
+inline String const default_ref_traits<T>::DumpValue(T const&value){
+    return HWLib::Dump(value);
+};
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

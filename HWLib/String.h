@@ -28,23 +28,24 @@ namespace HWLib
         p(char const*,      RawData);
         p(Array<char const>, ToArray);
 
-        bool         const BeginsWith (String const &target, int start = 0)const;
-        bool          const Contains   (char const &target, int start = 0)const;
-        Optional<int>  const Find       (String const &target, int start = 0)const;
-        String          const Indent     (bool isLineStart = false, int count = 1, String const &tabString = "    ")const;
-        String           const operator+  (String const& other)const;
-        String            const operator*  (int           count)const;
-        char               const operator[] (int           count)const;
-        bool                const operator== (String const& other)const;
-        void                       operator+= (String const& other){*this = *this + other;};
-        String                const Part(int start, int length)const;
-        String                 const Part(int start)const;
+        bool        const BeginsWith(String const &target, int start = 0)const;
+        bool         const Contains  (char const &target, int start = 0)const;
+        Optional<int> const Find      (String const &target, int start = 0)const;
+        String         const Indent    (bool isLineStart = false, int count = 1, String const &tabString = "    ")const;
+        String          const operator+ (String const& other)const;
+        String           const operator* (int           count)const;
+        char              const operator[](int           count)const;
+        bool               const operator==(String const& other)const;
+        void                      operator+=(String const& other){*this = *this + other;};
+        String               const PadLeft (int count, char padChar= ' ')const;
+        String                const Part   (int start, int length)const;
+        String                 const Part   (int start          )const;
         String                  const Replace(String const& oldValue, String const&newValue)const;
         Ref<Enumerable<String> > const Split(String const& delimiter)const;
 
         static String const FilePosition(String const&fileName, int line, int column, String const&flag);
         static String const Convert(int const&value);
-        static String const Surround(String const&left, Array<String> const&list, String const&right);
+        static String const Surround(String const&left, Array<String> const&list, String const&right, int maxCount = 100);
     };
 
     static String const operator+ (char const*left, String const& right){ return String(left) + right; };

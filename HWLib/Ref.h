@@ -4,39 +4,64 @@
 #include "String.h"
 #include "Common.h"
 #include "DumpableObject.h"
+#include "DumpToString.h"
 using boost::shared_ptr;
 
 namespace HWLib
 {
-
     template<typename T>
-    class Ref : public DumpableObject
+    class Pointer 
     {
-        using baseType = DumpableObject;
-        using thisType = Ref<T>;
+        using thisType = Pointer<T>;
     protected:
         shared_ptr<T> value;
-        Ref() : value() { SetDumpString(); }
-        Ref(shared_ptr<T> value) :value(value){ SetDumpString(); }
+        Pointer() : value() { }
+        Pointer(shared_ptr<T> value) :value(value){ }
     public:
-        Ref(T *value) :value(value){ SetDumpString(); }
-        Ref(T const& value) :value(new T(value)){ SetDumpString(); }
-        Ref(Ref<T> const&value) :value(value.value){ }
-        Ref(OptRef<T> const&value) :value(value.value){ assert(!!this->value.get()); SetDumpString(); }
-        virtual ~Ref(){};
+        Pointer(T *value) :value(value){ }
+        Pointer(Pointer <T> const&value) : value(value.value){ };
+
         DefaultAssignmentOperator;
 
         T const& operator*()const { return value.operator*(); };
         T const* operator->()const { return value.operator->(); };
         T & operator*(){ return value.operator*(); };
         T * operator->(){ return value.operator->(); };
+    };
+
+
+    template<typename T>
+    struct default_ref_traits{
+        static bool const EnableSetDumpString = false;
+        static String const DumpValue(T const&value);
+        static String const DumpValueHeader(T const&value);
+    };
+
+    template<typename T>
+    class Ref : public DumpableObject, public Pointer<T>
+    {
+        using baseType = Pointer<T>;
+        using thisType = Ref<T>;
+    public:
+        struct traits : public default_ref_traits<T>{};
+    protected:
+        Ref() : baseType() { SetDumpString(); }
+        Ref(shared_ptr<T> value) :baseType(value){ SetDumpString(); }
+    public:
+        Ref(T *value) :baseType(value){ SetDumpString(); }
+        Ref(T const& value) :baseType(new T(value)){ SetDumpString(); };
+        Ref(Ref<T> const&value) : baseType(value){ };
+        Ref(OptRef<T> const&value) : baseType(value){ assert(!!this->value.get()); SetDumpString(); }
+
+        virtual ~Ref(){};
+        DefaultAssignmentOperator;
 
         virtual p_function(Array<String>, DumpData)override;
         virtual p_function(String, DumpHeader)override;
     protected:
         void SetDumpString(){
-            if (Features<T>::EnableDumpFromRef())
-                baseType::SetDumpString();
+            if (traits::EnableSetDumpString)
+                DumpableObject::SetDumpString();
         };
     };
 
@@ -56,6 +81,8 @@ namespace HWLib
 
         p(bool, IsValid){ return !!value.get(); }
         DefaultAssignmentOperator;
+
+        virtual p_function(String, DumpHeader)override;
 
         friend OptRef<T> operator||(OptRef<T> left, function<T*()> right)
         {

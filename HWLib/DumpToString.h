@@ -6,18 +6,22 @@ namespace HWLib
     class DumpableObject;
 
     template <typename T>
-    String const DumpToString(T const&target);
-
+    String const Dump(T const&target);
     template <>
-    String const DumpToString(DumpableObject const&target);
+    String const Dump(int const&target);
     template <>
-    String const DumpToString(int const&target);
-    template <>
-    String const DumpToString(String const&target);
-
-
+    String const Dump(String const&target);
     template <typename T>
-    String const TypeName(T const& object);
+    String const DumpTypeName(T const& object);
 
+    template <class TResult, class T>
+    TResult const* const DynamicConvert(T const& x){
+        return dynamic_cast<TResult const*>(&x);
+    };
+
+    template <class TResult>
+    TResult const* const DynamicConvert(int const&){
+        return 0;
+    };
 }
     

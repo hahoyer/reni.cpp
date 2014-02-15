@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "DumpMacros.h"
 #include "DumpToString.h"
+#include "File.h"
 #include "Ref.h"
 #include "TemplateInstances.h"
 
@@ -37,8 +38,8 @@ String const String::FilePosition(String const&fileName, int line, int column, S
 {
     return fileName
         + "("
-        + DumpToString(line)
-        + (column ? String(",") + DumpToString(column - 1) : "")
+        + HWLib::Dump(line)
+        + (column ? String(",") + HWLib::Dump(column - 1) : "")
         + "): "
         + flag
         + ": ";
@@ -103,8 +104,17 @@ String const String::operator* (int count)const
 {
     String result;
     for (auto i = 0; i < count; i++)
-        result = result + *this;
+        result += *this;
     return result;
+}
+
+String const String::PadLeft(int count, char padChar)const
+{
+    if (count == Count)
+        return *this;
+    if (count < Count)
+        return Part(Count - count);
+    return String(padChar) * (count - Count) + *this;
 }
 
 char const String::operator[] (int index)const{ return _data[index]; }
@@ -201,15 +211,16 @@ String const String::Convert(int const&value)
 };
 
 
-String const String::Surround(String const&left, Array<String> const&list, String const&right)
+String const String::Surround(String const&left, Array<String> const&list, String const&right, int maxCount)
 {
     switch (list.Count)
     {
     case 0:
         return left + right;
     case 1:
-        return left + " " + list[0] +" " + right;
+        if (!list[0].Contains('\n') && list[0].Count < maxCount)
+            return left + " " + list[0] +" " + right;
     };
 
-    return "\n" + left + ("\n" + list.Stringify("\n")).Indent() + "\n" + right + "\n";
+    return left + ("\n" + list.Stringify("\n")).Indent() + "\n" + right;
 };

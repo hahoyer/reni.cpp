@@ -7,19 +7,14 @@ namespace HWLib
 {
     class String;
 
-    template <typename T>
-    struct Features{
-        static inline bool EnableDumpFromRef(){ return false; };
-        static String const DumpToStringShort(T const&value);
-    };
-
     class DumpableObjectBase
     {
         mutable std::string dumpString;
         mutable std::string dumpShortString;
     public:
-        virtual_p(String, Dump) = 0;
+        virtual_p(String, DumpLong) = 0;
         virtual_p(String, DumpShort);
+        p(String, Dump);
     protected:
         DumpableObjectBase();
         virtual ~DumpableObjectBase(){};
@@ -42,9 +37,15 @@ namespace HWLib
     public:
         p_function(String, DumpShort)override;
         p(bool, IsInDump){ return isInDump; }
+        p_function(String, DumpLong)override final;
     private:
-        p_function(String, Dump)override final;
         mutable bool isInDump;
     };
 
 };
+
+#define DumpFromRef(type) //template<> static inline bool HWLib::Features<type const>::EnableDumpFromRef(){ return true; }
+#define DetailedDump(type) //template <> static inline String const HWLib::DumpToString(type const&target){ return target.Dump; }
+
+
+

@@ -18,6 +18,7 @@ using namespace HWLib;
 class File::internal
 {
 public:
+    static bool const EnableDumpFromRef = true;
     String _name;
     internal(String const& name) : _name(name){};
 };
@@ -96,7 +97,7 @@ p_mutator_implementation(File, String, Data)
     auto Error = FormatErrorMessage();
     auto e = errno;
 
-    assertx(Handle >= 0, String("Error: ") + DumpToString(e) + ":" + Error);
+    assertx(Handle >= 0, String("Error: ") + HWLib::Dump(e) + ":" + Error);
 
     auto WrLength = _write(Handle, value.RawData, Count);
     assert(WrLength == Count);

@@ -20,12 +20,16 @@ void DumpableObjectBase::SetDumpString()
     if (!_console_ IsDebuggerPresent)
         return;
 
-    dumpString = Dump.RawData;
+    dumpString = DumpLong.RawData;
     dumpShortString = DumpShort.RawData;
 }
 
 p_implementation(DumpableObjectBase, String, DumpShort){
-    return Dump;
+    return DumpLong;
+}
+
+p_implementation(DumpableObjectBase, String, Dump){
+    return DumpLong;
 }
 
 //////////////////////////////////////////////////////
@@ -43,12 +47,12 @@ DumpableObject::DumpableObject(int objectId)
 {};
 
 p_implementation(DumpableObject, String, DumpHeader){
-    auto typeName = HWLib::TypeName(*this);
-    auto objectId = DumpToString(ObjectId);
+    auto typeName = HWLib::DumpTypeName(*this);
+    auto objectId = HWLib::Dump(ObjectId);
     return typeName + ".Id" + objectId;
-}
+};
 
-p_implementation(DumpableObject, String, Dump){
+p_implementation(DumpableObject, String, DumpLong){
     auto result = DumpHeader;
     Array<String> dataResult { "..." };
 
@@ -59,10 +63,10 @@ p_implementation(DumpableObject, String, Dump){
     }
     
     return DumpHeader + String::Surround("{", dataResult, "}");
-}
+};
 
 p_implementation(DumpableObject, String, DumpShort){
     return DumpHeader;
-}
+};
 
 #include "TemplateInstances.h"

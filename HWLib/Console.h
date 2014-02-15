@@ -35,12 +35,12 @@ void Console::FunctionTrace(String const&function, T const& object)
     {
         auto header
             = String(" *** ")
-            + TypeName(object)
+            + DumpTypeName(object)
             + " *** ";
         Write(header);
     }
 
     IndentLevel++;
-    Write(String("[ ") + DumpToString(object) + " ]\n");
+    Write(String("[ ") + HWLib::Dump(object) + " ]\n");
 };
 
