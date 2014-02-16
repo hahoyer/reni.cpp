@@ -1,12 +1,13 @@
 #pragma once
 
 namespace HWLang{
-    template <class Token, class TokenFactory, class Scanner>
+    template <class Token, class TTokenFactory, class Scanner>
     class ScannerInstance final: public Enumerable<Token>::Iterator, public DumpableObject{
         using thisType = ScannerInstance;
         using baseType = typename Enumerable<Token>::Iterator;
     public:
         using TokenClass = typename Token::TokenClass;
+        using TokenFactory = typename TTokenFactory;
     private:
         SourcePosition position;
         bool endTokenReturned;

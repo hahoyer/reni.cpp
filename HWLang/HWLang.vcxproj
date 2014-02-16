@@ -11,8 +11,8 @@
     <ClInclude Include="OpenItem.h" />
     <ClInclude Include="PrioParser.h" />
     <ClInclude Include="PrioTable.h" />
-    <ClInclude Include="Scanner.h" />
-    <ClInclude Include="Scanner.instance.h" />
+    <ClInclude Include="ScannerInstance.h" />
+    <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="TokenClass.h" />
     <ClInclude Include="TokenFactory.h" />
