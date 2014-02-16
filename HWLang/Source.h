@@ -33,6 +33,6 @@ namespace HWLang
         bool const BeginsWith(int position, String value)const;
 
     private:
-        virtual p_function(Array<String>, DumpData)override;
+        override_p_function(Array<String>, DumpData);
     };
 }

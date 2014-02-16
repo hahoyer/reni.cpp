@@ -33,14 +33,14 @@ namespace HWLang{
         p(bool, IsStart){ return Part.IsStart; };
 
     private:
-        virtual p_function(Array<String>, DumpData)override{
+        override_p_function(Array<String>, DumpData){
             return{
                 nd(Class),
                 nd(Part)
             };
         };
-        virtual p_function(String, DumpShort)override{
-            return baseType::get_DumpShort() + "{" + Name + "}";
+        override_p_function(String, DumpShort){
+            return base_p_name(DumpShort) + "{" + Name + "}";
         };
     };
 }   

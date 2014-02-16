@@ -21,10 +21,10 @@ namespace HWLang{
 
         DefaultAssignmentOperator;
 
-        p_function(bool, IsValid) override{ return !endTokenReturned; };
+        override_p_function(bool, IsValid){ return !endTokenReturned; };
         Token const Step() override;
     private:
         Token const Step(int count, TokenClass const& tokenClass);
-        virtual p_function(Array<String>, DumpData)override;
+        override_p_function(Array<String>, DumpData);
     };
 }

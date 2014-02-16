@@ -67,7 +67,7 @@ p_implementation(SourcePosition, String, DumpBeforeCurrent)
     return result;
 }
 
-p_implementation(SourcePosition, Array<String>, DumpData)
+override_p_implementation(SourcePosition, Array<String>, DumpData)
 {
     auto result = (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent).Quote;
     return{ result };
@@ -105,8 +105,7 @@ p_implementation(SourcePart, String, DumpBeforeCurrent)
     return result;
 }
 
-p_implementation(SourcePart, Array<String>, DumpData)
-{
+override_p_implementation(SourcePart, Array<String>, DumpData){
     auto result = (DumpBeforeCurrent + "[" + DumpCurrent + "]" + DumpAfterCurrent).Quote;
     return{ result };
 }

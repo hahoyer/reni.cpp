@@ -56,7 +56,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
 template <class Token, class TokenFactory, class Scanner>
 Array<String> const
 ScannerInstance<Token, TokenFactory, Scanner>
-::get_DumpData()const{
+::virtual_p_name(DumpData)()const{
     return{
         nd(position)
     };

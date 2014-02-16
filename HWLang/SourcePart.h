@@ -27,7 +27,7 @@ namespace HWLang{
         p(bool, IsEnd);
         operator String const()const;
     private:
-        virtual p_function(Array<String>, DumpData)override;
+        override_p_function(Array<String>, DumpData);
         p(String, DumpCurrent);
         p(String, DumpAfterCurrent);
         p(String, DumpBeforeCurrent);
