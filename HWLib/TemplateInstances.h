@@ -9,6 +9,8 @@
 using namespace HWLib;
 
 inline String const HWLib::Dump(int target) { return String::Convert(target); };
+
+template <>
 inline String const HWLib::Dump(char const* target){ return Dump(String(target)); };
 
 template <>
@@ -25,6 +27,11 @@ inline String const HWLib::Dump(T const&target){
 template <typename T>
 inline String const HWLib::Dump(T const*target){
     return target? HWLib::Dump(*target): "null";
+};
+
+template <typename T>
+inline String const HWLib::Dump(T*target){
+    return target ? HWLib::Dump(*target) : "null";
 };
 
 template<typename T>
