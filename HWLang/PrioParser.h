@@ -8,7 +8,7 @@ namespace HWLang{
         using TokenClass = Syntax::TokenClass;
         using Token = Token<TokenClass>;
         Stack<OpenItem<Syntax, Token>> stack;
-        stack.Push(OpenItem<Syntax, Token>(null, scanner.Step()));
+        stack.Push(OpenItem<Syntax, Token>(null, scanner.Step(), false));
 
         do{
             auto item = scanner.Step();
@@ -27,7 +27,7 @@ namespace HWLang{
                     a_if_(stack.IsEmpty);
                     return result;
                 };
-                stack.Push(OpenItem<Syntax, Token>(result, item));
+                stack.Push(OpenItem<Syntax, Token>(result, item, relation == PrioTableConst::MatchTag));
                 result = null;
             } while (result.IsValid);
         } while (true);
