@@ -108,13 +108,22 @@ String const String::operator* (int count)const
     return result;
 }
 
-String const String::PadLeft(int count, char padChar)const
+String const String::CastLeft(int count, char padChar)const
 {
     if (count == Count)
         return *this;
     if (count < Count)
         return Part(Count - count);
     return String(padChar) * (count - Count) + *this;
+}
+
+String const String::CastRight(int count, char padChar)const
+{
+    if (count == Count)
+        return *this;
+    if (count < Count)
+        return Part(0,count);
+    return *this + String(padChar) * (count - Count);
 }
 
 char const String::operator[] (int index)const{ return _data[index]; }
