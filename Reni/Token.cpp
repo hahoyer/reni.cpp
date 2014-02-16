@@ -1,4 +1,5 @@
 #include "Import.h"
+#if 0
 #include "Token.h"
 #include "TokenClass.h"
 #include "PrioTable.h"
@@ -41,3 +42,4 @@ p_implementation(Token, Array<String>, DumpData){
 p_implementation(Token, String, DumpShort){
     return baseType::get_DumpShort() + "{"+Name + "}";
 };
+#endif

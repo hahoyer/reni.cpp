@@ -13,9 +13,3 @@ p_implementation(Compiler, Ref<Source const>, source)
 {
     return _internal->sourceCache.Value;
 }
-
-
-p_implementation(Compiler, Ref<Compiler::Scanner const>, scanner)
-{
-    return _internal->scannerCache.Value;
-}

@@ -4,16 +4,15 @@ namespace Reni
 {
     class TokenClass;
 
-    class MainTokenFactory final
+    class MainTokenFactory 
     {
     public:
-        MainTokenFactory();
-        TokenClass  const& BeginOfText;
-        TokenClass const& EndOfText;
-        TokenClass const& Number;
-        TokenClass const& Text;
-        TokenClass const& GetTokenClass(String const&name)const;
-        TokenClass const& GetError(String const&name)const;
+        static TokenClass const& Start;
+        static TokenClass const& End;
+        static TokenClass const& Number;
+        static TokenClass const& Text;
+        static TokenClass const& GetTokenClass(String const&name);
+        static TokenClass const& GetError(String const&name);
     };
 
 }

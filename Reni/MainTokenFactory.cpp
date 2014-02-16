@@ -1,12 +1,15 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
-#include "TokenClass.h"
 
+
+#if 0
 using namespace Reni;
 
-static TokenClass t1;
+template<class TClass>
+static TClass t1;
 
-MainTokenFactory::MainTokenFactory()
+template<class TClass>
+TokenFactory::TokenFactory()
 : EndOfText(t1)
 , Number(t1)
 , Text(t1)
@@ -14,14 +17,17 @@ MainTokenFactory::MainTokenFactory()
 {};
 
 
-TokenClass const & MainTokenFactory::GetTokenClass(String const &)const
+template<class TClass>
+TClass const & TokenFactory::GetTokenClass(String const &)const
 {
     return t1;
 };
 
-TokenClass const& MainTokenFactory::GetError(String const&)const
+template<class TClass>
+TClass const& TokenFactory::GetError(String const&)const
 {
     return t1;
 };
 
 
+#endif

@@ -4,6 +4,8 @@
 static bool Trace = true;
 
 using namespace Reni;
+using namespace HWLang;
+
 
 Optional<int> const ExceptionGuard(SourcePosition const&position, Pattern pattern)
 {
@@ -13,12 +15,12 @@ Optional<int> const ExceptionGuard(SourcePosition const&position, Pattern patter
     }
     catch (Exception<String> exception)
     {
-        throw ReniScanner::Error(exception.Position - position, exception.Error);
+        throw Scanner::Error(exception.Position - position, exception.Error);
     }
 };
 
 
-struct ReniScanner::internal
+struct Scanner::internal
 {
     Pattern const _any;
     Pattern const _whiteSpaces;
@@ -27,10 +29,10 @@ struct ReniScanner::internal
     
     static internal const*const Create()
     {
-        auto invalidLineComment = Match::Error(String("EOFInLineComment"));
-        auto invalidComment = Match::Error(String("EOFInComment"));
-        auto invalidTextEnd = Match::Error(String("invalidTextEnd"));
-        auto invalidCharacter = Match::Error(String("invalidCharacter"));
+        auto invalidLineComment = HWLang::Error(String("EOFInLineComment"));
+        auto invalidComment = HWLang::Error(String("EOFInComment"));
+        auto invalidTextEnd = HWLang::Error(String("invalidTextEnd"));
+        auto invalidCharacter = HWLang::Error(String("invalidCharacter"));
         auto alpha = Letter.Else("_");
         auto symbol1 = AnyChar("({[)}];,");
         auto textFrame = AnyChar("'\"");
@@ -42,11 +44,11 @@ struct ReniScanner::internal
 
         auto any = symbol1.Else(identifier);
 
-        auto whiteSpaces = Match::WhiteSpace
+        auto whiteSpaces = HWLang::WhiteSpace
             .Else("#"
                 + ("#" + AnyChar("\n\r").Find)
-                  .Else("(" + Match::WhiteSpace + (Match::WhiteSpace + ")#").Find)
-                  .Else("(" + any.Value([](String id){return (Match::WhiteSpace + id + ")#").Find; }))
+                  .Else("(" + HWLang::WhiteSpace + (HWLang::WhiteSpace + ")#").Find)
+                  .Else("(" + any.Value([](String id){return (HWLang::WhiteSpace + id + ")#").Find; }))
                   .Else("(" + End.Find + invalidComment)
                   .Else("#" + End.Find + invalidLineComment)
                   .Else(invalidCharacter)
@@ -81,13 +83,13 @@ struct ReniScanner::internal
     };
 };
 
-ReniScanner::ReniScanner()
+Scanner::Scanner()
 : _internal(internal::Create())
 {};
 
-static ReniScanner instance;
+static Scanner instance;
 
-int const ReniScanner::WhiteSpace(SourcePosition const&position)
+int const Scanner::WhiteSpace(SourcePosition const&position)
 {
     auto result = ExceptionGuard(position, instance._internal->_whiteSpaces);
     assert(result.IsValid);
@@ -95,7 +97,7 @@ int const ReniScanner::WhiteSpace(SourcePosition const&position)
 };
 
 
-Optional<int> const ReniScanner::Number(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_number); };
-Optional<int> const ReniScanner::Any(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_any); };
-Optional<int> const ReniScanner::Text(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_text); };
+Optional<int> const Scanner::Number(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_number); };
+Optional<int> const Scanner::Any(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_any); };
+Optional<int> const Scanner::Text(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_text); };
 

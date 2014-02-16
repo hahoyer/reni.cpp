@@ -1,17 +1,13 @@
 #pragma once
 
-#include "Scanner.h"
 #include "ReniScanner.h"
-#include "Token.h"
 
-using namespace HWLib::Match;
+using namespace HWLang;
 
 namespace Reni
 {
     class Compiler final
     {
-    public:
-        using Scanner = Scanner<MainTokenFactory>;
     private:
         class internal;
         Pointer<internal> _internal;
@@ -21,6 +17,5 @@ namespace Reni
         Compiler(String const&fileName);
     
         p(Ref<Source const>, source);
-        p(Ref<Scanner const>, scanner);
     };
 }

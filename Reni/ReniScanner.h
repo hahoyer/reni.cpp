@@ -2,13 +2,12 @@
 
 namespace Reni
 {
-    class ReniScanner final
+    class Scanner final
     {
         class internal;
         Pointer<internal const> const _internal;
-
     public:
-        ReniScanner();
+        Scanner();
 
         static int const WhiteSpace(SourcePosition const&position);
         static Optional<int> const Number(SourcePosition const&position);
@@ -26,6 +25,4 @@ namespace Reni
             String const Id;
         };
     };
-
 }
-

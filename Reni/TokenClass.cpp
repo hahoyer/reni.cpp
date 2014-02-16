@@ -1,4 +1,6 @@
+
 #include "Import.h"
+#if 0
 #include "TokenClass.h"
 #include "Syntax.h"
 
@@ -26,3 +28,4 @@ p_implementation(TokenClass, Array<String>, DumpData){
     return List<String>{};
 };
 
+#endif
