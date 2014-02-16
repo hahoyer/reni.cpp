@@ -19,13 +19,21 @@ namespace HWLib
     String const DumpTypeName(T const& object);
 
     template <class TResult, class T>
-    TResult const* const DynamicConvert(T const& x){
-        return dynamic_cast<TResult const*>(&x);
+    TResult const* const DynamicConvert(T const& object){
+        return dynamic_cast<TResult const*>(&object);
+    };
+
+    template <class T>
+    class Optional; 
+
+    template <class TResult, class T>
+    TResult const* const DynamicConvert(Optional<T> const&){
+        return null;
     };
 
     template <class TResult>
     TResult const* const DynamicConvert(int const&){
-        return 0;
+        return null;
     };
 }
     

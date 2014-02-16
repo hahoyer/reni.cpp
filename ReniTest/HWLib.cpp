@@ -12,7 +12,7 @@ namespace _File
         Compiler c = __FILE__;
         auto s = c.source;
         auto t = s->Text;
-        a_if(t.Part(0, 8) == "#include", t);
+        a_is(t.Part(0, 8), == ,"#include");
     };
 }
 
@@ -25,53 +25,53 @@ namespace _String
 
     void Find()
     {
-        String a_if = "Hallo";
-        auto b = a_if.Find("a_if");
-        a_if_(b == 1);
-        auto c = a_if.Find("c");
+        String a = "Hallo";
+        auto b = a.Find("a");
+        a_is(b, ==, 1);
+        auto c = a.Find("c");
         a_if_(!c.IsValid);
     }
 
     void Part()
     {
-        String a_if = "Hallo";
-        String b = a_if.Part(1,2);
-        a_if(b == "al", nd(b));
+        String a = "Hallo";
+        String b = a.Part(1,2);
+        a_is(b, ==, "al");
     }
 
     void Plus()
     {
-        String a_if = "Hallo";
-        String b = a_if + a_if;
-        a_if_(b == "HalloHallo");
+        String a = "Hallo";
+        String b = a + a;
+        a_is(b, ==, "HalloHallo");
     }
 
     void Split()
     {
-        String a_if = "A B C";
-        auto b = a_if.Split(" ")->ToArray;
-        a_if(b.Count == 3, nd(b.Count));
-        a_if_(b[0] == "A");
+        String a = "A B C";
+        auto b = a.Split(" ")->ToArray;
+        a_is(b.Count, ==, 3);
+        a_is(b[0], ==, "A");
 
     }
 
     void Stringify()
     {
-        String a_if = "A B C";
-        auto split = a_if.Split(" ")->ToArray;
-        a_if(split.Count == 3, nd(split.Count));
+        String a = "A B C";
+        auto split = a.Split(" ")->ToArray;
+        a_is(split.Count, ==, 3);
 
         auto b = split.Stringify(".");
-        a_if_(b == "A.B.C");
+        a_is(b, ==, "A.B.C");
 
     }
 
     void Replace()
     {
-        String a_if = "A B C";
-        auto b = a_if.Replace(" ", ".");
-        a_if(b.Count == a_if.Count, nd(b.Count));
-        a_if_(b == "A.B.C");
+        String a = "A B C";
+        auto b = a.Replace(" ", ".");
+        a_is(b.Count, ==, a.Count);
+        a_is(b, ==, "A.B.C");
 
     }
 
@@ -203,17 +203,17 @@ namespace _ValueCache
         _value = 12;
         ValueCache<int>c = ([&]{return _value; });
         c.IsValid = true;
-        a_if_(*c.Value == 12);
+        a_is(*c.Value, ==, 12);
         _value = 13;
-        a_if_(*c.Value == 12);
+        a_is(*c.Value, == , 12);
         c.IsValid = true;
-        a_if_(*c.Value == 12);
+        a_is(*c.Value, == , 12);
         c.IsValid = false;
         c.IsValid = true;
-        a_if_(*c.Value == 13);
+        a_is(*c.Value, == , 13);
         _value = 14;
         c.IsValid = false;
-        a_if(*c.Value == 14, nd(*c.Value));
+        a_is(*c.Value ,==, 14);
     }
 
     void RunAll()
