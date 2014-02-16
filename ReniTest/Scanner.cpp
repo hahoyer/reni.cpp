@@ -19,7 +19,7 @@ void _Scanner::SimpleAndDetailed()
     auto s = Source::FromFile(file.Name);
     auto sc = _Compiler::ScannerInstance(s);
 
-    auto start = sc.Step().Class;
+    _Compiler::TokenClass const& start = sc.Step().Class;
     a_is(&start, == , &_Compiler::ScannerInstance::TokenFactory::Start);
     String t = sc.Step().Part;
     a_is(t, ==, "asd");
@@ -32,7 +32,7 @@ void Test(String text, Array<String> results)
     auto ss = sc.ToArray();
     auto i = 0;
     for (; i < results.Count && i < ss.Count; i++)
-        a_is(results[i],==,ss[i].Part);
+        a_if(results[i] == ss[i].Part, nd(i) + nd(ss[i].Part) + nd(results[i]));
     for (; i < results.Count; i++)
         a_fail(nd(i) + nd(results[i]));
     for (; i < ss.Count; i++)
@@ -43,6 +43,7 @@ void _Scanner::Simple()
 {
     Test(" asd \"cc\" 1234 ",
     {
+        "",
         "asd",
         "\"cc\"",
         "1234",
@@ -54,6 +55,7 @@ void _Scanner::Text()
 {
     Test(" \"a_if\"\" b\" '\" ' ",
     {
+        "",
         "\"a_if\"\" b\"",
         "'\" '",
         ""
@@ -73,6 +75,7 @@ abc#( comment
 )"
 ,
 {
+        "",
         "12",
         "asdf",
         "abc",
@@ -89,6 +92,7 @@ asdf
 ## invalid line comment)"
 ,
 {
+        "",
         "12",
         "asdf",
         "\n## invalid line comment",
@@ -105,6 +109,7 @@ asdf
 )"
 ,
 {
+        "",
         "12",
         "asdf",
         "\n#( invalid comment\n",

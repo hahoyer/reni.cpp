@@ -3,9 +3,9 @@
 
 using namespace _Compiler;
 
-static TokenClass theOnlyInstance;
+static TokenClass const theOnlyInstance;
 
-TokenClass const & TokenFactory::End = theOnlyInstance;
+TokenClass const & TokenFactory::End =(theOnlyInstance);
 TokenClass const & TokenFactory::Number(theOnlyInstance);
 TokenClass const & TokenFactory::Text(theOnlyInstance);
 TokenClass const & TokenFactory::Start(theOnlyInstance);

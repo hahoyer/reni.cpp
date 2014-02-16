@@ -11,17 +11,28 @@ using namespace HWLang::PrioTableConst;
 
 namespace _Compiler
 {
-    void RunAll()
+    void BaseStructure()
     {
-        Ref<Source const> s = new Source(Source::FromText("asdf"));
+        String text = "asdf";
+        Ref<Source const> s = new Source(Source::FromText(text));
 
         auto pt = PrioTable::Left({ Any });
         pt = pt.ParenthesisLevel(Start, PrioTableConst::End);
 
         auto sc = _Compiler::ScannerInstance(s);
 
-        auto syntax = Parse<_Compiler::Syntax<_Compiler::TokenClass>>(pt, sc);
-        d(syntax);
+        auto syntax = Parse<Syntax<TokenClass>>(pt, sc);
+        
+        a_if(syntax           .IsValid, nd(syntax));
+        a_if(!syntax->left     .IsValid, nd(syntax));
+        a_if(syntax->right      .IsValid, nd(syntax));
+        a_if(!syntax->right->left.IsValid, nd(syntax));
+        a_if(!syntax->right->right.IsValid, nd(syntax));
+        a_is(syntax->right->name, ==, text);
+    }
 
+    void RunAll()
+    {
+        BaseStructure();
     }
 }
