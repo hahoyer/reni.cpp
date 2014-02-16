@@ -12,6 +12,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReniTest", "ReniTest\ReniTe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HWLib", "HWLib\HWLib.vcxproj", "{90A37787-7696-487C-BF22-8987CE007CAD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HWLang", "HWLang\HWLang.vcxproj", "{77C95811-31DB-44F1-A4A9-A9B5C29AAA42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -30,6 +32,10 @@ Global
 		{90A37787-7696-487C-BF22-8987CE007CAD}.Debug|Win32.Build.0 = Debug|Win32
 		{90A37787-7696-487C-BF22-8987CE007CAD}.Release|Win32.ActiveCfg = Release|Win32
 		{90A37787-7696-487C-BF22-8987CE007CAD}.Release|Win32.Build.0 = Release|Win32
+		{77C95811-31DB-44F1-A4A9-A9B5C29AAA42}.Debug|Win32.ActiveCfg = Debug|Win32
+		{77C95811-31DB-44F1-A4A9-A9B5C29AAA42}.Debug|Win32.Build.0 = Debug|Win32
+		{77C95811-31DB-44F1-A4A9-A9B5C29AAA42}.Release|Win32.ActiveCfg = Release|Win32
+		{77C95811-31DB-44F1-A4A9-A9B5C29AAA42}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
