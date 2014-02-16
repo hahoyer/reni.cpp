@@ -4,6 +4,9 @@
     <ProjectGuid>{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HWLang\HWLang.vcxproj">
+      <Project>{77c95811-31db-44f1-a4a9-a9b5c29aaa42}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\HWLib\HWLib.vcxproj">
       <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
     </ProjectReference>
@@ -22,14 +25,10 @@
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="Admin\Export.Test.h" />
     <ClInclude Include="Syntax.h" />
-    <ClInclude Include="TokenClass.h" />
     <ClInclude Include="Token.h" />
-    <ClInclude Include="PrioTable.h" />
-    <ClInclude Include="PrioParser.h" />
     <ClInclude Include="ReniScanner.h" />
-    <ClInclude Include="Scanner.instance.h" />
     <ClInclude Include="MainTokenFactory.h" />
-    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="TokenClass.h" />
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>

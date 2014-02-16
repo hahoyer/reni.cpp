@@ -10,11 +10,15 @@
     <ClCompile Include="HWLib.cpp" />
     <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="CompilerTest.cpp" />
+    <ClCompile Include="SimpleTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Reni.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HWLang\HWLang.vcxproj">
+      <Project>{77c95811-31db-44f1-a4a9-a9b5c29aaa42}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\HWLib\HWLib.vcxproj">
       <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
     </ProjectReference>
@@ -25,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="HWLib.h" />
     <ClInclude Include="CompilerTest.h" />
+    <ClInclude Include="SimpleTokenFactory.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Reni.h" />
     <ClInclude Include="Main.h" />

@@ -7,4 +7,4 @@
 #include "../../Reni/Admin/Export.Test.h"
 
 using namespace HWLib;
-using namespace HWLib::Match;
+using namespace HWLang;
