@@ -11,7 +11,7 @@
     <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="CompilerTest.cpp" />
     <ClCompile Include="SimpleTokenFactory.cpp" />
-    <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="HWLang.cpp" />
     <ClCompile Include="Reni.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -30,7 +30,7 @@
     <ClInclude Include="HWLib.h" />
     <ClInclude Include="CompilerTest.h" />
     <ClInclude Include="SimpleTokenFactory.h" />
-    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="HWLang.h" />
     <ClInclude Include="Reni.h" />
     <ClInclude Include="Main.h" />
   </ItemGroup>

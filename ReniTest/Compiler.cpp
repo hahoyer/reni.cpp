@@ -9,9 +9,9 @@ using namespace HWLang;
 using namespace HWLang::PrioTableConst;
 
 
-namespace _Compiler
+namespace _HWLang
 {
-    void BaseStructure()
+    void ParserBaseStructure()
     {
         String text = "asdf";
         Ref<Source const> s = new Source(Source::FromText(text));
@@ -19,7 +19,7 @@ namespace _Compiler
         auto pt = PrioTable::Left({ Any });
         pt = pt.ParenthesisLevel(Start, PrioTableConst::End);
 
-        auto sc = _Compiler::ScannerInstance(s);
+        auto sc = ScannerInstance(s);
 
         auto syntax = Parse<Syntax<TokenClass>>(pt, sc);
         
@@ -29,10 +29,5 @@ namespace _Compiler
         a_if(!syntax->right->left.IsValid, nd(syntax));
         a_if(!syntax->right->right.IsValid, nd(syntax));
         a_is(syntax->right->name, ==, text);
-    }
-
-    void RunAll()
-    {
-        BaseStructure();
     }
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace _Scanner
+namespace _HWLang
 {
     void Pattern();
     void SimpleAndDetailed();
@@ -9,6 +9,7 @@ namespace _Scanner
     void Comment();
     void LineCommentError();
     void CommentError();
+    void ParserBaseStructure();
 
     inline void RunAll()
     {
@@ -19,5 +20,6 @@ namespace _Scanner
         Comment();
         LineCommentError();
         CommentError();
+        ParserBaseStructure();
     }
 }

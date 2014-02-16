@@ -1,7 +1,7 @@
 #include "Import.h"
 #include "SimpleTokenFactory.h"
 
-using namespace _Compiler;
+using namespace _HWLang;
 
 static TokenClass const theOnlyInstance;
 

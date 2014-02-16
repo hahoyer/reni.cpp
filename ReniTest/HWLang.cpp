@@ -1,5 +1,5 @@
 #include "Import.h"
-#include "Scanner.h"
+#include "HWLang.h"
 
 #include "Reni.h"
 #include "SimpleTokenFactory.h"
@@ -7,20 +7,19 @@
 static bool Trace = true;
 
 using namespace HWLang;
-using namespace _Scanner;
-using namespace _Compiler;
+using namespace _HWLang;
 
 
-void _Scanner::SimpleAndDetailed()
+void _HWLang::SimpleAndDetailed()
 {
     auto file = File("1.reni");
     file.Data = " asd f";
     _console_ WriteLine(String::FilePosition(file.FullName, 1, 3, ""));
     auto s = Source::FromFile(file.Name);
-    auto sc = _Compiler::ScannerInstance(s);
+    auto sc = ScannerInstance(s);
 
-    _Compiler::TokenClass const& start = sc.Step().Class;
-    a_is(&start, == , &_Compiler::ScannerInstance::TokenFactory::Start);
+    TokenClass const& start = sc.Step().Class;
+    a_is(&start, == , &ScannerInstance::TokenFactory::Start);
     String t = sc.Step().Part;
     a_is(t, ==, "asd");
 }
@@ -28,7 +27,7 @@ void _Scanner::SimpleAndDetailed()
 void Test(String text, Array<String> results)
 {
     auto s = Source::FromText(text);
-    auto sc = _Compiler::ScannerInstance(s);
+    auto sc = _HWLang::ScannerInstance(s);
     auto ss = sc.ToArray();
     auto i = 0;
     for (; i < results.Count && i < ss.Count; i++)
@@ -39,7 +38,7 @@ void Test(String text, Array<String> results)
         a_fail(nd(i) + nd(ss[i].Part));
 }
 
-void _Scanner::Simple()
+void _HWLang::Simple()
 {
     Test(" asd \"cc\" 1234 ",
     {
@@ -51,7 +50,7 @@ void _Scanner::Simple()
     });
 }
 
-void _Scanner::Text()
+void _HWLang::Text()
 {
     Test(" \"a_if\"\" b\" '\" ' ",
     {
@@ -62,7 +61,7 @@ void _Scanner::Text()
     });
 }
 
-void _Scanner::Comment()
+void _HWLang::Comment()
 {
     Test(R"(
 12## line comment
@@ -84,7 +83,7 @@ abc#( comment
     });
 };
 
-void _Scanner::LineCommentError()
+void _HWLang::LineCommentError()
 {
     Test(R"(
 12## line comment
@@ -100,7 +99,7 @@ asdf
     });
 };
 
-void _Scanner::CommentError()
+void _HWLang::CommentError()
 {
     Test(R"(
 12## line comment
@@ -117,7 +116,7 @@ asdf
     });
 };
 
-void _Scanner::Pattern()
+void _HWLang::Pattern()
 {
     auto s = Source::FromText("asdf") + 0;
 

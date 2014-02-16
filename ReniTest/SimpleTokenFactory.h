@@ -1,6 +1,6 @@
 #pragma once
 
-namespace _Compiler
+namespace _HWLang
 {
     template<class TTokenClass>
     class Syntax : public DumpableObject
