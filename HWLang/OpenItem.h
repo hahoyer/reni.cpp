@@ -10,11 +10,13 @@ namespace HWLang{
 
         OptRef<Syntax const> const left;
         Token const token;
+        bool const isMatch;
     public:
         OpenItem() = delete;
-        OpenItem(OptRef<Syntax const> left, Token token)
+        OpenItem(OptRef<Syntax const> left, Token token, bool isMatch)
             : left(left)
             , token(token)
+            , isMatch(isMatch)
         {}
 
         DefaultAssignmentOperator;
@@ -30,14 +32,14 @@ namespace HWLang{
         Ref<Syntax const> const CreateSyntax(OptRef<Syntax const> right)const{
             if (left.IsValid)
                 if (right.IsValid)
-                    return token.Class.CreateSyntax(left, token.Part, right);
+                    return token.Class.CreateSyntax(left, token.Part, right, isMatch);
                 else
-                    return token.Class.CreateSyntax(left, token.Part);
+                    return token.Class.CreateSyntax(left, token.Part, isMatch);
             else
                 if (right.IsValid)
-                    return token.Class.CreateSyntax(token.Part, right);
+                    return token.Class.CreateSyntax(token.Part, right, isMatch);
                 else
-                    return token.Class.CreateSyntax(token.Part);
+                    return token.Class.CreateSyntax(token.Part, isMatch);
         }
     };
 }
