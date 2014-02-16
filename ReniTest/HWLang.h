@@ -10,6 +10,7 @@ namespace _HWLang
     void LineCommentError();
     void CommentError();
     void ParserBaseStructure();
+    void Parenthesis();
 
     inline void RunAll()
     {
@@ -21,5 +22,6 @@ namespace _HWLang
         LineCommentError();
         CommentError();
         ParserBaseStructure();
+        Parenthesis();
     }
 }

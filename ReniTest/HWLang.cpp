@@ -19,8 +19,7 @@ void _HWLang::SimpleAndDetailed()
     auto file = File("1.reni");
     file.Data = " asd f";
     _console_ WriteLine(String::FilePosition(file.FullName, 1, 3, ""));
-    auto s = Source::FromFile(file.Name);
-    auto sc = ScannerInstance(s);
+    auto sc = ScannerInstance(file);
 
     TokenClass const& start = sc.Step().Class;
     a_is(&start, == , &TokenFactory::Start);
@@ -28,13 +27,12 @@ void _HWLang::SimpleAndDetailed()
     a_is(t, ==, "asd");
 }
 
-void Test(String text, Array<String> results)
+void Test(String const&text, Array<String> results)
 {
     using TokenFactory = SimpleTokenFactory;
     using ScannerInstance = TokenFactory::ScannerInstance;
 
-    auto s = Source::FromText(text);
-    auto sc = ScannerInstance(s);
+    auto sc = ScannerInstance(text);
     auto ss = sc.ToArray();
     auto i = 0;
     for (; i < results.Count && i < ss.Count; i++)
