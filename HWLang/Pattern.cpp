@@ -66,8 +66,8 @@ public:
         , _minCount(minCount)
         , _maxCount(maxCount)
     {
-        assert(_minCount >= 0);
-        assert(!_maxCount.IsValid || _minCount <= _maxCount);
+        a_is(_minCount, >=, 0);
+        a_if_(!_maxCount.IsValid || _minCount <= _maxCount);
     }
 
 private:

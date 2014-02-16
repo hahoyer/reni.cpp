@@ -35,8 +35,8 @@ namespace HWLang{
     private:
         virtual p_function(Array<String>, DumpData)override{
             return{
-                vardump(Class),
-                vardump(Part)
+                nd(Class),
+                nd(Part)
             };
         };
         virtual p_function(String, DumpShort)override{

@@ -33,8 +33,8 @@ ScannerInstance<Token, TokenFactory, Scanner>
         if (count.IsValid)
             return Step(count, TokenFactory::GetTokenClass(position.Part(count)));
 
-        mdump();
-        assert_fail;
+        md_
+        a_fail_;
         errorabort(Token const&);
     }
     catch (Scanner::Error const& error){
@@ -58,6 +58,6 @@ Array<String> const
 ScannerInstance<Token, TokenFactory, Scanner>
 ::get_DumpData()const{
     return{
-        vardump(position)
+        nd(position)
     };
 }

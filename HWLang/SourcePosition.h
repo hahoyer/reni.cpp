@@ -37,7 +37,7 @@ namespace HWLang
 
         int const operator-(SourcePosition const&other)const
         {
-            assert(&*_source == &*other._source);
+            a_is(&*_source, ==, &*other._source);
             return _position - other._position;
         }
 

@@ -24,7 +24,7 @@ namespace HWLang{
                     continue;
 
                 if (item.IsEnd){
-                    assert(stack.IsEmpty);
+                    a_if_(stack.IsEmpty);
                     return result;
                 };
                 stack.Push(OpenItem<Syntax, Token>(result, item));
