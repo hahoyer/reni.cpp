@@ -8,9 +8,15 @@ namespace HWLib
     template <typename T>
     String const Dump(T const&target);
     template <typename T>
+    String const DumpShort(T const&target);
+    template <typename T>
     String const Dump(T const*target);
     template <typename T>
     String const Dump(T *target);
+    template <typename T>
+    String const DumpShort(T const*target);
+    template <typename T>
+    String const DumpShort(T *target);
 
     template <>
     String const Dump(String const&target);
@@ -18,6 +24,7 @@ namespace HWLib
     String const Dump(char const* target);
 
     String const Dump(int target);
+    String const Dump(bool target);
 
     template <typename T>
     String const DumpTypeName(T const& object);
@@ -42,6 +49,11 @@ namespace HWLib
 
     template <class TResult>
     TResult const* const DynamicConvert(int const&){
+        return null;
+    };
+
+    template <class TResult>
+    TResult const* const DynamicConvert(String const&){
         return null;
     };
 }

@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "DumpableObject.h"
 #include "DumpToString.h"
+#include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
 namespace HWLib
@@ -34,7 +35,9 @@ namespace HWLib
         static bool const EnableSetDumpString = false;
         static String const DumpValue(T const&value);
         static String const DumpValueHeader(T const&value);
+        static String const DumpValueShort(T const&value);
     };
+
 
     template<typename T>
     class Ref : public DumpableObject, public Pointer<T>
@@ -55,11 +58,12 @@ namespace HWLib
         virtual ~Ref(){};
         DefaultAssignmentOperator;
 
-        virtual p_function(Array<String>, DumpData)override;
-        virtual p_function(String, DumpHeader)override;
+        override_p_function(Array<String>, DumpData);
+        override_p_function(String, DumpHeader);
+        override_p_function(String, DumpShort);
     protected:
         void SetDumpString(){
-            if (traits::EnableSetDumpString)
+            if (traits::EnableSetDumpString || !value.get())
                 DumpableObject::SetDumpString();
         };
     };
@@ -81,7 +85,8 @@ namespace HWLib
         p(bool, IsValid){ return !!value.get(); }
         DefaultAssignmentOperator;
 
-        virtual p_function(String, DumpHeader)override;
+        override_p_function(String, DumpHeader);
+        override_p_function(String, DumpShort);
 
         friend OptRef<T> operator||(OptRef<T> left, function<T*()> right)
         {

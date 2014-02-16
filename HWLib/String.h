@@ -44,9 +44,10 @@ namespace HWLib
         String                  const Replace(String const& oldValue, String const&newValue)const;
         Ref<Enumerable<String> > const Split(String const& delimiter)const;
 
+        static String const Convert   (bool value);
+        static String const Convert    (int value);
         static String const FilePosition(String const&fileName, int line, int column, String const&flag);
-        static String const Convert(int const&value);
-        static String const Surround(String const&left, Array<String> const&list, String const&right, int maxCount = 100);
+        static String const Surround   (String const&left, Array<String> const&list, String const&right, int maxCount = 100);
     };
 
     static String const operator+ (char const*left, String const& right){ return String(left) + right; };

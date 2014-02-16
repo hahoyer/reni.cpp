@@ -9,6 +9,7 @@
 using namespace HWLib;
 
 inline String const HWLib::Dump(int target) { return String::Convert(target); };
+inline String const HWLib::Dump(bool target) { return String::Convert(target); };
 
 template <>
 inline String const HWLib::Dump(char const* target){ return Dump(String(target)); };
@@ -25,13 +26,31 @@ inline String const HWLib::Dump(T const&target){
 };
 
 template <typename T>
+inline String const HWLib::DumpShort(T const&target){
+    auto dumpable = DynamicConvert<DumpableObject>(target);
+    if (dumpable)
+        return dumpable->DumpShort;
+    return HWLib::DumpTypeName(target);
+};
+
+template <typename T>
 inline String const HWLib::Dump(T const*target){
     return target? HWLib::Dump(*target): "null";
 };
 
 template <typename T>
+inline String const HWLib::DumpShort(T const*target){
+    return target ? HWLib::DumpShort(*target) : "null";
+};
+
+template <typename T>
 inline String const HWLib::Dump(T*target){
     return target ? HWLib::Dump(*target) : "null";
+};
+
+template <typename T>
+inline String const HWLib::DumpShort(T*target){
+    return target ? HWLib::DumpShort(*target) : "null";
 };
 
 template<typename T>
@@ -50,7 +69,9 @@ public:
     }
 
 protected:
-    p_function(bool, IsValid) override{ return _parent->IsValid; }
+    override_p_function(bool, IsValid) {
+        return _parent->IsValid; 
+    }
     T const Step()override{ return _parent->Step(); }
 };
 
@@ -74,7 +95,9 @@ public:
     {
     }
 protected:
-    p_function(bool, IsValid) override{ return _count > 0 && _parent->IsValid; }
+    override_p_function(bool, IsValid){
+        return _count > 0 && _parent->IsValid; 
+    }
     T const Step()override{ --_count; return _parent->Step(); }
 };
 
@@ -91,7 +114,9 @@ public:
     {
     }
 private:
-    p_function(bool, IsValid) override{ return _left->IsValid || _right->IsValid; }
+    override_p_function(bool, IsValid){
+        return _left->IsValid || _right->IsValid; 
+    }
 
     void operator++(int) override
     {
@@ -130,7 +155,10 @@ public:
             (*_parent)++;
     }
 protected:
-    p_function(bool, IsValid) override{ return _parent->IsValid; }
+    override_p_function(bool, IsValid){ 
+        return _parent->IsValid; 
+    }
+    
     void operator++(int) override{ (*_parent)++; Align(); return *this; }
     T const operator*()const override{ return **_parent; }
 };
@@ -148,7 +176,7 @@ public:
     {
     }
 protected:
-    p_function(bool, IsValid) override{ return _parent->IsValid; }
+    override_p_function(bool, IsValid){ return _parent->IsValid; }
     TResult const Step()override{ return _selector(_parent->Step()); }
 };
 
@@ -165,7 +193,7 @@ public:
     {
     }
 protected:
-    p_function(bool, IsValid) override
+    override_p_function(bool, IsValid)
     { 
         return _parent->IsValid
             || _subParent.IsValid && _subParent->IsValid;
@@ -193,7 +221,7 @@ public:
     {
     }
 protected:
-    p_function(bool, IsValid) override{ return _parent->IsValid; }
+    override_p_function(bool, IsValid){ return _parent->IsValid; }
     TResult const Step()override{ return _parent->Step(); }
 };
 
@@ -323,24 +351,36 @@ Ref<Enumerable<TResult>> const Enumerable<T>::Convert() const{
 };
 
 template<typename T>
-p_implementation(Ref<T>, Array<String>, DumpData){
+override_p_implementation(Ref<T>, Array<String>, DumpData){
     if (!value.get())
         return Array<String>();
     return Array<String>{ Ref<T>::traits::DumpValue(*value) };
 };
 
 template<typename T>
-p_implementation(Ref<T>, String, DumpHeader){
+override_p_implementation(Ref<T>, String, DumpShort){
+    if (!value.get())
+        return "null";
+    return Ref<T>::traits::DumpValueShort(*value);
+};
+
+template<typename T>
+override_p_implementation(Ref<T>, String, DumpHeader){
     if (!value.get())
         return "null";
     return "Ref";
 };
 
 template<typename T>
-p_implementation(OptRef<T>, String, DumpHeader){
+override_p_implementation(OptRef<T>, String, DumpHeader){
     if (!value.get())
         return "null";
     return "OptRef";
+};
+
+template<typename T>
+override_p_implementation(OptRef<T>, String, DumpShort){
+    return base_p_name(DumpShort);
 };
 
 template<typename T>
@@ -351,6 +391,11 @@ inline String const default_ref_traits<T>::DumpValueHeader(T const&value){
 template<typename T>
 inline String const default_ref_traits<T>::DumpValue(T const&value){
     return HWLib::Dump(value);
+};
+
+template<typename T>
+inline String const default_ref_traits<T>::DumpValueShort(T const&value){
+    return HWLib::DumpShort(value);
 };
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

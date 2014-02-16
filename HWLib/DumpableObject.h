@@ -35,9 +35,9 @@ namespace HWLib
         virtual_p(Array<String>, DumpData) = 0;
         virtual_p(String, DumpHeader);
     public:
-        p_function(String, DumpShort)override;
+        override_p_function(String, DumpShort);
         p(bool, IsInDump){ return isInDump; }
-        p_function(String, DumpLong)override final;
+        override_p_function(String, DumpLong)final;
     private:
         mutable bool isInDump;
     };

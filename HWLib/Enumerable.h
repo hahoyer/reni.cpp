@@ -18,7 +18,6 @@ namespace HWLib
         using targetType = T;
         template<typename TResult>
         using AggregateFunction = function<TResult const(TResult, T)>;
-        static bool const EnableDumpFromRef = false;
 
         template<typename TResult>
         TResult                const Aggregate (TResult start, AggregateFunction<TResult> selector)const;
@@ -51,9 +50,8 @@ namespace HWLib
         class Iterator // It's a one-time-access-forward-read-only iterator
         {
         public:
-            static bool const EnableDumpFromRef = false;
             virtual ~Iterator(){};
-            virtual_p(bool, IsValid) = 0;
+            virtual_p_inline(bool, IsValid) = 0;
             virtual T const Step() = 0;
             Array<T> const ToArray();
         };

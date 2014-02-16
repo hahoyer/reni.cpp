@@ -191,8 +191,7 @@ public:
     }
 
 protected:
-    p_function(bool, IsValid) override
-    {
+    override_p_function(bool, IsValid){
         return _index + _delimiter.Count <= _parent.Count; 
     }
     
@@ -214,9 +213,15 @@ Ref<Enumerable<String>> const String::Split(String const& delimiter)const
     return new Enumerable<String>::Container(new SplitIterator(*this, delimiter));
 }
 
-String const String::Convert(int const&value)
+String const String::Convert(int value)
 {
     return std::to_string(value);
+};
+
+
+String const String::Convert(bool value)
+{
+    return value? String("true"):"false";
 };
 
 
