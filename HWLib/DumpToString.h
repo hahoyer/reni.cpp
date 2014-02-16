@@ -8,9 +8,11 @@ namespace HWLib
     template <typename T>
     String const Dump(T const&target);
     template <>
-    String const Dump(int const&target);
-    template <>
     String const Dump(String const&target);
+
+    String const Dump(int target);
+    String const Dump(char const* target);
+
     template <typename T>
     String const DumpTypeName(T const& object);
 

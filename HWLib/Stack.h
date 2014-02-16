@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/numeric/ublas/vector.hpp>
+#include <vector>
 
 namespace HWLib
 {

@@ -8,10 +8,12 @@
 
 using namespace HWLib;
 
-template <>
-inline String const HWLib::Dump(int const&target) { return String::Convert(target); };
+inline String const HWLib::Dump(int target) { return String::Convert(target); };
+inline String const HWLib::Dump(char const* target){ return Dump(String(target)); };
+
 template <>
 inline String const HWLib::Dump(String const&target){ return target.Quote; };
+
 
 template <typename T>
 inline String const HWLib::Dump(T const&target){ 

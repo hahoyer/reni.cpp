@@ -2,7 +2,6 @@
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "_.h"
-#include "BreakHandling.h"
 #include "Common.h"
 #include "Enumerable.h"
 

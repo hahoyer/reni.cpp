@@ -3,7 +3,6 @@
 
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
-#include "BreakHandling.h"
 
 namespace HWLib
 {
@@ -84,14 +83,14 @@ namespace HWLib
             
             T const operator *()const 
             { 
-                assert(!_hasBeenAccessed);
+                a_if_(!_hasBeenAccessed);
                 _hasBeenAccessed = true;
                 return const_cast<RangeBasedForLoopSimulator&>(*this)._data->Step();
             }
             
             bool operator !=(RangeBasedForLoopSimulator other)const
             {
-                assert(!other._data.IsValid);
+                a_if_(!other._data.IsValid);
                 return _data->IsValid;
             }
 

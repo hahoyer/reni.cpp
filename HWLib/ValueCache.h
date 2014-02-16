@@ -29,7 +29,7 @@ namespace HWLib
     private:
         void Ensure()const
         {
-            assert(!_isBusy);
+            a_if_(!_isBusy);
             if (_value.IsValid)
                 return;
             _isBusy = true;
@@ -39,7 +39,7 @@ namespace HWLib
 
         void Reset()const
         {
-            assert(!_isBusy);
+            a_if_(!_isBusy);
             _value = OptRef<T>();
         }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "BreakHandling.h"
 #include "String.h"
 #include "Common.h"
 #include "DumpableObject.h"
@@ -51,7 +50,7 @@ namespace HWLib
         Ref(T *value) :baseType(value){ SetDumpString(); }
         Ref(T const& value) :baseType(new T(value)){ SetDumpString(); };
         Ref(Ref<T> const&value) : baseType(value){ };
-        Ref(OptRef<T> const&value) : baseType(value){ assert(!!this->value.get()); SetDumpString(); }
+        Ref(OptRef<T> const&value) : baseType(value){ a_if_(!!this->value.get()); SetDumpString(); }
 
         virtual ~Ref(){};
         DefaultAssignmentOperator;
@@ -117,7 +116,7 @@ namespace HWLib
 
         p(T, Value)
         {
-            assert(IsValid);
+            a_if_(IsValid);
             return value;
         };
 

@@ -8,8 +8,7 @@
 #include <boost/concept_check.hpp>
 #include "../SetupWarnings.h"
 #include <initializer_list>
-
-#undef assert
+#include "../BreakHandling.h"
 
 using std::function;
 using namespace boost;

@@ -41,9 +41,9 @@ namespace HWLib
         p_definition(T&, Data);
         mutable_p_function(T&, Data){ return _data; }
 
-        void SaveDelete() { assert(_data); delete _data; _data = null; };
+        void SaveDelete() { a_if_(_data); delete _data; _data = null; };
         void SmartDelete() { if (_data) delete _data; _data = null; };
-        void SaveDeleteArray() { assert(_data); delete[] _data; _data = null; };
+        void SaveDeleteArray() { a_if_(_data); delete[] _data; _data = null; };
         void SmartDeleteArray() { if (_data) delete[] _data; _data = null; };
     };
 
@@ -63,9 +63,9 @@ namespace HWLib
         p_definition(T&, Data);
         mutable_p_function(T&, Data){ return _data; }
 
-        void SaveDelete() { assert(_data); delete _data; };
+        void SaveDelete() { a_if_(_data); delete _data; };
         void SmartDelete() { if (_data) delete _data; };
-        void SaveDeleteArray() { assert(_data); delete[] _data; };
+        void SaveDeleteArray() { a_if_(_data); delete[] _data; };
         void SmartDeleteArray() { if (_data) delete[] _data; };
     };
 

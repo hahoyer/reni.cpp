@@ -43,7 +43,7 @@ namespace HWLib
             KeyNotFoundException(TKey const &key)
                 : _key(key)
             {
-                bpx(Message);
+                b(Message);
             };
             p(String, Message){ return "Key not found: " + ::dump(_key); }
         };
@@ -74,7 +74,7 @@ namespace HWLib
             {
                 _data.insert(std::pair<TKey, TValue>(key, PendingFindValue));
                 auto result = _createValue(key);
-                assert(result != PendingFindValue);
+                a_is_(result, !=, PendingFindValue);
                 _data.at(key) = result;
             }
         }

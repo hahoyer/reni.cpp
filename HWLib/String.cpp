@@ -210,7 +210,7 @@ protected:
 
 Ref<Enumerable<String>> const String::Split(String const& delimiter)const
 { 
-    assert(delimiter != "");
+    a_is(delimiter, !=, "");
     return new Enumerable<String>::Container(new SplitIterator(*this, delimiter));
 }
 

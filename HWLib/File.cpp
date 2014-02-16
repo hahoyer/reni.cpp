@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "File.h"
 
-#include "BreakHandling.h"
 #include "Common.h"
 #include "Console.h"
 #include "String.h"
@@ -48,7 +47,7 @@ p_mutator_implementation(File, String, Name)
     auto rc = ::rename(Name.RawData, value.RawData);
     if (rc == 0)
         _internal->_name = value;
-    assertx(rc == 0, vardump(rc));
+    a_is(rc, ==, 0);
 }
 
 static int _openX(char const* name, int oflag, int pmode = _S_IREAD | _S_IWRITE)
@@ -97,10 +96,10 @@ p_mutator_implementation(File, String, Data)
     auto Error = FormatErrorMessage();
     auto e = errno;
 
-    assertx(Handle >= 0, String("Error: ") + HWLib::Dump(e) + ":" + Error);
+    a_if(Handle >= 0, String("Error: ") + HWLib::Dump(e) + ":" + Error);
 
     auto WrLength = _write(Handle, value.RawData, Count);
-    assert(WrLength == Count);
+    a_is(WrLength, ==, Count);
 
     _close(Handle);
 }
