@@ -6,21 +6,20 @@ namespace HWLang
 {
     class SourcePosition;
     class Pattern;
-    using r = Optional<int> const;
-    using pr = Pattern const;
+    using MatchResult = Optional<int> const;
 
     class IPattern
     {
     protected:
         IPattern(){};
     public:
-        virtual r Match(SourcePosition const&position)const = 0;
+        virtual MatchResult Match(SourcePosition const&position)const = 0;
         virtual ~IPattern(){};
     };
 
     class EndPattern final : public IPattern
     {
-        virtual r Match(SourcePosition const&position)const override;
+        virtual MatchResult Match(SourcePosition const&position)const override;
     };
 
     template<typename T>
@@ -48,32 +47,32 @@ namespace HWLang
 
         DefaultAssignmentOperator;
 
-        p(pr, Find);
-        pr Else(Pattern const& right)const;
-        pr Else(String right)const;
-        pr Repeat(int minCount = 0, Optional<int> maxCount = null)const;
-        pr Value(function<pr(String)> func)const;
+        p(Pattern const, Find);
+        Pattern const Else(Pattern const& right)const;
+        Pattern const Else(String right)const;
+        Pattern const Repeat(int minCount = 0, Optional<int> maxCount = null)const;
+        Pattern const Value(function<Pattern const(String)> func)const;
 
-        pr operator+(Pattern right)const;
-        pr operator+(String right)const;
-        friend pr operator+(String left, Pattern right);
+        Pattern const operator+(Pattern right)const;
+        Pattern const operator+(String right)const;
+        friend Pattern const operator+(String left, Pattern right);
 
-        r Match(SourcePosition const&position)const{ return _value->Match(position); }
+        MatchResult Match(SourcePosition const&position)const{ return _value->Match(position); }
     };
 
 
-    pr Box(String);
-    pr Box(function<bool(char)>);
+    Pattern const Box(String);
+    Pattern const Box(function<bool(char)>);
 
     template<typename T>
-    pr Error(T const&);
+    Pattern const Error(T const&);
 
-    pr AnyChar(char const*);
-    pr Digit = Box([](char c){return !!::isdigit(c); });
-    pr Letter = Box([](char c){return !!::isalpha(c); });
-    pr WhiteSpace = Box([](char c){return !!::isspace(c); });
-    pr End = new EndPattern;
-    pr LineEnd = AnyChar("\n\r").Else(End);
+    Pattern const AnyChar(char const*);
+    Pattern const Digit = Box([](char c){return !!::isdigit(c); });
+    Pattern const Letter = Box([](char c){return !!::isalpha(c); });
+    Pattern const WhiteSpace = Box([](char c){return !!::isspace(c); });
+    Pattern const End = new EndPattern;
+    Pattern const LineEnd = AnyChar("\n\r").Else(End);
 
     template<typename T>
     class ErrorMatch final : public IPattern
@@ -82,7 +81,7 @@ namespace HWLang
     public:
         ErrorMatch(T const&value) : _value(value) {}
     private:
-        virtual r Match(SourcePosition const&position)const override
+        virtual MatchResult Match(SourcePosition const&position)const override
         {
             throw Exception<T>(position, _value);
         }
@@ -92,7 +91,7 @@ namespace HWLang
 using namespace HWLang;
 
 template<typename T>
-pr HWLang::Error(T const&value)
+Pattern const HWLang::Error(T const&value)
 {
     return new ErrorMatch<T>(value);
 };

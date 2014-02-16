@@ -7,7 +7,7 @@
 using namespace HWLang;
 
 
-r EndPattern::Match(SourcePosition const&position)const
+MatchResult EndPattern::Match(SourcePosition const&position)const
 {
     return position.End;
 };
@@ -18,7 +18,7 @@ class FindMatcher final: public IPattern
 public:
     FindMatcher(Ref<IPattern const> value) : _value(value){}
 private:
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
         for (auto current = position;; current += 1)
         {
@@ -32,7 +32,7 @@ private:
     }
 };
 
-p_implementation(Pattern, pr, Find){ return new FindMatcher(_value); };
+p_implementation(Pattern, Pattern const, Find){ return new FindMatcher(_value); };
 
 class ElseMatcher final : public IPattern
 {
@@ -44,15 +44,15 @@ public:
         , _right(right)
     {}
 private:
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
         return _left->Match(position)
             || [&]{return _right->Match(position); };
     }
 };
 
-pr Pattern::Else(Pattern const& right)const{ return new ElseMatcher(_value, right._value); }
-pr Pattern::Else(String right)const{ return Else(Box(right)); }
+Pattern const Pattern::Else(Pattern const& right)const{ return new ElseMatcher(_value, right._value); }
+Pattern const Pattern::Else(String right)const{ return Else(Box(right)); }
 
 class RepeatMatch final : public IPattern
 {
@@ -71,7 +71,7 @@ public:
     }
 
 private:
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
         auto current = position;
         for (auto count = 0;; count++)
@@ -82,39 +82,39 @@ private:
 
             auto length = _data->Match(current);
             if (!length.IsValid)
-                return count < _minCount ? r() : result;
+                return count < _minCount ? MatchResult() : result;
             if (current.IsEnd)
-                return r();
+                return MatchResult();
             current += length;
         }
     }
 };
 
-pr Pattern::Repeat(int minCount, Optional<int> maxCount)const{ return new RepeatMatch(_value, minCount, maxCount); }
+Pattern const Pattern::Repeat(int minCount, Optional<int> maxCount)const{ return new RepeatMatch(_value, minCount, maxCount); }
 
 class ValueMatch final : public IPattern
 {
     Ref<IPattern  const> const _data;
-    function<pr(String)> _func;
+    function<Pattern const(String)> _func;
 
 public:
-    ValueMatch(Ref<IPattern  const> data, function<pr(String)> func)
+    ValueMatch(Ref<IPattern  const> data, function<Pattern const(String)> func)
         : _data(data)
         , _func(func)
     {}
 
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
         auto length = _data->Match(position);
         if (!length.IsValid)
-            return r();
+            return MatchResult();
         auto value = position.Part(length.Value);
         auto funcResult = _func(value).Match(position + length.Value);
-        return funcResult.IsValid ? length.Value + funcResult.Value : r();
+        return funcResult.IsValid ? length.Value + funcResult.Value : MatchResult();
     }
 };
 
-pr Pattern::Value(function<pr(String)> func)const{ return new ValueMatch(_value, func); }
+Pattern const Pattern::Value(function<Pattern const(String)> func)const{ return new ValueMatch(_value, func); }
 
 class SequenceMatch final : public IPattern
 {
@@ -126,7 +126,7 @@ public:
         , _right(right)
     {}
 private:
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
         auto leftResult = _left->Match(position);
         if (!leftResult.IsValid)
@@ -140,9 +140,9 @@ private:
     }
 };
 
-pr Pattern::operator+ (Pattern right)const{ return new SequenceMatch(_value, right._value); };
-pr Pattern::operator+(String right)const{ return *this + Box(right); };
-pr HWLang::operator+(String left, Pattern right){ return Box(left) + right; };
+Pattern const Pattern::operator+ (Pattern right)const{ return new SequenceMatch(_value, right._value); };
+Pattern const Pattern::operator+(String right)const{ return *this + Box(right); };
+Pattern const HWLang::operator+(String left, Pattern right){ return Box(left) + right; };
 
 class CharMatch final : public IPattern
 {
@@ -151,13 +151,13 @@ public:
     CharMatch(String value) : _value(value) {}
 
 private:
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
-        return position.BeginsWith(_value) ? r(_value.Count) : r();
+        return position.BeginsWith(_value) ? MatchResult(_value.Count) : MatchResult();
     }
 };
 
-pr HWLang::Box(String value){ return new CharMatch(value); };
+Pattern const HWLang::Box(String value){ return new CharMatch(value); };
 
 class FunctionalMatch final : public IPattern
 {
@@ -170,13 +170,13 @@ public:
     {
     }
 private:
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
-        return _func(position.First) == _isTrue ? r(1): r();
+        return _func(position.First) == _isTrue ? MatchResult(1): MatchResult();
     }
 };
 
-pr HWLang::Box(function<bool(char)> value){ return new FunctionalMatch(value, true); };
+Pattern const HWLang::Box(function<bool(char)> value){ return new FunctionalMatch(value, true); };
 
 class AnyCharMatch final : public IPattern
 {
@@ -184,10 +184,10 @@ class AnyCharMatch final : public IPattern
 public:
     AnyCharMatch(char const* value): _value(value) { }
 private:
-    virtual r Match(SourcePosition const&position)const override
+    virtual MatchResult Match(SourcePosition const&position)const override
     {
-        return _value.Contains(position.First) ? r(1) : r();
+        return _value.Contains(position.First) ? MatchResult(1) : MatchResult();
     }
 };
 
-pr HWLang::AnyChar(char const* value){ return new AnyCharMatch(value); };
+Pattern const HWLang::AnyChar(char const* value){ return new AnyCharMatch(value); };
