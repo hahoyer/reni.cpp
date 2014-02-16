@@ -22,7 +22,7 @@ void _Scanner::SimpleAndDetailed()
     auto ss = sc.Step();
     auto pp = ss.Part;
     String t = pp;
-    assert(t == "asd");
+    a_is(t, ==, "asd");
 }
 
 void Test(String text, Array<String> results)
@@ -32,11 +32,11 @@ void Test(String text, Array<String> results)
     auto ss = sc.ToArray();
     auto i = 0;
     for (; i < results.Count && i < ss.Count; i++)
-        assertx(results[i] == ss[i].Part, vardump(i) + vardump(ss[i].Part) + vardump(results[i]));
+        a_is(results[i],==,ss[i].Part);
     for (; i < results.Count; i++)
-        assert_failx(vardump(i) + vardump(results[i]));
+        a_fail(nd(i) + nd(results[i]));
     for (; i < ss.Count; i++)
-        assert_failx(vardump(i) + vardump(ss[i].Part));
+        a_fail(nd(i) + nd(ss[i].Part));
 }
 
 void _Scanner::Simple()
@@ -52,9 +52,9 @@ void _Scanner::Simple()
 
 void _Scanner::Text()
 {
-    Test(" \"a\"\" b\" '\" ' ",
+    Test(" \"a_if\"\" b\" '\" ' ",
     {
-        "\"a\"\" b\"",
+        "\"a_if\"\" b\"",
         "'\" '",
         ""
     });
@@ -123,7 +123,7 @@ void _Scanner::Pattern()
     }
     catch (Exception<String> xxx)
     {
-        assert(xxx.Position.IsEnd);
-        assert(xxx.Error == "x");
+        a_if_(xxx.Position.IsEnd);
+        a_if_(xxx.Error == "x");
     }
 }

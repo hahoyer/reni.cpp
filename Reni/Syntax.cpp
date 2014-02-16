@@ -13,29 +13,29 @@ Syntax::Syntax()
 
 p_implementation(InfixSyntax, Array<String>, DumpData){
     return List<String>{
-        vardump(left),
-            vardump(tokenClass),
-            vardump(right)
+        nd(left),
+            nd(tokenClass),
+            nd(right)
     };
 };
 
 p_implementation(PrefixSyntax, Array<String>, DumpData){
     return List<String>{
-            vardump(tokenClass),
-            vardump(right)
+            nd(tokenClass),
+            nd(right)
     };
 };
 
 p_implementation(SuffixSyntax, Array<String>, DumpData){
     return List<String>{
-        vardump(left),
-            vardump(tokenClass)
+        nd(left),
+            nd(tokenClass)
     };
 };
 
 p_implementation(TerminalSyntax, Array<String>, DumpData){
     return List<String>{
-            vardump(tokenClass),
-                vardump(part)
+            nd(tokenClass),
+                nd(part)
     };
 };

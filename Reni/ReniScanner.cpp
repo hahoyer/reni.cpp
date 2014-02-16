@@ -92,7 +92,7 @@ static Scanner instance;
 int const Scanner::WhiteSpace(SourcePosition const&position)
 {
     auto result = ExceptionGuard(position, instance._internal->_whiteSpaces);
-    assert(result.IsValid);
+    a_if_(result.IsValid);
     return result;
 };
 

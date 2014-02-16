@@ -24,9 +24,9 @@ namespace _Compiler
     private:
         virtual p_function(Array<String>, DumpData)override{
             return{
-                vardump(left),
-                vardump(tokenClass),
-                vardump(right)
+                nd(left),
+                nd(tokenClass),
+                nd(right)
             };
         }
     };

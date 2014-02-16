@@ -34,8 +34,8 @@ p_implementation(Token, String, Name)
 p_implementation(Token, Array<String>, DumpData){
     return
     {
-        vardump(Class),
-        vardump(Part)
+        nd(Class),
+        nd(Part)
     };
 };
 

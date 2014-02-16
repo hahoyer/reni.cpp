@@ -21,7 +21,7 @@ namespace _Compiler
         auto sc = _Compiler::ScannerInstance(s);
 
         auto syntax = Parse<_Compiler::Syntax<_Compiler::TokenClass>>(pt, sc);
-        argdump(syntax);
+        d(syntax);
 
     }
 }
