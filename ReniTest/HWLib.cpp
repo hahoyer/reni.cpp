@@ -1,7 +1,8 @@
 #include "Import.h"
 #include "HWLib.h"
 
-using namespace ::HWLib;
+using namespace Reni;
+using namespace HWLang;
 using namespace _HWLib;
 
 namespace _File

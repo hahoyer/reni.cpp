@@ -12,6 +12,7 @@ int main()
 
 void Test::RunAll()
 {
+    auto xx = new int[200];
     _HWLib::RunAll();
     _Reni::RunAll();
 }

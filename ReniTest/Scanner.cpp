@@ -2,26 +2,24 @@
 #include "Scanner.h"
 
 #include "Reni.h"
-#include "CompilerTest.h"
-
+#include "SimpleTokenFactory.h"
 
 static bool Trace = true;
 
-using namespace Reni;
+using namespace HWLang;
 using namespace _Scanner;
 using namespace _Compiler;
+
 
 void _Scanner::SimpleAndDetailed()
 {
     auto file = File("1.reni");
     file.Data = " asd f";
     _console_ WriteLine(String::FilePosition(file.FullName, 1, 3, ""));
-    Compiler c = file.Name;
-    auto s = c.source;
-    auto tf = MainTokenFactory();
-    Scanner<MainTokenFactory> scanner(s, tf);
+    auto s = Source::FromFile(file.Name);
+    auto sc = _Compiler::ScannerInstance(s);
 
-    auto ss = scanner.Step();
+    auto ss = sc.Step();
     auto pp = ss.Part;
     String t = pp;
     assert(t == "asd");
@@ -29,9 +27,9 @@ void _Scanner::SimpleAndDetailed()
 
 void Test(String text, Array<String> results)
 {
-    CompilerTest c;
-    c.Text = text;
-    auto ss = c.ToArray;
+    auto s = Source::FromText(text);
+    auto sc = _Compiler::ScannerInstance(s);
+    auto ss = sc.ToArray();
     auto i = 0;
     for (; i < results.Count && i < ss.Count; i++)
         assertx(results[i] == ss[i].Part, vardump(i) + vardump(ss[i].Part) + vardump(results[i]));
@@ -118,7 +116,7 @@ void _Scanner::Pattern()
 {
     auto s = Source::FromText("asdf") + 0;
 
-    auto p = End.Find + Match::Error(String("x"));
+    auto p = End.Find + HWLang::Error(String("x"));
     try
     {
         auto sp = p.Match(s);

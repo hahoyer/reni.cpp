@@ -4,6 +4,8 @@ using namespace Reni;
 
 namespace _Compiler
 {
+    class Token;
+
     class CompilerTest final
     {
         File _file;
