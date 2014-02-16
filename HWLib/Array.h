@@ -43,7 +43,7 @@ namespace HWLib
                 new (data + index) T(creator(index));
         }
 
-        Array(List<T> const&other)
+        Array(initializer_list<T> const&other)
             : _count(other.size())
             , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {
@@ -88,7 +88,7 @@ namespace HWLib
             {
             }
 
-            p_function(bool, IsValid) override{ return _index >= 0 && _index < _parent.Count; }
+            override_p_function(bool, IsValid){ return _index >= 0 && _index < _parent.Count; }
             T const Step() override{return _parent[_index++]; }
 
             void operator=(LocalIterator const&) = delete;

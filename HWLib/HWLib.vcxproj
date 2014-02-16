@@ -15,6 +15,7 @@
     <ClInclude Include="DumpMacros.h" />
     <ClInclude Include="DumpToString.h" />
     <ClInclude Include="Enumerable.h" />
+    <ClInclude Include="initializer_list.h" />
     <ClInclude Include="LevelValue.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="File.h" />
