@@ -14,8 +14,6 @@
     <ClInclude Include="ScannerInstance.h" />
     <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="Token.h" />
-    <ClInclude Include="TokenClass.h" />
-    <ClInclude Include="TokenFactory.h" />
     <ClInclude Include="Pattern.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="SourcePart.h" />
