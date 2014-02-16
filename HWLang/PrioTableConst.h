@@ -9,16 +9,16 @@ namespace HWLang
             bool operator==(Tag const& other)const{ return value == other.value; };
         };
 
-        using TagTable = List<List<Tag const>const>;
+        using TagTable = initializer_list<initializer_list<Tag const>const>;
 
         static char const* Any = "(any)";
-        static char const* End = "(end)";
+        static char const* End  = "(end)";
         static char const* Start = "(start)";
         static char const* Error = "(error)";
 
-        Tag const LowerTag('-');
         Tag const HigherTag('+');
-        Tag const MatchTag('=');
+        Tag const LowerTag('-');
+        Tag const MatchTag ('=');
         Tag const UnknownTag(' ');
 
         static TagTable const ParenthesisTable =

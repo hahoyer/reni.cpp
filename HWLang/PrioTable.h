@@ -23,7 +23,7 @@ namespace HWLang
         };
 
     private:
-        PrioTable(PrioTableConst::Tag tag, List<String const> tokens)
+        PrioTable(PrioTableConst::Tag tag, initializer_list<String const> tokens)
             : tokens(tokens)
             , data(AllocData(tokens.size(), [=](int,int){return tag; }))
         {
@@ -39,12 +39,16 @@ namespace HWLang
     public:
         DefaultAssignmentOperator;
 
-        static PrioTable const Left(List<String const> const& tokens){
+        static PrioTable const Left(initializer_list<String const> const& tokens){
             return PrioTable(PrioTableConst::LowerTag, tokens);
         }
 
         PrioTable const ParenthesisLevel(char const* leftToken, char const* rightToken){
             return Level(PrioTableConst::ParenthesisTable, { leftToken }, { rightToken });
+        }
+
+        PrioTable const ParenthesisLevel(initializer_list<String const> leftToken, initializer_list<String const> rightToken){
+            return Level(PrioTableConst::ParenthesisTable, leftToken, rightToken);
         }
 
         /// <summary>
@@ -68,20 +72,15 @@ namespace HWLang
         /// <param name="lToken"> list of strings that play the role of left parenthesis </param>
         /// <param name="rToken"> list of strings that play the role of right parenthesis </param>
         /// <returns> </returns>
-        PrioTable const Level(PrioTableConst::TagTable const& subTable, List<String const> const&leftToken, List<String const>const&rightToken) {
+        PrioTable const Level(PrioTableConst::TagTable const& subTable, initializer_list<String const> const&leftToken, initializer_list<String const>const&rightToken) {
             return PrioTable(AllocTokens(leftToken, tokens, rightToken), *this, subTable, leftToken.size());
         }
 
-        PrioTableConst::Tag const Relation(String const&newTokenName, String const&recentTokenName)const
-        {
-            if (newTokenName == PrioTableConst::Start || recentTokenName == PrioTableConst::End)
-                return PrioTableConst::UnknownTag;
-
-            return data[Index(newTokenName)][Index(recentTokenName)];
+        PrioTableConst::Tag const Relation(String const&newTokenName, String const&recentTokenName)const{
+            return Relation(Index(newTokenName), Index(recentTokenName));
         }
 
-        p_function(Array<String>, DumpData)override
-        {
+        override_p_function(Array<String>, DumpData){
             auto maxlen = *tokens.Select<int>([](String const&t){return t.Count; })->Max();
             auto head0 = String().CastLeft(maxlen);
             head0 += "    ";
@@ -120,8 +119,14 @@ namespace HWLang
 
         }
 
+        PrioTableConst::Tag const Relation(int newIndex,int recentIndex)const
+        {
+            a_is(tokens[newIndex], !=, PrioTableConst::Start);
+            a_is(tokens[recentIndex], !=, PrioTableConst::End);
+            return data[newIndex][recentIndex];
+        }
 
-        static Array<String const> const AllocTokens(List<String const>const&left, Array<String const> const &tokens, List<String const>const&right)
+        static Array<String const> const AllocTokens(initializer_list<String const>const&left, Array<String const> const &tokens, initializer_list<String const>const&right)
         {
             return Array<Array<String const>const>{left, tokens, right}
             .ConvertMany<String const>()

@@ -11,30 +11,30 @@ Syntax::Syntax()
 : baseType(nextObjectId++)
 {}
 
-p_implementation(InfixSyntax, Array<String>, DumpData){
-    return List<String>{
+override_p_implementation(InfixSyntax, Array<String>, DumpData){
+    return {
         nd(left),
             nd(tokenClass),
             nd(right)
     };
 };
 
-p_implementation(PrefixSyntax, Array<String>, DumpData){
-    return List<String>{
+override_p_implementation(PrefixSyntax, Array<String>, DumpData){
+    return {
             nd(tokenClass),
             nd(right)
     };
 };
 
-p_implementation(SuffixSyntax, Array<String>, DumpData){
-    return List<String>{
+override_p_implementation(SuffixSyntax, Array<String>, DumpData){
+    return {
         nd(left),
             nd(tokenClass)
     };
 };
 
-p_implementation(TerminalSyntax, Array<String>, DumpData){
-    return List<String>{
+override_p_implementation(TerminalSyntax, Array<String>, DumpData){
+    return {
             nd(tokenClass),
                 nd(part)
     };
