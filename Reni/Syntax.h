@@ -26,7 +26,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        virtual p_function(Array<String>, DumpData)override;
+        override_p_function(Array<String>, DumpData);
     };
 
     class PrefixSyntax : public Syntax
@@ -41,7 +41,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        virtual p_function(Array<String>, DumpData)override;
+        override_p_function(Array<String>, DumpData);
     };
 
     class SuffixSyntax : public Syntax
@@ -56,7 +56,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        virtual p_function(Array<String>, DumpData)override;
+        override_p_function(Array<String>, DumpData);
     };
 
     class TerminalSyntax : public Syntax
@@ -71,7 +71,7 @@ namespace Reni
             SetDumpString(); 
         }
     private:
-        virtual p_function(Array<String>, DumpData)override;
+        override_p_function(Array<String>, DumpData);
     };
 
 }
