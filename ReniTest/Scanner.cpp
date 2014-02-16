@@ -19,9 +19,9 @@ void _Scanner::SimpleAndDetailed()
     auto s = Source::FromFile(file.Name);
     auto sc = _Compiler::ScannerInstance(s);
 
-    auto ss = sc.Step();
-    auto pp = ss.Part;
-    String t = pp;
+    auto start = sc.Step().Class;
+    a_is(&start, == , &_Compiler::ScannerInstance::TokenFactory::Start);
+    String t = sc.Step().Part;
     a_is(t, ==, "asd");
 }
 
