@@ -43,13 +43,14 @@
 
     <PropertyGroup>
         <Boost>$(ProgramFiles)\boost_1_55_0</Boost>
+        <VLD>c:\Program Files (x86)\Visual Leak Detector</VLD>
         <ProjectName>$(MSBuildProjectName)</ProjectName>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <ShowAllFiles>true</ShowAllFiles>
         <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
         <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
-        <IncludePath>$(Boost);$(IncludePath)</IncludePath>
-        <LibraryPath>$(Boost)\libs;$(LibraryPath)</LibraryPath>
+        <IncludePath>$(VLD)\include;$(Boost);$(IncludePath)</IncludePath>
+        <LibraryPath>$(VLD)\lib\Win32;$(Boost)\libs;$(LibraryPath)</LibraryPath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
