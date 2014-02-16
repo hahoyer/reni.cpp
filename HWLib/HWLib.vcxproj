@@ -16,7 +16,6 @@
     <ClInclude Include="DumpToString.h" />
     <ClInclude Include="Enumerable.h" />
     <ClInclude Include="LevelValue.h" />
-    <ClInclude Include="Reflection.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="FunctionCache.h" />
@@ -29,7 +28,6 @@
     <ClInclude Include="String.h" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="Reflection.cpp" />
     <ClCompile Include="DumpableObject.cpp" />
     <ClCompile Include="String.cpp" />
     <ClInclude Include="ValueCache.h" />
