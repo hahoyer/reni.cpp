@@ -2,9 +2,8 @@
 #include "Source.h"
 
 #include "SourcePosition.h"
-#include "../File.h"
 
-using namespace HWLib::Match;
+using namespace HWLang;
 
 Source::Source(String const& fileName, String const&text)
 : _fileName(fileName)
@@ -85,7 +84,7 @@ int const Source::ColNr(int position)const
 }
 
 
-SourcePosition const HWLib::Match::operator +(Ref<Source const> const source, int position)
+SourcePosition const HWLang::operator +(Ref<Source const> const source, int position)
 {
     return SourcePosition(source, position);
 }
@@ -101,4 +100,3 @@ p_implementation(Source, Array<String>, DumpData)
     return Array<String>{ FilePosition(0, "", "")};
 }
 
-#include "../TemplateInstances.h"

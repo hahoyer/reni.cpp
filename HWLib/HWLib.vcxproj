@@ -20,10 +20,6 @@
     <ClInclude Include="Stack.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="FunctionCache.h" />
-    <ClInclude Include="Match\Pattern.h" />
-    <ClInclude Include="Match\Source.h" />
-    <ClInclude Include="Match\SourcePart.h" />
-    <ClInclude Include="Match\SourcePosition.h" />
     <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="DumpableObject.h" />
     <ClInclude Include="PlacementNew.h" />
@@ -34,9 +30,6 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Reflection.cpp" />
-    <ClCompile Include="Match\Pattern.cpp" />
-    <ClCompile Include="Match\Source.cpp" />
-    <ClCompile Include="Match\SourcePosition.cpp" />
     <ClCompile Include="DumpableObject.cpp" />
     <ClCompile Include="String.cpp" />
     <ClInclude Include="ValueCache.h" />

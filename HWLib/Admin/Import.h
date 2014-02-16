@@ -1,5 +1,6 @@
 #pragma once
 #include <stdlib.h>
+#include <vld.h>
 #include <boost/shared_ptr.hpp>
 #include <functional>
 #include <boost/concept/assert.hpp>

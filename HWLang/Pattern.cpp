@@ -1,10 +1,11 @@
 #include "Import.h"
 #include "Pattern.h"
 
+#include "Source.h"
 #include "SourcePosition.h"
 
-using namespace HWLib;
-using namespace Match;
+using namespace HWLang;
+
 
 r EndPattern::Match(SourcePosition const&position)const
 {
@@ -141,7 +142,7 @@ private:
 
 pr Pattern::operator+ (Pattern right)const{ return new SequenceMatch(_value, right._value); };
 pr Pattern::operator+(String right)const{ return *this + Box(right); };
-pr HWLib::Match::operator+(String left, Pattern right){ return Box(left) + right; };
+pr HWLang::operator+(String left, Pattern right){ return Box(left) + right; };
 
 class CharMatch final : public IPattern
 {
@@ -156,7 +157,7 @@ private:
     }
 };
 
-pr HWLib::Match::Box(String value){ return new CharMatch(value); };
+pr HWLang::Box(String value){ return new CharMatch(value); };
 
 class FunctionalMatch final : public IPattern
 {
@@ -175,7 +176,7 @@ private:
     }
 };
 
-pr HWLib::Match::Box(function<bool(char)> value){ return new FunctionalMatch(value, true); };
+pr HWLang::Box(function<bool(char)> value){ return new FunctionalMatch(value, true); };
 
 class AnyCharMatch final : public IPattern
 {
@@ -189,4 +190,4 @@ private:
     }
 };
 
-pr HWLib::Match::AnyChar(char const* value){ return new AnyCharMatch(value); };
+pr HWLang::AnyChar(char const* value){ return new AnyCharMatch(value); };

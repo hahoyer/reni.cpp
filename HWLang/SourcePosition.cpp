@@ -1,11 +1,10 @@
 #include "Import.h"
 #include "SourcePosition.h"
 
-#include "../Ref.h"
 #include "Source.h"
 #include "SourcePart.h"
 
-using namespace HWLib::Match;
+using namespace HWLang;
 
 p_implementation(SourcePosition, bool, IsEnd)
 {
