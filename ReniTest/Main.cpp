@@ -2,6 +2,7 @@
 #include "Main.h"
 
 #include "HWLib.h"
+#include "HWLang.h"
 #include "Reni.h"
 
 int main()
@@ -14,6 +15,7 @@ void Test::RunAll()
 {
     auto xx = new int[200];
     _HWLib::RunAll();
+    _HWLang::RunAll();
     _Reni::RunAll();
 }
 

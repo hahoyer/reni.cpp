@@ -11,8 +11,14 @@ using namespace HWLang::PrioTableConst;
 
 namespace _HWLang
 {
+
     void ParserBaseStructure()
     {
+        using TokenFactory = SimpleTokenFactory;
+        using ScannerInstance = TokenFactory::ScannerInstance;
+        using TokenClass = TokenFactory::TokenClass;
+        using Syntax = TokenFactory::Syntax;
+
         String text = "asdf";
         Ref<Source const> s = new Source(Source::FromText(text));
 
@@ -21,7 +27,7 @@ namespace _HWLang
 
         auto sc = ScannerInstance(s);
 
-        auto syntax = Parse<Syntax<TokenClass>>(pt, sc);
+        auto syntax = Parse<Syntax>(pt, sc);
         
         a_if(syntax           .IsValid, nd(syntax));
         a_if(!syntax->left     .IsValid, nd(syntax));

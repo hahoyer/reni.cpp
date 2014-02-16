@@ -7,5 +7,4 @@ using namespace Reni;
 
 void _Reni::RunAll()
 {
-    _HWLang::RunAll();
 }
