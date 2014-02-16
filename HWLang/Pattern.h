@@ -47,7 +47,7 @@ namespace HWLang
 
         DefaultAssignmentOperator;
 
-        p(Pattern const, Find);
+        p(Pattern, Find);
         Pattern const Else(Pattern const& right)const;
         Pattern const Else(String right)const;
         Pattern const Repeat(int minCount = 0, Optional<int> maxCount = null)const;

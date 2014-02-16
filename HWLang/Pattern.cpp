@@ -32,7 +32,7 @@ private:
     }
 };
 
-p_implementation(Pattern, Pattern const, Find){ return new FindMatcher(_value); };
+p_implementation(Pattern, Pattern, Find){ return new FindMatcher(_value); };
 
 class ElseMatcher final : public IPattern
 {
