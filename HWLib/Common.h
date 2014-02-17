@@ -18,6 +18,8 @@ namespace HWLib
         operator T const*const ()const{ return 0; };
         operator std::nullptr_t ()const{ return nullptr; };
         operator std::nullptr_t(){ return nullptr; };
+        template<typename T>
+        operator std::initializer_list<T>()const{ return std::initializer_list<T>(); };
     } null;
 
     const class
