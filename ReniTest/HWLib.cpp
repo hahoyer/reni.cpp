@@ -163,6 +163,15 @@ namespace _Enumerable
         a_if_(cc[2] == 14);
     }
 
+    void FromInt0_1_1()
+    {
+        Array<Array<int>> c = { { }, { 12 }, { 13 } };
+        auto cc = c.ConvertMany<int>()->ToArray;
+        a_if_(cc.Count == 2);
+        a_if_(cc[0] == 12);
+        a_if_(cc[1] == 13);
+    }
+
     void FromString()
     {
         Array<Array<String>> c = { { "asdf" } };

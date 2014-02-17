@@ -189,24 +189,31 @@ class ConvertManyIterator final : public Enumerable<TResult>::Iterator
     OptRef<typename Enumerable<TResult>::Iterator> _subParent;
 public:
     ConvertManyIterator(Enumerable<T> const& parent)
-        : _parent(parent.ToIterator)
-    {
+        : _parent(parent.ToIterator){
+        Align();
     }
 protected:
-    override_p_function(bool, IsValid)
-    { 
-        return _parent->IsValid
-            || _subParent.IsValid && _subParent->IsValid;
+    override_p_function(bool, IsValid){
+        return _subParent.IsValid && _subParent->IsValid;
     }
 
     TResult const Step()override
     {
-        if (!(_subParent.IsValid && _subParent->IsValid))
-        {
+        TResult const& result = _subParent->Step();
+        Align();
+        return result;
+    }
+
+private:
+    void Align(){
+        while (true){
+            if (_subParent.IsValid && _subParent->IsValid)
+                return;
+            if (!_parent->IsValid)
+                return;
             _subData = new T(_parent->Step());
             _subParent = _subData->ToIterator;
         }
-        return _subParent->Step(); 
     }
 };
 
