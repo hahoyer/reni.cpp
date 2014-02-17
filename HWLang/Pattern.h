@@ -71,8 +71,8 @@ namespace HWLang
     Pattern const Digit = Box([](char c){return !!::isdigit(c); });
     Pattern const Letter = Box([](char c){return !!::isalpha(c); });
     Pattern const WhiteSpace = Box([](char c){return !!::isspace(c); });
-    Pattern const End = new EndPattern;
-    Pattern const LineEnd = AnyChar("\n\r").Else(End);
+    Pattern const SourceEnd = new EndPattern;
+    Pattern const LineEnd = AnyChar("\n\r").Else(SourceEnd);
 
     template<typename T>
     class ErrorMatch final : public IPattern
