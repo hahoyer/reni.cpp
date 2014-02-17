@@ -11,6 +11,7 @@ namespace _HWLang
     void CommentError();
     void ParserBaseStructure();
     void Parenthesis();
+    void PlusTimes();
 
     inline void RunAll()
     {
@@ -23,5 +24,6 @@ namespace _HWLang
         CommentError();
         ParserBaseStructure();
         Parenthesis();
+        PlusTimes();
     }
 }
