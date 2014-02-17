@@ -12,9 +12,16 @@ public:
 
     internal(String const&fileName)
         : _fileName(fileName)
-        , sourceCache([&]{return Source::FromFile(_fileName); })
+        , source(Source::FromFile(_fileName))
     {
     }
 
-    ValueCache<Source const> sourceCache;
+    Source const sourceCache;
+    ValueCache<Syntax const> syntaxCache;
+
+private:
+    Ref<Source const> const GetSource()const{
+        Source::FromFile(_fileName);
+    }
+
 };

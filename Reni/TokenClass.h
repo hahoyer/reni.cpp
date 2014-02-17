@@ -4,12 +4,20 @@ namespace Reni
 {
     class Syntax;
 
-    class TokenClass : public DumpableObject
+    class TokenClass final : public DumpableObject
     {
+        using baseType = DumpableObject;
+        using thisType = TokenClass;
     public:
-        virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart part, Ref<Syntax const>const right)const = 0;
-        virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart part)const = 0;
-        virtual Ref<Syntax const> const CreateSyntax(SourcePart part, Ref<Syntax const>const right)const = 0;
-        virtual Ref<Syntax const> const CreateSyntax(SourcePart part)const = 0;
+        TokenClass() = default;
+        TokenClass(TokenClass const&) = delete;
+
+        Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const;
+        Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, bool isMatch)const;
+        Ref<Syntax const> const CreateSyntax(SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const;
+        Ref<Syntax const> const CreateSyntax(SourcePart const&part, bool isMatch)const;
+    private:
+        override_p_function(Array<String>, DumpData);
     };
+
 }

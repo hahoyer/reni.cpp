@@ -14,5 +14,4 @@ namespace Reni
         static TokenClass const& GetTokenClass(String const&name);
         static TokenClass const& GetError(String const&name);
     };
-
 }
