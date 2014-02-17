@@ -125,7 +125,7 @@ void _HWLang::Pattern()
 {
     auto s = Source::FromText("asdf") + 0;
 
-    auto p = End.Find + HWLang::Error(String("x"));
+    auto p = SourceEnd.Find + HWLang::Error(String("x"));
     try
     {
         auto sp = p.Match(s);
