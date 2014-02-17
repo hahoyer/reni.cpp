@@ -1,5 +1,5 @@
 #include "Import.h"
-#include "ReniScanner.h"
+#include "Scanner.h"
 
 static bool Trace = true;
 

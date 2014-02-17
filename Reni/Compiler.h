@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ReniScanner.h"
+#include "Scanner.h"
 
 using namespace HWLang;
 
@@ -18,4 +18,5 @@ namespace Reni
     
         p(Ref<Source const>, source);
     };
+
 }

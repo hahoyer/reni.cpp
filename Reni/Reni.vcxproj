@@ -19,14 +19,14 @@
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
-    <ClCompile Include="ReniScanner.cpp" />
+    <ClCompile Include="Scanner.cpp" />
     <ClInclude Include="Compiler.h" />
     <ClCompile Include="Compiler.cpp" />
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="Admin\Export.Test.h" />
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="Token.h" />
-    <ClInclude Include="ReniScanner.h" />
+    <ClInclude Include="Scanner.h" />
     <ClInclude Include="MainTokenFactory.h" />
     <ClInclude Include="TokenClass.h" />
   </ItemGroup>
