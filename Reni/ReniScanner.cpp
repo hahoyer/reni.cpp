@@ -49,8 +49,8 @@ struct Scanner::internal
                 + ("#" + AnyChar("\n\r").Find)
                   .Else("(" + HWLang::WhiteSpace + (HWLang::WhiteSpace + ")#").Find)
                   .Else("(" + any.Value([](String id){return (HWLang::WhiteSpace + id + ")#").Find; }))
-                  .Else("(" + End.Find + invalidComment)
-                  .Else("#" + End.Find + invalidLineComment)
+                  .Else("(" + SourceEnd.Find + invalidComment)
+                  .Else("#" + SourceEnd.Find + invalidLineComment)
                   .Else(invalidCharacter)
                   )
             .Repeat();
