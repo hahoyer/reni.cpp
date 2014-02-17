@@ -4,53 +4,34 @@
 
 namespace HWLang
 {
+    using namespace PrioTableConst;
+
     class PrioTable final : public DumpableObject
     {
         using baseType = DumpableObject;
         using thisType = PrioTable;
 
     public:
-        PrioTable()
-        {
-            SetDumpString();
-        }
-
-        PrioTable(PrioTable const&other)
-            : tokens(other.tokens)
-            , data(other.data)
-        {
-            SetDumpString();
-        };
+        PrioTable();
+        PrioTable(PrioTable const&other);
 
     private:
-        PrioTable(PrioTableConst::Tag tag, initializer_list<String const> tokens)
-            : tokens(tokens)
-            , data(AllocData(tokens.size(), [=](int,int){return tag; }))
-        {
-            SetDumpString();
-        }
-
-        PrioTable(Array<String const>const& tokens, PrioTable const&base, PrioTableConst::TagTable const& subTable, int leftCount)
-            : tokens(tokens)
-            , data(AllocData(tokens.Count, [=](int i, int j){return PrioChar(base, subTable, leftCount, i, j); }))
-        {
-            SetDumpString();
-        };
+        PrioTable(PrioTableConst::Tag tag, initializer_list<String const> tokens);
+        PrioTable(
+            Array<String const>const& tokens,
+            Array<Array<PrioTableConst::Tag const>const> const&base,
+            PrioTableConst::TagTable const& subTable,
+            int leftCount);
     public:
         DefaultAssignmentOperator;
 
-        static PrioTable const Left(initializer_list<String const> const& tokens){
-            return PrioTable(PrioTableConst::LowerTag, tokens);
-        }
-
-        PrioTable const ParenthesisLevel(char const* leftToken, char const* rightToken){
-            return Level(PrioTableConst::ParenthesisTable, { leftToken }, { rightToken });
-        }
-
-        PrioTable const ParenthesisLevel(initializer_list<String const> leftToken, initializer_list<String const> rightToken){
-            return Level(PrioTableConst::ParenthesisTable, leftToken, rightToken);
-        }
-
+        PrioTable const Left(initializer_list<String const> const& tokens)const;
+        PrioTable const Right(initializer_list<String const> const& tokens)const;
+        static PrioTable const CreateLeft(initializer_list<String const> const& tokens);
+        static PrioTable const CreateRight(initializer_list<String const> const& tokens);
+        PrioTable const ParenthesisLevel(char const* leftToken, char const* rightToken)const;
+        PrioTable const ParenthesisLevel(initializer_list<String const> leftToken, initializer_list<String const> rightToken)const;
+        
         /// <summary>
         ///     Define a prio table that adds a parenthesis level.
         ///     LToken and RToken should have the same number of elements.
@@ -72,32 +53,11 @@ namespace HWLang
         /// <param name="lToken"> list of strings that play the role of left parenthesis </param>
         /// <param name="rToken"> list of strings that play the role of right parenthesis </param>
         /// <returns> </returns>
-        PrioTable const Level(PrioTableConst::TagTable const& subTable, initializer_list<String const> const&leftToken, initializer_list<String const>const&rightToken) {
-            return PrioTable(AllocTokens(leftToken, tokens, rightToken), *this, subTable, leftToken.size());
-        }
+        PrioTable const Level(PrioTableConst::TagTable const& subTable, initializer_list<String const> const&leftToken, initializer_list<String const>const&rightToken)const; 
+        PrioTableConst::Tag const Relation(String const&newTokenName, String const&recentTokenName)const;
+        override_p_function(Array<String>, DumpData);
 
-        PrioTableConst::Tag const Relation(String const&newTokenName, String const&recentTokenName)const{
-            return Relation(Index(newTokenName), Index(recentTokenName));
-        }
-
-        override_p_function(Array<String>, DumpData){
-            auto maxlen = *tokens.Select<int>([](String const&t){return t.Count; })->Max();
-            auto head0 = String().CastLeft(maxlen);
-            head0 += "    ";
-            auto head1 = head0;
-            String result;
-            for (auto i = 0; i < Count; i++)
-            {
-                auto ii = HWLib::Dump(i + 10000);
-                head0 += ii[3];
-                head1 += ii[4];
-                result += tokens[i].CastLeft(maxlen) + " " + ii.Part(3, 2) + " ";
-                for (auto j = 0; j < Count; j++)
-                    result += String(data[i][j].value);
-                result += "\n";
-            }
-            return{ "\n" + head0 + "\n" + head1 + "\n" + result + "\n" };
-        }
+        static bool Trace;
 
     private:
         Array<String const> const tokens;
@@ -105,83 +65,13 @@ namespace HWLang
 
         p(int, Count){ return tokens.Count; };
 
-        int const Index(String const&name)const
-        {
-            for (auto i = 0; i < Count; i++)
-                if (tokens[i] == name)
-                    return (i);
-
-            for (auto i = 0; i < Count; i++)
-                if (tokens[i] == PrioTableConst::Any)
-                    return (i);
-
-            throw String("missing ") + PrioTableConst::Any + " entry in priority table";
-
-        }
-
-        PrioTableConst::Tag const Relation(int newIndex,int recentIndex)const
-        {
-            a_is(tokens[newIndex], !=, PrioTableConst::Start);
-            a_is(tokens[recentIndex], !=, PrioTableConst::End);
-            return data[newIndex][recentIndex];
-        }
-
-        static Array<String const> const AllocTokens(initializer_list<String const>const&left, Array<String const> const &tokens, initializer_list<String const>const&right)
-        {
-            return Array<Array<String const>const>{left, tokens, right}
-            .ConvertMany<String const>()
-                ->ToArray;
-        }
-
-        static Array<Array<PrioTableConst::Tag const>const> const AllocData(int count, function<PrioTableConst::Tag(int, int)> getData)
-        {
-            return Array<Array<PrioTableConst::Tag const>const>(count, [=](int i)
-            {
-                return Array<PrioTableConst::Tag const>(count, [=](int j)
-                {
-                    return getData(i,j);
-                });
-            });
-        }
-
-        static PrioTableConst::Tag const PrioChar(PrioTable const&base, PrioTableConst::TagTable const& subTable, int leftCount, int i, int j)
-        {
-            auto baseCount = base.Count;
-            auto iGroup = FindGroup(i, { leftCount, baseCount });
-            auto jGroup = FindGroup(j, { leftCount, baseCount });
-
-            if (iGroup == 1 && jGroup == 1)
-                return base.data[i - leftCount][j - leftCount];
-
-            if (iGroup == 2 && jGroup == 0)
-            {
-                switch (sign(leftCount + baseCount - i + j))
-                {
-                case -1:
-                    return PrioTableConst::LowerTag;
-                case 0:
-                    return PrioTableConst::MatchTag;
-                case 1:
-                    return PrioTableConst::HigherTag;
-                default:
-                    throw "Unexpected sign";
-                }
-            }
-            return (subTable.begin()[iGroup]).begin()[jGroup];
-        };
-
-        static int FindGroup(int i, Array<int>const&counts)
-        {
-            auto result = 0;
-            for (auto count : counts)
-            {
-                i -= count;
-                if (i < 0)
-                    return result;
-                result++;
-            };
-            return result;
-        }
+        int const Index(String const&name)const;
+        PrioTableConst::Tag const Relation(int newIndex, int recentIndex)const;
+        
+        static Array<String const> const AllocTokens(initializer_list<String const>const&left, Array<String const> const &tokens, initializer_list<String const>const&right);
+        static Array<Array<PrioTableConst::Tag const>const> const AllocData(int count, function<PrioTableConst::Tag(int, int)> getData);
+        static PrioTableConst::Tag const PrioChar(Array<Array<PrioTableConst::Tag const>const> const&base, PrioTableConst::TagTable const& subTable, int leftCount, int i, int j);
+        static int FindGroup(int i, Array<int>const&counts);
     };
 
 }
