@@ -7,15 +7,16 @@ namespace HWLang
     class Source final : public DumpableObject
     {
         using thisType = Source;
-        String const _text;
-        String const _fileName;
-        ValueCache<String> const _textCache;
+        String const text;
+        String const fileName;
+        ValueCache<String const> const textCache;
 
         Source(String const& fileName, String const& text);
     public:
         Source(Source const& other);
         static Source const FromFile(String const& fileName);
         static Source const FromText(String const& text);
+        static Ref<Source const>const CreateFromFile(String const& fileName);
 
         virtual ~Source(){};
 

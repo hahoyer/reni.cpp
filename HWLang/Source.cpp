@@ -6,9 +6,9 @@
 using namespace HWLang;
 
 Source::Source(String const& fileName, String const&text)
-: _fileName(fileName)
-, _text(text)
-, _textCache([&]{return _fileName=="" ? _text:HWLib::File(_fileName).Data; })
+: fileName(fileName)
+, text(text)
+, textCache([&]{return fileName=="" ? text : HWLib::File(fileName).Data; })
 {
 }
 
@@ -18,6 +18,11 @@ Source const Source::FromFile(String const& fileName)
     return Source(fileName,"");
 }
 
+Ref<Source const>const Source::CreateFromFile(String const& fileName)
+{
+    return new Source(fileName, "");
+}
+
 Source const Source::FromText(String const& text)
 {
     return Source("", text);
@@ -25,13 +30,13 @@ Source const Source::FromText(String const& text)
 
 
 Source::Source(Source const& other)
-: Source(other._fileName, other._text)
+: Source(other.fileName, other.text)
 {}
 
 
 p_implementation(Source, String, Text)
 {
-    return *_textCache.Value;
+    return textCache.Value;
 }
 
 
@@ -53,9 +58,9 @@ String const Source::Part(int start, int count)const
 
 String const Source::FilePosition(int position, String flagText, String tag)const
 {
-    if (_fileName == "")
+    if (fileName == "")
         return "????";
-    auto file = HWLib::File(_fileName);
+    auto file = HWLib::File(fileName);
     return String::FilePosition(
         file.FullName,
         LineNr(position),
