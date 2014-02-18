@@ -6,6 +6,8 @@ namespace Reni
     {
         using baseType = DumpableObject;
         using thisType = Syntax;
+    public:
+        using TokenClass = Reni::TokenClass;
     protected:
         Syntax();
     };
