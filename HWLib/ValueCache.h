@@ -1,56 +1,112 @@
 #pragma once
 #include "Properties.h"
 #include "Ref.h"
+//#include <memory>
 
 namespace HWLib
 {
-    template<typename T>
-    class ValueCache final
+    template<typename DataType, typename ValueType, typename GetValueType>
+    class ValueCacheBase 
     {
-        mutable OptRef<T> _value;
-        function<T()> const _getValue;
-        mutable bool _isBusy;
-
     public:
-        ValueCache(function<T()> getValue) 
-            :_getValue(getValue)
-            , _value()
-            , _isBusy(false){}
+        using TData = DataType;
+        using TValue = ValueType;
+        using TGetValue = GetValueType;
+    private:
+        using thisType = ValueCacheBase;
 
-        p_mutable(bool, IsValid){ return _value.IsValid; }
-        p(bool, IsBusy){ return _isBusy; }
+        mutable TValue value;
+        mutable bool isBusy;
+    public:
+        ValueCacheBase() 
+            : value(null)
+            , isBusy(false){}
 
-        p(Ref<T>, Value)
+        p_mutable(bool, IsValid){ return IsValidValue(value); }
+        p(bool, IsBusy){ return isBusy; }
+
+        mutable_p(TData, Value)const
         {
             Ensure();
-            return _value;
+            return GetResult(value);
         };
+
+        virtual TGetValue GetValue() const = 0;
+        virtual TData GetResult(TValue & value) const = 0;
+        virtual bool const IsValidValue(TValue & value) const = 0;
 
     private:
         void Ensure()const
         {
-            a_if_(!_isBusy);
-            if (_value.IsValid)
+            a_if_(!isBusy);
+            if (IsValidValue(value))
                 return;
-            _isBusy = true;
-            _value = new T(_getValue());
-            _isBusy = false;
+            isBusy = true;
+            value = TValue(&GetValue());
+            isBusy = false;
         }
 
         void Reset()const
         {
-            a_if_(!_isBusy);
-            _value = OptRef<T>();
+            a_if_(!isBusy);
+            value = nullptr;
         }
 
     };
 
-    template<typename T>
-    inline p_mutator_implementation(ValueCache<T>, bool, IsValid)
+
+    template<typename TData, typename TValue, typename TGetValue>
+    inline void ValueCacheBase<TData, TValue, TGetValue>::p_mutator_name(IsValid)(bool const&value)
     {
         if (value)
             Ensure();
         else
             Reset();
-    }
+    };
+
+
+    template<typename T>
+    class ValueCache final : public ValueCacheBase<T, std::unique_ptr<T>, T&>{
+        using baseType = ValueCacheBase<typename TData, typename TValue, typename TGetValue>;
+        using thisType = ValueCache;
+
+        virtual TGetValue GetValue() const override{ return *new T(getValue()); };
+        virtual TData GetResult(TValue & value) const override{ return *value; }
+        virtual bool const IsValidValue(TValue & value) const override{ return !!value.get(); }
+
+        function<T()> const getValue;
+    public:
+        ValueCache(function<T()> getValue) : getValue(getValue){}
+    };
+
+
+    template<typename T>
+    class ValueCache<T&> final : public ValueCacheBase<Ref<T>, OptRef<T>, T&>{
+        using baseType = ValueCacheBase<typename TData, typename TValue, typename TGetValue>;
+        using thisType = ValueCache;
+
+        virtual TGetValue GetValue() const override{return getValue();};
+        virtual TData GetResult(TValue & value) const override{ return value; }
+        virtual bool const IsValidValue(TValue & value) const override{ return value.IsValid; }
+
+        function<TGetValue()> const getValue;
+    public:
+        ValueCache(function<TGetValue()> getValue) : getValue(getValue){}
+    };
+
+
+    template<typename T>
+    class ValueCache<Ref<T>> final : public ValueCacheBase<Ref<T>, OptRef<T>, Ref<T>>{
+        using baseType = ValueCacheBase<typename TData, typename TValue, typename TGetValue>;
+        using thisType = ValueCache;
+
+        virtual TGetValue GetValue() const override{return getValue();};
+        virtual TData GetResult(TValue & value) const override{ return value; }
+        virtual bool const IsValidValue(TValue & value) const override{return value.IsValid;}
+
+        function<TGetValue()> const getValue;
+    public:
+        ValueCache(function<TGetValue()> getValue) : getValue(getValue){}
+    };
+
 }

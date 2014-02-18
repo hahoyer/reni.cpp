@@ -8,8 +8,11 @@
 
 namespace HWLib
 {
-    template< class T > struct remove_const          { typedef T type; };
-    template< class T > struct remove_const<const T> { typedef T type; };
+    template< class T > struct remove_const         { using type = T; };
+    template< class T > struct remove_const<const T> { using type = T; };
+
+    template< class T > struct remove_ref    { using type = T; };
+    template< class T > struct remove_ref<T&> { using type = T; };
 
     const class
     {
