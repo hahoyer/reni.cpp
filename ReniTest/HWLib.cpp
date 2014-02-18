@@ -200,9 +200,9 @@ namespace _ValueCache
         a_if_(c.IsValid);
         c.IsValid = false;
         a_if_(!c.IsValid);
-        auto z = *c.Value;
-        auto zz = *c.Value;
-        a_if_(*c.Value == 12);
+        auto z = c.Value;
+        auto zz = c.Value;
+        a_if_(c.Value == 12);
         a_if_(c.IsValid);
     }
 
@@ -212,23 +212,49 @@ namespace _ValueCache
         _value = 12;
         ValueCache<int>c = ([&]{return _value; });
         c.IsValid = true;
-        a_is(*c.Value, ==, 12);
+        a_is(c.Value, ==, 12);
         _value = 13;
-        a_is(*c.Value, == , 12);
+        a_is(c.Value, == , 12);
         c.IsValid = true;
-        a_is(*c.Value, == , 12);
+        a_is(c.Value, == , 12);
         c.IsValid = false;
         c.IsValid = true;
-        a_is(*c.Value, == , 13);
+        a_is(c.Value, == , 13);
         _value = 14;
         c.IsValid = false;
-        a_is(*c.Value ,==, 14);
+        a_is(c.Value ,==, 14);
+    }
+
+    class Container{
+        int const valueItSelf;
+    public:
+        Container(int value)
+            : valueItSelf(value)
+            , fixValueCache([=]{return valueItSelf; })
+            , functionValueCache([=]{return GetValue(value); })
+        {}
+
+        int const GetValue(int value)const{ return value + valueItSelf; }
+
+        ValueCache<int> fixValueCache;
+        ValueCache<int> functionValueCache;
+    };
+
+    void Member(){
+        Container c(17);
+
+        a_if_(!c.fixValueCache.IsValid);
+        a_is(c.fixValueCache.Value, == , 17);
+        a_if_(c.fixValueCache.IsValid);
+        a_is(c.functionValueCache.Value, == , 34);
+
     }
 
     void RunAll()
     {
         Simple();
         Context();
+        Member();
     }
 }
 
