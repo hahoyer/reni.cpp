@@ -261,21 +261,19 @@ Ref<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)const
 template<typename T>
 inline p_implementation(Enumerable<T>, Array<T>, ToArray)
 {
-    return ToIterator->ToArray();
+    return ToIterator->ToArray;
 }
 
 template<typename T>
-inline Array<T> const Enumerable<T>::Iterator::ToArray()
-{
+inline mutable_p_implementation(Enumerable<T>::Iterator, Array<T>const, ToArray){
     auto result = std::vector<T>();
-    while (IsValid)
-    {
+    while (IsValid){
         auto value = Step();
         result.push_back(value);
     }
     return Array<T>(result.size(), [=](int i){return result[i]; });
-
 }
+
 
 template<typename T>
 inline T const Enumerable<T>::Stringify(T const&delimiter)const

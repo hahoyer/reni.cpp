@@ -53,7 +53,7 @@ namespace HWLib
             virtual ~Iterator(){};
             virtual_p_inline(bool, IsValid) = 0;
             virtual T const Step() = 0;
-            Array<T> const ToArray();
+            mutable_p(Array<T> const, ToArray);
         };
 
         class RangeBasedForLoopSimulator final
