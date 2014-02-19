@@ -16,6 +16,6 @@ TokenClass const & TokenFactory::GetTokenClass(String const &){
     return theOnlyInstance;
 };
 
-TokenClass const& TokenFactory::GetError(String const&){
+TokenClass const& TokenFactory::GetErrorClass(String const&){
     return theOnlyInstance;
 };

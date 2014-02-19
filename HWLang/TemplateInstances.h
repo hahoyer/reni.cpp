@@ -38,7 +38,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
         errorabort(Token const&);
     }
     catch (Scanner::Error const& error){
-        return Step(error.Count, TokenFactory::GetError(error.Id));
+        return Step(error.Count, TokenFactory::GetErrorClass(error.Id));
     }
 }
 

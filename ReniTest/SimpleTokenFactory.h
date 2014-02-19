@@ -81,7 +81,7 @@ namespace _HWLang
         static TokenClass const& Number;
         static TokenClass const& Text;
         static TokenClass const& GetTokenClass(String const&name);
-        static TokenClass const& GetError(String const&name);
+        static TokenClass const& GetErrorClass(String const&name);
 
         class ScannerInstance final : public HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Reni::Scanner>{
             using baseType = HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Reni::Scanner>;
