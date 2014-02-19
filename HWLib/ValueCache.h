@@ -73,9 +73,8 @@ namespace HWLib
         virtual TGetValue GetValue() const override{ return *new T(getValue()); };
         virtual TData GetResult(TValue & value) const override{ return *value; }
         virtual bool const IsValidValue(TValue & value) const override{ return !!value.get(); }
-
-        function<T()> const getValue;
     public:
+        function<T()> const getValue;
         ValueCache(function<T()> getValue) : getValue(getValue){}
     };
 
@@ -88,9 +87,8 @@ namespace HWLib
         virtual TGetValue GetValue() const override{return getValue();};
         virtual TData GetResult(TValue & value) const override{ return value; }
         virtual bool const IsValidValue(TValue & value) const override{ return value.IsValid; }
-
-        function<TGetValue()> const getValue;
     public:
+        function<TGetValue()> const getValue;
         ValueCache(function<TGetValue()> getValue) : getValue(getValue){}
     };
 
@@ -103,9 +101,8 @@ namespace HWLib
         virtual TGetValue GetValue() const override{return getValue();};
         virtual TData GetResult(TValue & value) const override{ return value; }
         virtual bool const IsValidValue(TValue & value) const override{return value.IsValid;}
-
-        function<TGetValue()> const getValue;
     public:
+        function<TGetValue()> const getValue;
         ValueCache(function<TGetValue()> getValue) : getValue(getValue){}
     };
 
