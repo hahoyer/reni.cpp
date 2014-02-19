@@ -21,8 +21,3 @@ namespace Reni
     };
 
 };
-
-template<>
-inline static Ref<Reni::TokenClass const> HWLib::FunctionCacheTraits<Ref<Reni::TokenClass const>>::PendingFindValue(){
-    return Reni::TokenClass::Pending;
-};

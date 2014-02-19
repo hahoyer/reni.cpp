@@ -407,17 +407,4 @@ inline String const default_ref_traits<T>::DumpValueShort(T const&value){
 };
 
 
-namespace HWLib{
-    template<typename TValue>
-    struct FunctionCacheTraits<Ref<TValue>> {
-        static Ref<TValue> PendingFindValue();
-    };
-}
-
-
-template<typename TValue>
-Ref<TValue> HWLib::FunctionCacheTraits<Ref<TValue>>::PendingFindValue(){
-        return new TValue();
-};
-
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

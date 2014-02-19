@@ -4,10 +4,8 @@
 #include <functional>
 #include <string.h>
 #include <unordered_map>
+#include <unordered_set>
 #include "Properties.h"
-
-using std::tr1::function;
-using std::unordered_map;
 
 namespace HWLib
 {
@@ -17,17 +15,13 @@ namespace HWLib
     public:
         struct traits{ static TValue PendingFindValue(); };
     private:
-        function<TValue(TKey)> const _createValue;
-        mutable unordered_map<TKey, TValue> _data;
-        TValue const PendingFindValue;
+        function<TValue(TKey)> const createValue;
+        mutable std::unordered_map<TKey, TValue> data;
+        mutable std::unordered_set<TKey> busyKeys;
     protected:
         FunctionCacheBase(FunctionCacheBase<TKey, TValue> const& x) = delete;
         FunctionCacheBase(function<TValue(TKey)> createValue)
-            : _createValue(createValue)
-            , PendingFindValue(traits::PendingFindValue()){};
-        FunctionCacheBase(TValue pendingFindValue, function<TValue(TKey)> createValue)
-            : PendingFindValue(pendingFindValue)
-            , _createValue(createValue){}
+            : createValue(createValue){};
     public:
         class KeyNotFoundException{
             TKey const _key;
@@ -43,10 +37,10 @@ namespace HWLib
 
         TValue const operator[](TKey const key)const{
             Ensure(key);
-            return _data.find(key)->second;
+            return data.find(key)->second;
         };
 
-        bool const IsValid(TKey const key) const{ return _data.find() != _data.end(); }
+        bool const IsValid(TKey const key) const{ return data.find() != data.end(); }
 
         void IsValid(TKey const key, bool value)const{
             if (value)
@@ -57,32 +51,20 @@ namespace HWLib
 
     private:
         void Ensure(TKey const key)const{
-            auto element = _data.find(key);
-            if (element == _data.end()){
-                _data.insert(std::pair<TKey, TValue>(key, PendingFindValue));
-                auto result = _createValue(key);
-                a_if_(::memcmp(&result, &PendingFindValue, sizeof(PendingFindValue)));
-                _data.at(key) = result;
+            auto element = data.find(key);
+            if (element == data.end()){
+                a_throw(busyKeys.find(key) != busyKeys.end(), "illegal recursion");
+                busyKeys.insert(key);
+                auto result = createValue(key);
+                busyKeys.erase(key);
+                data.at(key) = result;
             }
         }
             
         void Reset(TKey const key)const{
-            auto element = _data.find(key);
-            if (element != _data.end())
-                _data.remove(key);
+            auto element = data.find(key);
+            if (element != data.end())
+                data.remove(key);
         }
     };
-
-
-    template<typename TValue>
-    struct FunctionCacheTraits{
-        static TValue PendingFindValue(); 
-    };
-
-    template<typename TKey, typename TValue>
-    TValue FunctionCacheBase<TKey, TValue>::traits::PendingFindValue(){
-        return FunctionCacheTraits<TValue>::PendingFindValue();
-    }
-
-
 };

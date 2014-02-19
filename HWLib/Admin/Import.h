@@ -1,7 +1,6 @@
 #pragma once
 #include <stdlib.h>
 #include "../initializer_list.h"
-#include <vld.h>
 #include <functional>
 #include "../SetupWarnings.h"
 #include "../BreakHandling.h"
