@@ -57,7 +57,7 @@ namespace HWLib
                 busyKeys.insert(key);
                 auto result = createValue(key);
                 busyKeys.erase(key);
-                data.at(key) = result;
+                data.insert(std::pair<TKey, TValue>(key, result));
             }
         }
             
