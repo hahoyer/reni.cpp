@@ -9,7 +9,6 @@ namespace _Compiler
     class CompilerTest final
     {
         File file;
-        Compiler compiler;
 
         CompilerTest(String name)
             : file(name)
@@ -18,6 +17,8 @@ namespace _Compiler
         };
 
     public:
+        Compiler compiler;
+
         CompilerTest()
             : CompilerTest("compilerTest.reni")
         {
