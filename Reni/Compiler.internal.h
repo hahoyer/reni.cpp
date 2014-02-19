@@ -2,10 +2,12 @@
 #include "Compiler.h"
 #include "MainTokenFactory.h"
 #include "Syntax.h"
+#include "TokenClass.h"
 
 namespace Reni{
-    class ScannerInstance final : public HWLang::ScannerInstance<Token<TokenClass>, MainTokenFactory, Scanner>{
-        using baseType = HWLang::ScannerInstance<Token<TokenClass>, MainTokenFactory, Scanner>;
+
+    class ScannerInstance final : public HWLang::ScannerInstance<Token, MainTokenFactory, Scanner>{
+        using baseType = HWLang::ScannerInstance<Token, MainTokenFactory, Scanner>;
         using thisType = ScannerInstance;
     public:
         ScannerInstance(Ref<Source const> source)
@@ -23,9 +25,9 @@ class Compiler::internal final
     PrioTable prioTable;
 public:
     ValueCache<Ref<Syntax const>> syntaxCache;
+    ValueCache<Reni::ScannerInstance> scannerCache;
 private:
     ValueCache<Source const> sourceCache;
-    ValueCache<Reni::ScannerInstance> scannerCache;
 public:
     internal() = delete;
     internal(internal const&) = delete;
@@ -40,6 +42,6 @@ public:
 private:
     Ref<Syntax const> const GetSyntax()const{
         auto scannerInstance = scannerCache.Value;
-        return Parse<Syntax>(prioTable, scannerInstance);
+        return Parse<Syntax const, TokenClass, Token>(prioTable, scannerInstance);
     };
 };

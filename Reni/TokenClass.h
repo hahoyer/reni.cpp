@@ -20,4 +20,5 @@ namespace Reni
         static Ref<TokenClass const> const Pending;
     };
 
+    using Token = HWLang::Token<TokenClass const>const;
 };

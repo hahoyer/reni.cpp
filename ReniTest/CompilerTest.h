@@ -8,12 +8,12 @@ namespace _Compiler
 
     class CompilerTest final
     {
-        File _file;
-        Compiler _compiler;
+        File file;
+        Compiler compiler;
 
         CompilerTest(String name)
-            : _file(name)
-            , _compiler(name)
+            : file(name)
+            , compiler(name)
         {
         };
 
@@ -23,7 +23,6 @@ namespace _Compiler
         {
         };
 
-        p_mutable(String, Text){ return _file.Data; }
-        p(Array<Token>, ToArray);
+        p_mutable(String, text){ return file.Data; }
     };
 }
