@@ -76,6 +76,9 @@ PrioTableConst::Tag const PrioTable::Relation(String const&newTokenName, String 
 }
 
 override_p_implementation(PrioTable, Array<String>, DumpData){
+    if (Count == 0)
+        return{nd(Count)};
+
     auto maxlen = *tokens.Select<int>([](String const&t){return t.Count; })->Max();
     auto head0 = String().CastLeft(maxlen);
     head0 += "    ";
