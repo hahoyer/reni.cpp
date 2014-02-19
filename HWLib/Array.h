@@ -49,19 +49,19 @@ namespace HWLib
         {
             auto data = const_cast<remove_const<T>::type*>(_data);
             auto index = 0;
-            for (auto element: other)
+            for (auto element : other)
             {
-                new (data + index) T(element); 
+                new (data + index) T(element);
                 index++;
             }
         }
 
         ~Array()
-        { 
+        {
             for (auto i = 0; i < _count; i++)
                 _data[i].~T();
             if (_data)
-                delete[] reinterpret_cast<__int8 const*>(_data); 
+                delete[] reinterpret_cast<__int8 const*>(_data);
         }
 
         DefaultAssignmentOperator;
@@ -89,7 +89,7 @@ namespace HWLib
             }
 
             override_p_function(bool, IsValid){ return _index >= 0 && _index < _parent.Count; }
-            T const Step() override{return _parent[_index++]; }
+            T const Step() override{ return _parent[_index++]; }
 
             void operator=(LocalIterator const&) = delete;
         };
@@ -104,10 +104,13 @@ namespace HWLib
             if (Count != other.Count)
                 return false;
             for (auto index = 0; index < Count; index++)
-            if ((*this)[index] != other[index])
-                return false;
+                if ((*this)[index] != other[index])
+                    return false;
             return true;
         };
 
+
+        template<typename T>
+        Array<T> const _(initializer_list<T> const&data){ return data; };
 }
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
