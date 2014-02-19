@@ -7,8 +7,7 @@ using namespace HWLang;
 
 Source::Source(String const& fileName, String const&text)
 : fileName(fileName)
-, text(text)
-, textCache([&]{return fileName=="" ? text : HWLib::File(fileName).Data; })
+, textCache([=]{return fileName == "" ? text : HWLib::File(fileName).Data; })
 {
 }
 
@@ -30,7 +29,8 @@ Source const Source::FromText(String const& text)
 
 
 Source::Source(Source const& other)
-: Source(other.fileName, other.text)
+: fileName(other.fileName)
+, textCache(other.textCache.getValue)
 {}
 
 

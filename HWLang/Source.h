@@ -7,7 +7,6 @@ namespace HWLang
     class Source final : public DumpableObject
     {
         using thisType = Source;
-        String const text;
         String const fileName;
         ValueCache<String const> const textCache;
 
