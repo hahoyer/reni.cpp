@@ -9,9 +9,8 @@ namespace _File
 {
     void RunAll()
     {
-        Compiler c = __FILE__;
-        auto s = c.source;
-        auto t = s->Text;
+        auto s = Source::FromFile(__FILE__);
+        auto t = s.Text;
         a_is(t.Part(0, 8), == ,"#include");
     };
 }
