@@ -17,9 +17,9 @@ PrioTable::PrioTable(PrioTable const&other)
     SetDumpString();
 };
 
-PrioTable::PrioTable(PrioTableConst::Tag tag, initializer_list<String const> tokens)
+PrioTable::PrioTable(PrioTableConst::Tag tag, Array<String const> const&tokens)
 : tokens(tokens)
-, data(AllocData(tokens.size(), [=](int, int){return tag; }))
+, data(AllocData(tokens.Count, [=](int, int){return tag; }))
 {
     SetDumpString();
 }
@@ -35,27 +35,27 @@ PrioTable::PrioTable(
     SetDumpString();
 };
 
-PrioTable const PrioTable::Left(initializer_list<String const> const& tokens)const {
+PrioTable const PrioTable::Left(Array<String const> const& tokens)const {
     return PrioTable(
-        AllocTokens(null, this->tokens, tokens),
+        AllocTokens({ this->tokens, tokens }),
         data,
         PrioTableConst::LeftTable,
         0);
 }
 
-PrioTable const PrioTable::Right(initializer_list<String const> const& tokens)const {
+PrioTable const PrioTable::Right(Array<String const> const& tokens)const {
     return PrioTable(
-        AllocTokens(null, this->tokens, tokens),
+        AllocTokens({ this->tokens, tokens }),
         data,
         PrioTableConst::RightTable,
         0);
 }
 
-PrioTable const PrioTable::CreateLeft(initializer_list<String const> const& tokens){
+PrioTable const PrioTable::CreateLeft(Array<String const> const& tokens){
     return PrioTable(PrioTableConst::LowerTag, tokens);
 }
 
-PrioTable const PrioTable::CreateRight(initializer_list<String const> const& tokens){
+PrioTable const PrioTable::CreateRight(Array<String const> const& tokens){
     return PrioTable(PrioTableConst::HigherTag, tokens);
 }
 
@@ -63,12 +63,12 @@ PrioTable const PrioTable::ParenthesisLevel(char const* leftToken, char const* r
     return Level(PrioTableConst::ParenthesisTable, { leftToken }, { rightToken });
 }
 
-PrioTable const PrioTable::ParenthesisLevel(initializer_list<String const> leftToken, initializer_list<String const> rightToken)const{
+PrioTable const PrioTable::ParenthesisLevel(Array<String const> leftToken, Array<String const> rightToken)const{
     return Level(PrioTableConst::ParenthesisTable, leftToken, rightToken);
 }
 
-PrioTable const PrioTable::Level(PrioTableConst::TagTable const& subTable, initializer_list<String const> const&leftToken, initializer_list<String const>const&rightToken)const {
-    return PrioTable(AllocTokens(leftToken, tokens, rightToken), data, subTable, leftToken.size());
+PrioTable const PrioTable::Level(PrioTableConst::TagTable const& subTable, Array<String const> const&leftToken, Array<String const>const&rightToken)const {
+    return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, leftToken.Count);
 }
 
 PrioTableConst::Tag const PrioTable::Relation(String const&newTokenName, String const&recentTokenName)const{
@@ -170,11 +170,8 @@ PrioTableConst::Tag const PrioTable::Relation(int newIndex, int recentIndex)cons
     return data[newIndex][recentIndex];
 }
 
-Array<String const> const PrioTable::AllocTokens(initializer_list<String const>const&left, Array<String const> const &tokens, initializer_list<String const>const&right)
-{
-    return Array<Array<String const>const>{left, tokens, right}
-    .ConvertMany<String const>()
-        ->ToArray;
+Array<String const> const PrioTable::AllocTokens(initializer_list<Array<String const>> const &tokens){
+    return _(tokens).ConvertMany<String const>()->ToArray;
 }
 
 Array<Array<PrioTableConst::Tag const>const> const PrioTable::AllocData(int count, function<PrioTableConst::Tag(int, int)> getData)

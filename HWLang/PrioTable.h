@@ -16,7 +16,7 @@ namespace HWLang
         PrioTable(PrioTable const&other);
 
     private:
-        PrioTable(PrioTableConst::Tag tag, initializer_list<String const> tokens);
+        PrioTable(PrioTableConst::Tag tag, Array<String const> const&tokens);
         PrioTable(
             Array<String const>const& tokens,
             Array<Array<PrioTableConst::Tag const>const> const&base,
@@ -25,12 +25,12 @@ namespace HWLang
     public:
         DefaultAssignmentOperator;
 
-        PrioTable const Left(initializer_list<String const> const& tokens)const;
-        PrioTable const Right(initializer_list<String const> const& tokens)const;
-        static PrioTable const CreateLeft(initializer_list<String const> const& tokens);
-        static PrioTable const CreateRight(initializer_list<String const> const& tokens);
+        PrioTable const Left(Array<String const> const& tokens)const;
+        PrioTable const Right(Array<String const> const& tokens)const;
+        static PrioTable const CreateLeft(Array<String const> const& tokens);
+        static PrioTable const CreateRight(Array<String const> const& tokens);
         PrioTable const ParenthesisLevel(char const* leftToken, char const* rightToken)const;
-        PrioTable const ParenthesisLevel(initializer_list<String const> leftToken, initializer_list<String const> rightToken)const;
+        PrioTable const ParenthesisLevel(Array<String const> leftToken, Array<String const> rightToken)const;
         
         /// <summary>
         ///     Define a prio table that adds a parenthesis level.
@@ -53,7 +53,7 @@ namespace HWLang
         /// <param name="lToken"> list of strings that play the role of left parenthesis </param>
         /// <param name="rToken"> list of strings that play the role of right parenthesis </param>
         /// <returns> </returns>
-        PrioTable const Level(PrioTableConst::TagTable const& subTable, initializer_list<String const> const&leftToken, initializer_list<String const>const&rightToken)const; 
+        PrioTable const Level(PrioTableConst::TagTable const& subTable, Array<String const> const&leftToken, Array<String const>const&rightToken)const;
         PrioTableConst::Tag const Relation(String const&newTokenName, String const&recentTokenName)const;
         override_p_function(Array<String>, DumpData);
 
@@ -68,7 +68,7 @@ namespace HWLang
         int const Index(String const&name)const;
         PrioTableConst::Tag const Relation(int newIndex, int recentIndex)const;
         
-        static Array<String const> const AllocTokens(initializer_list<String const>const&left, Array<String const> const &tokens, initializer_list<String const>const&right);
+        static Array<String const> const AllocTokens(initializer_list<Array<String const>> const &tokens);
         static Array<Array<PrioTableConst::Tag const>const> const AllocData(int count, function<PrioTableConst::Tag(int, int)> getData);
         static PrioTableConst::Tag const PrioChar(Array<Array<PrioTableConst::Tag const>const> const&base, PrioTableConst::TagTable const& subTable, int leftCount, int i, int j);
         static int FindGroup(int i, Array<int>const&counts);
