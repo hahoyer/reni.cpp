@@ -51,10 +51,17 @@ p_implementation(String, Array<char const>, ToArray)
     return Array<char const>(Count, [&](int i){return d[i]; }); 
 }
 
+
 p_implementation(String, char const*, RawData)
 {
     return _data.c_str();
 }
+
+
+p_implementation(String, std::size_t, HashCode){
+    return std::hash<std::string>()(_data);
+};
+
 
 String const CharQuote(char const c)
 {

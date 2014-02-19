@@ -23,7 +23,8 @@ namespace HWLib
 
         DefaultAssignmentOperator;
 
-        p(int,            Count  ){ return _data.length(); }
+        p(int,           Count   ){ return _data.length(); }
+        p(std::size_t,    HashCode);
         p(String,          Quote  );
         p(char const*,      RawData);
         p(Array<char const>, ToArray);
@@ -53,4 +54,13 @@ namespace HWLib
     static String const operator+ (char const*left, String const& right){ return String(left) + right; };
 }
 
-//#pragma message(__FILE__ "(" STRING(__LINE__) "):")
+namespace std {
+
+    template <>
+    struct hash<HWLib::String const>{
+        std::size_t operator()(const HWLib::String& key) const{
+            return key.HashCode;
+        }
+    };
+
+}//#pragma message(__FILE__ "(" STRING(__LINE__) "):")
