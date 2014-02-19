@@ -23,6 +23,3 @@ Ref<Syntax const> const TokenClass::CreateSyntax(SourcePart const&part, bool )co
     return new TerminalSyntax(*this, part);
 }
 
-override_p_implementation(TokenClass, Array<String>, DumpData){
-    return {};
-};
