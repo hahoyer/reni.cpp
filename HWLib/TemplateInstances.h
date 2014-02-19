@@ -3,6 +3,7 @@
 
 #include "DumpToString.h"
 #include "DumpableObject.h"
+#include "FunctionCacheBase.h"
 #include "Ref.h"
 #include <boost/numeric/ublas/vector.hpp>
 
@@ -403,6 +404,20 @@ inline String const default_ref_traits<T>::DumpValue(T const&value){
 template<typename T>
 inline String const default_ref_traits<T>::DumpValueShort(T const&value){
     return HWLib::DumpShort(value);
+};
+
+
+namespace HWLib{
+    template<typename TValue>
+    struct FunctionCacheTraits<Ref<TValue>> {
+        static Ref<TValue> PendingFindValue();
+    };
+}
+
+
+template<typename TValue>
+Ref<TValue> HWLib::FunctionCacheTraits<Ref<TValue>>::PendingFindValue(){
+        return new TValue();
 };
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

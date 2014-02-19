@@ -7,6 +7,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="FunctionCacheBase.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="BreakHandling.h" />
     <ClInclude Include="Common.h" />
