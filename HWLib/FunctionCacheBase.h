@@ -53,7 +53,7 @@ namespace HWLib
         void Ensure(TKey const key)const{
             auto element = data.find(key);
             if (element == data.end()){
-                a_throw(busyKeys.find(key) != busyKeys.end(), "illegal recursion");
+                a_throw(busyKeys.find(key) == busyKeys.end(), "illegal recursion");
                 busyKeys.insert(key);
                 auto result = createValue(key);
                 busyKeys.erase(key);
