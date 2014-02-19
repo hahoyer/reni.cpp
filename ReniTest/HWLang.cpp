@@ -33,7 +33,7 @@ void Test(String const&text, Array<String> results)
     using ScannerInstance = TokenFactory::ScannerInstance;
 
     auto sc = ScannerInstance(text);
-    auto ss = sc.ToArray();
+    auto ss = sc.ToArray;
     auto i = 0;
     for (; i < results.Count && i < ss.Count; i++)
         a_if(results[i] == ss[i].Part, nd(i) + nd(ss[i].Part) + nd(results[i]));
