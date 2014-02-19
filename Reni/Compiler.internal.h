@@ -22,10 +22,10 @@ class Compiler::internal final
     String const fileName;
     PrioTable prioTable;
 public:
-    ValueCache<Source const> sourceCache;
-private:
-    ValueCache<Reni::ScannerInstance> scannerCache;
     ValueCache<Ref<Syntax const>> syntaxCache;
+private:
+    ValueCache<Source const> sourceCache;
+    ValueCache<Reni::ScannerInstance> scannerCache;
 public:
     internal() = delete;
     internal(internal const&) = delete;

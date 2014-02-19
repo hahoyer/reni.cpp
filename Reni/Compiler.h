@@ -16,7 +16,6 @@ namespace Reni
         Compiler(Compiler const&) = delete;
         Compiler(String const&fileName);
     
-        p(Ref<Source const>, source);
     };
 
 }

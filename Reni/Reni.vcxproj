@@ -17,7 +17,6 @@
   <ItemGroup>
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="TokenClass.cpp" />
-    <ClCompile Include="Token.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClInclude Include="Compiler.h" />
@@ -25,7 +24,6 @@
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="Admin\Export.Test.h" />
     <ClInclude Include="Syntax.h" />
-    <ClInclude Include="Token.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="MainTokenFactory.h" />
     <ClInclude Include="TokenClass.h" />
