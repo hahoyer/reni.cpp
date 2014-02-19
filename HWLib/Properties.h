@@ -9,6 +9,7 @@
 #define mutable_p_function(TYPE, NAME) TYPE p_name(NAME)()
 #define p_mutator_function(TYPE, NAME) void p_mutator_name(NAME)(TYPE const&value)
 
+#define mutable_p_implementation(CLASS, TYPE, NAME) TYPE CLASS::p_name(NAME)()
 #define p_implementation(CLASS, TYPE, NAME) TYPE const CLASS::p_name(NAME)()const
 #define p_mutator_implementation(CLASS, TYPE, NAME) void CLASS::p_mutator_name(NAME)(TYPE const&value)
 
