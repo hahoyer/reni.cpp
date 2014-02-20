@@ -13,13 +13,16 @@ namespace HWLib
     class Pointer 
     {
         using thisType = Pointer<T>;
-    protected:
+    public:
         shared_ptr<T> value;
+    protected:
         Pointer() : value() { }
         Pointer(shared_ptr<T> value) :value(value){ }
     public:
         Pointer(T *value) :value(value){ }
         Pointer(Pointer <T> const&value) : value(value.value){ };
+        template<typename TOther>
+        Pointer(Pointer<TOther> const&value) : value(value.value){ };
 
         DefaultAssignmentOperator;
 
@@ -52,8 +55,11 @@ namespace HWLib
     public:
         Ref(T *value) :baseType(value){ SetDumpString(); }
         Ref(T const& value) :baseType(new T(value)){ SetDumpString(); };
-        Ref(Ref<T> const&value) : baseType(value){ };
-        Ref(OptRef<T> const&value) : baseType(value){ a_if_(!!this->value.get()); SetDumpString(); }
+
+        template<typename TOther>
+        Ref(Ref<TOther> const&other) : baseType(other){ };
+        template<typename TOther>
+        Ref(OptRef<TOther> const&other) : baseType(other){ a_if_(!!this->value.get()); SetDumpString(); };
 
         virtual ~Ref(){};
         DefaultAssignmentOperator;
@@ -80,6 +86,10 @@ namespace HWLib
         OptRef(T const&value) :baseType(value){ }
         OptRef(Ref<T> const&other) :baseType(other){ }
         OptRef(OptRef<T> const&other) :baseType(other.value){ }
+        template<typename TOther>
+        OptRef(Ref<TOther> const&other) : baseType(other){ };
+        template<typename TOther>
+        OptRef(OptRef<TOther> const&other) : baseType(other){ };
         virtual ~OptRef(){};
 
         p(bool, IsValid){ return !!value.get(); }
