@@ -13,13 +13,13 @@ namespace Reni
         TokenClass() : baseType(nextObjectId++){};
         TokenClass(TokenClass const&) = delete;
 
-        virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const = 0;
-        virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, bool isMatch)const = 0;
-        virtual Ref<Syntax const> const CreateSyntax(SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const = 0;
-        virtual Ref<Syntax const> const CreateSyntax(SourcePart const&part, bool isMatch)const = 0;
+        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right, bool isMatch)const = 0;
+        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, bool isMatch)const = 0;
+        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right, bool isMatch)const = 0;
+        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const = 0;
 
-        static Ref<TokenClass const> const Pending;
+        static Ref<TokenClass> const Pending;
     };
 
-    using Token = HWLang::Token<TokenClass const>const;
+    using Token = HWLang::Token<TokenClass>;
 };

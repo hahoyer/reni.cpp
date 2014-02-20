@@ -6,6 +6,8 @@ using namespace HWLang;
 
 namespace Reni
 {
+    class CodeItem;
+
     class Compiler final
     {
     private:
@@ -17,7 +19,8 @@ namespace Reni
         Compiler(String const&fileName);
     
         p(Array<Token>, tokens);
-        p(Ref<Syntax const>, syntax);
+        p(Ref<Syntax>, syntax);
+        p(Ref<CodeItem>, code);
     };
 
 }

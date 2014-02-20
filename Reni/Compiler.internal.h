@@ -1,5 +1,8 @@
 #pragma once
 #include "Compiler.h"
+
+#include "Code.h"
+#include "Context.h"
 #include "MainTokenFactory.h"
 #include "Syntax.h"
 #include "TokenClass.h"
@@ -23,10 +26,12 @@ class Compiler::internal final
 {
     String const fileName;
 public:
-    ValueCache<Ref<Syntax const>> syntaxCache;
+    ValueCache<Ref<CodeItem>> codeCache;
     ValueCache<Reni::ScannerInstance> scannerCache;
+    ValueCache<Ref<Syntax>> syntaxCache;
 private:
     ValueCache<Source const> sourceCache;
+    Ref<RootContext> rootContext;
 public:
     internal() = delete;
     internal(internal const&) = delete;
@@ -36,12 +41,19 @@ public:
         , sourceCache([=]{return Source::FromFile(fileName); })
         , scannerCache([=]{return Reni::ScannerInstance(sourceCache.Value); })
         , syntaxCache([=]{return GetSyntax(); })
+        , codeCache([=]{return GetCode(); })
+        , rootContext(new RootContext)
     {}
 
 private:
-    Ref<Syntax const> const GetSyntax()const{
+    Ref<Syntax> const GetSyntax()const{
         auto scannerInstance = scannerCache.Value;
-        return Parse<Syntax const, TokenClass, Token>(prioTable, scannerInstance);
+        return Parse<Syntax, TokenClass, Token>(prioTable, scannerInstance);
+    };
+
+    Ref<CodeItem> const GetCode()const{
+        auto syntax = syntaxCache.Value;
+        return syntax->Code(rootContext);
     };
 
     p(PrioTable, prioTable){

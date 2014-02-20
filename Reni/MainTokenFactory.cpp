@@ -10,28 +10,28 @@ class TokenClassBase : public TokenClass{
     using baseType = TokenClass;
     using thisType = TokenClassBase;
 public:
-    virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const override{
+    virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax >const right, bool isMatch)const override{
         d_here;
         md(left, part, right, isMatch);
         b_;
-        return OptRef<Syntax const>();
+        return OptRef<Syntax >();
     };
-    virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, bool isMatch)const  override{
+    virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
         d_here;
         md(left, part, isMatch);
         b_;
-        return OptRef<Syntax const>();
+        return OptRef<Syntax >();
     };
-    virtual Ref<Syntax const> const CreateSyntax(SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const  override{
+    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const  override{
         d_here;
         md(part, right, isMatch);
         b_;
-        return OptRef<Syntax const>();
+        return OptRef<Syntax >();
     };
-    virtual Ref<Syntax const> const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
+    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
         md(part, isMatch);
         b_;
-        return OptRef<Syntax const>();
+        return OptRef<Syntax >();
     };
 private:
     override_p_function(Array<String>, DumpData){
@@ -44,7 +44,7 @@ class NumberToken final : public TokenClassBase{
     using baseType = TokenClassBase;
     using thisType = NumberToken;
 
-    virtual Ref<Syntax const> const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
+    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
         if (isMatch)
             return baseType::CreateSyntax(part, isMatch);
         return new TerminalSyntax(*this, part);
@@ -66,13 +66,13 @@ class DefineableToken final : public TokenClassBase{
 public:
     DefineableToken(String const name) : name(name){}
 private:
-    virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, bool isMatch)const  override{
+    virtual Ref<Syntax > const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
         if (isMatch)
             return baseType::CreateSyntax(left, part, isMatch);
         return new SuffixSyntax(left, *this, part);
     };
 
-    virtual Ref<Syntax const> const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
+    virtual Ref<Syntax > const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
         if (isMatch)
             return baseType::CreateSyntax(part, isMatch);
         return new TerminalSyntax(*this, part);
@@ -106,7 +106,7 @@ class LeftParenthesisToken final : public TokenClassBase{
 public:
     LeftParenthesisToken(int level) : level(level){}
 private:
-    virtual Ref<Syntax const> const CreateSyntax(SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const  override{
+    virtual Ref<Syntax > const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const  override{
         if (isMatch)
             return baseType::CreateSyntax(part, right, isMatch);
         return new OpenSyntax(level, part, right);
@@ -119,9 +119,9 @@ private:
     class OpenSyntax final : public Syntax{
         using baseType = Syntax;
         int const level;
-        Ref<Syntax const> const right;
+        Ref<Syntax > const right;
     public:
-        OpenSyntax(int level, SourcePart const part, Ref<Syntax const> const right)
+        OpenSyntax(int level, SourcePart const part, Ref<Syntax > const right)
             : baseType(part)
             , level(level)
             , right(right)
@@ -129,7 +129,7 @@ private:
             SetDumpString();
         }
     private:
-        virtual Ref<Syntax const> const ParenthesisMatch(int level, SourcePart const&part)const override{
+        virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const override{
             if (level != this->level)
                 return baseType::ParenthesisMatch(level, part);
             return right;
@@ -149,7 +149,7 @@ class RightParenthesisToken final : public TokenClassBase{
 public:
     RightParenthesisToken(int level) : level(level){}
 private:
-    virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, bool isMatch)const  override{
+    virtual Ref<Syntax > const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
         if (!isMatch)
             return baseType::CreateSyntax(left, part, isMatch);
         return left->ParenthesisMatch(level, part);
@@ -161,7 +161,7 @@ private:
 };
 
 
-Ref<TokenClass const> const TokenClass::Pending = new SyntaxErrorToken("");
+Ref<TokenClass > const TokenClass::Pending = new SyntaxErrorToken("");
 
 
 
