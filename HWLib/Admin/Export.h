@@ -8,6 +8,7 @@
 #include "../Enumerable.h"
 #include "../File.h"
 #include "../FunctionCache.h"
+#include "../LevelValue.h"
 #include "../Ref.h"
 #include "../Stack.h"
 #include "../String.h"
