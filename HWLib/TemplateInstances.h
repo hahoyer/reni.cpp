@@ -162,7 +162,7 @@ public:
         current= null;
     }
 protected:
-    override_p_function(bool, IsValid){ return parent->IsValid; }
+    override_p_function(bool, IsValid){ return current.IsValid; }
     T const Step()override{ 
         Ref<T> result = current;
         Align();
