@@ -27,10 +27,8 @@ namespace _HWLang
 
         a_if(syntax.IsValid, nd(syntax));
         a_if(!syntax->left.IsValid, nd(syntax));
-        a_if(syntax->right.IsValid, nd(syntax));
-        a_if(!syntax->right->left.IsValid, nd(syntax));
-        a_if(!syntax->right->right.IsValid, nd(syntax));
-        a_is(syntax->right->name, == , text);
+        a_if(!syntax->right.IsValid, nd(syntax));
+        a_is(syntax->name, == , text);
     };
 
     void Parenthesis()
@@ -45,14 +43,9 @@ namespace _HWLang
 
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Syntax const, TokenClass, Token<TokenClass>>(pt, sc);
+        Check(syntax, false, "(", true, false);
 
-        a_if(syntax.IsValid, nd(syntax));
-        Check(syntax, false, "", true, false);
-
-        auto r = syntax->right;
-        Check(r, false, "(", true, false);
-
-        auto rr = r->right;
+        auto rr = syntax->right;
         Check(rr, true, "]", false, true);
 
         auto rrl = rr->left;
@@ -102,12 +95,9 @@ namespace _HWLang
 
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Syntax const, TokenClass, Token<TokenClass>>(pt, sc);
-        Check(syntax, false, "", true, false);
-        
-        auto r = syntax->right;
-        Check(r, true, "+", true, false);
+        Check(syntax, true, "+", true, false);
 
-        auto rl = r->left;
+        auto rl = syntax->left;
         Check(rl, true, "*", true, false);
 
         auto rll = rl->left;
@@ -116,7 +106,7 @@ namespace _HWLang
         auto rlr = rl->right;
         Check(rlr, false, "b", false, false);
 
-        auto rr = r->right;
+        auto rr = syntax->right;
         Check(rr, true, "+", true, false);
         
 
