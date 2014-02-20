@@ -12,6 +12,12 @@ Syntax::Syntax(SourcePart const&part)
 , part(part)
 {}
 
+
+Ref<CodeItem> Syntax::Code(Ref<Context> const&context)const{
+    return Result(Category::Code, context).Code;
+}
+
+
 override_p_implementation(InfixSyntax, Array<String>, DumpData){
     return {
         nd(left),

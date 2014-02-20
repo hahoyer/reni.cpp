@@ -1,5 +1,5 @@
 #include "Import.h"
-#include "Code.h"
+#include "Context.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -7,12 +7,16 @@ static bool Trace = true;
 static int nextObjectId = 0;
 
 
-CodeItem::CodeItem()
+Context::Context()
 : baseType(nextObjectId++)
 {}
 
 
-CodeView::CodeView()
-: baseType(nextObjectId++)
+RootContext::RootContext()
 {}
+
+
+override_p_implementation(RootContext, Array<String>, DumpData){
+    return{};
+};
 

@@ -23,6 +23,7 @@ namespace Reni
         };
 
         Ref<CodeItem> Code(Ref<Context> const&context)const;
+        Result const Result(Category category, Ref<Context> const&context)const;
     };
 
     class TokenClass;
