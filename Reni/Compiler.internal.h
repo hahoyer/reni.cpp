@@ -22,7 +22,6 @@ using namespace Reni;
 class Compiler::internal final
 {
     String const fileName;
-    PrioTable prioTable;
 public:
     ValueCache<Ref<Syntax const>> syntaxCache;
     ValueCache<Reni::ScannerInstance> scannerCache;
@@ -43,5 +42,13 @@ private:
     Ref<Syntax const> const GetSyntax()const{
         auto scannerInstance = scannerCache.Value;
         return Parse<Syntax const, TokenClass, Token>(prioTable, scannerInstance);
+    };
+
+    p(PrioTable, prioTable){
+        auto result = PrioTable::CreateLeft({ Any })
+            .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
+            .ParenthesisLevel(Start, End)
+            ;
+        return result;
     };
 };
