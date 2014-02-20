@@ -12,8 +12,6 @@ namespace HWLib
     template <typename TKey, typename TValue>
     class FunctionCacheBase{
         using thisType = FunctionCacheBase;
-    public:
-        struct traits{ static TValue PendingFindValue(); };
     private:
         function<TValue(TKey)> const createValue;
         mutable std::unordered_map<TKey, TValue> data;
