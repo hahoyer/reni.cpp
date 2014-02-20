@@ -30,16 +30,7 @@ namespace HWLang{
         };
 
         Ref<Syntax> const CreateSyntax(OptRef<Syntax> right)const{
-            if (left.IsValid)
-                if (right.IsValid)
-                    return token.Class.CreateSyntax(left, token.Part, right, isMatch);
-                else
-                    return token.Class.CreateSyntax(left, token.Part, isMatch);
-            else
-                if (right.IsValid)
-                    return token.Class.CreateSyntax(token.Part, right, isMatch);
-                else
-                    return token.Class.CreateSyntax(token.Part, isMatch);
+            return HWLang::CreateSyntax(left, token, right, isMatch);
         }
     };
 }
