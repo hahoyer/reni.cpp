@@ -8,8 +8,9 @@ namespace Reni
     {
         using baseType = DumpableObject;
         using thisType = TokenClass;
+        static int nextObjectId;
     public:
-        TokenClass() = default;
+        TokenClass() : baseType(nextObjectId++){};
         TokenClass(TokenClass const&) = delete;
 
         virtual Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const = 0;
