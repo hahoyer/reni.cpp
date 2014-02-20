@@ -140,28 +140,34 @@ private:
 template<typename T>
 class WhereIterator final : public Enumerable<T>::Iterator
 {
-    Ref<typename Enumerable<T>::Iterator> _parent;
-    function<bool(T)> _selector;
+    Ref<typename Enumerable<T>::Iterator> parent;
+
+    OptRef<T> current;
+    function<bool(T)> selector;
 public:
     WhereIterator(Enumerable<T> const& parent, function<bool(T)> selector)
-        : _parent(parent.ToIterator)
-        , _selector(selector)
+        : parent(parent.ToIterator)
+        , selector(selector)
     {
         Align();
     }
 
     void Align()
     {
-        while (_parent->IsValid && !selector(**_parent))
-            (*_parent)++;
+        while (parent->IsValid){
+            current = new T(parent->Step());
+            if (selector(*current))
+                return;
+        }
+        current= null;
     }
 protected:
-    override_p_function(bool, IsValid){ 
-        return _parent->IsValid; 
+    override_p_function(bool, IsValid){ return parent->IsValid; }
+    T const Step()override{ 
+        Ref<T> result = current;
+        Align();
+        return T(*result); 
     }
-    
-    void operator++(int) override{ (*_parent)++; Align(); return *this; }
-    T const operator*()const override{ return **_parent; }
 };
 
 
@@ -255,7 +261,7 @@ Ref<Enumerable<T>> const Enumerable<T>::operator+(thisType const& right)const
 template<typename T>
 Ref<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)const
 {
-    return new Container(new WhereIterator(*this, selector));
+    return new Container(new WhereIterator<T>(*this, selector));
 }
 
 template<typename T>
