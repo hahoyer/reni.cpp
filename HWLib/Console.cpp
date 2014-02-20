@@ -43,11 +43,3 @@ bool Console::BreakTrace(const String&condition, const String&fileName, int line
     return true;
 }
 
-void Console::FunctionTrace(String const&function)
-{
-    Write(function);
-    IndentLevel++;
-    Write("\n");
-};
-  
-

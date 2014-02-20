@@ -27,20 +27,19 @@
     return x; }
 
 #define HWLib_ARGDUMP(r, data, i, xx) nd_arg(i,xx)
-#define HWLib_HEADERDUMP(thisDump, ...) {\
+#define HWLib_HEADERDUMP(thisDump) {\
     if(Trace) {\
-        _console_ FunctionTrace(__FUNCTION__);\
+        _console_ Write(FILE_LINE_FUNCTION);\
+        _console_ IndentLevel++; \
+        _console_ Write("\n");\
         thisDump;\
     };\
-    BOOST_PP_SEQ_FOR_EACH_I(HWLib_ARGDUMP, ~, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__));\
 }
 
-#define HWLib_HEADERDUMP_(thisDump) {if(Trace) {_console_ FunctionTrace(__FUNCTION__);thisDump;}}
-
-#define md_ HWLib_HEADERDUMP_(_console_ Write(nd(*this)))
-#define fd_ HWLib_HEADERDUMP_(void())
-#define md(...) HWLib_HEADERDUMP(_console_ Write(nd(*this)),__VA_ARGS__)
-#define fd(...) HWLib_HEADERDUMP(void(),__VA_ARGS__)
+#define md_ HWLib_HEADERDUMP(_console_ Write(nd(*this) + "\n"))
+#define fd_ HWLib_HEADERDUMP(void())
+#define md(...) {HWLib_HEADERDUMP(_console_ Write(nd(*this) + "\n"));BOOST_PP_SEQ_FOR_EACH_I(HWLib_ARGDUMP, ~, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__));}
+#define fd(...) {HWLib_HEADERDUMP(void());BOOST_PP_SEQ_FOR_EACH_I(HWLib_ARGDUMP, ~, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__));}
 #define md_throw(...) {bool Trace=true;md(__VA_ARGS__);b_;throw AssertionException();}
 #define fd_throw(...) {bool Trace=true;fd(__VA_ARGS__);b_;throw AssertionException();}
 #define no_fd_
