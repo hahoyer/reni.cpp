@@ -22,3 +22,11 @@ namespace Reni
 
 }
 
+namespace std {
+    template <>
+    struct hash<Reni::Context const&>{
+        inline std::size_t operator()(Reni::Context const& key) const{
+            return key.ObjectId;
+        }
+    };
+}

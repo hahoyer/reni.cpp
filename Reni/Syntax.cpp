@@ -1,5 +1,9 @@
 #include "Import.h"
 #include "Syntax.h"
+
+#include "Code.h"
+#include "Context.h"
+#include "Result.h"
 #include "TokenClass.h"
 
 using namespace Reni;
@@ -7,15 +11,23 @@ static bool Trace = true;
 
 static int nextObjectId = 0;
 
+
 Syntax::Syntax(SourcePart const&part)
 : baseType(nextObjectId++)
 , part(part)
-{}
+, resultCache([&](Context const*context){return Result(*this, *context); }){};
 
 
 Ref<CodeItem> Syntax::Code(Ref<Context> const&context)const{
-    return Result(Category::Code, context).Code;
+    return GetResult(Category::Code, context).Code;
 }
+
+
+Result Syntax::GetResult(Category category, Ref<Context> const&context)const{
+    return resultCache[&*context];
+
+
+};
 
 
 override_p_implementation(InfixSyntax, Array<String>, DumpData){

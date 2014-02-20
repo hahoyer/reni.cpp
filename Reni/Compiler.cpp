@@ -1,6 +1,8 @@
 #include "Import.h"
 #include "Compiler.h"
+
 #include "Compiler.internal.h"
+#include "Result.h"
 #include "TokenClass.h"
 
 using namespace Reni;

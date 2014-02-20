@@ -1,5 +1,6 @@
 #include "Import.h"
 #include "TokenClass.h"
+#include "Context.h"
 #include "Syntax.h"
 
 static bool Trace = true;

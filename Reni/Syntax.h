@@ -1,9 +1,12 @@
 #pragma once
 
+#include "Result.h"
 namespace Reni
 {
+    class Category;
     class CodeItem;
     class Context;
+    class Result;
 
     class Syntax : public DumpableObject
     {
@@ -11,8 +14,13 @@ namespace Reni
         using thisType = Syntax;
     public:
         using TokenClass = Reni::TokenClass;
+
+    private:
+        FunctionCache<Context const*, Result > resultCache;
     protected:
         SourcePart const part;
+
+    protected:
         Syntax(SourcePart const& part);
     public:
         virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
@@ -23,7 +31,7 @@ namespace Reni
         };
 
         Ref<CodeItem> Code(Ref<Context> const&context)const;
-        Result const Result(Category category, Ref<Context> const&context)const;
+        Result GetResult(Category category, Ref<Context> const&context)const;
     };
 
     class TokenClass;
