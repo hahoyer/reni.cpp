@@ -2,12 +2,17 @@
 
 namespace Reni
 {
+    class Category;
+    class ResultData;
+    class Syntax;
+
     class Context : public DumpableObject
     {
         using baseType = DumpableObject;
         using thisType = Context;
     public:
         Context();
+        ResultData const GetResultData(Category category, Syntax const&syntax)const;
     };
 
     class RootContext : public Context

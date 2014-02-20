@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Syntax.h"
 
+#include "Category.h"
 #include "Code.h"
 #include "Context.h"
 #include "Result.h"

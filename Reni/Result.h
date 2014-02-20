@@ -1,21 +1,22 @@
 #pragma once
 
+#include "Category.h"
+#include "Code.h"
+
 namespace Reni
 {
     class CodeItem;
     class Context;
 
-    class Category final : public DumpableObject
+    class ResultData final : public DumpableObject
     {
         using baseType = DumpableObject;
-        using thisType = Category;
+        using thisType = ResultData;
     public:
-        bool const hasSize;
-        bool const hasCode;
-    public:
-        static Category const Code;
-    private:
-        Category(bool hasSize, bool hasCode);
+        OptRef<CodeItem> code;
+
+        DefaultAssignmentOperator;
+
     private:
         override_p_function(Array<String>, DumpData);
     };
@@ -30,14 +31,17 @@ namespace Reni
         Syntax const& syntax;
         Context const&context;
     private:
-        class internal;
-        Pointer<internal> cache;
-
+        mutable ResultData data;
+        mutable Category pending;
     public:
         Result(Syntax const& syntax, Context const&context);
         p(Ref<CodeItem>, Code);
     private:
         override_p_function(Array<String>, DumpData);
+
+        void Ensure(Category category)const;
+        ResultData const GetResultData(Category category)const;
+        p(Category, complete);
     };
 
 }

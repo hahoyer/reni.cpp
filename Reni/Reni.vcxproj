@@ -15,6 +15,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="Category.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="Code.cpp" />
@@ -22,6 +23,7 @@
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
+    <ClInclude Include="Category.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="Compiler.h" />

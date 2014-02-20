@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Result.h"
 
+#include "Category.h"
 #include "Code.h"
 #include "Context.h"
 #include "Syntax.h"
@@ -11,53 +12,52 @@ using namespace Reni;
 
 static int nextObjectId = 0;
 
-Category::Category(bool hasSize, bool hasCode)
-: hasSize(hasSize)
-, hasCode(hasCode)
-{}
 
-override_p_implementation(Category, Array<String>, DumpData){
-
-    auto result = 
-        _({ 
-        hasSize ? String("Size") : "",
-        hasCode ? String("Code") : ""
-    })
-    .Where([](String element){return element != ""; })
-        ->ToArray;
-    if (result.Count)
-        return result;
-    return{ "<none>" };
-};
-
-
-class Result::internal{
-    Result const&parent;
-public:
-    internal(Result const&parent) : parent(parent){}
-    void Ensure(Category category)const;
-
-    OptRef<CodeItem> code;
-};
-
-
-    
 Result::Result(Syntax const& syntax, Context const&context)
 : baseType(nextObjectId++)
 , syntax(syntax)
 , context(context)
-, cache(new internal(*this))
 {}
 
+void Result::Ensure(Category category)const{
+    auto todo = category - complete;
+    if (todo == Category::None)
+        return;
+    auto newTodo = todo - pending;
+    a_if(newTodo != Category::None, nd(category) + nd(complete) + nd(pending));
+    LevelValue<Category>(pending, pending + newTodo);
+    data = GetResultData(newTodo);
+}
+
+ResultData const Result::GetResultData(Category category)const{
+    return context.GetResultData(category, syntax);
+}
+
+p_implementation(Result, Category, complete){
+    if (data.code.IsValid)
+        return Category::Code;
+    return Category::None;
+}
+
+
+p_implementation(Result, Ref<CodeItem>, Code){
+    Ensure(Category::Code);
+    return data.code;
+}
 
 override_p_implementation(Result, Array<String>, DumpData){
     return{
         nd(context),
-        nd(syntax)
+        nd(syntax),
+        nd(pending),
+        nd(data)
     };
 };
 
-p_implementation(Result, Ref<CodeItem>, Code){
-    cache->Ensure(Category::Code);
-    return cache->code;
-}
+
+override_p_implementation(ResultData, Array<String>, DumpData){
+    return{
+        nd(code)
+    };
+};
+
