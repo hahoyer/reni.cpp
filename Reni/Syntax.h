@@ -9,19 +9,30 @@ namespace Reni
     public:
         using TokenClass = Reni::TokenClass;
     protected:
-        Syntax();
+        SourcePart const part;
+        Syntax(SourcePart const& part);
+    public:
+        virtual Ref<Syntax const> const ParenthesisMatch(int level, SourcePart const&part)const {
+            bool Trace = true;
+            md(level, part);
+            b_;
+            return_d(OptRef<Syntax const>());
+
+        };
     };
 
     class TokenClass;
 
     class InfixSyntax : public Syntax
     {
+        using baseType = Syntax;
         Ref<Syntax const> const left;
         TokenClass const& tokenClass;
         Ref<Syntax const> const right;
     public:
-        InfixSyntax(Ref<Syntax const> const left, TokenClass const& tokenClass, Ref<Syntax const> const right)
-            : left(left)
+        InfixSyntax(Ref<Syntax const> const left, TokenClass const& tokenClass, SourcePart const part, Ref<Syntax const> const right)
+            : baseType(part)
+            , left(left)
             , tokenClass(tokenClass)
             , right(right)
         {
@@ -33,11 +44,13 @@ namespace Reni
 
     class PrefixSyntax : public Syntax
     {
+        using baseType = Syntax;
         TokenClass const& tokenClass;
         Ref<Syntax const> const right;
     public:
-        PrefixSyntax(TokenClass const& tokenClass, Ref<Syntax const> const right)
-            : tokenClass(tokenClass)
+        PrefixSyntax(TokenClass const& tokenClass, SourcePart const part, Ref<Syntax const> const right)
+            : baseType(part)
+            , tokenClass(tokenClass)
             , right(right)
         {
             SetDumpString();
@@ -48,11 +61,13 @@ namespace Reni
 
     class SuffixSyntax : public Syntax
     {
+        using baseType = Syntax;
         Ref<Syntax const> const left;
         TokenClass const& tokenClass;
     public:
-        SuffixSyntax(Ref<Syntax const> const left, TokenClass const& tokenClass)
-            : left(left)
+        SuffixSyntax(Ref<Syntax const> const left, TokenClass const& tokenClass, SourcePart const part)
+            : baseType(part)
+            , left(left)
             , tokenClass(tokenClass)
         {
             SetDumpString();
@@ -63,12 +78,12 @@ namespace Reni
 
     class TerminalSyntax : public Syntax
     {
+        using baseType = Syntax;
         TokenClass const& tokenClass;
-        SourcePart const part;
     public:
-        TerminalSyntax(TokenClass const& tokenClass, SourcePart part)
-            : tokenClass(tokenClass)
-            , part(part)
+        TerminalSyntax(TokenClass const& tokenClass, SourcePart const part)
+            : baseType(part)
+            , tokenClass(tokenClass)
         {
             SetDumpString(); 
         }

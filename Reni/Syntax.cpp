@@ -7,8 +7,9 @@ static bool Trace = true;
 
 static int nextObjectId = 0;
 
-Syntax::Syntax()
+Syntax::Syntax(SourcePart const&part)
 : baseType(nextObjectId++)
+, part(part)
 {}
 
 override_p_implementation(InfixSyntax, Array<String>, DumpData){
@@ -35,7 +36,6 @@ override_p_implementation(SuffixSyntax, Array<String>, DumpData){
 
 override_p_implementation(TerminalSyntax, Array<String>, DumpData){
     return {
-            nd(tokenClass),
-                nd(part)
+            nd(tokenClass)
     };
 };
