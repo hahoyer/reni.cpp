@@ -10,7 +10,7 @@ using namespace _Compiler;
 void _Reni::RunAll()
 {
     CompilerTest ct;
-    ct.text = "as df";
+    ct.text = "4711";
     auto s = ct.compiler.syntax;
     d(s);
     b_;
