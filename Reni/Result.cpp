@@ -10,11 +10,8 @@ static bool Trace = true;
 
 using namespace Reni;
 
-static int nextObjectId = 0;
-
-
 Result::Result(Syntax const& syntax, Context const&context)
-: baseType(nextObjectId++)
+: baseType()
 , syntax(syntax)
 , context(context)
 {}

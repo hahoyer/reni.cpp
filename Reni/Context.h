@@ -7,12 +7,11 @@ namespace Reni
     class Syntax;
     class RootContext;
 
-    class Context : public DumpableObject
+    class Context : public WithId<DumpableObject, Context>
     {
-        using baseType = DumpableObject;
+        using baseType = WithId<DumpableObject, Context>;
         using thisType = Context;
     public:
-        Context();
         ResultData const GetResultData(Category category, Syntax const&syntax)const;
         virtual_p(RootContext const&, rootContext) = 0;
     };

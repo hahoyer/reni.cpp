@@ -7,13 +7,6 @@
 using namespace Reni;
 static bool Trace = true;
 
-static int nextObjectId = 0;
-
-
-Context::Context()
-: baseType(nextObjectId++)
-{}
-
 ResultData const Context::GetResultData(Category category, Syntax const&syntax)const{
     return syntax.GetResultData(*this, category);
 }

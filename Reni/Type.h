@@ -2,9 +2,9 @@
 
 namespace Reni
 {
-    class Type: public DumpableObject
+    class Type: public WithId<DumpableObject, Type>
     {
-        using baseType = DumpableObject;
+        using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
 
     private:

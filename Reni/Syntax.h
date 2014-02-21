@@ -9,9 +9,9 @@ namespace Reni
     class Context;
     class Result;
 
-    class Syntax : public DumpableObject
+    class Syntax : public WithId<DumpableObject, Syntax>
     {
-        using baseType = DumpableObject;
+        using baseType = WithId<DumpableObject, Syntax>;
         using thisType = Syntax;
     public:
         using TokenClass = Reni::TokenClass;

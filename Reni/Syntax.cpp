@@ -11,12 +11,9 @@
 using namespace Reni;
 static bool Trace = true;
 
-static int nextObjectId = 0;
-
 
 Syntax::Syntax(SourcePart const&part)
-: baseType(nextObjectId++)
-, part(part)
+: part(part)
 , resultCache([&](Context const*context){return Result(*this, *context); }){};
 
 

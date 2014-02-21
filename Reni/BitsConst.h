@@ -21,6 +21,6 @@ namespace Reni
     private:
         p(int, count);
 
-        override_p_function(Array<String>, DumpData){ return{}; };
+        override_p_function(Array<String>, DumpData){ return{ value.toStrDec() }; };
     };
 }

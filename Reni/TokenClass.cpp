@@ -7,10 +7,6 @@ static bool Trace = true;
 
 using namespace Reni;
 
-static int nextObjectId = 0;
-
-TokenClass::TokenClass() : baseType(nextObjectId++){};
-
 Ref<Syntax> const TokenClass::CreateSyntax(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax >const right, bool isMatch)const{
     d_here;
     md(left, part, right, isMatch);

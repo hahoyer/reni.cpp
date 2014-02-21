@@ -3,16 +3,3 @@
 
 using namespace Reni;
 static bool Trace = true;
-
-static int nextObjectId = 0;
-
-
-CodeItem::CodeItem()
-: baseType(nextObjectId++)
-{}
-
-
-CodeView::CodeView()
-: baseType(nextObjectId++)
-{}
-
