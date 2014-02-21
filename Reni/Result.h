@@ -17,6 +17,7 @@ namespace Reni
 
         DefaultAssignmentOperator;
 
+        ResultData(Ref<CodeItem> code) : code(code){};
     private:
         override_p_function(Array<String>, DumpData);
     };
