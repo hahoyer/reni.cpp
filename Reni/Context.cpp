@@ -15,16 +15,7 @@ Context::Context()
 {}
 
 ResultData const Context::GetResultData(Category category, Syntax const&syntax)const{
-    md(category, syntax);
-    b_;
-    return_d(ResultData());
+    return syntax.GetResultData(*this, category);
 }
 
-
-RootContext::RootContext()
-{}
-
-override_p_implementation(RootContext, Array<String>, DumpData){
-    return{};
-};
-
+pure_p_implementation(Context, RootContext const&, rootContext);

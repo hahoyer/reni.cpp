@@ -2,8 +2,8 @@
 #include "Compiler.h"
 
 #include "Code.h"
-#include "Context.h"
 #include "MainTokenFactory.h"
+#include "RootContext.h"
 #include "Syntax.h"
 #include "TokenClass.h"
 
@@ -53,7 +53,7 @@ private:
 
     Ref<CodeItem> const GetCode()const{
         auto syntax = syntaxCache.Value;
-        return syntax->Code(rootContext);
+        return syntax->Code(*rootContext);
     };
 
     p(PrioTable, prioTable){

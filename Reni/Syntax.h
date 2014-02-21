@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Result.h"
+
 namespace Reni
 {
     class Category;
@@ -30,8 +31,9 @@ namespace Reni
             return_d(OptRef<Syntax >());
         };
 
-        Ref<CodeItem> Code(Ref<Context> const&context)const;
-        Result GetResult(Category category, Ref<Context> const&context)const;
+        Ref<CodeItem> Code(Context const&context)const;
+        Result GetResult(Context const&context, Category category)const;
+        virtual ResultData const GetResultData(Context const&context, Category category)const;
     };
 
     class TokenClass;
@@ -55,6 +57,7 @@ namespace Reni
         override_p_function(Array<String>, DumpData);
     };
 
+
     class PrefixSyntax : public Syntax
     {
         using baseType = Syntax;
@@ -72,6 +75,7 @@ namespace Reni
         override_p_function(Array<String>, DumpData);
     };
 
+    
     class SuffixSyntax : public Syntax
     {
         using baseType = Syntax;
@@ -89,20 +93,6 @@ namespace Reni
         override_p_function(Array<String>, DumpData);
     };
 
-    class TerminalSyntax : public Syntax
-    {
-        using baseType = Syntax;
-        TokenClass const& tokenClass;
-    public:
-        TerminalSyntax(TokenClass const& tokenClass, SourcePart const part)
-            : baseType(part)
-            , tokenClass(tokenClass)
-        {
-            SetDumpString(); 
-        }
-    private:
-        override_p_function(Array<String>, DumpData);
-    };
 
 }
 

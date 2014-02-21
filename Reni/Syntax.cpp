@@ -5,6 +5,7 @@
 #include "Code.h"
 #include "Context.h"
 #include "Result.h"
+//#include "Terminal.h"
 #include "TokenClass.h"
 
 using namespace Reni;
@@ -19,15 +20,19 @@ Syntax::Syntax(SourcePart const&part)
 , resultCache([&](Context const*context){return Result(*this, *context); }){};
 
 
-Ref<CodeItem> Syntax::Code(Ref<Context> const&context)const{
-    return GetResult(Category::Code, context).Code;
+Ref<CodeItem> Syntax::Code(Context const&context)const{
+    return GetResult(context, Category::Code).Code;
+}
+
+ResultData const Syntax::GetResultData(Context const&context, Category category)const{
+    md(context, category);
+    b_;
+    return_d(ResultData());
 }
 
 
-Result Syntax::GetResult(Category category, Ref<Context> const&context)const{
-    return resultCache[&*context];
-
-
+Result Syntax::GetResult(Context const&context, Category category)const{
+    return resultCache[&context];
 };
 
 
@@ -49,12 +54,6 @@ override_p_implementation(PrefixSyntax, Array<String>, DumpData){
 override_p_implementation(SuffixSyntax, Array<String>, DumpData){
     return {
         nd(left),
-            nd(tokenClass)
-    };
-};
-
-override_p_implementation(TerminalSyntax, Array<String>, DumpData){
-    return {
             nd(tokenClass)
     };
 };

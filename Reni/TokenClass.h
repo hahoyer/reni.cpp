@@ -4,21 +4,20 @@ namespace Reni
 {
     class Syntax;
 
-    class TokenClass : public DumpableObject
-    {
+    class TokenClass : public DumpableObject{
         using baseType = DumpableObject;
         using thisType = TokenClass;
-        static int nextObjectId;
     public:
-        TokenClass() : baseType(nextObjectId++){};
-        TokenClass(TokenClass const&) = delete;
+        TokenClass();
 
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right, bool isMatch)const = 0;
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, bool isMatch)const = 0;
-        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right, bool isMatch)const = 0;
-        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const = 0;
-
-        static Ref<TokenClass> const Pending;
+        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax >const right, bool isMatch)const;
+        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const;
+        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const;
+        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const;
+    private:
+        override_p_function(Array<String>, DumpData){
+            return{};
+        };
     };
 
     using Token = HWLang::Token<TokenClass>;

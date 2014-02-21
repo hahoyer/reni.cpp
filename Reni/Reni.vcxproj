@@ -15,6 +15,12 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="bigInt.cpp" />
+    <ClCompile Include="BitsConst.cpp" />
+    <ClCompile Include="BitType.cpp" />
+    <ClCompile Include="RootContext.cpp" />
+    <ClCompile Include="NumberToken.cpp" />
+    <ClCompile Include="Terminal.cpp" />
     <ClCompile Include="Category.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Context.cpp" />
@@ -23,6 +29,12 @@
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
+    <ClInclude Include="bigInt.h" />
+    <ClInclude Include="BitType.h" />
+    <ClInclude Include="BitsConst.h" />
+    <ClInclude Include="Type.h" />
+    <ClInclude Include="RootContext.h" />
+    <ClInclude Include="NumberToken.h" />
     <ClInclude Include="Category.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Context.h" />
@@ -35,6 +47,7 @@
     <ClInclude Include="MainTokenFactory.h" />
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="TokenClass.h" />
+    <ClInclude Include="Terminal.h" />
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>

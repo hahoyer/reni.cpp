@@ -1,91 +1,36 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
+
+#include "NumberToken.h"
 #include "TokenClass.h"
 #include "Syntax.h"
+#include "Terminal.h"
 
 bool Trace = true;
 using namespace Reni;
 
-class TokenClassBase : public TokenClass{
+class TextToken final : public TokenClass{
     using baseType = TokenClass;
-    using thisType = TokenClassBase;
-public:
-    virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax >const right, bool isMatch)const override{
-        d_here;
-        md(left, part, right, isMatch);
-        b_;
-        return OptRef<Syntax >();
-    };
-    virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
-        d_here;
-        md(left, part, isMatch);
-        b_;
-        return OptRef<Syntax >();
-    };
-    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const  override{
-        d_here;
-        md(part, right, isMatch);
-        b_;
-        return OptRef<Syntax >();
-    };
-    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
-        md(part, isMatch);
-        b_;
-        return OptRef<Syntax >();
-    };
-private:
-    override_p_function(Array<String>, DumpData){
-        return{};
-    };
-};
-
-
-class NumberToken final : public TokenClassBase{
-    using baseType = TokenClassBase;
-    using thisType = NumberToken;
-
-    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
-        if (isMatch)
-            return baseType::CreateSyntax(part, isMatch);
-        return new TerminalSyntax(*this, part);
-    };
-};
-
-
-class TextToken final : public TokenClassBase{
-    using baseType = TokenClassBase;
     using thisType = TextToken;
 };
 
 
-class DefineableToken final : public TokenClassBase{
-    using baseType = TokenClassBase;
+class DefineableToken final : public TokenClass{
+    using baseType = TokenClass;
     using thisType = DefineableToken;
     
     String const name;
 public:
     DefineableToken(String const name) : name(name){}
 private:
-    virtual Ref<Syntax > const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
-        if (isMatch)
-            return baseType::CreateSyntax(left, part, isMatch);
-        return new SuffixSyntax(left, *this, part);
-    };
-
-    virtual Ref<Syntax > const CreateSyntax(SourcePart const&part, bool isMatch)const  override{
-        if (isMatch)
-            return baseType::CreateSyntax(part, isMatch);
-        return new TerminalSyntax(*this, part);
-    };
-
     override_p_function(Array<String>, DumpData){
         return{ nd(name) };
     };
 };
 
 
-class SyntaxErrorToken final : public TokenClassBase{
-    using baseType = TokenClassBase;
+class SyntaxErrorToken final : public TokenClass{
+    using baseType = TokenClass;
     using thisType = DefineableToken;
 
     String const text;
@@ -98,8 +43,8 @@ private:
 };
 
 
-class LeftParenthesisToken final : public TokenClassBase{
-    using baseType = TokenClassBase;
+class LeftParenthesisToken final : public TokenClass{
+    using baseType = TokenClass;
     using thisType = DefineableToken;
 
     int const level;
@@ -141,8 +86,8 @@ private:
 };
 
 
-class RightParenthesisToken final : public TokenClassBase{
-    using baseType = TokenClassBase;
+class RightParenthesisToken final : public TokenClass{
+    using baseType = TokenClass;
     using thisType = DefineableToken;
 
     int const level;
@@ -159,10 +104,6 @@ private:
         return{ nd(level) };
     };
 };
-
-
-Ref<TokenClass > const TokenClass::Pending = new SyntaxErrorToken("");
-
 
 
 MainTokenFactory const MainTokenFactory::Instance;

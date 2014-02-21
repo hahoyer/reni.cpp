@@ -5,6 +5,7 @@ namespace Reni
     class Category;
     class ResultData;
     class Syntax;
+    class RootContext;
 
     class Context : public DumpableObject
     {
@@ -13,18 +14,8 @@ namespace Reni
     public:
         Context();
         ResultData const GetResultData(Category category, Syntax const&syntax)const;
+        virtual_p(RootContext const&, rootContext) = 0;
     };
-
-    class RootContext : public Context
-    {
-        using baseType = Context;
-        using thisType = RootContext;
-    public:
-        RootContext();
-    private:
-        override_p_function(Array<String>, DumpData);
-    };
-
 }
 
 namespace std {
