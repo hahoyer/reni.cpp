@@ -28,3 +28,4 @@
 #pragma warning (disable : 4711) // C4711 function 'function' selected for inline expansion
 #pragma warning (error   : 4715) // C4715 'function' : not all control paths return a value
 #pragma warning (error   : 4717) // C4717 'function' : recursive on all control paths, function will cause runtime stack overflow
+#pragma warning (disable : 4996) // C4996 'function': was declared deprecated
