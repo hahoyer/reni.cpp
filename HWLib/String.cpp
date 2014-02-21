@@ -226,6 +226,13 @@ String const String::Convert(int value)
 };
 
 
+String const String::Convert(size_t value)
+{
+    return std::to_string(value);
+};
+
+
+
 String const String::Convert(bool value)
 {
     return value? String("true"):"false";

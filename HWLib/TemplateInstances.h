@@ -10,6 +10,7 @@
 using namespace HWLib;
 
 inline String const HWLib::Dump(int target) { return String::Convert(target); };
+inline String const HWLib::Dump(size_t target) { return String::Convert(target); };
 inline String const HWLib::Dump(bool target) { return String::Convert(target); };
 
 template <>

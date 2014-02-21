@@ -45,8 +45,9 @@ namespace HWLib
         String                  const Replace(String const& oldValue, String const&newValue)const;
         Ref<Enumerable<String> > const Split(String const& delimiter)const;
 
-        static String const Convert   (bool value);
-        static String const Convert    (int value);
+        static String const Convert  (bool value);
+        static String const Convert   (int value);
+        static String const Convert    (size_t value);
         static String const FilePosition(String const&fileName, int line, int column, String const&flag);
         static String const Surround   (String const&left, Array<String> const&list, String const&right, int maxCount = 100);
     };
@@ -63,4 +64,5 @@ namespace std {
         }
     };
 
-}//#pragma message(__FILE__ "(" STRING(__LINE__) "):")
+}
+//#pragma message(__FILE__ "(" STRING(__LINE__) "):")

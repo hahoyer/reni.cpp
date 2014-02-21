@@ -24,6 +24,7 @@ namespace HWLib
     String const Dump(char const* target);
 
     String const Dump(int target);
+    String const Dump(size_t target);
     String const Dump(bool target);
 
     template <typename T>
