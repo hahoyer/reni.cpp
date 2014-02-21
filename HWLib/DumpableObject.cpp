@@ -36,22 +36,13 @@ p_implementation(DumpableObjectBase, String, Dump){
 
 //////////////////////////////////////////////////////
 
-static int nextObjectId = 0;
-
-DumpableObject::DumpableObject()
-: DumpableObject(nextObjectId++)
+DumpableObject::DumpableObject() 
+: isInDump(false)
 {};
 
-
-DumpableObject::DumpableObject(int objectId) 
-: ObjectId(objectId++)
-, isInDump(false)
-{};
-
-virtual_p_implementation(DumpableObject, String, DumpHeader){
-    auto typeName = HWLib::DumpTypeName(*this);
-    auto objectId = HWLib::Dump(ObjectId);
-    return typeName + ".Id" + objectId;
+pure_p_implementation(DumpableObject, String, DumpHeader);
+override_p_implementation(DumpableObject, String, DumpHeader){
+    return HWLib::DumpTypeName(*this);
 };
 
 override_p_implementation(DumpableObject, String, DumpLong){

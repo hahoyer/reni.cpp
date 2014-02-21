@@ -23,15 +23,23 @@ namespace HWLib
 
     template<typename T> class Array;
 
-    class DumpableObject: public DumpableObjectBase
+    template<typename TBase, typename TRealm = TBase>
+    class WithId: public TBase{
+        using baseType = TBase;
+        using thisType = WithId;
+    public:
+        static int NextObjectId;
+        int const ObjectId;
+        WithId() : ObjectId(NextObjectId++){};
+        override_p_function(String, DumpHeader);
+    };
+
+    class DumpableObject : public DumpableObjectBase
     {
         using baseType = DumpableObjectBase;
         using thisType = DumpableObject;
-    public:
-        int const ObjectId;
     protected:
         DumpableObject();
-        DumpableObject(int objectId);
         virtual_p(Array<String>, DumpData) = 0;
         virtual_p(String, DumpHeader);
     public:
@@ -41,6 +49,9 @@ namespace HWLib
     private:
         mutable bool isInDump;
     };
-
 };
+
+
+template<typename TBase, typename TRealm>
+int HWLib::WithId<TBase, TRealm>::NextObjectId = 0;
 

@@ -411,5 +411,11 @@ inline String const default_ref_traits<T>::DumpValueShort(T const&value){
     return HWLib::DumpShort(value);
 };
 
+template<typename TBase, typename TRealm>
+inline override_p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
+    auto objectId = HWLib::Dump(ObjectId);
+    return baseType::virtual_p_name(DumpHeader)() + ".Id" + objectId;
+};
+
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
