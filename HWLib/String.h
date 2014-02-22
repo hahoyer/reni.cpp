@@ -18,16 +18,18 @@ namespace HWLib
         String();
         String(char const data);
         String(char const* data);
+        String(int count, char const* data);
         String(std::string const & other);
         String(Array<char const> const& other);
 
         DefaultAssignmentOperator;
 
-        p(int,           Count   ){ return _data.length(); }
-        p(std::size_t,    HashCode);
-        p(String,          Quote  );
-        p(char const*,      RawData);
-        p(Array<char const>, ToArray);
+        p(int,          Count      ){ return _data.length(); }
+        p(std::size_t,   HashCode   );
+        p(String,         Quote      );
+        p(char const*,     RawData    );
+        p(char *,           RawDataCopy);
+        p(Array<char const>, ToArray  );
 
         bool       const BeginsWith(String const& target, int start = 0)const;
         String      const CastLeft  (int           count, char padChar = ' ')const;

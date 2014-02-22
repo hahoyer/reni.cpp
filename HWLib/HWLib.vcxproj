@@ -7,6 +7,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="Process.h" />
     <ClInclude Include="ValueCacheBase.h" />
     <ClInclude Include="FunctionCacheBase.h" />
     <ClInclude Include="Array.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DumpableObject.cpp" />
+    <ClCompile Include="Process.cpp" />
     <ClCompile Include="String.cpp" />
     <ClInclude Include="ValueCache.h" />
     <ClInclude Include="_.h" />

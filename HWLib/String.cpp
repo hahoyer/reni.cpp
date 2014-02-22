@@ -20,6 +20,11 @@ String::String(char const* data)
 {
 }
 
+String::String(int count, char const* data)
+: _data(data,count)
+{
+}
+
 String::String(std::string const& data)
 : _data(data)
 {
@@ -55,6 +60,16 @@ p_implementation(String, Array<char const>, ToArray)
 p_implementation(String, char const*, RawData)
 {
     return _data.c_str();
+}
+
+
+p_implementation(String, char*, RawDataCopy)
+{
+    auto result = new char[Count + 1];
+    auto data = _data.c_str();
+    ::memcpy(result, data, Count);
+    result[Count] = '\0'; // don't forget the terminating 0
+    return result;
 }
 
 
