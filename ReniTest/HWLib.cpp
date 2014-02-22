@@ -5,6 +5,7 @@ using namespace Reni;
 using namespace HWLang;
 using namespace _HWLib;
 
+static bool Trace = true;
 namespace _File
 {
     void RunAll()
@@ -12,6 +13,52 @@ namespace _File
         auto s = Source::FromFile(__FILE__);
         auto t = s.Text;
         a_is(t.Part(0, 8), == ,"#include");
+    };
+}
+
+namespace _Process
+{
+    void Simple()
+    {
+        auto p = Process("echo example");
+        auto t = p.data;
+        a_is(t, == , "example\r\n");
+    };
+
+    void Double()
+    {
+        auto p = Process("time");
+        auto t0 = p.data;
+        Process::Sleep(1000);
+        auto t1 = p.data;
+        a_is(t0, == , t1);
+    };
+
+    void Double2()
+    {
+        auto p = Process("time");
+        auto t0 = p.data;
+        Process::Sleep(1000);
+        p.Execute();
+        auto t1 = p.data;
+        a_is(t0, != , t1);
+    };
+
+    void Error()
+    {
+        auto p = Process("%");
+        auto d = p.data;
+        auto e = p.errorData;
+        a_is(d, == , "");
+        a_is(e, != , "");
+    };
+
+    void RunAll()
+    {
+        Simple();
+        Double();
+        Double2();
+        Error();
     };
 }
 
@@ -265,6 +312,7 @@ void _HWLib::RunAll()
     _Ref::RunAll();
     _ValueCache::RunAll();
     _File::RunAll();
+    _Process::RunAll();
 }
 
 void _HWLib::RunSpecial()
