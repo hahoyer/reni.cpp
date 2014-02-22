@@ -12,6 +12,6 @@ namespace Reni
         using baseType = Type;
         using thisType = BitType;
     public:
-        ResultData const GetResultData(Category category, Ref<BitsConst> value)const;
+        ResultData const GetResultData(Category category, Ref<BitsConst> const&value)const;
     };
 }

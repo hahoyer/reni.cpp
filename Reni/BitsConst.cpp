@@ -1,6 +1,8 @@
 #include "Import.h"
 #include "BitsConst.h"
 
+#include "Size.h"
+
 static bool Trace = true;
 
 using namespace Reni;
@@ -10,7 +12,7 @@ Ref<BitsConst> const BitsConst::Convert(String const&text){
 };
 
 
-p_implementation(BitsConst, int, count){
+p_implementation(BitsConst, Size, size){
     if (value == BigInt::Rossi(0))
         return 0;
     size_t result = (value.getUnitsSize() - 1) * 8;

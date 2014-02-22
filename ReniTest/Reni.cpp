@@ -22,13 +22,25 @@ namespace _Reni{
         CompilerTest ct;
         ct.text = "4711";
         auto s = ct.compiler.code;
-        d(s);
-        b_;
+        auto sc = dynamic_cast<ConstCode const*>(&*s);
+        a_if(sc, nd(s));
+        a_is(sc->size, == , 14);
+        auto c4711 = BitsConst::Convert("4711");
+        a_is(*sc->value, ==, *c4711);
     }      
+
+    void CompileSimple()
+    {
+        CompilerTest ct;
+        ct.text = "4711";
+        auto s = ct.compiler.code;
+
+    }
 }
 
 void _Reni::RunAll()
 {
     ParseSimple();
     CodeSimple();
+    CompileSimple();
 }

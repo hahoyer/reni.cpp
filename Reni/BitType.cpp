@@ -8,7 +8,7 @@ static bool Trace = true;
 
 using namespace Reni;
 
-ResultData const BitType::GetResultData(Category category, Ref<BitsConst> value)const{
+ResultData const BitType::GetResultData(Category category, Ref<BitsConst> const&value)const{
     if (category == Category::Code)
         return CodeItem::Const(value);
 

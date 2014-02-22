@@ -29,6 +29,8 @@
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
+    <ClInclude Include="CodeItems.h" />
+    <ClInclude Include="Size.h" />
     <ClInclude Include="bigInt.h" />
     <ClInclude Include="BitType.h" />
     <ClInclude Include="BitsConst.h" />

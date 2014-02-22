@@ -15,9 +15,10 @@ namespace Reni
     public:
         OptRef<CodeItem> code;
 
-        DefaultAssignmentOperator;
-
+        ResultData() = default;
         ResultData(Ref<CodeItem> code) : code(code){};
+
+        DefaultAssignmentOperator;
     private:
         override_p_function(Array<String>, DumpData);
     };

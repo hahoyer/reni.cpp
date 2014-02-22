@@ -1,7 +1,6 @@
 #pragma once
 #include "Compiler.h"
 
-#include "Code.h"
 #include "MainTokenFactory.h"
 #include "RootContext.h"
 #include "Syntax.h"
