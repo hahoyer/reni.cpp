@@ -155,20 +155,6 @@ void Process::internal::Reset()
     };
 };
 
-
-Process::Process(String const&command) : _internal(new internal(command)){};
-
-p_implementation(Process, String, data){
-    const_cast<Process&>(*this)._internal->IsValid = true;
-    return _internal->data;
-};
-
-p_implementation(Process, String, errorData){
-    const_cast<Process&>(*this)._internal->IsValid = true;
-    return _internal->errorData;
-};
-
-
 String const Process::internal::FormatErrorMessage()
 {
     DWORD rc = ::GetLastError();
@@ -183,6 +169,18 @@ String const Process::internal::FormatErrorMessage()
     return String::Convert(int(rc)) + ": " + Buffer;
 };
 
+
+Process::Process(String const&command) : _internal(new internal(command)){};
+
+p_implementation(Process, String, data){
+    const_cast<Process&>(*this)._internal->IsValid = true;
+    return _internal->data;
+};
+
+p_implementation(Process, String, errorData){
+    const_cast<Process&>(*this)._internal->IsValid = true;
+    return _internal->errorData;
+};
 
 void Process::Execute(){
     _internal->IsValid = false;

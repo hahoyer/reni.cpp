@@ -9,6 +9,7 @@
 #include "../File.h"
 #include "../FunctionCache.h"
 #include "../LevelValue.h"
+#include "../Process.h"
 #include "../Ref.h"
 #include "../Stack.h"
 #include "../String.h"
