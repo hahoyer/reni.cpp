@@ -25,6 +25,9 @@
     <ProjectReference Include="..\Reni\Reni.vcxproj">
       <Project>{bfcca11e-fcd1-483c-828c-7df6cde5aa85}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Runtime\Runtime.vcxproj">
+      <Project>{50aed5d9-37c7-4a6e-8e77-f7bc6f144c50}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HWLib.h" />
