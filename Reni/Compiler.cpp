@@ -27,3 +27,7 @@ p_implementation(Compiler, Ref<CodeItem>, code){
 p_implementation(Compiler, String, cppCode){
     return _internal->cppCodeCache.Value;
 };
+
+void Compiler::Execute(){
+    _internal->Execute();
+}

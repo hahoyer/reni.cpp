@@ -22,6 +22,7 @@ namespace Reni
         p(Ref<Syntax>, syntax);
         p(Ref<CodeItem>, code);
         p(String, cppCode);
+        void Execute();
     };
 
 }

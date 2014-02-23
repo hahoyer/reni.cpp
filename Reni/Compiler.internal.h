@@ -1,10 +1,13 @@
 #pragma once
 #include "Compiler.h"
 
+#include "CodeView.h"
 #include "MainTokenFactory.h"
 #include "RootContext.h"
 #include "Syntax.h"
 #include "TokenClass.h"
+
+static bool Trace = true;
 
 namespace Reni{
 
@@ -37,14 +40,20 @@ public:
     internal(internal const&) = delete;
 
     internal(String const&fileName)
-        : fileName(fileName)
+        : fileName  (fileName)
+        , rootContext(new RootContext)
         , sourceCache([=]{return Source::FromFile(fileName); })
         , scannerCache([=]{return Reni::ScannerInstance(sourceCache.Value); })
         , syntaxCache([=]{return GetSyntax(); })
-        , codeCache([=]{return GetCode(); })
+        , codeCache  ([=]{return GetCode(); })
         , cppCodeCache([=]{return GetCppCode(); })
-        , rootContext(new RootContext)
     {}
+
+    void Execute(){
+        auto s = cppCodeCache.Value;
+        dd(s);
+        CodeView(s).Execute();
+    }
 
 private:
     Ref<Syntax> const GetSyntax()const{
@@ -58,14 +67,15 @@ private:
     };
 
     p(PrioTable, prioTable){
-        auto result = PrioTable::CreateLeft({ Any })
+        return
+            PrioTable::CreateLeft({ Any })
             .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
             .ParenthesisLevel(Start, End)
             ;
-        return result;
     };
 
     String const GetCppCode()const{
-        return codeCache.Value->ToCpp;
+        return CodeView(codeCache.Value->ToCpp).program;
     };
+
 };

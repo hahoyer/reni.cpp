@@ -33,8 +33,7 @@ namespace _Reni{
     {
         CompilerTest ct;
         ct.text = "4711";
-        auto s = ct.compiler.cppCode;
-        d(s);
+        ct.compiler.Execute();
         b_;
     }
 }
