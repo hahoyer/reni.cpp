@@ -7,6 +7,7 @@
 #define nd(x) (HWLib::String(#x) + " = " + HWLib::Dump(x) + ";")
 #define nd_arg(i,x) {if(Trace)_console_ Write("[" STRING(i) "] " + nd(x) + "\n");}
 #define d(x) {if(Trace)_console_ Write(nd(x) + "\n");}
+#define dd(x) {if(Trace)_console_ Write(x + "\n");}
 
 #define FILE_LINE_FUNCTION HWLib::String::FilePosition(__FILE__,__LINE__,0,__FUNCTION__)
 #define d_here {if(Trace) _console_ Write(FILE_LINE_FUNCTION);}
