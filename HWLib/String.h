@@ -31,10 +31,12 @@ namespace HWLib
         p(char *,           RawDataCopy);
         p(Array<char const>, ToArray  );
 
-        bool       const BeginsWith(String const& target, int start = 0)const;
-        String      const CastLeft  (int           count, char padChar = ' ')const;
-        String       const CastRight (int           count, char padChar = ' ')const;
-        bool          const Contains  (char const&   target, int start = 0)const;
+        bool     const BeginsWith(String const& target, int start = 0)const;
+        String    const CastLeft  (int           count, char padChar = ' ')const;
+        String     const CastRight (int           count, char padChar = ' ')const;
+        bool        const Contains  (char const&   target, int start = 0)const;
+        bool         const Contains  (String const& target, int start = 0)const;
+        bool          const EndsWith  (String const& target)const;
         Optional<int>  const Find      (String const& target, int start = 0)const;
         String          const Indent    (bool          isLineStart = false, int count = 1, String const &tabString = "    ")const;
         String           const operator+ (String const& other)const;

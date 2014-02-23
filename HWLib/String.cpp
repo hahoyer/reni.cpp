@@ -159,11 +159,15 @@ String const String::Indent(bool isLineStart, int count, String const &tabString
     return (isLineStart ? effectiveTabString : "") + Replace("\n", "\n" + effectiveTabString);
 }
 
+bool const String::Contains(String const &target, int start)const{
+    return Find(target, start).IsValid;
+}
+
 Optional<int> const String::Find(String const &target, int start)const
 {
     for (auto end = Count - target.Count; start < end; start++)
-    if (BeginsWith(target, start))
-        return Optional<int>(start);
+        if (BeginsWith(target, start))
+            return Optional<int>(start);
     return empty;
 }
 
@@ -181,6 +185,16 @@ bool const String::BeginsWith(String const &target, int start)const
     if ((*this)[start + i] != target[i])
         return false;
     return true;
+}
+
+bool const String::EndsWith(String const &target)const
+{
+    auto delta = Count - target.Count;
+    if (delta < 0)
+        return false;
+    if (delta == 0)
+        return *this == target;
+    return Part(delta) == target;
 }
 
 String const String::Replace(String const &oldValue, String const&newValue)const
