@@ -21,6 +21,7 @@ namespace Reni
         p(Array<Token>, tokens);
         p(Ref<Syntax>, syntax);
         p(Ref<CodeItem>, code);
+        p(String, cppCode);
     };
 
 }

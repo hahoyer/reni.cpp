@@ -335,7 +335,7 @@ protected :
 public :
     // --- Public Methods ---
     bool  isEmpty () const;
-
+    std::vector<Ulong> const ToArray()const{ return m_units; }
 };
 
 

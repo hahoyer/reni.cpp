@@ -10,6 +10,7 @@ namespace Reni
         using thisType = CodeItem;
     public:
         static Ref<CodeItem> const Const(Ref<BitsConst> const&value);
+        virtual_p(String, ToCpp) = 0;
     };
 
     class CodeView : public DumpableObject

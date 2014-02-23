@@ -23,3 +23,7 @@ p_implementation(Compiler, Ref<Syntax>, syntax){
 p_implementation(Compiler, Ref<CodeItem>, code){
     return _internal->codeCache.Value;
 };
+
+p_implementation(Compiler, String, cppCode){
+    return _internal->cppCodeCache.Value;
+};

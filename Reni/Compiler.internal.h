@@ -28,6 +28,7 @@ public:
     ValueCache<Ref<CodeItem>> codeCache;
     ValueCache<Reni::ScannerInstance> scannerCache;
     ValueCache<Ref<Syntax>> syntaxCache;
+    ValueCache<String> cppCodeCache;
 private:
     ValueCache<Source const> sourceCache;
     Ref<RootContext> rootContext;
@@ -41,6 +42,7 @@ public:
         , scannerCache([=]{return Reni::ScannerInstance(sourceCache.Value); })
         , syntaxCache([=]{return GetSyntax(); })
         , codeCache([=]{return GetCode(); })
+        , cppCodeCache([=]{return GetCppCode(); })
         , rootContext(new RootContext)
     {}
 
@@ -61,5 +63,9 @@ private:
             .ParenthesisLevel(Start, End)
             ;
         return result;
+    };
+
+    String const GetCppCode()const{
+        return codeCache.Value->ToCpp;
     };
 };

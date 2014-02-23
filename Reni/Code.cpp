@@ -8,6 +8,8 @@
 using namespace Reni;
 static bool Trace = true;
 
+pure_p_implementation(CodeItem, String, ToCpp);
+
 Ref<CodeItem> const CodeItem::Const(Ref<BitsConst> const&value){
     return new ConstCode(value->size, value);
 };
@@ -82,3 +84,8 @@ void CodeView::ExecuteCode()const
     d(error);
     b_;
 };
+
+
+override_p_implementation(ConstCode, String, ToCpp){
+    return "push(" + size.format + ", " + value->format + ");\n";
+}

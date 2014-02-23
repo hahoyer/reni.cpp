@@ -33,3 +33,11 @@ p_implementation(BitsConst, Size, size){
     }
     return result;
 }
+
+p_implementation(BitsConst, String, format){
+    auto valueArray = value.ToArray();
+    return Array<BigInt::Ulong>(valueArray.size(), [&](int index){return valueArray[index]; })
+        .Select<String>([](long element){return String::Convert(element); })
+        ->Stringify(", ");
+
+}

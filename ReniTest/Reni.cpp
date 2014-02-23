@@ -33,8 +33,9 @@ namespace _Reni{
     {
         CompilerTest ct;
         ct.text = "4711";
-        auto s = ct.compiler.code;
-
+        auto s = ct.compiler.cppCode;
+        d(s);
+        b_;
     }
 }
 

@@ -14,6 +14,7 @@ namespace Reni{
         static Ref<BitsConst> const Convert(String const&text);
         p(Size, size);
         bool const operator==(BitsConst const&other)const{ return value == other.value; };
+        p(String, format);
     private:
         override_p_function(Array<String>, DumpData){ return{ value.toStrDec() }; };
     };

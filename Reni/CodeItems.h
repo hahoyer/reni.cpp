@@ -18,5 +18,6 @@ namespace Reni{
 
     private:
         override_p_function(Array<String>, DumpData){ return{ nd(size), nd(value) }; };
+        override_p_function(String, ToCpp);
     };
 }
