@@ -10,5 +10,4 @@
 #include "../SourcePart.h"
 #include "../SourcePosition.h"
 #include "../Token.h"
-#include "../TokenClass.h"
 #include "../TemplateInstances.h"
