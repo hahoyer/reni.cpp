@@ -13,6 +13,7 @@
 #include "../Ref.h"
 #include "../Stack.h"
 #include "../String.h"
+#include "../System.h"
 #include "../ValueCache.h"
 #include "../TemplateInstances.h"
 
