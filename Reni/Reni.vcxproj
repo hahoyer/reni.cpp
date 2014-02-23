@@ -18,6 +18,7 @@
     <ClCompile Include="bigInt.cpp" />
     <ClCompile Include="BitsConst.cpp" />
     <ClCompile Include="BitType.cpp" />
+    <ClCompile Include="CodeView.cpp" />
     <ClCompile Include="RootContext.cpp" />
     <ClCompile Include="NumberToken.cpp" />
     <ClCompile Include="Terminal.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClInclude Include="CodeItems.h" />
+    <ClInclude Include="CodeView.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="bigInt.h" />
     <ClInclude Include="BitType.h" />
