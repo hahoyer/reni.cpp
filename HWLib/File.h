@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Properties.h"
 #include "Ref.h"
 
