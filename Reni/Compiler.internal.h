@@ -4,6 +4,7 @@
 #include "CodeView.h"
 #include "MainTokenFactory.h"
 #include "RootContext.h"
+#include "Scanner.h"
 #include "Syntax.h"
 #include "TokenClass.h"
 

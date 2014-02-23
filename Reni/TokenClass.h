@@ -17,6 +17,4 @@ namespace Reni
             return{};
         };
     };
-
-    using Token = HWLang::Token<TokenClass>;
 };

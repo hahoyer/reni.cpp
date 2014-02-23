@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Scanner.h"
-
 using namespace HWLang;
 
 namespace Reni
 {
     class CodeItem;
+    class Syntax;
+    class TokenClass;
+
+    using Token = HWLang::Token<TokenClass>;
 
     class Compiler final
     {

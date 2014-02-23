@@ -33,10 +33,17 @@ void CodeView::InitializeFile()
     f.Data = cppCode;
 };
 
+String const Includes()
+{
+    String const VCInstallDir = "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\";
+    return "/I\"" + VCInstallDir + "include\" ";
+};
+
 void CodeView::Execute()
 {
+    Process("vcvars32").Execute();
     InitializeFile();
-    Process ccc("cl " + fileName);
+    Process ccc("cl " + fileName + " " + Includes());
     auto compileResult = ccc.data;
     auto error = ccc.errorData;
     if ((compileResult == "" || compileResult == fileName + "\r\n") && error == ""){
@@ -45,8 +52,8 @@ void CodeView::Execute()
         b_;
     };
 
-    dd(compileResult);
-    dd(error);
+    dd("compileResult: " + compileResult);
+    dd("error: " + error);
     b_;
 };
 

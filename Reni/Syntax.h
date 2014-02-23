@@ -8,6 +8,7 @@ namespace Reni
     class CodeItem;
     class Context;
     class Result;
+    class TokenClass;
 
     class Syntax : public WithId<DumpableObject, Syntax>
     {

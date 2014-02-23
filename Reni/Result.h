@@ -7,6 +7,7 @@ namespace Reni
 {
     class CodeItem;
     class Context;
+    class Syntax;
 
     class ResultData final : public DumpableObject
     {
