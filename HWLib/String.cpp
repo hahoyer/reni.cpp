@@ -241,11 +241,16 @@ String const String::Convert(int value)
 };
 
 
-String const String::Convert(size_t value)
+String const String::Convert(unsigned __int32 value)
 {
     return std::to_string(value);
 };
 
+
+String const String::Convert(unsigned __int64 value)
+{
+    return std::to_string(value);
+};
 
 
 String const String::Convert(bool value)
