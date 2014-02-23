@@ -25,11 +25,22 @@ namespace _Process
         a_is(t, == , "example\r\n");
     };
 
+    void StartProgram()
+    {
+        auto path = HWLib::System::EnvironmentVariable("VS120COMNTOOLS");
+        a_if(path.Contains(" "), nd(path));
+        auto name = "..\\ide\\vb7to8.exe";
+        auto p = Process("\""+ path + "\\"+ name+"\"");
+        auto d = p.data;
+        auto e = p.errorData;
+        a_is(e, == , "");
+    };
+
     void Double()
     {
         auto p = Process("time");
         auto t0 = p.data;
-        Process::Sleep(1000);
+        System::Sleep(1000);
         auto t1 = p.data;
         a_is(t0, == , t1);
     };
@@ -38,7 +49,7 @@ namespace _Process
     {
         auto p = Process("time");
         auto t0 = p.data;
-        Process::Sleep(1000);
+        System::Sleep(1000);
         p.Execute();
         auto t1 = p.data;
         a_is(t0, != , t1);
@@ -59,6 +70,7 @@ namespace _Process
         Double();
         Double2();
         Error();
+        StartProgram();
     };
 }
 
