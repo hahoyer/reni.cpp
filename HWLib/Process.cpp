@@ -2,6 +2,7 @@
 #include "Process.h"
 
 #include "String.h"
+#include "System.h"
 #include <windows.h>
 
 static bool Trace = true;
@@ -40,8 +41,6 @@ public:
     String errorData;
 
     p_mutable(bool, IsValid){ return isValid; }
-
-    static String const FormatErrorMessage();
 };
 
 p_mutator_implementation(Process::internal, bool, IsValid)
@@ -132,7 +131,7 @@ void Process::internal::Ensure()
         &pi// 		__out        LPPROCESS_INFORMATION lpProcessInformation
         ) == 0)
     {
-        auto error = FormatErrorMessage();
+        auto error = System::FormatLastErrorMessage();
         throw error;
     };
 
@@ -155,21 +154,6 @@ void Process::internal::Reset()
     };
 };
 
-String const Process::internal::FormatErrorMessage()
-{
-    DWORD rc = ::GetLastError();
-    char Buffer[3000];
-    ::FormatMessage(
-        FORMAT_MESSAGE_FROM_SYSTEM,
-        NULL,
-        rc,
-        0,
-        Buffer, 3000,
-        NULL);
-    return String::Convert(int(rc)) + ": " + Buffer;
-};
-
-
 Process::Process(String const&command) : _internal(new internal(command)){};
 
 p_implementation(Process, String, data){
@@ -187,6 +171,3 @@ void Process::Execute(){
     _internal->IsValid = true;
 }
 
-void Process::Sleep(int milliseconds){
-    ::Sleep(milliseconds);
-}

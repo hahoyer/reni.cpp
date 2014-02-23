@@ -11,10 +11,8 @@ namespace HWLib{
         Process(String const& command);
         p(String, data);
         p(String, errorData);
-        static void Sleep(int milliseconds);
         void Execute();
     };
-
 
     String const Dump(Process const&target);
 }
