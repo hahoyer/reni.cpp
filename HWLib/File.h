@@ -17,6 +17,8 @@ namespace HWLib
         p(String, FullName);
         p_mutable(String, Name);
         p_mutable(String, Data);
+        p(bool, IsValid);
+        p_mutable(bool, IsValidFolder);
     };
 
 }
