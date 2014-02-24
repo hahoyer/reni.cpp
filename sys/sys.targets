@@ -43,7 +43,7 @@
 
     <PropertyGroup>
         <Boost>$(ProgramFiles)\boost_1_55_0</Boost>
-        <VLD>c:\Program Files (x86)\Visual Leak Detector</VLD>
+        <VLD>$(ProgramFiles)\Visual Leak Detector</VLD>
         <ProjectName>$(MSBuildProjectName)</ProjectName>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <ShowAllFiles>true</ShowAllFiles>
