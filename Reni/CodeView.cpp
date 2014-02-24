@@ -10,7 +10,9 @@ CodeView::CodeView(String const& cppCode) : cppCode(cppCode){}
 p_implementation(CodeView, String, program)
 {
     static String const result = R"(
-    #include <stdlib.h>
+    #include "Admin/Export.h"
+    #include "Export.h"
+    using namespace ReniRuntime; 
     int main(void){
         {0}
         return 0;
@@ -33,17 +35,12 @@ void CodeView::InitializeFile()
     f.Data = cppCode;
 };
 
-String const Includes()
-{
-    String const VCInstallDir = "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\";
-    return "/I\"" + VCInstallDir + "include\" ";
-};
-
 void CodeView::Execute()
 {
     Process("vcvars32").Execute();
     InitializeFile();
-    Process ccc("cl " + fileName + " " + Includes());
+    auto command = "cl /EHsc " + fileName + " " + Includes;
+    Process ccc(command);
     auto compileResult = ccc.data;
     auto error = ccc.errorData;
     if ((compileResult == "" || compileResult == fileName + "\r\n") && error == ""){
@@ -57,18 +54,29 @@ void CodeView::Execute()
     b_;
 };
 
+p_implementation(CodeView, String, Includes){
+    Array<String>includeDirs {
+        get_VCInstallDir() + "include",
+        get_Boost(), 
+        get_RuntimeDir()
+    };
+
+    return includeDirs
+        .Select<String>([](String dir){return "/I\"" + dir + "\""; })
+        ->Stringify(" ");
+};
+
+#if 0
 void Execute()
 {
-    String const VCInstallDir = "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\";
+    CodeView cv("");
     String const FrameworkSdkDir = "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\";
-    auto reniRoot = File(__FILE__ "\\..\\..\\..\\").FullName;
-    auto cc = VCInstallDir + "bin\\CL.exe";
-
-    auto includeDirs = _({ VCInstallDir + "include" });
+    auto reniRoot = cv.SolutionDir;
+    auto cc = cv.VCInstallDir + "bin\\CL.exe";
 
     auto libraries = _({
-        VCInstallDir + "lib",
-        VCInstallDir + "atlmfc\\lib",
+        cv.VCInstallDir + "lib",
+        cv.VCInstallDir + "atlmfc\\lib",
         FrameworkSdkDir + "lib"
     });
 
@@ -83,10 +91,9 @@ void Execute()
     auto args = "\"" + cc + "\" /nologo /W4 /WX- /MP /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE "
         "/GF- /Gm- /EHsc /RTC1 /MDd /GS /Gy- /fp:precise /Zc:forScope- /GR "
         "/Fo\"C:\\data\\develop\\Reni3\\out\\Debug\\{0}.obj\" "
-        "/Gd /TP /FC /errorReport:prompt "
+        "/Gd /TP /FC /errorReport:prompt"
         ;
-    for (auto i = 0; i < includeDirs.Count; i++)
-        args += "/I" + includeDirs[i].Quote + " ";
+    args += " " + vc.Includes;
     for (auto i = 0; i < forcedIncludes.Count; i++)
         args += "/FI" + forcedIncludes[i].Quote + " ";
     args += "{0} ";
@@ -118,3 +125,5 @@ void Execute()
     dd(error);
     b_;
 };
+
+#endif

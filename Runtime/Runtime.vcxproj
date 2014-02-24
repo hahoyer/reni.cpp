@@ -14,6 +14,9 @@
       <Project>{bfcca11e-fcd1-483c-828c-7df6cde5aa85}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Export.h" />
+  </ItemGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>

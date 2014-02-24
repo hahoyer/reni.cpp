@@ -15,5 +15,5 @@ Ref<CodeItem> const CodeItem::Const(Ref<BitsConst> const&value){
 };
 
 override_p_implementation(ConstCode, String, ToCpp){
-    return "push(" + size.format + ", " + value->format + ");\n";
+    return "push(" + size.format + ", {" + value->format + "});\n";
 }
