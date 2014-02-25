@@ -10,7 +10,7 @@ namespace HWLib{
         Process(String const& command);
         p(String, data);
         p(String, errorData);
-        void Execute();
+        int Execute();
     };
 
     String const Dump(Process const&target);

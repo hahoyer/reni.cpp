@@ -39,7 +39,7 @@ public:
 
     String data;
     String errorData;
-
+    int result;
     p_mutable(bool, IsValid){ return isValid; }
 };
 
@@ -136,11 +136,14 @@ void Process::internal::Ensure()
     };
 
     delete[] commandChars;
-    ::CloseHandle(pi.hProcess);
-    ::CloseHandle(pi.hThread);
 
     data = _fromChild.Data;
     errorData = _errorFromChild.Data;
+    DWORD result;
+    ::GetExitCodeProcess(pi.hProcess, &result);
+    this->result = result;
+    ::CloseHandle(pi.hProcess);
+    ::CloseHandle(pi.hThread);
     isValid = true;
 };
 
@@ -166,8 +169,9 @@ p_implementation(Process, String, errorData){
     return _internal->errorData;
 };
 
-void Process::Execute(){
+int Process::Execute(){
     _internal->IsValid = false;
     _internal->IsValid = true;
+    return _internal->result;
 }
 
