@@ -1,7 +1,11 @@
 #pragma once
 
-using namespace Reni;
+#include <vector>
+#include <initializer_list>
+
+//using namespace Reni;
 
 namespace ReniRuntime{
-    void push(int size, initializer_list<int> args);
+    void push(int size, std::initializer_list<int> args){
+    };
 }

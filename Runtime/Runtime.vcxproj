@@ -4,17 +4,6 @@
     <ProjectGuid>{50AED5D9-37C7-4A6E-8E77-F7BC6F144C50}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HWLang\HWLang.vcxproj">
-      <Project>{77c95811-31db-44f1-a4a9-a9b5c29aaa42}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\HWLib\HWLib.vcxproj">
-      <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Reni\Reni.vcxproj">
-      <Project>{bfcca11e-fcd1-483c-828c-7df6cde5aa85}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Common.h" />
   </ItemGroup>
   <PropertyGroup Label="Configuration">
