@@ -2,5 +2,6 @@
 
 namespace _Reni
 {
+    void CompileSimple();
     void RunAll();
 }

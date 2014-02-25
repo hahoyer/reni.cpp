@@ -7,13 +7,12 @@
 
 int main()
 {
-    Test::RunAll();
+    Test::RunSpecial();
     return 0;
 }
 
 void Test::RunAll()
 {
-    auto xx = new int[200];
     _HWLib::RunAll();
     _HWLang::RunAll();
     _Reni::RunAll();
@@ -21,6 +20,6 @@ void Test::RunAll()
 
 void Test::RunSpecial()
 {
-    _HWLib::RunSpecial();
+    _Reni::CompileSimple();
 }
 

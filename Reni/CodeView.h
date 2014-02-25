@@ -11,7 +11,8 @@ namespace Reni
         void Execute();
         p(String, program);
     private:
-        p(String, fileName);
+        p(String, fullFileName);
+        p(String, fileName){return "temp";};
         p(String, ProgramFiles86){ return System::EnvironmentVariable("ProgramFiles(x86)"); };
         p(String, Boost){ return ProgramFiles86 + "\\boost_1_55_0"; };
         p(String, VCInstallDir){ return "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\"; };
@@ -19,6 +20,7 @@ namespace Reni
         p(String, SolutionDir){ return File(ProjectDir + "\\..").FullName; };
         p(String, RuntimeDir){ return File(SolutionDir + "\\Runtime").FullName; };
         p(String, Includes);
+        p(String, CompileCommand);
 
         void InitializeFile();
     };
