@@ -1,7 +1,7 @@
 #pragma once
 #include "Compiler.h"
 
-#include "CodeView.h"
+#include "CppCompilerScripting.h"
 #include "MainTokenFactory.h"
 #include "RootContext.h"
 #include "Scanner.h"
@@ -53,7 +53,7 @@ public:
     void Execute(){
         auto s = cppCodeCache.Value;
         dd(s);
-        CodeView(s).Execute();
+        CppCompilerScripting(s).Execute();
     }
 
 private:
@@ -76,7 +76,7 @@ private:
     };
 
     String const GetCppCode()const{
-        return CodeView(codeCache.Value->ToCpp).program;
+        return CppCompilerScripting(codeCache.Value->ToCpp).program;
     };
 
 };
