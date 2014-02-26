@@ -169,9 +169,13 @@ p_implementation(Process, String, errorData){
     return _internal->errorData;
 };
 
-int Process::Execute(){
+p_implementation(Process, int, result){
+    const_cast<Process&>(*this)._internal->IsValid = true;
+    return _internal->result;
+};
+
+void Process::Execute(){
     _internal->IsValid = false;
     _internal->IsValid = true;
-    return _internal->result;
 }
 

@@ -44,7 +44,7 @@ void CppCompilerScripting::Execute()
 
     _console_ Write(CompileCommand + "\n");
     Process pcpp(CompileCommand);
-    if (pcpp.Execute())
+    if (pcpp.result)
     {
         auto compileResult = pcpp.data;
         auto error = pcpp.errorData;
@@ -56,8 +56,8 @@ void CppCompilerScripting::Execute()
     }
 
     Process pexe(exe);
-    auto returnExe = pexe.Execute();
-    d(returnExe);
+    pexe.Execute();
+    d(pexe.result);
     d(pexe.data);
     d(pexe.errorData);
     b_;
