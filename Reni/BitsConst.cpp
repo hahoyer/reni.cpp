@@ -12,6 +12,11 @@ Ref<BitsConst> const BitsConst::Convert(String const&text){
 };
 
 
+BitsConst::operator int const() const
+{
+    return value.toUlong();
+}
+
 p_implementation(BitsConst, Size, size){
     if (value == BigInt::Rossi(0))
         return 0;

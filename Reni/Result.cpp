@@ -5,9 +5,13 @@
 #include "Code.h"
 #include "Context.h"
 #include "Syntax.h"
+#include "..\HWLib\LevelValue.h"
+#include "..\HWLib\DumpMacros.h"
+#include "..\HWLib\BreakHandling.h"
 
 static bool Trace = true;
 
+using namespace HWLib;
 using namespace Reni;
 
 Result::Result(Syntax const& syntax, Context const&context)

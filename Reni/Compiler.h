@@ -1,5 +1,8 @@
 #pragma once
+#include "..\HWLang\Token.h"
+#include "..\HWLib\Ref.h"
 
+using namespace HWLib;
 using namespace HWLang;
 
 namespace Reni
@@ -8,13 +11,13 @@ namespace Reni
     class Syntax;
     class TokenClass;
 
-    using Token = HWLang::Token<TokenClass>;
+    using Token = Token<TokenClass>;
 
     class Compiler final
     {
     private:
         class internal;
-        Pointer<internal> _internal;
+        HWLib::Pointer<internal> _internal;
     public:
         Compiler() = delete;
         Compiler(Compiler const&) = delete;

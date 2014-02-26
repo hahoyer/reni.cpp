@@ -1,8 +1,10 @@
 #include "Import.h"
 #include "Compiler.h"
 
+#include "BitsConst.h"
 #include "BitType.h"
 #include "Compiler.internal.h"
+#include "Size.h"
 #include "Result.h"
 #include "TokenClass.h"
 
@@ -30,4 +32,11 @@ p_implementation(Compiler, String, cppCode){
 
 void Compiler::Execute(){
     _internal->Execute();
+}
+
+
+String Compiler::internal::CodeVisitor::Const(Size const size, Ref<BitsConst> const value) const
+{
+    a_if_(size <= BitCount<int>());
+    return "return " + String::Convert(int(*value)) + ";";
 }

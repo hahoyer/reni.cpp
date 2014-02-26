@@ -1,4 +1,8 @@
 #pragma once
+#include "..\HWLib\System.h"
+#include "..\HWLib\File.h"
+
+using namespace HWLib;
 
 namespace Reni
 {
@@ -13,7 +17,7 @@ namespace Reni
     private:
         p(String, fullFileName);
         p(String, fileName){return "temp";};
-        p(String, ProgramFiles86){ return System::EnvironmentVariable("ProgramFiles(x86)"); };
+        p(String, ProgramFiles86){ return HWLib::System::EnvironmentVariable("ProgramFiles(x86)"); };
         p(String, Boost){ return ProgramFiles86 + "\\boost_1_55_0"; };
         p(String, VCInstallDir){ return ProgramFiles86 + "\\Microsoft Visual Studio 12.0\\VC"; };
         p(String, ProjectDir){ return File(__FILE__ "\\..").FullName; };

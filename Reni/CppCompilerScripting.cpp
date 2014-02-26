@@ -1,7 +1,11 @@
 #include "Import.h"
 #include "CppCompilerScripting.h"
+#include "..\HWLib\Process.h"
+#include "..\HWLib\Console.h"
+#include "..\HWLib\DumpMacros.h"
 
 using namespace Reni;
+using namespace HWLib;
 static bool Trace = true;
 
 CppCompilerScripting::CppCompilerScripting(String const& cppCode) : cppCode(cppCode){}
@@ -13,7 +17,6 @@ p_implementation(CppCompilerScripting, String, program)
     using namespace ReniRuntime; 
     int main(void){
         {0}
-        return 0;
     }
     )";
     return result.Replace("{0}", cppCode);

@@ -1,16 +1,25 @@
 #pragma once
+#include "..\HWLib\DumpableObject.h"
+#include "..\Runtime\Common.h"
+#include "..\HWLib\Ref.h"
+
+using namespace HWLib;
 
 namespace Reni
 {
     class BitsConst;
+    class CodeVisitor;
 
     class CodeItem : public DumpableObject
     {
         using baseType = DumpableObject;
         using thisType = CodeItem;
     public:
+        using dataItemType = ReniRuntime::Stack::dataType;
+        using dataItemSizeType = ReniRuntime::Stack::sizeType;
+    public:
         static Ref<CodeItem> const Const(Ref<BitsConst> const&value);
-        virtual_p(String, ToCpp) = 0;
+        virtual String const ToCpp(CodeVisitor const& visitor)const;
     };
 }
 

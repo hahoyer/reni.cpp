@@ -1,11 +1,29 @@
 #pragma once
 
-#include <vector>
-#include <initializer_list>
-
-//using namespace Reni;
-
 namespace ReniRuntime{
-    void push(int size, std::initializer_list<int> args){
+    class Stack{
+        using thisType = Stack;
+    public:
+        using dataType = unsigned int;
+        using sizeType = unsigned int;
+    private:
+        struct Item{
+            Item* next;
+            sizeType size;
+            dataType value;
+        };
+
+        Item* top;
+    public:
+        void Push(dataType size, sizeType value){
+            top = new Item{ top, size, value };
+        }
+
+    };
+    
+    
+    inline void push(Stack& stack, Stack::sizeType size, Stack::dataType value){
+        stack.Push(size, value);
     };
 }
+

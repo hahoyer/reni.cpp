@@ -10,6 +10,9 @@
     <ProjectReference Include="..\HWLib\HWLib.vcxproj">
       <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Runtime\Runtime.vcxproj">
+      <Project>{50aed5d9-37c7-4a6e-8e77-f7bc6f144c50}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -19,6 +22,7 @@
     <ClCompile Include="BitsConst.cpp" />
     <ClCompile Include="BitType.cpp" />
     <ClCompile Include="CppCompilerScripting.cpp" />
+    <ClCompile Include="CodeVisitor.cpp" />
     <ClCompile Include="RootContext.cpp" />
     <ClCompile Include="NumberToken.cpp" />
     <ClCompile Include="Terminal.cpp" />
@@ -31,6 +35,7 @@
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClInclude Include="CodeItems.h" />
+    <ClInclude Include="CodeVisitor.h" />
     <ClInclude Include="CppCompilerScripting.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="bigInt.h" />

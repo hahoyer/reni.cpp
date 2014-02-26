@@ -1,14 +1,24 @@
 #pragma once
 #include "Compiler.h"
 
+#include "CodeVisitor.h"
 #include "CppCompilerScripting.h"
 #include "MainTokenFactory.h"
 #include "RootContext.h"
 #include "Scanner.h"
 #include "Syntax.h"
 #include "TokenClass.h"
+#include "..\HWLang\PrioTable.h"
+#include "..\HWLang\ScannerInstance.h"
+#include "..\HWLang\Token.h"
+#include "..\HWLang\Source.h"
+#include "..\HWLib\ValueCache.h"
+#include "..\HWLang\PrioParser.h"
 
 static bool Trace = true;
+
+using namespace HWLib;
+using namespace HWLang;
 
 namespace Reni{
 
@@ -29,7 +39,7 @@ class Compiler::internal final
 {
     String const fileName;
 public:
-    ValueCache<Ref<CodeItem>> codeCache;
+    ValueCache<Ref < CodeItem>> codeCache;
     ValueCache<Reni::ScannerInstance> scannerCache;
     ValueCache<Ref<Syntax>> syntaxCache;
     ValueCache<String> cppCodeCache;
@@ -69,14 +79,24 @@ private:
 
     p(PrioTable, prioTable){
         return
-            PrioTable::CreateLeft({ Any })
+            HWLang::PrioTable::CreateLeft({ Any })
             .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
             .ParenthesisLevel(Start, End)
             ;
     };
 
+    class CodeVisitor : public Reni::CodeVisitor
+    {
+        override_p_function(Array<String>, DumpData){ return{}; };
+        virtual String Const(Size const size, Ref<BitsConst> const value) const override;
+
+    };
+
     String const GetCppCode()const{
-        return CppCompilerScripting(codeCache.Value->ToCpp).program;
+        CodeVisitor visitor;
+        return CppCompilerScripting(codeCache.Value->ToCpp(visitor)).program;
     };
 
 };
+
+
