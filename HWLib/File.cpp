@@ -66,11 +66,10 @@ private:
                 continue;
 
             internal headFile = head;
-            if (headFile.IsValid){
-                if (headFile.IsValidFolder)
-                    return;
+            if (!headFile.IsValid)
+                headFile.CreateFolder();
+            else if (!headFile.IsValidFolder)
                 throw String("Error: file exits at requested location.");
-            }
         };
     };
 
