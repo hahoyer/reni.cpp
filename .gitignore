@@ -5,3 +5,4 @@ Release
 *.ipch
 *.vcxproj.user
 /*.user
+/env.txt
