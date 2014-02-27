@@ -8,6 +8,7 @@
 
 bool Trace = true;
 using namespace Reni;
+using namespace HWLang;
 
 class TextToken final : public TokenClass{
     using baseType = TokenClass;
@@ -15,17 +16,25 @@ class TextToken final : public TokenClass{
 };
 
 
-class DefineableToken final : public TokenClass{
+class DefineableToken : public TokenClass{
     using baseType = TokenClass;
     using thisType = DefineableToken;
     
     String const name;
-public:
+protected:
     DefineableToken(String const name) : name(name){}
 private:
     override_p_function(Array<String>, DumpData){
         return{ nd(name) };
     };
+};
+
+
+class UserDefinedToken final : public DefineableToken {
+    using baseType = DefineableToken;
+    using thisType = UserDefinedToken;
+public:
+    UserDefinedToken(String const name) : baseType(name){}
 };
 
 
@@ -105,6 +114,12 @@ private:
     };
 };
 
+class DumpPrintToken final : public DefineableToken{
+    using baseType = DefineableToken;
+    using thisType = DumpPrintToken;
+public:
+    DumpPrintToken() : baseType("dump_print"){}
+};
 
 MainTokenFactory const MainTokenFactory::Instance;
 
@@ -114,16 +129,29 @@ TokenClass const& MainTokenFactory::Start = LeftParenthesisToken(0);
 TokenClass const& MainTokenFactory::End = RightParenthesisToken(0);
 
 MainTokenFactory::MainTokenFactory()
-:tokenClasses([](String const& key){return new DefineableToken(key); })
+:tokenClasses([](String const& key){return new UserDefinedToken(key); })
 , errorClasses([](String const& key){return new SyntaxErrorToken(key); })
-{}
+{
+    predefinedTokenClasses = 
+        std::unordered_map<String const, Ref<TokenClass const>>({ 
+        { "dump_print", new DumpPrintToken } 
+    });
+}
 
 TokenClass const& MainTokenFactory::GetTokenClass(String const&name){
-    return *Instance.tokenClasses[name];
+    return Instance.InternalGetTokenClass(name);
 }
 
 TokenClass const& MainTokenFactory::GetErrorClass(String const&name){
     return *Instance.errorClasses[name];
 }
 
+TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) const
+{
+    auto pt = predefinedTokenClasses.find(name);
+    if (pt != predefinedTokenClasses.end())
+        return *pt->second;
+
+    return *tokenClasses[name];
+}
 

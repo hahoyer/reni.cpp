@@ -1,4 +1,7 @@
 #pragma once
+#include "..\HWLib\DumpableObject.h"
+#include "..\HWLib\Ref.h"
+#include "..\HWLang\SourcePart.h"
 
 namespace Reni
 {
