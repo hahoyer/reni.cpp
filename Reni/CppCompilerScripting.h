@@ -1,6 +1,7 @@
 #pragma once
 #include "..\HWLib\System.h"
 #include "..\HWLib\File.h"
+#include "..\HWLib\Process.h"
 
 using namespace HWLib;
 
@@ -10,10 +11,13 @@ namespace Reni
     {
         using thisType = CppCompilerScripting;
         String const cppCode;
+        Process currentProcess;
     public:
         CppCompilerScripting(String const& cppCode);
         void Execute();
         p(String, program);
+        p(int, result);
+        p(String, output);
     private:
         p(String, fullFileName);
         p(String, fileName){return "temp";};

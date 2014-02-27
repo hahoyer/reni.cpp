@@ -8,7 +8,9 @@ using namespace Reni;
 using namespace HWLib;
 static bool Trace = true;
 
-CppCompilerScripting::CppCompilerScripting(String const& cppCode) : cppCode(cppCode){}
+CppCompilerScripting::CppCompilerScripting(String const& cppCode) 
+: cppCode(cppCode)
+, currentProcess("echo none"){}
 
 p_implementation(CppCompilerScripting, String, program)
 {
@@ -46,25 +48,26 @@ void CppCompilerScripting::Execute()
     d(exe);
 
     _console_ Write(CompileCommand + "\n");
-    Process pcpp(CompileCommand);
-    if (pcpp.result)
+    currentProcess = Process(CompileCommand);
+    if (currentProcess.result == 0)
     {
-        auto compileResult = pcpp.data;
-        auto error = pcpp.errorData;
-        dd("compileResult: " + compileResult);
-        dd("error: " + error);
-        b_;
-
-        return;
+        currentProcess = Process(exe);
+        currentProcess.Execute();
     }
 
-    Process pexe(exe);
-    pexe.Execute();
-    d(pexe.result);
-    d(pexe.data);
-    d(pexe.errorData);
-    b_;
+    d(currentProcess.result);
+    d(currentProcess.data);
+    d(currentProcess.errorData);
+    if (currentProcess.errorData != "")
+        throw *this;
+};
 
+p_implementation(CppCompilerScripting, int, result){
+    return currentProcess.result;
+};
+
+p_implementation(CppCompilerScripting, String, output){
+    return currentProcess.data;
 };
 
 p_implementation(CppCompilerScripting, String, LibPath){

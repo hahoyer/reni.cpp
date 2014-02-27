@@ -1,29 +1,28 @@
 #pragma once
+#include "..\HWLib\File.h"
+#include "..\Reni\Compiler.h"
 
 using namespace Reni;
+using namespace HWLib;
 
-namespace _Compiler
+namespace ReniTest
 {
     class Token;
 
     class CompilerTest final
     {
         File file;
-
-        CompilerTest(String name)
-            : file(name)
-            , compiler(name)
-        {
-        };
-
+        static String const name(){ return  "compilerTest.reni"; };
     public:
         Compiler compiler;
 
-        CompilerTest()
-            : CompilerTest("compilerTest.reni")
+        CompilerTest(String text)
+            : file(name())
+            , compiler(name())
         {
-        };
+            file.Data = text;
+        }
 
-        p_mutable(String, text){ return file.Data; }
+        static void Check(String const& text, String const expectedResult);
     };
 }

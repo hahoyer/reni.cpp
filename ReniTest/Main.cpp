@@ -7,19 +7,20 @@
 
 int main()
 {
-    Test::RunSpecial();
+    ReniTest::RunAll();
     return 0;
 }
 
-void Test::RunAll()
+void ReniTest::RunAll()
 {
     _HWLib::RunAll();
     _HWLang::RunAll();
-    _Reni::RunAll();
+    Common::RunAll();
+    Common::RunAll();
 }
 
-void Test::RunSpecial()
+void ReniTest::RunSpecial()
 {
-    _Reni::CompileSimple();
+    ReniTest::Common::CompileSimple();
 }
 

@@ -30,8 +30,8 @@ p_implementation(Compiler, String, cppCode){
     return _internal->cppCodeCache.Value;
 };
 
-void Compiler::Execute(){
-    _internal->Execute();
+ExecutionResult const Compiler::Execute(){
+    return _internal->Execute();
 }
 
 

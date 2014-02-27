@@ -10,6 +10,11 @@ namespace Reni
     class CodeItem;
     class Syntax;
     class TokenClass;
+    struct ExecutionResult
+    {
+        int result;
+        String data;
+    };
 
     using Token = Token<TokenClass>;
 
@@ -27,7 +32,7 @@ namespace Reni
         p(Ref<Syntax>, syntax);
         p(Ref<CodeItem>, code);
         p(String, cppCode);
-        void Execute();
+        ExecutionResult const Execute();
     };
 
 }

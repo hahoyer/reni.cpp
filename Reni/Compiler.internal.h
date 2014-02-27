@@ -60,10 +60,13 @@ public:
         , cppCodeCache([=]{return GetCppCode(); })
     {}
 
-    void Execute(){
+    ExecutionResult const Execute(){
         auto s = cppCodeCache.Value;
         dd(s);
-        CppCompilerScripting(s).Execute();
+        CppCompilerScripting ccs = s;
+        ccs.Execute();
+        return ExecutionResult{ ccs.result, ccs.output };
+
     }
 
 private:

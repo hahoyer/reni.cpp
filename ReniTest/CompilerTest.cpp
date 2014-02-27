@@ -2,12 +2,12 @@
 #include "CompilerTest.h"
 
 using namespace Reni;
-using namespace _Compiler;
+using namespace ReniTest;
 
 static bool Trace = true;
 
-
-p_mutator_implementation(CompilerTest, String, text){ 
-    file.Data = value; 
+void CompilerTest::Check(String const& text, String const expectedResult){
+    CompilerTest ct = text;
+    auto result = ct.compiler.Execute();
+    a_is(result.data, == , expectedResult);
 };
-

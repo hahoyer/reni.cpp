@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Test
-{
-    void RunAll();
-    void RunSpecial();
+namespace ReniTest{
+        void RunAll();
+        void RunSpecial();
 }
