@@ -7,7 +7,8 @@
 
 namespace HWLib
 {
-    template<typename T> class Array final : public Enumerable<T>
+    template<typename T> 
+    class Array final : public Enumerable<T>
     {
         using baseType = Enumerable<T>;
         using thisType = Array<T>;

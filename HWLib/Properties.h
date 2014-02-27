@@ -16,6 +16,7 @@
 #define mutable_p(TYPE, NAME) p_definition(TYPE,NAME); mutable_p_function(TYPE,NAME)
 #define p(TYPE, NAME) p_definition(TYPE,NAME); p_function(TYPE,NAME)
 
+#define p_mutator(TYPE, NAME) p_mutator_definition(TYPE,NAME); p_mutator_function(TYPE,NAME)
 #define p_mutable(TYPE, NAME) p_mutable_definition(TYPE,NAME); p_mutator_function(TYPE,NAME); p_function(TYPE,NAME)
 #define p_mutable_set(TYPE, NAME) p_mutable_definition(TYPE,NAME); p_function(TYPE,NAME); p_mutator_function(TYPE,NAME)
 
