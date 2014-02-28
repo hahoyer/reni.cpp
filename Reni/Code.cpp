@@ -15,10 +15,13 @@ using namespace HWLib;
 static bool Trace = true;
 
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const{
-    md(visitor);
+    md(visitor)  ;
     b_;
     return "";
 }
+
+pure_p_implementation(CodeItem, Size, size) ;
+
 
 Ref<CodeItem> const CodeItem::Const(Ref<BitsConst> const&value){
     return new ConstCode(value->size, value);
@@ -27,3 +30,4 @@ Ref<CodeItem> const CodeItem::Const(Ref<BitsConst> const&value){
 String const ConstCode::ToCpp(CodeVisitor const& visitor)const{
     return visitor.Const(size, value);
 }
+

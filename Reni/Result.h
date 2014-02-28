@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Category.h"
+#include "Type.h"
 #include "Code.h"
+#include "Size.h"
 
 namespace Reni
 {
@@ -14,12 +16,21 @@ namespace Reni
         using baseType = DumpableObject;
         using thisType = ResultData;
     public:
-        OptRef<CodeItem> code;
+        Optional<Size> const size;
+        OptRef<CodeItem> const code;
+        OptRef<Type> const type;
 
-        ResultData() = default;
-        ResultData(Ref<CodeItem> code) : code(code){};
+        ResultData(){};
+        ResultData(Ref<CodeItem> code) 
+            : size(code->size)
+            , code(code){};
 
         DefaultAssignmentOperator;
+
+        p(Category, complete) 
+        {
+            return Category::Instance(size.IsValid, code.IsValid, type.IsValid);
+        }
     private:
         override_p_function(Array<String>, DumpData);
     };
@@ -38,7 +49,8 @@ namespace Reni
         mutable Category pending;
     public:
         Result(Syntax const& syntax, Context const&context);
-        p(Ref<CodeItem>, Code);
+        p(Ref<CodeItem>, code);
+        p(Ref<Type>, type);
     private:
         override_p_function(Array<String>, DumpData);
 

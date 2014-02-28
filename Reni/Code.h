@@ -9,6 +9,7 @@ namespace Reni
 {
     class BitsConst;
     class CodeVisitor;
+    class Size;
 
     class CodeItem : public DumpableObject
     {
@@ -20,6 +21,7 @@ namespace Reni
     public:
         static Ref<CodeItem> const Const(Ref<BitsConst> const&value);
         virtual String const ToCpp(CodeVisitor const& visitor)const;
+        virtual_p(Size, size) = 0;
     };
 }
 

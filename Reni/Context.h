@@ -1,4 +1,8 @@
 #pragma once
+#include "..\HWLib\DumpableObject.h"
+#include "TokenClass.h"
+
+using namespace HWLib;
 
 namespace Reni
 {
@@ -6,6 +10,7 @@ namespace Reni
     class ResultData;
     class Syntax;
     class RootContext;
+    class SearchResult;
 
     class Context : public WithId<DumpableObject, Context>
     {
@@ -14,6 +19,7 @@ namespace Reni
     public:
         ResultData const GetResultData(Category category, Syntax const&syntax)const;
         virtual_p(RootContext const&, rootContext) = 0;
+        SearchResult const Search(OptRef<Syntax> const&left, TokenClass const&tokenClass)const;
     };
 }
 

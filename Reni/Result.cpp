@@ -15,10 +15,10 @@ using namespace HWLib;
 using namespace Reni;
 
 Result::Result(Syntax const& syntax, Context const&context)
-: baseType()
-, syntax(syntax)
-, context(context)
-{}
+    : baseType()
+      , syntax(syntax)
+      , context(context){
+}
 
 void Result::Ensure(Category category)const{
     auto todo = category - complete;
@@ -41,9 +41,14 @@ p_implementation(Result, Category, complete){
 }
 
 
-p_implementation(Result, Ref<CodeItem>, Code){
+p_implementation(Result, Ref<CodeItem>, code){
     Ensure(Category::Code);
     return data.code;
+}
+
+p_implementation(Result, Ref<Type>, type){
+    Ensure(Category::Type);
+    return data.type;
 }
 
 override_p_implementation(Result, Array<String>, DumpData){
@@ -55,10 +60,8 @@ override_p_implementation(Result, Array<String>, DumpData){
     };
 };
 
-
 override_p_implementation(ResultData, Array<String>, DumpData){
     return{
         nd(code)
     };
 };
-

@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Result.h"
+#include "..\HWLang\SourcePart.h"
+#include "..\HWLib\FunctionCache.h"
+using namespace HWLib;
+using namespace HWLang;
 
 namespace Reni
 {
@@ -9,6 +13,7 @@ namespace Reni
     class Context;
     class Result;
     class TokenClass;
+    class Type;
 
     class Syntax : public WithId<DumpableObject, Syntax>
     {
@@ -18,7 +23,7 @@ namespace Reni
         using TokenClass = Reni::TokenClass;
 
     private:
-        FunctionCache<Context const*, Result > resultCache;
+        FunctionCache<Context const*, Result> resultCache;
     protected:
         SourcePart const part;
 
@@ -33,6 +38,7 @@ namespace Reni
         };
 
         Ref<CodeItem> Code(Context const&context)const;
+        Ref<Type> Type(Context const&context)const;
         Result GetResult(Context const&context, Category category)const;
         virtual ResultData const GetResultData(Context const&context, Category category)const;
     };

@@ -5,7 +5,6 @@
 #include "Code.h"
 #include "Context.h"
 #include "Result.h"
-//#include "Terminal.h"
 #include "TokenClass.h"
 
 using namespace Reni;
@@ -13,12 +12,19 @@ static bool Trace = true;
 
 
 Syntax::Syntax(SourcePart const&part)
-: part(part)
-, resultCache([&](Context const*context){return Result(*this, *context); }){};
+    : part(part)
+      , resultCache([&](Context const*context){
+          return Result(*this, *context);
+      }){
+};
 
 
 Ref<CodeItem> Syntax::Code(Context const&context)const{
-    return GetResult(context, Category::Code).Code;
+    return GetResult(context, Category::Code).code;
+}
+
+Ref<Type> Syntax::Type(Context const&context)const{
+    return GetResult(context, Category::Type).type;
 }
 
 ResultData const Syntax::GetResultData(Context const&context, Category category)const{
@@ -36,21 +42,21 @@ Result Syntax::GetResult(Context const&context, Category category)const{
 override_p_implementation(InfixSyntax, Array<String>, DumpData){
     return {
         nd(left),
-            nd(tokenClass),
-            nd(right)
+        nd(tokenClass),
+        nd(right)
     };
 };
 
 override_p_implementation(PrefixSyntax, Array<String>, DumpData){
     return {
-            nd(tokenClass),
-            nd(right)
+        nd(tokenClass),
+        nd(right)
     };
 };
 
 override_p_implementation(SuffixSyntax, Array<String>, DumpData){
     return {
         nd(left),
-            nd(tokenClass)
+        nd(tokenClass)
     };
 };

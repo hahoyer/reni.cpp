@@ -23,6 +23,10 @@
     <ClCompile Include="BitType.cpp" />
     <ClCompile Include="CppCompilerScripting.cpp" />
     <ClCompile Include="CodeVisitor.cpp" />
+    <ClCompile Include="ExpressionSyntax.cpp" />
+    <ClCompile Include="Type.cpp" />
+    <ClCompile Include="SearchResult.cpp" />
+    <ClCompile Include="Size.cpp" />
     <ClCompile Include="RootContext.cpp" />
     <ClCompile Include="NumberToken.cpp" />
     <ClCompile Include="Terminal.cpp" />
@@ -37,6 +41,8 @@
     <ClInclude Include="CodeItems.h" />
     <ClInclude Include="CodeVisitor.h" />
     <ClInclude Include="CppCompilerScripting.h" />
+    <ClInclude Include="ExpressionSyntax.h" />
+    <ClInclude Include="SearchResult.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="bigInt.h" />
     <ClInclude Include="BitType.h" />

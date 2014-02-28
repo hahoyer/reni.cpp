@@ -40,6 +40,7 @@ void CppCompilerScripting::InitializeFile()
 
 void CppCompilerScripting::Execute()
 {
+    bool Trace = false;
     InitializeFile();
     _console_ Write("Compiling:\n");
     auto cpp = fullFileName + ".cpp";
@@ -47,7 +48,7 @@ void CppCompilerScripting::Execute()
     d(cpp);
     d(exe);
 
-    _console_ Write(CompileCommand + "\n");
+    dd(CompileCommand + "\n");
     currentProcess = Process(CompileCommand);
     if (currentProcess.result == 0)
     {

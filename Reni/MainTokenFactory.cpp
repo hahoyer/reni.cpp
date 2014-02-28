@@ -5,6 +5,7 @@
 #include "TokenClass.h"
 #include "Syntax.h"
 #include "Terminal.h"
+#include "ExpressionSyntax.h"
 
 bool Trace = true;
 using namespace Reni;
@@ -27,6 +28,19 @@ private:
     override_p_function(Array<String>, DumpData){
         return{ nd(name) };
     };
+
+    virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const override{
+        if (isMatch)
+            return baseType::CreateSyntax(left, part, isMatch);
+        return new ExpressionSyntax(*this, left, part, null);
+    };
+
+    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const override{
+        if (isMatch)
+            return baseType::CreateSyntax(part, right, isMatch);
+        return new ExpressionSyntax(*this, null, part, right);
+    };
+
 };
 
 
@@ -134,7 +148,13 @@ MainTokenFactory::MainTokenFactory()
 {
     predefinedTokenClasses = 
         std::unordered_map<String const, Ref<TokenClass const>>({ 
-        { "dump_print", new DumpPrintToken } 
+        { "dump_print", new DumpPrintToken } ,
+        {"{", new LeftParenthesisToken(1)},
+        { "[", new LeftParenthesisToken(2) },
+        { "(", new LeftParenthesisToken(3) },
+        { "}", new RightParenthesisToken(1) },
+        { "]", new RightParenthesisToken(2) },
+        { ")", new RightParenthesisToken(3) }
     });
 }
 
