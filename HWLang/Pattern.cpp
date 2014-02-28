@@ -3,7 +3,9 @@
 
 #include "Source.h"
 #include "SourcePosition.h"
+#include "..\HWLib\Ref.h"
 
+using namespace HWLib;
 using namespace HWLang;
 
 
