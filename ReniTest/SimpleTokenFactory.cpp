@@ -2,8 +2,11 @@
 #include "SimpleTokenFactory.h"
 
 using namespace _HWLang;
-using TokenFactory = SimpleTokenFactory;
-using TokenClass = TokenFactory::TokenClass;
+
+typedef SimpleTokenFactory TokenFactory;
+typedef TokenFactory::TokenClass TokenClass;
+//using TokenFactory = SimpleTokenFactory;
+//using TokenClass = TokenFactory::TokenClass;
 
 static TokenClass const theOnlyInstance;
 

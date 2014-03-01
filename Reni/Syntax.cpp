@@ -23,7 +23,7 @@ Ref<CodeItem> Syntax::Code(Context const&context)const{
     return GetResult(context, Category::Code).code;
 }
 
-Ref<Type> Syntax::Type(Context const&context)const{
+WeakRef<Type>const Syntax::Type(Context const&context)const{
     return GetResult(context, Category::Type).type;
 }
 

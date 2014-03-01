@@ -15,9 +15,11 @@ Ref<Syntax> const NumberToken::CreateSyntax(SourcePart const&part, bool isMatch)
     return new TerminalSyntax(*this, part);
 };
 
-ResultData const NumberToken::GetResultData(Context const&context, Category category, SourcePart const&part)const {
+ResultData const NumberToken::GetResultData(Context const&context, Category category, SourcePart const&part)const{
+    auto value = BitsConst::Convert(part);
     return context
         .rootContext
         .bitType
-        .GetResultData(category, BitsConst::Convert(part));
+        .array(value.size.value)
+        .GetResultData(category, value);
 }

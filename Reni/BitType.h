@@ -11,7 +11,6 @@ namespace Reni
     {
         using baseType = Type;
         using thisType = BitType;
-    public:
-        ResultData const GetResultData(Category category, Ref<BitsConst> const&value)const;
+        override_p_function(Size, size);
     };
 }

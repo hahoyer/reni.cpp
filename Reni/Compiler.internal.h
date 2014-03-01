@@ -8,14 +8,9 @@
 #include "Scanner.h"
 #include "Syntax.h"
 #include "TokenClass.h"
-#include "..\HWLang\PrioTable.h"
-#include "..\HWLang\ScannerInstance.h"
-#include "..\HWLang\Token.h"
-#include "..\HWLang\Source.h"
-#include "..\HWLib\ValueCache.h"
-#include "..\HWLang\PrioParser.h"
-
-static bool Trace = true;
+#include "../HWLib/ValueCache.h"
+#include "../HWLang/ScannerInstance.h"
+#include "../HWLang/PrioParser.h"
 
 using namespace HWLib;
 using namespace HWLang;
@@ -26,7 +21,7 @@ namespace Reni{
         using baseType = HWLang::ScannerInstance<Token, MainTokenFactory, Scanner>;
         using thisType = ScannerInstance;
     public:
-        ScannerInstance(Ref<Source const> source)
+        ScannerInstance(Source const& source)
             :baseType(source)
         {};
     };
@@ -39,12 +34,12 @@ class Compiler::internal final
 {
     String const fileName;
 public:
-    ValueCache<Ref < CodeItem>> codeCache;
-    ValueCache<Reni::ScannerInstance> scannerCache;
+    ValueCache<Ref<CodeItem>> codeCache;
+    ValueCache<ScannerInstance> scannerCache;
     ValueCache<Ref<Syntax>> syntaxCache;
     ValueCache<String> cppCodeCache;
 private:
-    ValueCache<Source const> sourceCache;
+    ValueCache<Ref < Source>> sourceCache;
     Ref<RootContext> rootContext;
 public:
     internal() = delete;
@@ -53,11 +48,11 @@ public:
     internal(String const&fileName)
         : fileName  (fileName)
         , rootContext(new RootContext)
-        , sourceCache([=]{return Source::FromFile(fileName); })
-        , scannerCache([=]{return Reni::ScannerInstance(sourceCache.Value); })
-        , syntaxCache([=]{return GetSyntax(); })
-        , codeCache  ([=]{return GetCode(); })
-        , cppCodeCache([=]{return GetCppCode(); })
+        , sourceCache([=]{return Source::CreateFromFile(fileName); })
+        , scannerCache([&]{return Reni::ScannerInstance(*sourceCache.Value); })
+        , syntaxCache([&]{return GetSyntax(); })
+        , codeCache  ([&]{return GetCode(); })
+        , cppCodeCache([&]{return GetCppCode(); })
     {}
 
     ExecutionResult const Execute(){
@@ -91,7 +86,7 @@ private:
     class CodeVisitor : public Reni::CodeVisitor
     {
         override_p_function(Array<String>, DumpData){ return{}; };
-        virtual String Const(Size const size, Ref<BitsConst> const value) const override;
+        virtual String Const(Size const size, BitsConst const& value) const override;
 
     };
 

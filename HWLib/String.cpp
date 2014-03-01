@@ -5,7 +5,7 @@
 #include "DumpMacros.h"
 #include "DumpToString.h"
 #include "File.h"
-#include "Ref.h"
+#include "Optional.h"
 #include "TemplateInstances.h"
 
 using namespace HWLib;

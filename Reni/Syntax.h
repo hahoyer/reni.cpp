@@ -38,7 +38,7 @@ namespace Reni
         };
 
         Ref<CodeItem> Code(Context const&context)const;
-        Ref<Type> Type(Context const&context)const;
+        WeakRef<Type>const Type(Context const&context)const;
         Result GetResult(Context const&context, Category category)const;
         virtual ResultData const GetResultData(Context const&context, Category category)const;
     };

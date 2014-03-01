@@ -1,4 +1,14 @@
 #pragma once
+#include "../HWLib/DumpableObject.h"
+#include "../HWLib/DumpToString.h"
+#include "../HWLang/SourcePart.h"
+#include "../HWLang/ScannerInstance.h"
+#include "../HWLang/Token.h"
+#include "../Reni/Scanner.h"
+#include "../HWLib/File.h"
+
+using namespace HWLib;
+using namespace HWLang;
 
 namespace _HWLang
 {
@@ -11,15 +21,16 @@ namespace _HWLang
             using baseType = DumpableObject;
             using thisType = SimpleSyntax;
         public:
-            using TokenClass = TTokenClass;
+            typedef TTokenClass TokenClass;
+            //using TokenClass = TTokenClass;
 
-            OptRef<thisType const> const left;
+            OptRef<thisType> const left;
             TokenClass const& tokenClass;
             String const name;
-            OptRef<thisType const> const right;
+            OptRef<thisType> const right;
             bool const isMatch;
 
-            SimpleSyntax(OptRef<thisType const> const left, TokenClass const& tokenClass, String const&name, OptRef<thisType const> const right, bool isMatch)
+            SimpleSyntax(OptRef<thisType> const left, TokenClass const& tokenClass, String const&name, OptRef<thisType> const right, bool isMatch)
                 : left(left)
                 , tokenClass(tokenClass)
                 , name(name)
@@ -41,9 +52,9 @@ namespace _HWLang
             override_p_function(String, DumpShort){
                 auto result = name;
                 if (left.IsValid)
-                    result = "<" + left.DumpShort + ">" + result;
+                    result = "<" + HWLib::DumpShort(left) + ">" + result;
                 if (right.IsValid)
-                    result += "<" + right.DumpShort + ">";
+                    result += "<" + HWLib::DumpShort(right) + ">";
                 if (isMatch)
                     result = "[" + result + "]!";
                 return result;
@@ -55,22 +66,24 @@ namespace _HWLang
             using baseType = DumpableObject;
             using thisType = TokenClass;
         public:
-            using Syntax = SimpleSyntax<TokenClass>;
+            typedef SimpleSyntax<TokenClass> Syntax;
+
+            //using Syntax = SimpleSyntax<TokenClass>;
 
             TokenClass() = default;
             TokenClass(TokenClass const&) = delete;
 
-            Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const{
+            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
                 return new Syntax(left, *this, part, right, isMatch);
             };
-            Ref<Syntax const> const CreateSyntax(Ref<Syntax const>const left, SourcePart const&part, bool isMatch)const{
-                return new Syntax(left, *this, part, null, isMatch);
+            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, bool isMatch)const{
+                return new Syntax(left, *this, part, {}, isMatch);
             };
-            Ref<Syntax const> const CreateSyntax(SourcePart const&part, Ref<Syntax const>const right, bool isMatch)const{
-                return new Syntax(null, *this, part, right, isMatch);
+            Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
+                return new Syntax({}, *this, part, right, isMatch);
             };
-            Ref<Syntax const> const CreateSyntax(SourcePart const&part, bool isMatch)const{
-                return new Syntax(null, *this, part, null, isMatch);
+            Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const{
+                return new Syntax({}, *this, part, {}, isMatch);
             };
         private:
             override_p_function(Array<String>, DumpData){ return{}; };
@@ -88,10 +101,10 @@ namespace _HWLang
             using thisType = ScannerInstance;
         public:
             ScannerInstance(String const&text)
-                :baseType(new Source(Source::FromText(text)))
+                :baseType(Source::FromText(text))
             {};
             ScannerInstance(File const&file)
-                :baseType(new Source(Source::FromFile(file.FullName)))
+                :baseType(Source::FromFile(file.FullName))
             {};
         };
 

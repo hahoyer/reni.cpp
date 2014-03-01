@@ -3,12 +3,12 @@
 
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
+#include "OptRef.h"
+#include "Ref.h"
 
 namespace HWLib
 {
     template<typename T> class Array;
-    template<typename T> class OptRef;
-    template<typename T> class Ref;
 
     template<typename T>
     class Enumerable

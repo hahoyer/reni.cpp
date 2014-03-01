@@ -9,5 +9,5 @@
 #include "../Source.h"
 #include "../SourcePart.h"
 #include "../SourcePosition.h"
-#include "../Token.h"
 #include "../TemplateInstances.h"
+#include "../Token.h"

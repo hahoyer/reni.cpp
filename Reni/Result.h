@@ -4,6 +4,8 @@
 #include "Type.h"
 #include "Code.h"
 #include "Size.h"
+#include "../HWLib/WeakRef.h"
+#include "../HWLib/OptWeakRef.h"
 
 namespace Reni
 {
@@ -18,12 +20,15 @@ namespace Reni
     public:
         Optional<Size> const size;
         OptRef<CodeItem> const code;
-        OptRef<Type> const type;
+        OptWeakRef<Type> const type;
 
         ResultData(){};
-        ResultData(Ref<CodeItem> code) 
+        ResultData(Ref<CodeItem> code)
             : size(code->size)
             , code(code){};
+        ResultData(WeakRef<Type> type)
+            : size(type->size)
+            , type(type){};
 
         DefaultAssignmentOperator;
 
@@ -49,8 +54,8 @@ namespace Reni
         mutable Category pending;
     public:
         Result(Syntax const& syntax, Context const&context);
-        p(Ref<CodeItem>, code);
-        p(Ref<Type>, type);
+        p(Ref<CodeItem >, code);
+        p(WeakRef<Type>, type);
     private:
         override_p_function(Array<String>, DumpData);
 

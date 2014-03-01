@@ -3,8 +3,12 @@
 
 #include "Reni.h"
 #include "SimpleTokenFactory.h"
+#include "../HWLang/Source.h"
+#include "../HWLang/Pattern.h"
+#include "../HWLib/File.h"
 
 static bool Trace = true;
+#include "../Reni/Compiler.internal.h"
 
 using namespace HWLang;
 using namespace _HWLang;

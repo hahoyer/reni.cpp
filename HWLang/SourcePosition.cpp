@@ -6,6 +6,20 @@
 
 using namespace HWLang;
 
+SourcePosition::SourcePosition(Ref<Source> source, int position)
+: _source(source)
+, _position(position)
+{
+    SetDumpString();
+}
+SourcePosition::SourcePosition(Source const& source, int position)
+: _source(new Source(source))
+, _position(position)
+{
+    SetDumpString();
+}
+
+
 p_implementation(SourcePosition, bool, IsEnd)
 {
     return _source->IsEnd(_position);

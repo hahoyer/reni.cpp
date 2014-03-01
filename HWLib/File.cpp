@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "Console.h"
+#include "DumpableObject.h"
 #include "DumpMacros.h"
 #include "DumpToString.h"
 #include "String.h"

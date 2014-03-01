@@ -15,7 +15,7 @@ namespace Reni
         using baseType = DumpableObject;
 
     public:
-        virtual String Const(Size const size, Ref<BitsConst> const value) const;
+        virtual String Const(Size const size, BitsConst const& value) const;
     };
 
 }

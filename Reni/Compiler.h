@@ -22,7 +22,7 @@ namespace Reni
     {
     private:
         class internal;
-        HWLib::Pointer<internal> _internal;
+        Ref<internal> _internal;
     public:
         Compiler() = delete;
         Compiler(Compiler const&) = delete;

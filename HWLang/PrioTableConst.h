@@ -30,7 +30,7 @@ namespace HWLang
             };
         };
 
-        using TagTable = initializer_list<initializer_list<Tag const>const>;
+        using TagTable = std::initializer_list<std::initializer_list<Tag const> const>;
 
         static char const* Any = "(any)";
         static char const* End = "(end)";

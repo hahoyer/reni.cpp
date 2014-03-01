@@ -23,8 +23,8 @@ String const CodeItem::ToCpp(CodeVisitor const& visitor)const{
 pure_p_implementation(CodeItem, Size, size) ;
 
 
-Ref<CodeItem> const CodeItem::Const(Ref<BitsConst> const&value){
-    return new ConstCode(value->size, value);
+Ref<CodeItem> const CodeItem::Const(BitsConst const&value){
+    return new ConstCode(value.size, value);
 };
 
 String const ConstCode::ToCpp(CodeVisitor const& visitor)const{

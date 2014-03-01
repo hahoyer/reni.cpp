@@ -17,7 +17,7 @@ namespace Reni{
         BigInt::Rossi const value;
         BitsConst(String const&text): value(text.RawData,10){}
     public:
-        static Ref<BitsConst> const Convert(String const&text);
+        static BitsConst const Convert(String const&text);
         operator int const()const;
 
         p(Size, size);

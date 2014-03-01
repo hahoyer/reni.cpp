@@ -12,7 +12,7 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-String CodeVisitor::Const(Size const size, Ref<BitsConst> const value) const
+String CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
     md(size, value);
     b_;

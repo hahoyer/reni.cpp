@@ -9,9 +9,9 @@ namespace Reni{
         using thisType = ConstCode;
     public:
         Size const size;
-        Ref<BitsConst> const value;
+        BitsConst const value;
 
-        ConstCode(Size const&size, Ref<BitsConst> const&value)
+        ConstCode(Size const&size, BitsConst const&value)
             : size(size)
             , value(value)
         {}

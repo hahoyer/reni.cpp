@@ -5,7 +5,7 @@ namespace Reni
     class Scanner final
     {
         class internal;
-        Pointer<internal const> const _internal;
+        Ref<internal const> const _internal;
     public:
         Scanner();
 

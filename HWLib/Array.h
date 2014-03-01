@@ -44,7 +44,7 @@ namespace HWLib
                 new (data + index) T(creator(index));
         }
 
-        Array(initializer_list<T> const&other)
+        Array(std::initializer_list<T> const&other)
             : _count(other.size())
             , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {
@@ -112,6 +112,6 @@ namespace HWLib
 
 
         template<typename T>
-        Array<T> const _(initializer_list<T> const&data){ return data; };
+        Array<T> const _(std::initializer_list<T> const&data){ return data; };
 }
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

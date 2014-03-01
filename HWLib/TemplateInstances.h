@@ -160,7 +160,7 @@ public:
             if (selector(*current))
                 return;
         }
-        current= null;
+        current= {};
     }
 protected:
     override_p_function(bool, IsValid){ return current.IsValid; }
@@ -312,7 +312,7 @@ OptRef<T> const Enumerable<T>::Max() const{
     OptRef<T> result;
     for (auto element : *this)
         if (!result.IsValid || *result < element)
-            result = element;
+            result = new T(element);
     return result;
 };
 
@@ -363,59 +363,32 @@ Ref<Enumerable<TResult>> const Enumerable<T>::Convert() const{
     return new Container(new ConvertIterator<TResult>(*this, selector));
 };
 
-template<typename T>
-override_p_implementation(Ref<T>, Array<String>, DumpData){
-    if (!value.get())
-        return Array<String>();
-    return Array<String>{ Ref<T>::traits::DumpValue(*value) };
-};
-
-template<typename T>
-override_p_implementation(Ref<T>, String, DumpShort){
-    if (!value.get())
-        return "null";
-    return Ref<T>::traits::DumpValueShort(*value);
-};
-
-template<typename T>
-override_p_implementation(Ref<T>, String, DumpHeader){
-    if (!value.get())
-        return "null";
-    return "Ref";
-};
-
-template<typename T>
-override_p_implementation(OptRef<T>, String, DumpHeader){
-    if (!value.get())
-        return "null";
-    return "OptRef";
-};
-
-template<typename T>
-override_p_implementation(OptRef<T>, String, DumpShort){
-    return base_p_name(DumpShort);
-};
-
-template<typename T>
-inline String const default_ref_traits<T>::DumpValueHeader(T const&value){
-    return HWLib::DumpTypeName(value);
-};
-
-template<typename T>
-inline String const default_ref_traits<T>::DumpValue(T const&value){
-    return HWLib::Dump(value);
-};
-
-template<typename T>
-inline String const default_ref_traits<T>::DumpValueShort(T const&value){
-    return HWLib::DumpShort(value);
-};
-
 template<typename TBase, typename TRealm>
 inline override_p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
     auto objectId = HWLib::Dump(ObjectId);
     return baseType::virtual_p_name(DumpHeader)() + ".Id" + objectId;
 };
+
+
+template <typename T>
+inline String const HWLib::Dump(OptRef<T> const&target){
+    if (target.IsValid)
+        return "OptRef{ " + HWLib::Dump(*target)+" }";
+    return "OptRef{}";
+}
+
+template <typename T>
+inline String const HWLib::DumpShort(OptRef<T> const&target){
+    if (target.IsValid)
+        return "OptRef{ " + HWLib::DumpShort(*target) + " }";
+    return "OptRef{}";
+}
+
+template <typename T>
+inline String const HWLib::Dump(Ref<T> const&target){
+    return "Ref{ " + HWLib::Dump(*target) + " }";
+}
+
 
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
