@@ -1,11 +1,12 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
 
+#include "ExpressionSyntax.h"
+#include "FeatureClass.h"
 #include "NumberToken.h"
-#include "TokenClass.h"
 #include "Syntax.h"
 #include "Terminal.h"
-#include "ExpressionSyntax.h"
+#include "TokenClass.h"
 
 bool Trace = true;
 using namespace Reni;
@@ -128,11 +129,21 @@ private:
     };
 };
 
+class TokenFeatureClass final : public FeatureClass{
+    using baseType = FeatureClass;
+    using thisType = TokenFeatureClass;
+};
+
 class DumpPrintToken final : public DefineableToken{
     using baseType = DefineableToken;
     using thisType = DumpPrintToken;
+    TokenFeatureClass feature;
 public:
     DumpPrintToken() : baseType("dump_print"){}
+private:
+    override_p_function(Array<WeakRef<FeatureClass>>, FeatureClasses){
+        return{ &feature.ref };
+    }
 };
 
 MainTokenFactory const MainTokenFactory::Instance;

@@ -29,6 +29,10 @@ namespace Reni
         ResultData(WeakRef<Type> type)
             : size(type->size)
             , type(type){};
+        ResultData(Optional<Size> const&size, OptRef<CodeItem> code, OptWeakRef<Type> type)
+            : size(size)
+            , code(code)
+            , type(type){};
 
         DefaultAssignmentOperator;
 

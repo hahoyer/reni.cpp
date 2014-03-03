@@ -18,12 +18,14 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="ArrayType.cpp" />
     <ClCompile Include="bigInt.cpp" />
     <ClCompile Include="BitsConst.cpp" />
     <ClCompile Include="BitType.cpp" />
     <ClCompile Include="CppCompilerScripting.cpp" />
     <ClCompile Include="CodeVisitor.cpp" />
     <ClCompile Include="ExpressionSyntax.cpp" />
+    <ClCompile Include="FeatureClass.cpp" />
     <ClCompile Include="Type.cpp" />
     <ClCompile Include="SearchResult.cpp" />
     <ClCompile Include="Size.cpp" />
@@ -38,10 +40,12 @@
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClCompile Include="Scanner.cpp" />
+    <ClInclude Include="ArrayType.h" />
     <ClInclude Include="CodeItems.h" />
     <ClInclude Include="CodeVisitor.h" />
     <ClInclude Include="CppCompilerScripting.h" />
     <ClInclude Include="ExpressionSyntax.h" />
+    <ClInclude Include="FeatureClass.h" />
     <ClInclude Include="SearchResult.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="bigInt.h" />
