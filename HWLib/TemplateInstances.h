@@ -225,6 +225,60 @@ private:
     }
 };
 
+template<typename T, typename TOther>
+class PairIterator final : public Enumerable<std::pair<T, TOther>>::Iterator{
+    typedef std::pair<T, TOther> resultType;
+    Ref<typename Enumerable<T>::Iterator> leftIterator;          
+    OptRef<T> leftResult;
+    Enumerable<TOther> const&right;
+    OptRef<typename Enumerable<TOther>::Iterator> rightIterator;
+public:
+    PairIterator(Enumerable<T> const&left, Enumerable<TOther> const&right)
+        : leftIterator(left.ToIterator)
+        , right(right)
+        , leftResult({})
+    {
+        Align();
+    };
+
+protected:
+    override_p_function(bool, IsValid){
+        if (!leftIterator->IsValid)
+            return false;;
+        a_if_(rightIterator.IsValid);
+        return rightIterator->IsValid;
+    };
+
+    resultType const Step()override
+    {
+        a_if_(leftIterator->IsValid);
+        a_if_(leftResult.IsValid);
+        a_if_(rightIterator.IsValid);
+        a_if_(rightIterator->IsValid);
+        TOther const& rightResult = rightIterator->Step();
+        if (!rightIterator->IsValid)
+            Align();
+        return resultType(*leftResult, rightResult);
+    };
+private:
+    void Align(){
+        if (leftResult.IsValid){
+            if (rightIterator.IsValid)
+                return;
+            rightIterator = right.ToIterator;
+            return;
+        }
+
+        if (leftIterator->IsValid)
+        {
+            leftResult = new T(leftIterator->Step());
+            rightIterator = right.ToIterator;
+            return;
+        };
+    };
+};
+
+
 
 template<typename T, typename TResult>
 class ConvertIterator final : public Enumerable<TResult>::Iterator
@@ -327,6 +381,14 @@ TResult const Enumerable<T>::Aggregate(TResult start, AggregateFunction<TResult>
 }
 
 template<typename T>
+template<typename TOther>
+Ref<Enumerable<std::pair<T, TOther>>> const Enumerable<T>::operator*(Enumerable<TOther>const&other)const{
+    return new Enumerable<std::pair<T, TOther>>
+        ::Container(new PairIterator<T, TOther>(*this, other));
+
+}
+
+template<typename T>
 typename Enumerable<T>::RangeBasedForLoopSimulator const Enumerable<T>::end()const
 {
     return RangeBasedForLoopSimulator();
@@ -389,6 +451,9 @@ inline String const HWLib::Dump(Ref<T> const&target){
     return "Ref{ " + HWLib::Dump(*target) + " }";
 }
 
-
+template <typename T>
+inline String const HWLib::Dump(WeakRef<T> const&target){
+    return "WeekRef{ " + HWLib::Dump(*target) + " }";
+}
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

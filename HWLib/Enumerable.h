@@ -20,30 +20,33 @@ namespace HWLib
         using AggregateFunction = function<TResult const(TResult, T)>;
 
         template<typename TResult>
-        TResult                const Aggregate (TResult start, AggregateFunction<TResult> selector)const;
+        TResult                    const Aggregate     (TResult start, AggregateFunction<TResult> selector)const;
         template<typename TResult>
-        TResult                 const Aggregate (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
+        TResult                     const Aggregate     (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
         template<typename TResult>
-        Ref<Enumerable<TResult>> const Convert   () const;
+        Ref<Enumerable<TResult>>     const Convert       () const;
         template<typename TResult>
-        Ref<Enumerable<TResult>> const ConvertMany() const;
-        int                     const Count      (function<bool(T)> selector = [](T){return true; })const;
-        T                      const First       (function<bool(T)> selector = [](T){return true; })const;
-        OptRef<T>             const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
-        OptRef<T>            const Max          ()const;
-        OptRef<T>             const Max        (function<bool(T)> selector)const;
-        OptRef<T>              const Max       (function<bool(T,T)> isLess)const;
-        Ref<thisType>           const operator+ (thisType const& right)const;
+        Ref<Enumerable<TResult>>      const ConvertMany   () const;
+        int                            const Count         (function<bool(T)> selector = [](T){return true; })const;
+        T                               const First         (function<bool(T)> selector = [](T){return true; })const;
+        OptRef<T>                        const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
+        OptRef<T>                         const Max          ()const;
+        OptRef<T>                          const Max        (function<bool(T)> selector)const;
+        OptRef<T>                           const Max       (function<bool(T,T)> isLess)const;
+        Ref<thisType>                        const operator+ (thisType const& right)const;
+        template<typename TOther>
+        Ref<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
         template<typename TResult>
-        Ref<Enumerable<TResult>> const Select    (function<TResult(T)> selector) const;
+        Ref<Enumerable<TResult>>             const Select   (function<TResult(T)> selector) const;
         template<typename TResult>
-        Ref<Enumerable<TResult>> const SelectMany (function<TResult(T)> selector) const;
-        T                       const Single       (function<bool(T)> selector = [](T){return true; })const;
-        OptRef<T>              const SingleOrDefault(function<bool(T)> selector = [](T){return true; })const;
-        Ref<thisType>         const Skip           (int count) const;
-        T                    const Stringify      (T const&delimiter)const;
-        Ref<thisType>       const Take           (int count) const;
-        Ref<thisType>      const Where          (function<bool(T)> selector)const;
+        Ref<Enumerable<TResult>>            const SelectMany (function<TResult(T)> selector) const;
+        T                                  const Single       (function<bool(T)> selector = [](T){return true; })const;
+        OptRef<T>                         const SingleOrDefault(function<bool(T)> selector = [](T){return true; })const;
+        Ref<thisType>                    const Skip           (int count) const;
+        T                               const Stringify      (T const&delimiter)const;
+        Ref<thisType>                  const Take           (int count) const;
+        Ref<thisType>                 const Where          (function<bool(T)> selector)const;
+        
 
         p(Array<T>, ToArray);
 
