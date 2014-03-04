@@ -7,7 +7,9 @@ using namespace HWLib;
 
 namespace Reni{
     class ArrayType;
+    class Type;
 
+    
     class FeatureClass : public WithId<DumpableObject, FeatureClass>{
         using baseType = WithId<DumpableObject, FeatureClass >;
         using thisType = FeatureClass;
@@ -18,6 +20,7 @@ namespace Reni{
         override_p_function(Array<String>, DumpData){ return{}; }
     };
 
+    
     template <typename T>
     class GenericFeatureClass : public FeatureClass {
         using baseType = FeatureClass;
@@ -25,14 +28,21 @@ namespace Reni{
         virtual SearchResult const GetDefinition(Type const&type)const override;
     };
 
-    template <typename T>
+    
+    template <typename T, typename... TTypes>
     class FeatureProvider {
         using thisType = FeatureProvider;
-
     public:
         virtual ~FeatureProvider(){};
     };
 
 
+    template <typename T, typename T0, typename... TTypes>
+    class FeatureProvider<T,T0,TTypes...> {
+        using thisType = FeatureProvider;
+    public:
+        virtual OptWeakRef<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;
+        virtual ~FeatureProvider(){};
+    };
 }
 

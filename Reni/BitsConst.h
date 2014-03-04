@@ -3,12 +3,15 @@
 #include "bigInt.h"
 #include "..\HWLib\DumpableObject.h"
 #include "..\HWLib\Ref.h"
+#include "../HWLib/OptWeakRef.h"
 using namespace HWLib;
 
 namespace Reni{
     class Size;
 
-    class BitsConst: public DumpableObject{
+    class BitsConst
+        : public DumpableObject
+    {
         using baseType = DumpableObject;
         using thisType = BitsConst;
     public:

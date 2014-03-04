@@ -12,7 +12,8 @@ override_p_implementation(ArrayType, Size, size){
 };
 
 ArrayType::operator OptWeakRef<FeatureProvider<DumpPrintToken>>()const {
-    auto e = elementType.operator OptWeakRef<FeatureProvider<DumpPrintToken, ArrayType>>();
-    if (e.IsValid)
-        return e.Convert(count);
+    OptWeakRef<FeatureProvider<DumpPrintToken, ArrayType>> f = elementType;
+    if (f.IsValid)
+        return f->Convert(*this);
+    return{};
 };

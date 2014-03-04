@@ -11,7 +11,6 @@ BitsConst const BitsConst::Convert(String const&text){
     return BitsConst(text);
 };
 
-
 BitsConst::operator int const() const
 {
     return value.toUlong();

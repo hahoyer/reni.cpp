@@ -28,7 +28,7 @@ namespace Reni{
         ResultData const GetResultData(Category category, BitsConst const&value)const;
         ref_p;
         virtual operator OptWeakRef<FeatureProvider<DumpPrintToken>>()const;
-        virtual operator OptWeakRef<FeatureProvider<DumpPrintToken, ArrayType>>()const;
+        virtual operator OptWeakRef<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return{}; };
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };
