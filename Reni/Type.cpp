@@ -2,6 +2,7 @@
 #include "Type.h"
 
 #include "ArrayType.h"
+#include "BitsConst.h"
 #include "Code.h"
 #include "FeatureClass.h"
 #include "Size.h"
@@ -32,8 +33,4 @@ Type const& Type::array(int count)const{
     return *_internal->arrayCache[count];
 };
 
-pure_p_implementation(Type, Array<WeakRef<DefinitionPoint>>, DefinitionPoints);
-
-override_p_implementation(Type, Array<WeakRef<DefinitionPoint>>, DefinitionPoints){
-    return{};
-}
+Type::operator OptWeakRef<FeatureProvider<DumpPrintToken>>()const{ return{}; }

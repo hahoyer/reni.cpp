@@ -35,10 +35,4 @@ Ref<Syntax> const TokenClass::CreateSyntax(SourcePart const&part, bool isMatch)c
     return OptRef<Syntax >();
 };
 
-pure_p_implementation(TokenClass, Array<WeakRef<FeatureClass>>, FeatureClasses);
-
-override_p_implementation(TokenClass, Array<WeakRef<FeatureClass>>, FeatureClasses){
-    md_;
-    b_;
-    return{};
-};
+pure_p_implementation(TokenClass, WeakRef<FeatureClass>, featureClass);

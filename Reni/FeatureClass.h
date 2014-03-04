@@ -1,43 +1,38 @@
 #pragma once
 #include "../HWLib/DumpableObject.h"
-#include "../HWLib/Ref.h"
+#include "DefinitionPoint.h"
+#include "SearchResult.h"
 
 using namespace HWLib;
 
 namespace Reni{
-    class SearchResult;
+    class ArrayType;
 
     class FeatureClass : public WithId<DumpableObject, FeatureClass>{
         using baseType = WithId<DumpableObject, FeatureClass >;
         using thisType = FeatureClass;
     public:
         ref_p;
+        virtual SearchResult const GetDefinition(Type const&type)const = 0;
     private:
-        override_p_function(Array<String>, DumpData){ return{}; };
-    };
-
-    class DefinitionPoint : public WithId<DumpableObject, DefinitionPoint>{
-        using baseType = WithId<DumpableObject, DefinitionPoint>;
-        using thisType = DefinitionPoint;
-    public:
-        bool const Defines(FeatureClass const&feature)const;
-        SearchResult const Apply(FeatureClass const&feature)const;
-        ref_p;
-    private:
-        override_p_function(Array<String>, DumpData){ return{}; };
+        override_p_function(Array<String>, DumpData){ return{}; }
     };
 
     template <typename T>
-    class GenericDefinitionPoint : public DefinitionPoint{
-        using baseType = DefinitionPoint;
-        using thisType = GenericDefinitionPoint;
-    public:
-        bool const Defines(FeatureClass const&feature)const;
-        SearchResult const Apply(FeatureClass const&feature)const;
-        ref_p;
-    private:
-        override_p_function(Array<String>, DumpData){ return{}; };
+    class GenericFeatureClass : public FeatureClass {
+        using baseType = FeatureClass;
+        using thisType = GenericFeatureClass;
+        virtual SearchResult const GetDefinition(Type const&type)const override;
     };
+
+    template <typename T>
+    class FeatureProvider {
+        using thisType = FeatureProvider;
+
+    public:
+        virtual ~FeatureProvider(){};
+    };
+
 
 }
 

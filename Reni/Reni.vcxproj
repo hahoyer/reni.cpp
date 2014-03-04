@@ -25,7 +25,6 @@
     <ClCompile Include="CppCompilerScripting.cpp" />
     <ClCompile Include="CodeVisitor.cpp" />
     <ClCompile Include="ExpressionSyntax.cpp" />
-    <ClCompile Include="FeatureClass.cpp" />
     <ClCompile Include="Type.cpp" />
     <ClCompile Include="SearchResult.cpp" />
     <ClCompile Include="Size.cpp" />
@@ -46,6 +45,10 @@
     <ClInclude Include="CppCompilerScripting.h" />
     <ClInclude Include="ExpressionSyntax.h" />
     <ClInclude Include="FeatureClass.h" />
+    <ClInclude Include="DefinitionPoint.h" />
+    <ClInclude Include="DumpPrintToken.h" />
+    <ClInclude Include="DefineableToken .h" />
+    <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="SearchResult.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="bigInt.h" />

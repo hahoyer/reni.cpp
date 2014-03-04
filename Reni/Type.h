@@ -1,13 +1,19 @@
 #pragma once
-#include "..\HWLib\DumpableObject.h"
-#include "TokenClass.h"
-#include "SearchResult.h"
-#include "BitsConst.h"
+#include "../HWLib/OptWeakRef.h"
+#include "../HWLib/Ref.h"
 
 using namespace HWLib;
 
 namespace Reni{
+    class ArrayType;
+    class BitsConst;
     class DefinitionPoint;
+    class DumpPrintToken;
+    class ResultData;
+    class Category;
+    class Size;
+
+    template<typename T, typename ...> class FeatureProvider;
 
     class Type: public WithId<DumpableObject, Type>{
         using baseType = WithId<DumpableObject, Type>;
@@ -20,8 +26,9 @@ namespace Reni{
         virtual_p(Size, size) = 0;
         Type const& array(int count)const;
         ResultData const GetResultData(Category category, BitsConst const&value)const;
-        virtual_p(Array<WeakRef<DefinitionPoint>>, DefinitionPoints);
         ref_p;
+        virtual operator OptWeakRef<FeatureProvider<DumpPrintToken>>()const;
+        virtual operator OptWeakRef<FeatureProvider<DumpPrintToken, ArrayType>>()const;
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };

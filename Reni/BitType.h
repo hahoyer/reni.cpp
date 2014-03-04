@@ -12,5 +12,7 @@ namespace Reni
         using baseType = Type;
         using thisType = BitType;
         override_p_function(Size, size);
+    public:
+        BitType(){ SetDumpString(); }
     };
 }
