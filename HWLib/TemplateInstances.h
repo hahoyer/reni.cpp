@@ -120,20 +120,10 @@ private:
         return _left->IsValid || _right->IsValid; 
     }
 
-    void operator++(int) override
-    {
+    T const Step()override{ 
         if (_left->IsValid)
-            (*_left)++;
-        else
-            (*_right)++;
-        return *this;
-    }
-
-    T const operator*()const override
-    {
-        if (_left->IsValid)
-            return **_left;
-        return **_right;
+            return _left->Step();
+        return _right->Step();
     }
 };
 
@@ -243,38 +233,47 @@ public:
 
 protected:
     override_p_function(bool, IsValid){
-        if (!leftIterator->IsValid)
-            return false;;
         a_if_(rightIterator.IsValid);
         return rightIterator->IsValid;
     };
 
     resultType const Step()override
     {
-        a_if_(leftIterator->IsValid);
         a_if_(leftResult.IsValid);
         a_if_(rightIterator.IsValid);
         a_if_(rightIterator->IsValid);
-        TOther const& rightResult = rightIterator->Step();
-        if (!rightIterator->IsValid)
-            Align();
-        return resultType(*leftResult, rightResult);
+        resultType result(*leftResult, rightIterator->Step());
+        Align();
+        return result;
     };
 private:
     void Align(){
-        if (leftResult.IsValid){
-            if (rightIterator.IsValid)
-                return;
-            rightIterator = right.ToIterator;
-            return;
+        if (leftIterator->IsValid){
+            if (leftResult.IsValid){
+                if (!rightIterator.IsValid){ b_; }
+                else if (rightIterator->IsValid){ b_; }
+                else { b_; }
+            }else{
+                if (!rightIterator.IsValid){
+                    leftResult = new T(leftIterator->Step());
+                    rightIterator = right.ToIterator;
+                    return;
+                }
+                else if (rightIterator->IsValid){ b_; }
+                else { b_; }
+            }
+        }else{
+            if (leftResult.IsValid){
+                if (!rightIterator.IsValid){ b_; }
+                else if (rightIterator->IsValid){ b_; }
+                else { return; }
+            }
+            else{
+                if (!rightIterator.IsValid){ b_; }
+                else if (rightIterator->IsValid){ b_; }
+                else { b_; }
+            }
         }
-
-        if (leftIterator->IsValid)
-        {
-            leftResult = new T(leftIterator->Step());
-            rightIterator = right.ToIterator;
-            return;
-        };
     };
 };
 
@@ -455,5 +454,39 @@ template <typename T>
 inline String const HWLib::Dump(WeakRef<T> const&target){
     return "WeekRef{ " + HWLib::Dump(*target) + " }";
 }
+
+template <typename T>
+inline String const HWLib::Dump(OptWeakRef<T> const&target){
+    if (target.IsValid)
+        return "OptWeakRef{ " + HWLib::Dump(*target) + " }";
+    return "OptWeakRef{}";
+}
+
+template <typename T>
+inline String const HWLib::Dump(Array<T> const&target){
+    auto result = "Array["+ HWLib::Dump(target.Count)+ "]";
+    auto index = 0;
+    auto dataResult = target
+        .Select<String>([&](T const&element){
+            return "[" + HWLib::Dump(index++) + "] " + HWLib::Dump(element);
+        })
+        ->ToArray;
+
+    return result
+        + String::Surround("{", dataResult,"}");
+}
+
+template <typename T1, typename T2>
+inline String const HWLib::Dump(std::pair<T1, T2> const&target){
+    auto dataResult = _({
+        "first = " + HWLib::Dump(target.first),
+        "second = " + HWLib::Dump(target.second),
+    });
+    return String::Surround(
+        "{", 
+        dataResult, 
+        "}");
+}
+
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

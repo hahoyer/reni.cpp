@@ -9,6 +9,7 @@ namespace HWLib
     template <typename T> class WeakRef;
     template <typename T> class OptWeakRef;
 
+    template <typename T1, typename T2>String const Dump(std::pair<T1, T2> const&target);
     template <typename T>String const Dump(OptRef<T> const&target);
     template <typename T>String const DumpShort(OptRef<T> const&target);
     template <typename T>String const Dump(Ref<T> const&target);
@@ -20,6 +21,7 @@ namespace HWLib
     template <typename T>String const Dump(T *target);
     template <typename T>String const DumpShort(T const*target);
     template <typename T>String const DumpShort(T *target);
+    template <typename T>String const Dump(Array<T> const&target);
 
     template <>String const Dump(String const&target);
     template <>String const Dump(char const* target);
