@@ -1,6 +1,8 @@
 #pragma once
 
 #include "PrioTable.h"
+#include "OpenItem.h"
+#include "../HWLib/Stack.h"
 
 namespace HWLang{
     template <class Syntax, class TokenClass, class Token, class ScannerInstance>
@@ -27,17 +29,22 @@ namespace HWLang{
                 if (relation != PrioTableConst::LowerTag)
                 {
                     stack.Push(OpenItem<Syntax, Token>(result, item, relation == PrioTableConst::MatchTag));
-                    result = null;
+                    result = {};
                 }
             } while (result.IsValid);
         } while (true);
     };
 
     template <class Syntax, class Token>
-    Ref<Syntax> const CreateSyntax(OptRef<Syntax> left, Token const&token, OptRef<Syntax> right, bool isMatch){
+    Ref<Syntax> const CreateSyntax(OptRef<Syntax> const&left, Token const&token, OptRef<Syntax> const&right, bool isMatch){
         if (left.IsValid)
             if (right.IsValid)
-                return token.Class.CreateSyntax(left, token.Part, right, isMatch);
+            {
+                Ref<Syntax> xl = left;
+                Ref<Syntax> xr = right;
+
+                return token.Class.CreateSyntax(xl, token.Part, xr, isMatch);
+            }
             else
                 return token.Class.CreateSyntax(left, token.Part, isMatch);
         else

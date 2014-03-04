@@ -2,7 +2,7 @@
 
 namespace HWLang{
     template <class Token, class TTokenFactory, class Scanner>
-    class ScannerInstance final: public Enumerable<Token>::Iterator, public DumpableObject{
+    class ScannerInstance : public Enumerable<Token>::Iterator, public DumpableObject{
         using thisType = ScannerInstance;
         using baseType = typename Enumerable<Token>::Iterator;
     public:
@@ -13,7 +13,7 @@ namespace HWLang{
         bool endTokenReturned;
         bool startTokenReturned;
     public:
-        ScannerInstance(Ref<Source const> source)
+        ScannerInstance(Source const& source)
             : position(source)
             , endTokenReturned(false)
             , startTokenReturned(false)

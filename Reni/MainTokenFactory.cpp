@@ -1,11 +1,12 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
 
+#include "ExpressionSyntax.h"
+#include "DumpPrintToken.h"
 #include "NumberToken.h"
-#include "TokenClass.h"
 #include "Syntax.h"
 #include "Terminal.h"
-#include "ExpressionSyntax.h"
+#include "TokenClass.h"
 
 bool Trace = true;
 using namespace Reni;
@@ -14,33 +15,9 @@ using namespace HWLang;
 class TextToken final : public TokenClass{
     using baseType = TokenClass;
     using thisType = TextToken;
-};
-
-
-class DefineableToken : public TokenClass{
-    using baseType = TokenClass;
-    using thisType = DefineableToken;
-    
-    String const name;
-protected:
-    DefineableToken(String const name) : name(name){}
 private:
-    override_p_function(Array<String>, DumpData){
-        return{ nd(name) };
-    };
-
-    virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const override{
-        if (isMatch)
-            return baseType::CreateSyntax(left, part, isMatch);
-        return new ExpressionSyntax(*this, left, part, null);
-    };
-
-    virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const override{
-        if (isMatch)
-            return baseType::CreateSyntax(part, right, isMatch);
-        return new ExpressionSyntax(*this, null, part, right);
-    };
-
+    GenericFeatureClass<thisType> feature;
+    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
 };
 
 
@@ -49,6 +26,9 @@ class UserDefinedToken final : public DefineableToken {
     using thisType = UserDefinedToken;
 public:
     UserDefinedToken(String const name) : baseType(name){}
+private:
+    GenericFeatureClass<thisType> feature;
+    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
 };
 
 
@@ -63,6 +43,9 @@ private:
     override_p_function(Array<String>, DumpData){
         return{nd(text)};
     };
+private:
+    GenericFeatureClass<thisType> feature;
+    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
 };
 
 
@@ -106,6 +89,9 @@ private:
             return{ nd(level), nd(right) };
         }
     };
+private:
+    GenericFeatureClass<thisType> feature;
+    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
 };
 
 
@@ -126,13 +112,9 @@ private:
     override_p_function(Array<String>, DumpData){
         return{ nd(level) };
     };
-};
-
-class DumpPrintToken final : public DefineableToken{
-    using baseType = DefineableToken;
-    using thisType = DumpPrintToken;
-public:
-    DumpPrintToken() : baseType("dump_print"){}
+private:
+    GenericFeatureClass<thisType> feature;
+    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
 };
 
 MainTokenFactory const MainTokenFactory::Instance;
@@ -175,3 +157,5 @@ TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) con
     return *tokenClasses[name];
 }
 
+
+#include "TemplateInstances.h"

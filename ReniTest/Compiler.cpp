@@ -2,11 +2,13 @@
 
 #include "Reni.h"
 #include "SimpleTokenFactory.h"
+#include "../Reni/Syntax.h"
+#include "../HWLang/PrioTable.h"
+#include "../HWLang/PrioParser.h"
 
 static bool Trace = true;
 
 using namespace HWLang;
-using namespace HWLang::PrioTableConst;
 
 namespace _HWLang
 {
@@ -15,7 +17,7 @@ namespace _HWLang
     using TokenClass = TokenFactory::TokenClass;
     using Syntax = TokenFactory::Syntax;
 
-    void Check(OptRef<Syntax const> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
+    void Check(OptRef<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     void ParserBaseStructure()
     {
@@ -23,7 +25,7 @@ namespace _HWLang
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Syntax const, TokenClass, Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Syntax, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
         a_if(syntax.IsValid, nd(syntax));
         a_if(!syntax->left.IsValid, nd(syntax));
@@ -42,7 +44,7 @@ namespace _HWLang
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Syntax const, TokenClass, Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Syntax, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, false, "(", true, false);
 
         auto rr = syntax->right;
@@ -94,7 +96,7 @@ namespace _HWLang
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Syntax const, TokenClass, Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Syntax, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, true, "+", true, false);
 
         auto rl = syntax->left;
@@ -130,7 +132,7 @@ namespace _HWLang
         Check(rrrr, false, "f", false, false);
     }
 
-    void Check(OptRef<Syntax const> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
+    void Check(OptRef<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
         a_if(target.IsValid, nd(target));
         a_is(target->name, == , part);
         a_if(target->left.IsValid == isLeft, nd(target));

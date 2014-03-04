@@ -44,7 +44,7 @@ namespace HWLib
                 new (data + index) T(creator(index));
         }
 
-        Array(initializer_list<T> const&other)
+        Array(std::initializer_list<T> const&other)
             : _count(other.size())
             , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {
@@ -73,6 +73,7 @@ namespace HWLib
         T const& operator[](int Index)const{ return _data[Index]; }
         T& operator[](int Index){ return _data[Index]; }
         thisType const operator+(thisType const& other)const{ return baseType::operator+(other)->ToArray; }
+        thisType const operator+(T const& other)const{ return (*this) + _({ other }); }
 
         bool const Compare(Array<T> const& other)const;
     private:
@@ -112,6 +113,6 @@ namespace HWLib
 
 
         template<typename T>
-        Array<T> const _(initializer_list<T> const&data){ return data; };
+        Array<T> const _(std::initializer_list<T> const&data){ return data; };
 }
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

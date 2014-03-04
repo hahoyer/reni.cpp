@@ -19,9 +19,6 @@ namespace std{
     };
 }
 
-template<class T>
-using initializer_list = std::initializer_list<T>;
-
-template<class T> inline const T *begin(initializer_list<T> data) { return data.begin(); }
-template<class T> inline const T *end(initializer_list<T> data){ return data.end(); }
+template<class T> inline const T *begin(std::initializer_list<T> data) { return data.begin(); }
+template<class T> inline const T *end(std::initializer_list<T> data){ return data.end(); }
 

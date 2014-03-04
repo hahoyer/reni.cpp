@@ -1,8 +1,12 @@
 #include "Import.h"
 #include "PrioTable.h"
 #include "PrioTableConst.h"
+#include "../HWLib/String.h"
 
 using namespace HWLang;
+using namespace HWLib;
+using namespace std;
+
 
 PrioTable::PrioTable()
 {
@@ -17,7 +21,7 @@ PrioTable::PrioTable(PrioTable const&other)
     SetDumpString();
 };
 
-PrioTable::PrioTable(PrioTableConst::Tag tag, Array<String const> const&tokens)
+PrioTable::PrioTable(PrioTableConst::Tag tag, Array<String> const&tokens)
 : tokens(tokens)
 , data(AllocData(tokens.Count, [=](int, int){return tag; }))
 {
@@ -25,8 +29,8 @@ PrioTable::PrioTable(PrioTableConst::Tag tag, Array<String const> const&tokens)
 }
 
 PrioTable::PrioTable(
-    Array<String const>const& tokens,
-    Array<Array<PrioTableConst::Tag const>const> const&base,
+    Array<String>const& tokens,
+    Array<Array<PrioTableConst::Tag>> const&base,
     PrioTableConst::TagTable const& subTable,
     int leftCount)
     : tokens(tokens)
@@ -35,7 +39,7 @@ PrioTable::PrioTable(
     SetDumpString();
 };
 
-PrioTable const PrioTable::Left(Array<String const> const& tokens)const {
+PrioTable const PrioTable::Left(Array<String> const& tokens)const {
     return PrioTable(
         AllocTokens({ this->tokens, tokens }),
         data,
@@ -43,7 +47,7 @@ PrioTable const PrioTable::Left(Array<String const> const& tokens)const {
         0);
 }
 
-PrioTable const PrioTable::Right(Array<String const> const& tokens)const {
+PrioTable const PrioTable::Right(Array<String> const& tokens)const {
     return PrioTable(
         AllocTokens({ this->tokens, tokens }),
         data,
@@ -51,11 +55,11 @@ PrioTable const PrioTable::Right(Array<String const> const& tokens)const {
         0);
 }
 
-PrioTable const PrioTable::CreateLeft(Array<String const> const& tokens){
+PrioTable const PrioTable::CreateLeft(Array<String> const& tokens){
     return PrioTable(PrioTableConst::LowerTag, tokens);
 }
 
-PrioTable const PrioTable::CreateRight(Array<String const> const& tokens){
+PrioTable const PrioTable::CreateRight(Array<String> const& tokens){
     return PrioTable(PrioTableConst::HigherTag, tokens);
 }
 
@@ -63,11 +67,11 @@ PrioTable const PrioTable::ParenthesisLevel(char const* leftToken, char const* r
     return Level(PrioTableConst::ParenthesisTable, { leftToken }, { rightToken });
 }
 
-PrioTable const PrioTable::ParenthesisLevel(Array<String const> leftToken, Array<String const> rightToken)const{
+PrioTable const PrioTable::ParenthesisLevel(Array<String> leftToken, Array<String> rightToken)const{
     return Level(PrioTableConst::ParenthesisTable, leftToken, rightToken);
 }
 
-PrioTable const PrioTable::Level(PrioTableConst::TagTable const& subTable, Array<String const> const&leftToken, Array<String const>const&rightToken)const {
+PrioTable const PrioTable::Level(PrioTableConst::TagTable const& subTable, Array<String> const&leftToken, Array<String>const&rightToken)const {
     return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, leftToken.Count);
 }
 
@@ -170,22 +174,22 @@ PrioTableConst::Tag const PrioTable::Relation(int newIndex, int recentIndex)cons
     return data[newIndex][recentIndex];
 }
 
-Array<String const> const PrioTable::AllocTokens(initializer_list<Array<String const>> const &tokens){
-    return _(tokens).ConvertMany<String const>()->ToArray;
+Array<String> const PrioTable::AllocTokens(Array<Array<String>> const &tokens){
+    return tokens.ConvertMany<String>()->ToArray;
 }
 
-Array<Array<PrioTableConst::Tag const>const> const PrioTable::AllocData(int count, function<PrioTableConst::Tag(int, int)> getData)
+Array<Array<PrioTableConst::Tag>> const PrioTable::AllocData(int count, function<PrioTableConst::Tag(int, int)> getData)
 {
-    return Array<Array<PrioTableConst::Tag const>const>(count, [=](int i)
+    return Array<Array<PrioTableConst::Tag>>(count, [=](int i)
     {
-        return Array<PrioTableConst::Tag const>(count, [=](int j)
+        return Array<PrioTableConst::Tag>(count, [=](int j)
         {
             return getData(i, j);
         });
     });
 }
 
-PrioTableConst::Tag const PrioTable::PrioChar(Array<Array<PrioTableConst::Tag const>const> const&base, PrioTableConst::TagTable const& subTable, int leftCount, int i, int j)
+PrioTableConst::Tag const PrioTable::PrioChar(Array<Array<PrioTableConst::Tag>> const&base, PrioTableConst::TagTable const& subTable, int leftCount, int i, int j)
 {
     d_here;
     fd(base, subTable, leftCount, i, j);

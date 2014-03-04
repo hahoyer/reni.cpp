@@ -21,7 +21,7 @@ void Common::ParseSimple()
 {
     CompilerTest ct = "4711";
     auto s = ct.compiler.syntax;
-    a_if(s.Dump.BeginsWith("Ref{ Reni::TerminalSyntax.Id"), nd(s));
+    a_if(Dump(s).BeginsWith("Ref{ Reni::TerminalSyntax.Id"), nd(s));
 }
 
 void Common::CodeSimple()
@@ -32,7 +32,7 @@ void Common::CodeSimple()
     a_if(sc, nd(s));
     a_is(sc->size, == , 14);
     auto c4711 = BitsConst::Convert("4711");
-    a_is(*sc->value, ==, *c4711);
+    a_is(sc->value, ==, c4711);
 }
 
 void Common::CompileSimple()

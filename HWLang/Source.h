@@ -1,4 +1,8 @@
 #pragma once
+#include "../HWLib/DumpableObject.h"
+#include "../HWLib/ValueCache.h"
+
+using namespace HWLib;
 
 namespace HWLang
 {
@@ -15,11 +19,12 @@ namespace HWLang
         Source(Source const& other);
         static Source const FromFile(String const& fileName);
         static Source const FromText(String const& text);
-        static Ref<Source const>const CreateFromFile(String const& fileName);
+        static Ref<Source>const CreateFromFile(String const& fileName);
 
         virtual ~Source(){};
 
         DefaultAssignmentOperator;
+        operator Source& ()const{ return const_cast<Source&>(*this); }
 
         p(String, Text);
         p(int, Count);
@@ -29,7 +34,8 @@ namespace HWLang
         String const FilePosition(int position, String flagText, String tag = "")const;
         int const LineNr(int position)const;
         int const ColNr(int position)const;
-        friend SourcePosition const operator +(Ref<Source const> const source, int position);
+        friend SourcePosition const operator +(Ref<Source> const& source, int position);
+        SourcePosition const operator +(int position)const;
         bool const BeginsWith(int position, String value)const;
 
     private:

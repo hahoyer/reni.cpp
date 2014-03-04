@@ -2,12 +2,15 @@
 #include "Source.h"
 
 #include "SourcePosition.h"
+#include "../HWLib/String.h"
+#include "../HWLib/File.h"
 
 using namespace HWLang;
+using namespace HWLib;
 
 Source::Source(String const& fileName, String const&text)
 : fileName(fileName)
-, textCache([=]{return fileName == "" ? text : HWLib::File(fileName).Data; })
+, textCache([=]{return fileName == "" ? text : File(fileName).Data; })
 {
 }
 
@@ -17,7 +20,7 @@ Source const Source::FromFile(String const& fileName)
     return Source(fileName,"");
 }
 
-Ref<Source const>const Source::CreateFromFile(String const& fileName)
+Ref<Source>const Source::CreateFromFile(HWLib::String const& fileName)
 {
     return new Source(fileName, "");
 }
@@ -88,12 +91,13 @@ int const Source::ColNr(int position)const
     {return c == '\n' ? 0 : current + 1; });
 }
 
-
-SourcePosition const HWLang::operator +(Ref<Source const> const source, int position)
-{
-    return SourcePosition(source, position);
+SourcePosition const Source::operator +(int position)const{
+    return SourcePosition(*this, position);
 }
 
+SourcePosition const HWLang::operator +(Ref<Source> const& source, int position){
+    return SourcePosition(source, position);
+}
 
 bool const Source::BeginsWith(int position, String value)const
 {

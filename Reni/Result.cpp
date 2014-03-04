@@ -46,7 +46,7 @@ p_implementation(Result, Ref<CodeItem>, code){
     return data.code;
 }
 
-p_implementation(Result, Ref<Type>, type){
+p_implementation(Result, WeakRef<Type>, type){
     Ensure(Category::Type);
     return data.type;
 }

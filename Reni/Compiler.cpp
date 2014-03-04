@@ -3,10 +3,12 @@
 
 #include "BitsConst.h"
 #include "BitType.h"
-#include "Compiler.internal.h"
 #include "Size.h"
 #include "Result.h"
 #include "TokenClass.h"
+
+static bool Trace = true;
+#include "Compiler.internal.h"
 
 using namespace Reni;
 
@@ -35,8 +37,8 @@ ExecutionResult const Compiler::Execute(){
 }
 
 
-String Compiler::internal::CodeVisitor::Const(Size const size, Ref<BitsConst> const value) const
+String Compiler::internal::CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
     a_if_(size <= BitCount<int>());
-    return "return " + String::Convert(int(*value)) + ";";
+    return "return " + String::Convert(int(value)) + ";";
 }

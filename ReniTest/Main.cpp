@@ -16,7 +16,6 @@ void ReniTest::RunAll()
     _HWLib::RunAll();
     _HWLang::RunAll();
     Common::RunAll();
-    Common::RunAll();
 }
 
 void ReniTest::RunSpecial()

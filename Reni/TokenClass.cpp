@@ -1,6 +1,8 @@
 #include "Import.h"
 #include "TokenClass.h"
+
 #include "Context.h"
+#include "FeatureClass.h"
 #include "Syntax.h"
 #include "..\HWLang\SourcePart.h"
 
@@ -32,3 +34,5 @@ Ref<Syntax> const TokenClass::CreateSyntax(SourcePart const&part, bool isMatch)c
     b_;
     return OptRef<Syntax >();
 };
+
+pure_p_implementation(TokenClass, WeakRef<FeatureClass>, featureClass);

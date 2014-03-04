@@ -14,6 +14,10 @@ namespace Reni{
         Size(int value): value(value){
         }
 
+        Size const operator*(int other)const{
+            return value *other;
+        };
+
         bool const operator==(Size const&other)const{
             return value == other.value;
         };
@@ -45,7 +49,13 @@ namespace Reni{
 
 namespace HWLib{
     template<>
-    class Constants <Reni::Size>{
+    class Constants<Reni::Size>{
+    public:
+        static Reni::Size const NotValid;
+    };
+
+    template<>
+    class Constants<Reni::Size const>{
     public:
         static Reni::Size const NotValid;
     };

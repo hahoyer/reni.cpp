@@ -8,7 +8,7 @@ namespace Reni{
         bool const hasSize;
         bool const hasCode;
         bool const hasType;
-    public:
+
         static Category const None;
         static Category const Size;
         static Category const Code;

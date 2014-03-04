@@ -120,20 +120,10 @@ private:
         return _left->IsValid || _right->IsValid; 
     }
 
-    void operator++(int) override
-    {
+    T const Step()override{ 
         if (_left->IsValid)
-            (*_left)++;
-        else
-            (*_right)++;
-        return *this;
-    }
-
-    T const operator*()const override
-    {
-        if (_left->IsValid)
-            return **_left;
-        return **_right;
+            return _left->Step();
+        return _right->Step();
     }
 };
 
@@ -160,7 +150,7 @@ public:
             if (selector(*current))
                 return;
         }
-        current= null;
+        current= {};
     }
 protected:
     override_p_function(bool, IsValid){ return current.IsValid; }
@@ -224,6 +214,69 @@ private:
         }
     }
 };
+
+template<typename T, typename TOther>
+class PairIterator final : public Enumerable<std::pair<T, TOther>>::Iterator{
+    typedef std::pair<T, TOther> resultType;
+    Ref<typename Enumerable<T>::Iterator> leftIterator;          
+    OptRef<T> leftResult;
+    Enumerable<TOther> const&right;
+    OptRef<typename Enumerable<TOther>::Iterator> rightIterator;
+public:
+    PairIterator(Enumerable<T> const&left, Enumerable<TOther> const&right)
+        : leftIterator(left.ToIterator)
+        , right(right)
+        , leftResult({})
+    {
+        Align();
+    };
+
+protected:
+    override_p_function(bool, IsValid){
+        a_if_(rightIterator.IsValid);
+        return rightIterator->IsValid;
+    };
+
+    resultType const Step()override
+    {
+        a_if_(leftResult.IsValid);
+        a_if_(rightIterator.IsValid);
+        a_if_(rightIterator->IsValid);
+        resultType result(*leftResult, rightIterator->Step());
+        Align();
+        return result;
+    };
+private:
+    void Align(){
+        if (leftIterator->IsValid){
+            if (leftResult.IsValid){
+                if (!rightIterator.IsValid){ b_; }
+                else if (rightIterator->IsValid){ b_; }
+                else { b_; }
+            }else{
+                if (!rightIterator.IsValid){
+                    leftResult = new T(leftIterator->Step());
+                    rightIterator = right.ToIterator;
+                    return;
+                }
+                else if (rightIterator->IsValid){ b_; }
+                else { b_; }
+            }
+        }else{
+            if (leftResult.IsValid){
+                if (!rightIterator.IsValid){ b_; }
+                else if (rightIterator->IsValid){ b_; }
+                else { return; }
+            }
+            else{
+                if (!rightIterator.IsValid){ b_; }
+                else if (rightIterator->IsValid){ b_; }
+                else { b_; }
+            }
+        }
+    };
+};
+
 
 
 template<typename T, typename TResult>
@@ -312,7 +365,7 @@ OptRef<T> const Enumerable<T>::Max() const{
     OptRef<T> result;
     for (auto element : *this)
         if (!result.IsValid || *result < element)
-            result = element;
+            result = new T(element);
     return result;
 };
 
@@ -324,6 +377,14 @@ TResult const Enumerable<T>::Aggregate(TResult start, AggregateFunction<TResult>
     for (auto element : *this)
         result = selector(result,element);
     return result;
+}
+
+template<typename T>
+template<typename TOther>
+Ref<Enumerable<std::pair<T, TOther>>> const Enumerable<T>::operator*(Enumerable<TOther>const&other)const{
+    return new Enumerable<std::pair<T, TOther>>
+        ::Container(new PairIterator<T, TOther>(*this, other));
+
 }
 
 template<typename T>
@@ -363,59 +424,69 @@ Ref<Enumerable<TResult>> const Enumerable<T>::Convert() const{
     return new Container(new ConvertIterator<TResult>(*this, selector));
 };
 
-template<typename T>
-override_p_implementation(Ref<T>, Array<String>, DumpData){
-    if (!value.get())
-        return Array<String>();
-    return Array<String>{ Ref<T>::traits::DumpValue(*value) };
-};
-
-template<typename T>
-override_p_implementation(Ref<T>, String, DumpShort){
-    if (!value.get())
-        return "null";
-    return Ref<T>::traits::DumpValueShort(*value);
-};
-
-template<typename T>
-override_p_implementation(Ref<T>, String, DumpHeader){
-    if (!value.get())
-        return "null";
-    return "Ref";
-};
-
-template<typename T>
-override_p_implementation(OptRef<T>, String, DumpHeader){
-    if (!value.get())
-        return "null";
-    return "OptRef";
-};
-
-template<typename T>
-override_p_implementation(OptRef<T>, String, DumpShort){
-    return base_p_name(DumpShort);
-};
-
-template<typename T>
-inline String const default_ref_traits<T>::DumpValueHeader(T const&value){
-    return HWLib::DumpTypeName(value);
-};
-
-template<typename T>
-inline String const default_ref_traits<T>::DumpValue(T const&value){
-    return HWLib::Dump(value);
-};
-
-template<typename T>
-inline String const default_ref_traits<T>::DumpValueShort(T const&value){
-    return HWLib::DumpShort(value);
-};
-
 template<typename TBase, typename TRealm>
 inline override_p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
     auto objectId = HWLib::Dump(ObjectId);
     return baseType::virtual_p_name(DumpHeader)() + ".Id" + objectId;
 };
+
+
+template <typename T>
+inline String const HWLib::Dump(OptRef<T> const&target){
+    if (target.IsValid)
+        return "OptRef{ " + HWLib::Dump(*target)+" }";
+    return "OptRef{}";
+}
+
+template <typename T>
+inline String const HWLib::DumpShort(OptRef<T> const&target){
+    if (target.IsValid)
+        return "OptRef{ " + HWLib::DumpShort(*target) + " }";
+    return "OptRef{}";
+}
+
+template <typename T>
+inline String const HWLib::Dump(Ref<T> const&target){
+    return "Ref{ " + HWLib::Dump(*target) + " }";
+}
+
+template <typename T>
+inline String const HWLib::Dump(WeakRef<T> const&target){
+    return "WeekRef{ " + HWLib::Dump(*target) + " }";
+}
+
+template <typename T>
+inline String const HWLib::Dump(OptWeakRef<T> const&target){
+    if (target.IsValid)
+        return "OptWeakRef{ " + HWLib::Dump(*target) + " }";
+    return "OptWeakRef{}";
+}
+
+template <typename T>
+inline String const HWLib::Dump(Array<T> const&target){
+    auto result = "Array["+ HWLib::Dump(target.Count)+ "]";
+    auto index = 0;
+    auto dataResult = target
+        .Select<String>([&](T const&element){
+            return "[" + HWLib::Dump(index++) + "] " + HWLib::Dump(element);
+        })
+        ->ToArray;
+
+    return result
+        + String::Surround("{", dataResult,"}");
+}
+
+template <typename T1, typename T2>
+inline String const HWLib::Dump(std::pair<T1, T2> const&target){
+    auto dataResult = _({
+        "first = " + HWLib::Dump(target.first),
+        "second = " + HWLib::Dump(target.second),
+    });
+    return String::Surround(
+        "{", 
+        dataResult, 
+        "}");
+}
 
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

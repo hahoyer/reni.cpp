@@ -3,6 +3,8 @@
 #include "PrioTable.h"
 #include "PrioTableConst.h"
 
+using namespace HWLib;
+
 namespace HWLang{
     template <class Syntax, class Token>
     class OpenItem final{
@@ -22,7 +24,7 @@ namespace HWLang{
         DefaultAssignmentOperator;
 
         static OpenItem const StartItem(Token const&token){
-            return OpenItem(null, token, false);
+            return OpenItem({}, token, false);
         };
         
         PrioTableConst::Tag const Relation(String const&newTokenName, PrioTable const&prioTable)const{ 

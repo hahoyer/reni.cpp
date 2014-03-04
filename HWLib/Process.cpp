@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Process.h"
 
+#include "DumpableObject.h"
 #include "String.h"
 #include "System.h"
 #include <windows.h>

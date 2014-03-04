@@ -1,7 +1,6 @@
 #pragma once
-#include "..\HWLib\DumpableObject.h"
-#include "..\Runtime\Common.h"
-#include "..\HWLib\Ref.h"
+#include "../HWLib/String.h"
+#include "../Runtime/Common.h"
 
 using namespace HWLib;
 
@@ -19,7 +18,7 @@ namespace Reni
         using dataItemType = ReniRuntime::Stack::dataType;
         using dataItemSizeType = ReniRuntime::Stack::sizeType;
     public:
-        static Ref<CodeItem> const Const(Ref<BitsConst> const&value);
+        static Ref<CodeItem> const Const(BitsConst const&value);
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
     };
