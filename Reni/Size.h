@@ -8,8 +8,9 @@ namespace Reni{
     class Size: public DumpableObject{
         using baseType = DumpableObject;
         using thisType = Size;
-        int const value;
     public:
+        int const value;
+
         Size(int value): value(value){
         }
 

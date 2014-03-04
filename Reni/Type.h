@@ -13,6 +13,8 @@ namespace Reni
         using thisType = Type;
     public:
         SearchResult const Search(TokenClass const&tokenClass)const;
+        Type const& array(int count)const;
+
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };

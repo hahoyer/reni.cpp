@@ -7,8 +7,8 @@ static bool Trace = true;
 
 using namespace Reni;
 
-Ref<BitsConst> const BitsConst::Convert(String const&text){
-    return new BitsConst(text);
+BitsConst const BitsConst::Convert(String const&text){
+    return BitsConst(text);
 };
 
 

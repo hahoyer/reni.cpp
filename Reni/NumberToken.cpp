@@ -16,8 +16,12 @@ Ref<Syntax> const NumberToken::CreateSyntax(SourcePart const&part, bool isMatch)
 };
 
 ResultData const NumberToken::GetResultData(Context const&context, Category category, SourcePart const&part)const {
+
+    auto value = BitsConst::Convert(part);
+
     return context
         .rootContext
         .bitType
+        .array(value.size.value)
         .GetResultData(category, BitsConst::Convert(part));
 }
