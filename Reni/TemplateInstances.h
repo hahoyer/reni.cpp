@@ -18,7 +18,7 @@ SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&type)const{ 
 
 template <>
 SearchResult const GetGenericDefinition<DumpPrintToken>(Type const&type){
-    OptWeakRef<FeatureProvider<DumpPrintToken>> f = type;
+    OptRef<FeatureProvider<DumpPrintToken>> f = type;
 
     fd(type, f);
     b_;

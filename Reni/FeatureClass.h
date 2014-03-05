@@ -41,7 +41,7 @@ namespace Reni{
     class FeatureProvider<T,T0,TTypes...> {
         using thisType = FeatureProvider;
     public:
-        virtual OptWeakRef<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;
+        virtual OptRef<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;
         virtual ~FeatureProvider(){};
     };
 }

@@ -18,10 +18,10 @@ namespace Reni
         using thisType = BitType;
     public:
         BitType(){ SetDumpString(); }
-        virtual operator OptWeakRef<FeatureProvider<DumpPrintToken, ArrayType>>()const override;
         ref_p;
     private:
         override_p_function(Size, size);
-        virtual OptWeakRef<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override;
+        virtual operator OptRef<FeatureProvider<DumpPrintToken, ArrayType>>()const override;
+        virtual OptRef<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override;
     };
 }

@@ -33,4 +33,4 @@ Type const& Type::array(int count)const{
     return *_internal->arrayCache[count];
 };
 
-Type::operator OptWeakRef<FeatureProvider<DumpPrintToken>>()const{ return{}; }
+Type::operator OptRef<FeatureProvider<DumpPrintToken>>()const{ return{}; }

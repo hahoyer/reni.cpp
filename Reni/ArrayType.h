@@ -24,7 +24,7 @@ namespace Reni{
         }
         ref_p;
     private:
-        virtual operator OptWeakRef<FeatureProvider<DumpPrintToken>>()const override;
+        virtual operator OptRef<FeatureProvider<DumpPrintToken>>()const override;
         override_p_function(Size, size);
         override_p_function(Array<String>, DumpData){
             return{
