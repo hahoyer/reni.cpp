@@ -24,28 +24,28 @@ namespace HWLib
         template<typename TResult>
         TResult                     const Aggregate     (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
         template<typename TResult>
-        Ref<Enumerable<TResult>>     const Convert       () const;
+        CtrlRef<Enumerable<TResult>>     const Convert       () const;
         template<typename TResult>
-        Ref<Enumerable<TResult>>      const ConvertMany   () const;
+        CtrlRef<Enumerable<TResult>>      const ConvertMany   () const;
         int                            const Count         (function<bool(T)> selector = [](T){return true; })const;
         T                               const First         (function<bool(T)> selector = [](T){return true; })const;
-        OptRef<T>                        const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
-        OptRef<T>                         const Max          ()const;
-        OptRef<T>                          const Max        (function<bool(T)> selector)const;
-        OptRef<T>                           const Max       (function<bool(T,T)> isLess)const;
-        Ref<thisType>                        const operator+ (thisType const& right)const;
+        CtrlPtr<T>                        const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
+        CtrlPtr<T>                         const Max          ()const;
+        CtrlPtr<T>                          const Max        (function<bool(T)> selector)const;
+        CtrlPtr<T>                           const Max       (function<bool(T,T)> isLess)const;
+        CtrlRef<thisType>                        const operator+ (thisType const& right)const;
         template<typename TOther>
-        Ref<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
+        CtrlRef<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
         template<typename TResult>
-        Ref<Enumerable<TResult>>             const Select   (function<TResult(T)> selector) const;
+        CtrlRef<Enumerable<TResult>>             const Select   (function<TResult(T)> selector) const;
         template<typename TResult>
-        Ref<Enumerable<TResult>>            const SelectMany (function<TResult(T)> selector) const;
+        CtrlRef<Enumerable<TResult>>            const SelectMany (function<TResult(T)> selector) const;
         T                                  const Single       (function<bool(T)> selector = [](T){return true; })const;
-        OptRef<T>                         const SingleOrDefault(function<bool(T)> selector = [](T){return true; })const;
-        Ref<thisType>                    const Skip           (int count) const;
+        CtrlPtr<T>                         const SingleOrDefault(function<bool(T)> selector = [](T){return true; })const;
+        CtrlRef<thisType>                    const Skip           (int count) const;
         T                               const Stringify      (T const&delimiter)const;
-        Ref<thisType>                  const Take           (int count) const;
-        Ref<thisType>                 const Where          (function<bool(T)> selector)const;
+        CtrlRef<thisType>                  const Take           (int count) const;
+        CtrlRef<thisType>                 const Where          (function<bool(T)> selector)const;
         
 
         p(Array<T>, ToArray);
@@ -61,11 +61,11 @@ namespace HWLib
 
         class RangeBasedForLoopSimulator final
         {
-            OptRef<Iterator> _data;
+            CtrlPtr<Iterator> _data;
             mutable bool _hasBeenAccessed;
 
         public:
-            RangeBasedForLoopSimulator(Ref<Iterator> data)
+            RangeBasedForLoopSimulator(CtrlRef<Iterator> data)
                 : _data(data)
                 , _hasBeenAccessed(false)
             {
@@ -99,21 +99,21 @@ namespace HWLib
 
         class Container final : public Enumerable<T>
         {
-            Ref<Iterator> _iterator;
+            CtrlRef<Iterator> _iterator;
         public:
             Container(Iterator* iterator) : _iterator(iterator){}
-            mutable_p_function(Ref<Iterator>, ToIterator) const override{ return _iterator; }
+            mutable_p_function(CtrlRef<Iterator>, ToIterator) const override{ return _iterator; }
         };
 
-        p_definition(Ref<Iterator>, ToIterator);
-        virtual mutable_p_function(Ref<Iterator>, ToIterator)const = 0;
+        p_definition(CtrlRef<Iterator>, ToIterator);
+        virtual mutable_p_function(CtrlRef<Iterator>, ToIterator)const = 0;
 
         RangeBasedForLoopSimulator const begin()const{ return ToIterator; }
         RangeBasedForLoopSimulator const end()const;
 
     private:
         template <typename TLeft>
-        OptRef<T> const getPlus(TLeft const&parent, thisType const& other, int index)
+        CtrlPtr<T> const getPlus(TLeft const&parent, thisType const& other, int index)
         {
             auto result = parent.get(index);
             if (result.IsValid)

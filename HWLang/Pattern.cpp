@@ -16,9 +16,9 @@ MatchResult EndPattern::Match(SourcePosition const&position)const
 
 class FindMatcher final: public IPattern 
 {
-    Ref<IPattern const> const _value;
+    CtrlRef<IPattern const> const _value;
 public:
-    FindMatcher(Ref<IPattern const> value) : _value(value){}
+    FindMatcher(CtrlRef<IPattern const> value) : _value(value){}
 private:
     virtual MatchResult Match(SourcePosition const&position)const override
     {
@@ -38,10 +38,10 @@ p_implementation(Pattern, Pattern, Find){ return new FindMatcher(_value); };
 
 class ElseMatcher final : public IPattern
 {
-    Ref<IPattern  const> const _left;
-    Ref<IPattern  const> const _right;
+    CtrlRef<IPattern  const> const _left;
+    CtrlRef<IPattern  const> const _right;
 public:
-    ElseMatcher(Ref<IPattern  const> left, Ref<IPattern  const> right)
+    ElseMatcher(CtrlRef<IPattern  const> left, CtrlRef<IPattern  const> right)
         : _left(left)
         , _right(right)
     {}
@@ -58,12 +58,12 @@ Pattern const Pattern::Else(String right)const{ return Else(Box(right)); }
 
 class RepeatMatch final : public IPattern
 {
-    Ref<IPattern  const> const _data;
+    CtrlRef<IPattern  const> const _data;
     int  const _minCount;
     Optional<int> const _maxCount;
 
 public:
-    RepeatMatch(Ref<IPattern  const> data, int minCount, Optional<int> maxCount)
+    RepeatMatch(CtrlRef<IPattern  const> data, int minCount, Optional<int> maxCount)
         :_data(data)
         , _minCount(minCount)
         , _maxCount(maxCount)
@@ -96,11 +96,11 @@ Pattern const Pattern::Repeat(int minCount, Optional<int> maxCount)const{ return
 
 class ValueMatch final : public IPattern
 {
-    Ref<IPattern  const> const _data;
+    CtrlRef<IPattern  const> const _data;
     function<Pattern const(String)> _func;
 
 public:
-    ValueMatch(Ref<IPattern  const> data, function<Pattern const(String)> func)
+    ValueMatch(CtrlRef<IPattern  const> data, function<Pattern const(String)> func)
         : _data(data)
         , _func(func)
     {}
@@ -120,10 +120,10 @@ Pattern const Pattern::Value(function<Pattern const(String)> func)const{ return 
 
 class SequenceMatch final : public IPattern
 {
-    Ref<IPattern  const> const _left;
-    Ref<IPattern  const> const _right;
+    CtrlRef<IPattern  const> const _left;
+    CtrlRef<IPattern  const> const _right;
 public:
-    SequenceMatch(Ref<IPattern  const> left, Ref<IPattern  const> right)
+    SequenceMatch(CtrlRef<IPattern  const> left, CtrlRef<IPattern  const> right)
         : _left(left)
         , _right(right)
     {}

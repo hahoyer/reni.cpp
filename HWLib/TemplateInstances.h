@@ -58,7 +58,7 @@ inline String const HWLib::DumpShort(T*target){
 template<typename T>
 class SkipIterator final : public Enumerable<T>::Iterator
 {
-    Ref<typename Enumerable<T>::Iterator> _parent;
+    CtrlRef<typename Enumerable<T>::Iterator> _parent;
 public:
     SkipIterator(Enumerable<T> const& parent, int count)
         : _parent(parent.ToIterator)
@@ -82,7 +82,7 @@ template<typename T>
 class TakeIterator final : public Enumerable<T>::Iterator
 {
     using thisType = TakeIterator;
-    Ref<typename Enumerable<T>::Iterator> _parent;
+    CtrlRef<typename Enumerable<T>::Iterator> _parent;
     int _count;
 public:
     TakeIterator(Enumerable<T> const& parent, int count)
@@ -107,8 +107,8 @@ protected:
 template<typename T>
 class PlusIterator final : public Enumerable<T>::Iterator
 {
-    Ref<typename Enumerable<T>::Iterator> _left;
-    Ref<typename Enumerable<T>::Iterator> _right;
+    CtrlRef<typename Enumerable<T>::Iterator> _left;
+    CtrlRef<typename Enumerable<T>::Iterator> _right;
 public:
     PlusIterator(Enumerable<T> const& left, Enumerable<T> const& right)
         : _left(left.ToIterator)
@@ -131,9 +131,9 @@ private:
 template<typename T>
 class WhereIterator final : public Enumerable<T>::Iterator
 {
-    Ref<typename Enumerable<T>::Iterator> parent;
+    CtrlRef<typename Enumerable<T>::Iterator> parent;
 
-    OptRef<T> current;
+    CtrlPtr<T> current;
     function<bool(T)> selector;
 public:
     WhereIterator(Enumerable<T> const& parent, function<bool(T)> selector)
@@ -155,7 +155,7 @@ public:
 protected:
     override_p_function(bool, IsValid){ return current.IsValid; }
     T const Step()override{ 
-        Ref<T> result = current;
+        CtrlRef<T> result = current;
         Align();
         return T(*result); 
     }
@@ -165,7 +165,7 @@ protected:
 template<typename T, typename TResult>
 class SelectIterator final : public Enumerable<TResult>::Iterator
 {
-    Ref<typename Enumerable<T>::Iterator> _parent;
+    CtrlRef<typename Enumerable<T>::Iterator> _parent;
     function<TResult(T)> _selector;
 public:
     SelectIterator(Enumerable<T> const& parent, function<TResult(T)> selector)
@@ -182,9 +182,9 @@ protected:
 template<typename T, typename TResult>
 class ConvertManyIterator final : public Enumerable<TResult>::Iterator
 {
-    Ref<typename Enumerable<T>::Iterator> _parent;
-    OptRef<typename T> _subData;
-    OptRef<typename Enumerable<TResult>::Iterator> _subParent;
+    CtrlRef<typename Enumerable<T>::Iterator> _parent;
+    CtrlPtr<typename T> _subData;
+    CtrlPtr<typename Enumerable<TResult>::Iterator> _subParent;
 public:
     ConvertManyIterator(Enumerable<T> const& parent)
         : _parent(parent.ToIterator){
@@ -218,10 +218,10 @@ private:
 template<typename T, typename TOther>
 class PairIterator final : public Enumerable<std::pair<T, TOther>>::Iterator{
     typedef std::pair<T, TOther> resultType;
-    Ref<typename Enumerable<T>::Iterator> leftIterator;          
-    OptRef<T> leftResult;
+    CtrlRef<typename Enumerable<T>::Iterator> leftIterator;          
+    CtrlPtr<T> leftResult;
     Enumerable<TOther> const&right;
-    OptRef<typename Enumerable<TOther>::Iterator> rightIterator;
+    CtrlPtr<typename Enumerable<TOther>::Iterator> rightIterator;
 public:
     PairIterator(Enumerable<T> const&left, Enumerable<TOther> const&right)
         : leftIterator(left.ToIterator)
@@ -282,7 +282,7 @@ private:
 template<typename T, typename TResult>
 class ConvertIterator final : public Enumerable<TResult>::Iterator
 {
-    Ref<typename Enumerable<T>::Iterator> _parent;
+    CtrlRef<typename Enumerable<T>::Iterator> _parent;
 public:
     ConvertIterator(Enumerable<T> const& parent)
         : _parent(parent.ToIterator)
@@ -295,25 +295,25 @@ protected:
 
 
 template<typename T>
-Ref<Enumerable<T>> const Enumerable<T>::Skip(int count) const
+CtrlRef<Enumerable<T>> const Enumerable<T>::Skip(int count) const
 {
     return new Container(new SkipIterator<T>(*this, count));
 }
 
 template<typename T>
-Ref<Enumerable<T>> const Enumerable<T>::Take(int count) const
+CtrlRef<Enumerable<T>> const Enumerable<T>::Take(int count) const
 {
     return new Container(new TakeIterator<T>(*this, count));
 }
 
 template<typename T>
-Ref<Enumerable<T>> const Enumerable<T>::operator+(thisType const& right)const
+CtrlRef<Enumerable<T>> const Enumerable<T>::operator+(thisType const& right)const
 {
     return new Container(new PlusIterator<T>(*this, right));
 }
 
 template<typename T>
-Ref<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)const
+CtrlRef<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)const
 {
     return new Container(new WhereIterator<T>(*this, selector));
 }
@@ -361,8 +361,8 @@ inline int const Enumerable<T>::Count(function<bool(T)> selector)const
 }
 
 template<typename T>
-OptRef<T> const Enumerable<T>::Max() const{
-    OptRef<T> result;
+CtrlPtr<T> const Enumerable<T>::Max() const{
+    CtrlPtr<T> result;
     for (auto element : *this)
         if (!result.IsValid || *result < element)
             result = new T(element);
@@ -381,7 +381,7 @@ TResult const Enumerable<T>::Aggregate(TResult start, AggregateFunction<TResult>
 
 template<typename T>
 template<typename TOther>
-Ref<Enumerable<std::pair<T, TOther>>> const Enumerable<T>::operator*(Enumerable<TOther>const&other)const{
+CtrlRef<Enumerable<std::pair<T, TOther>>> const Enumerable<T>::operator*(Enumerable<TOther>const&other)const{
     return new Enumerable<std::pair<T, TOther>>
         ::Container(new PairIterator<T, TOther>(*this, other));
 
@@ -408,19 +408,19 @@ String const HWLib::DumpTypeName(T const& object){
 
 template<typename T>
 template<typename TResult>
-Ref<Enumerable<TResult>> const Enumerable<T>::Select(function<TResult(T)> selector) const{
+CtrlRef<Enumerable<TResult>> const Enumerable<T>::Select(function<TResult(T)> selector) const{
     return new Enumerable<TResult>::Container(new SelectIterator<T, TResult>(*this, selector));
 };
 
 template<typename T>
 template<typename TResult>
-Ref<Enumerable<TResult>> const Enumerable<T>::ConvertMany() const{
+CtrlRef<Enumerable<TResult>> const Enumerable<T>::ConvertMany() const{
     return new Enumerable<TResult>::Container(new ConvertManyIterator<T, TResult>(*this));
 };
 
 template<typename T>
 template<typename TResult>
-Ref<Enumerable<TResult>> const Enumerable<T>::Convert() const{
+CtrlRef<Enumerable<TResult>> const Enumerable<T>::Convert() const{
     return new Container(new ConvertIterator<TResult>(*this, selector));
 };
 
@@ -432,22 +432,22 @@ inline override_p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader)
 
 
 template <typename T>
-inline String const HWLib::Dump(OptRef<T> const&target){
+inline String const HWLib::Dump(CtrlPtr<T> const&target){
     if (target.IsValid)
-        return "OptRef{ " + HWLib::Dump(*target)+" }";
-    return "OptRef{}";
+        return "CtrlPtr{ " + HWLib::Dump(*target)+" }";
+    return "CtrlPtr{}";
 }
 
 template <typename T>
-inline String const HWLib::DumpShort(OptRef<T> const&target){
+inline String const HWLib::DumpShort(CtrlPtr<T> const&target){
     if (target.IsValid)
-        return "OptRef{ " + HWLib::DumpShort(*target) + " }";
-    return "OptRef{}";
+        return "CtrlPtr{ " + HWLib::DumpShort(*target) + " }";
+    return "CtrlPtr{}";
 }
 
 template <typename T>
-inline String const HWLib::Dump(Ref<T> const&target){
-    return "Ref{ " + HWLib::Dump(*target) + " }";
+inline String const HWLib::Dump(CtrlRef<T> const&target){
+    return "CtrlRef{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>

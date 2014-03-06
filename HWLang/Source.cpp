@@ -20,7 +20,7 @@ Source const Source::FromFile(String const& fileName)
     return Source(fileName,"");
 }
 
-Ref<Source>const Source::CreateFromFile(HWLib::String const& fileName)
+CtrlRef<Source>const Source::CreateFromFile(HWLib::String const& fileName)
 {
     return new Source(fileName, "");
 }
@@ -95,7 +95,7 @@ SourcePosition const Source::operator +(int position)const{
     return SourcePosition(*this, position);
 }
 
-SourcePosition const HWLang::operator +(Ref<Source> const& source, int position){
+SourcePosition const HWLang::operator +(CtrlRef<Source> const& source, int position){
     return SourcePosition(source, position);
 }
 

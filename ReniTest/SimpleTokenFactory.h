@@ -24,13 +24,13 @@ namespace _HWLang
             typedef TTokenClass TokenClass;
             //using TokenClass = TTokenClass;
 
-            OptRef<thisType> const left;
+            CtrlPtr<thisType> const left;
             TokenClass const& tokenClass;
             String const name;
-            OptRef<thisType> const right;
+            CtrlPtr<thisType> const right;
             bool const isMatch;
 
-            SimpleSyntax(OptRef<thisType> const left, TokenClass const& tokenClass, String const&name, OptRef<thisType> const right, bool isMatch)
+            SimpleSyntax(CtrlPtr<thisType> const left, TokenClass const& tokenClass, String const&name, CtrlPtr<thisType> const right, bool isMatch)
                 : left(left)
                 , tokenClass(tokenClass)
                 , name(name)
@@ -73,16 +73,16 @@ namespace _HWLang
             TokenClass() = default;
             TokenClass(TokenClass const&) = delete;
 
-            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
+            CtrlRef<Syntax> const CreateSyntax(CtrlRef<Syntax>const left, SourcePart const&part, CtrlRef<Syntax>const right, bool isMatch)const{
                 return new Syntax(left, *this, part, right, isMatch);
             };
-            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, bool isMatch)const{
+            CtrlRef<Syntax> const CreateSyntax(CtrlRef<Syntax>const left, SourcePart const&part, bool isMatch)const{
                 return new Syntax(left, *this, part, {}, isMatch);
             };
-            Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
+            CtrlRef<Syntax> const CreateSyntax(SourcePart const&part, CtrlRef<Syntax>const right, bool isMatch)const{
                 return new Syntax({}, *this, part, right, isMatch);
             };
-            Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const{
+            CtrlRef<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const{
                 return new Syntax({}, *this, part, {}, isMatch);
             };
         private:

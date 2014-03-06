@@ -3,7 +3,6 @@
 
 #include "BitsConst.h"
 #include "Size.h"
-#include "..\HWLib\Ref.h"
 #include "..\HWLib\DumpMacros.h"
 #include "..\HWLib\BreakHandling.h"
 

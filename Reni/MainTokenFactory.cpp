@@ -57,7 +57,7 @@ class LeftParenthesisToken final : public TokenClass{
 public:
     LeftParenthesisToken(int level) : level(level){}
 private:
-    virtual Ref<Syntax > const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const  override{
+    virtual CtrlRef<Syntax > const CreateSyntax(SourcePart const&part, CtrlRef<Syntax >const right, bool isMatch)const  override{
         if (isMatch)
             return baseType::CreateSyntax(part, right, isMatch);
         return new OpenSyntax(level, part, right);
@@ -70,9 +70,9 @@ private:
     class OpenSyntax final : public Syntax{
         using baseType = Syntax;
         int const level;
-        Ref<Syntax > const right;
+        CtrlRef<Syntax > const right;
     public:
-        OpenSyntax(int level, SourcePart const part, Ref<Syntax > const right)
+        OpenSyntax(int level, SourcePart const part, CtrlRef<Syntax > const right)
             : baseType(part)
             , level(level)
             , right(right)
@@ -80,7 +80,7 @@ private:
             SetDumpString();
         }
     private:
-        virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const override{
+        virtual CtrlRef<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const override{
             if (level != this->level)
                 return baseType::ParenthesisMatch(level, part);
             return right;
@@ -103,7 +103,7 @@ class RightParenthesisToken final : public TokenClass{
 public:
     RightParenthesisToken(int level) : level(level){}
 private:
-    virtual Ref<Syntax > const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
+    virtual CtrlRef<Syntax > const CreateSyntax(CtrlRef<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
         if (!isMatch)
             return baseType::CreateSyntax(left, part, isMatch);
         return left->ParenthesisMatch(level, part);
@@ -129,7 +129,7 @@ MainTokenFactory::MainTokenFactory()
 , errorClasses([](String const& key){return new SyntaxErrorToken(key); })
 {
     predefinedTokenClasses = 
-        std::unordered_map<String const, Ref<TokenClass const>>({ 
+        std::unordered_map<String const, CtrlRef<TokenClass const>>({ 
         { "dump_print", new DumpPrintToken } ,
         {"{", new LeftParenthesisToken(1)},
         { "[", new LeftParenthesisToken(2) },

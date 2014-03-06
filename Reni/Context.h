@@ -19,7 +19,7 @@ namespace Reni
     public:
         ResultData const GetResultData(Category category, Syntax const&syntax)const;
         virtual_p(RootContext const&, rootContext) = 0;
-        SearchResult const Search(OptRef<Syntax> const&left, TokenClass const&tokenClass)const;
+        SearchResult const Search(CtrlPtr<Syntax> const&left, TokenClass const&tokenClass)const;
     };
 }
 

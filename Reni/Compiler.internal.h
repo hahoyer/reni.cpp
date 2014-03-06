@@ -34,13 +34,13 @@ class Compiler::internal final
 {
     String const fileName;
 public:
-    ValueCache<Ref<CodeItem>> codeCache;
+    ValueCache<CtrlRef<CodeItem>> codeCache;
     ValueCache<ScannerInstance> scannerCache;
-    ValueCache<Ref<Syntax>> syntaxCache;
+    ValueCache<CtrlRef<Syntax>> syntaxCache;
     ValueCache<String> cppCodeCache;
 private:
-    ValueCache<Ref < Source>> sourceCache;
-    Ref<RootContext> rootContext;
+    ValueCache<CtrlRef < Source>> sourceCache;
+    CtrlRef<RootContext> rootContext;
 public:
     internal() = delete;
     internal(internal const&) = delete;
@@ -65,12 +65,12 @@ public:
     }
 
 private:
-    Ref<Syntax> const GetSyntax()const{
+    CtrlRef<Syntax> const GetSyntax()const{
         auto scannerInstance = scannerCache.Value;
         return Parse<Syntax, TokenClass, Token>(prioTable, scannerInstance);
     };
 
-    Ref<CodeItem> const GetCode()const{
+    CtrlRef<CodeItem> const GetCode()const{
         auto syntax = syntaxCache.Value;
         return syntax->Code(*rootContext);
     };

@@ -19,7 +19,7 @@ Syntax::Syntax(SourcePart const&part)
 };
 
 
-Ref<CodeItem> Syntax::Code(Context const&context)const{
+CtrlRef<CodeItem> Syntax::Code(Context const&context)const{
     return GetResult(context, Category::Code).code;
 }
 

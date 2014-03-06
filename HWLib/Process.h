@@ -5,7 +5,7 @@
 namespace HWLib{
     class Process{
         class internal;
-        Ref<internal> _internal;
+        CtrlRef<internal> _internal;
     public:
         Process(String const& command);
         p(String, data);

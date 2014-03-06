@@ -5,7 +5,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-ExpressionSyntax::ExpressionSyntax(TokenClass const& tokenClass, OptRef<Syntax > const left, SourcePart const part, OptRef<Syntax > const right)
+ExpressionSyntax::ExpressionSyntax(TokenClass const& tokenClass, CtrlPtr<Syntax > const left, SourcePart const part, CtrlPtr<Syntax > const right)
     : baseType(part)
       , tokenClass(tokenClass)
       , left(left)

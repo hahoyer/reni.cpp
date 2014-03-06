@@ -19,7 +19,7 @@ namespace HWLang
         Source(Source const& other);
         static Source const FromFile(String const& fileName);
         static Source const FromText(String const& text);
-        static Ref<Source>const CreateFromFile(String const& fileName);
+        static CtrlRef<Source>const CreateFromFile(String const& fileName);
 
         virtual ~Source(){};
 
@@ -34,7 +34,7 @@ namespace HWLang
         String const FilePosition(int position, String flagText, String tag = "")const;
         int const LineNr(int position)const;
         int const ColNr(int position)const;
-        friend SourcePosition const operator +(Ref<Source> const& source, int position);
+        friend SourcePosition const operator +(CtrlRef<Source> const& source, int position);
         SourcePosition const operator +(int position)const;
         bool const BeginsWith(int position, String value)const;
 

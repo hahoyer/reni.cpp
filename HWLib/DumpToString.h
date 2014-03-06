@@ -4,15 +4,15 @@ namespace HWLib
 {
     class String;
     class DumpableObject;
-    template <typename T> class Ref;
-    template <typename T> class OptRef;
+    template <typename T> class CtrlRef;
+    template <typename T> class CtrlPtr;
     template <typename T> class WeakRef;
     template <typename T> class OptWeakRef;
 
     template <typename T1, typename T2>String const Dump(std::pair<T1, T2> const&target);
-    template <typename T>String const Dump(OptRef<T> const&target);
-    template <typename T>String const DumpShort(OptRef<T> const&target);
-    template <typename T>String const Dump(Ref<T> const&target);
+    template <typename T>String const Dump(CtrlPtr<T> const&target);
+    template <typename T>String const DumpShort(CtrlPtr<T> const&target);
+    template <typename T>String const Dump(CtrlRef<T> const&target);
     template <typename T>String const Dump(OptWeakRef<T> const&target);
     template <typename T>String const Dump(WeakRef<T> const&target);
     template <typename T>String const Dump(T const&target);

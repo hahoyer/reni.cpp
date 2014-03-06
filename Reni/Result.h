@@ -19,17 +19,17 @@ namespace Reni
         using thisType = ResultData;
     public:
         Optional<Size> const size;
-        OptRef<CodeItem> const code;
+        CtrlPtr<CodeItem> const code;
         OptWeakRef<Type> const type;
 
         ResultData(){};
-        ResultData(Ref<CodeItem> code)
+        ResultData(CtrlRef<CodeItem> code)
             : size(code->size)
             , code(code){};
         ResultData(WeakRef<Type> type)
             : size(type->size)
             , type(type){};
-        ResultData(Optional<Size> const&size, OptRef<CodeItem> code, OptWeakRef<Type> type)
+        ResultData(Optional<Size> const&size, CtrlPtr<CodeItem> code, OptWeakRef<Type> type)
             : size(size)
             , code(code)
             , type(type){};
@@ -58,7 +58,7 @@ namespace Reni
         mutable Category pending;
     public:
         Result(Syntax const& syntax, Context const&context);
-        p(Ref<CodeItem >, code);
+        p(CtrlRef<CodeItem >, code);
         p(WeakRef<Type>, type);
     private:
         override_p_function(Array<String>, DumpData);

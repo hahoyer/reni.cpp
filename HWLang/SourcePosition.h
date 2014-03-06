@@ -8,10 +8,10 @@ namespace HWLang
 
     class SourcePosition final : public DumpableObject
     {
-        Ref<Source> const _source;
+        CtrlRef<Source> const _source;
         int _position;
     public:
-        SourcePosition(Ref<Source> source, int position = 0);
+        SourcePosition(CtrlRef<Source> source, int position = 0);
         SourcePosition(Source const& source, int position = 0);
         virtual ~SourcePosition(){};
 

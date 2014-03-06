@@ -2,7 +2,6 @@
 
 #include "bigInt.h"
 #include "..\HWLib\DumpableObject.h"
-#include "..\HWLib\Ref.h"
 #include "../HWLib/OptWeakRef.h"
 using namespace HWLib;
 

@@ -6,7 +6,7 @@
 
 using namespace HWLang;
 
-SourcePosition::SourcePosition(Ref<Source> source, int position)
+SourcePosition::SourcePosition(CtrlRef<Source> source, int position)
 : _source(source)
 , _position(position)
 {

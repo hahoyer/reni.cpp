@@ -10,9 +10,9 @@ namespace Reni
 
     class MainTokenFactory 
     {
-        FunctionCache<String const, Ref<TokenClass const>> tokenClasses;
-        std::unordered_map<String const, Ref<TokenClass const>> predefinedTokenClasses;
-        FunctionCache<String const, Ref<TokenClass const>> errorClasses;
+        FunctionCache<String const, CtrlRef<TokenClass const>> tokenClasses;
+        std::unordered_map<String const, CtrlRef<TokenClass const>> predefinedTokenClasses;
+        FunctionCache<String const, CtrlRef<TokenClass const>> errorClasses;
 
         MainTokenFactory();
     public:

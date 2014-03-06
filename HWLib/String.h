@@ -47,7 +47,7 @@ namespace HWLib
         String                const Part    (int           start, int length)const;
         String                 const Part   (int           start)const;
         String                  const Replace(String const& oldValue, String const&newValue)const;
-        Ref<Enumerable<String> > const Split(String const& delimiter)const;
+        CtrlRef<Enumerable<String> > const Split(String const& delimiter)const;
 
         static String const Convert (bool             value);
         static String const Convert  (int              value);

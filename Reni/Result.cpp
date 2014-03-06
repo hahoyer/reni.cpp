@@ -41,7 +41,7 @@ p_implementation(Result, Category, complete){
 }
 
 
-p_implementation(Result, Ref<CodeItem>, code){
+p_implementation(Result, CtrlRef<CodeItem>, code){
     Ensure(Category::Code);
     return data.code;
 }

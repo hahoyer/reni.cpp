@@ -30,14 +30,14 @@ namespace Reni
     protected:
         Syntax(SourcePart const& part);
     public:
-        virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
+        virtual CtrlRef<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
             bool Trace = true;
             md(level, part);
             b_;
-            return_d(OptRef<Syntax >());
+            return_d(CtrlPtr<Syntax >());
         };
 
-        Ref<CodeItem> Code(Context const&context)const;
+        CtrlRef<CodeItem> Code(Context const&context)const;
         WeakRef<Type>const Type(Context const&context)const;
         Result GetResult(Context const&context, Category category)const;
         virtual ResultData const GetResultData(Context const&context, Category category)const;
@@ -48,11 +48,11 @@ namespace Reni
     class InfixSyntax : public Syntax
     {
         using baseType = Syntax;
-        Ref<Syntax > const left;
+        CtrlRef<Syntax > const left;
         TokenClass const& tokenClass;
-        Ref<Syntax > const right;
+        CtrlRef<Syntax > const right;
     public:
-        InfixSyntax(Ref<Syntax > const left, TokenClass const& tokenClass, SourcePart const part, Ref<Syntax > const right)
+        InfixSyntax(CtrlRef<Syntax > const left, TokenClass const& tokenClass, SourcePart const part, CtrlRef<Syntax > const right)
             : baseType(part)
             , left(left)
             , tokenClass(tokenClass)
@@ -69,9 +69,9 @@ namespace Reni
     {
         using baseType = Syntax;
         TokenClass const& tokenClass;
-        Ref<Syntax > const right;
+        CtrlRef<Syntax > const right;
     public:
-        PrefixSyntax(TokenClass const& tokenClass, SourcePart const part, Ref<Syntax > const right)
+        PrefixSyntax(TokenClass const& tokenClass, SourcePart const part, CtrlRef<Syntax > const right)
             : baseType(part)
             , tokenClass(tokenClass)
             , right(right)
@@ -86,10 +86,10 @@ namespace Reni
     class SuffixSyntax : public Syntax
     {
         using baseType = Syntax;
-        Ref<Syntax > const left;
+        CtrlRef<Syntax > const left;
         TokenClass const& tokenClass;
     public:
-        SuffixSyntax(Ref<Syntax > const left, TokenClass const& tokenClass, SourcePart const part)
+        SuffixSyntax(CtrlRef<Syntax > const left, TokenClass const& tokenClass, SourcePart const part)
             : baseType(part)
             , left(left)
             , tokenClass(tokenClass)

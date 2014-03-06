@@ -17,7 +17,7 @@ namespace _HWLang
     using TokenClass = TokenFactory::TokenClass;
     using Syntax = TokenFactory::Syntax;
 
-    void Check(OptRef<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
+    void Check(CtrlPtr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     void ParserBaseStructure()
     {
@@ -132,7 +132,7 @@ namespace _HWLang
         Check(rrrr, false, "f", false, false);
     }
 
-    void Check(OptRef<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
+    void Check(CtrlPtr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
         a_if(target.IsValid, nd(target));
         a_is(target->name, == , part);
         a_if(target->left.IsValid == isLeft, nd(target));

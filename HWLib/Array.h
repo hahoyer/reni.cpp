@@ -96,7 +96,7 @@ namespace HWLib
             void operator=(LocalIterator const&) = delete;
         };
 
-        mutable_p_function(Ref<Iterator>, ToIterator) const override{ return new LocalIterator(*this); }
+        mutable_p_function(CtrlRef<Iterator>, ToIterator) const override{ return new LocalIterator(*this); }
 
     };
 

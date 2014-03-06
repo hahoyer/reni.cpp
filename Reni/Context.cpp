@@ -23,7 +23,7 @@ SearchResult GetFeatureDefinition(TokenClass const&tokenClass, Type const& type)
 }
 
 
-SearchResult const Context::Search(OptRef<Syntax> const&left, TokenClass const&tokenClass)const{
+SearchResult const Context::Search(CtrlPtr<Syntax> const&left, TokenClass const&tokenClass)const{
     if (left.IsValid)
         return GetFeatureDefinition(tokenClass, *left->Type(*this));
     md(left, tokenClass);

@@ -18,7 +18,7 @@ namespace Reni
         using dataItemType = ReniRuntime::Stack::dataType;
         using dataItemSizeType = ReniRuntime::Stack::sizeType;
     public:
-        static Ref<CodeItem> const Const(BitsConst const&value);
+        static CtrlRef<CodeItem> const Const(BitsConst const&value);
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
     };

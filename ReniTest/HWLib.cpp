@@ -149,12 +149,12 @@ namespace _Ref
 {
     void WriteHallo()
     {
-        OptRef<int> c;
+        CtrlPtr<int> c;
 
         a_if_(!c.IsValid);
         c = new int(1);
         a_if_(c.IsValid);
-        c = OptRef<int>();
+        c = CtrlPtr<int>();
         a_if_(!c.IsValid);
 
         c = new int(12);

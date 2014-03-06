@@ -18,7 +18,7 @@ namespace HWLib
 
 
     template<typename T>
-    class ValueCache<T&> final : public ValueCacheBase<Ref<T>, OptRef<T>>{
+    class ValueCache<T&> final : public ValueCacheBase<CtrlRef<T>, CtrlPtr<T>>{
         using baseType = ValueCacheBase<typename TData, typename TValue>;
         using thisType = ValueCache;
 
@@ -32,7 +32,7 @@ namespace HWLib
 
 
     template<typename T>
-    class ValueCache<Ref<T>> final : public ValueCacheBase<Ref<T>, OptRef<T>>{
+    class ValueCache<CtrlRef<T>> final : public ValueCacheBase<CtrlRef<T>, CtrlPtr<T>>{
         using baseType = ValueCacheBase<typename TData, typename TValue>;
         using thisType = ValueCache;
 
@@ -40,8 +40,8 @@ namespace HWLib
         virtual TData GetResult(TValue & value) const override{ return value; }
         virtual bool const IsValidValue(TValue & value) const override{return value.IsValid;}
     public:
-        function<Ref<T>()> const getValue;
-        ValueCache(function<Ref<T>()> getValue) : getValue(getValue){}
+        function<CtrlRef<T>()> const getValue;
+        ValueCache(function<CtrlRef<T>()> getValue) : getValue(getValue){}
     };
 
 }

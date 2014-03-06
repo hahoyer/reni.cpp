@@ -37,7 +37,7 @@ namespace HWLang
     class Pattern final
     {
         using thisType = Pattern;
-        Ref<IPattern const> const _value;
+        CtrlRef<IPattern const> const _value;
     public:
         Pattern(IPattern const* value)
             : _value(value)

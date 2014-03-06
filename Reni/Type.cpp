@@ -14,7 +14,7 @@ using namespace Reni;
 static bool Trace = true;
 
 struct Type::internal{
-    FunctionCache<int, Ref<ArrayType>> arrayCache;
+    FunctionCache<int, CtrlRef<ArrayType>> arrayCache;
 
     internal(Type const&parent)
         : arrayCache([&](int count){return new ArrayType(parent, count); }){};
@@ -33,4 +33,4 @@ Type const& Type::array(int count)const{
     return *_internal->arrayCache[count];
 };
 
-Type::operator OptRef<FeatureProvider<DumpPrintToken>>()const{ return{}; }
+Type::operator CtrlPtr<FeatureProvider<DumpPrintToken>>()const{ return{}; }

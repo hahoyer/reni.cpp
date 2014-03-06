@@ -19,7 +19,7 @@ namespace Reni{
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
         struct internal;
-        Ref<internal> _internal;
+        CtrlRef<internal> _internal;
     protected:
         Type();
     public:
@@ -27,8 +27,8 @@ namespace Reni{
         Type const& array(int count)const;
         ResultData const GetResultData(Category category, BitsConst const&value)const;
         ref_p;
-        virtual operator OptRef<FeatureProvider<DumpPrintToken>>()const;
-        virtual operator OptRef<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return{}; };
+        virtual operator CtrlPtr<FeatureProvider<DumpPrintToken>>()const;
+        virtual operator CtrlPtr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return{}; };
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };

@@ -41,7 +41,7 @@ namespace Reni{
     class FeatureProvider<T,T0,TTypes...> {
         using thisType = FeatureProvider;
     public:
-        virtual OptRef<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;
+        virtual CtrlPtr<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;
         virtual ~FeatureProvider(){};
     };
 }

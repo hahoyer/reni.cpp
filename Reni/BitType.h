@@ -21,7 +21,7 @@ namespace Reni
         ref_p;
     private:
         override_p_function(Size, size);
-        virtual operator OptRef<FeatureProvider<DumpPrintToken, ArrayType>>()const override;
-        virtual OptRef<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override;
+        virtual operator CtrlPtr<FeatureProvider<DumpPrintToken, ArrayType>>()const override;
+        virtual CtrlPtr<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override;
     };
 }
