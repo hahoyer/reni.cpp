@@ -2,36 +2,27 @@
 
 #include "DefaultAssignmentOperator.h"
 #include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
+#include "RefBase.h"
 
 namespace HWLib
 {
     template<typename T>class Ref;
 
     template<typename T>
-    class OptRef{
-        using thisType = OptRef;
+    class OptRef final : public RefBase<T, boost::shared_ptr<T>>{
+        typedef RefBase<T, boost::shared_ptr<T>> baseType;
+        typedef OptRef thisType;
         friend class Ref<T>;
+        friend class OptRef<T>;
     public:
-        using dataContainerType = boost::shared_ptr<T>;
-    private:
-        dataContainerType _value;
-    public:
-        OptRef() : _value() { }
-        OptRef(T *value) :_value(value){ }
-        OptRef(OptRef<T> const&other) : _value(other.value){ };
-        OptRef(Ref<T> const&other) : _value(other.value){ };
+        OptRef() : baseType() { }
+        OptRef(T *value) :baseType(value){ }
+        OptRef(OptRef<T> const&other) : baseType(other){ };
+        OptRef(Ref<T> const&other) : baseType(other.value){ };
         DefaultAssignmentOperator;
         template<typename TOther>
-        OptRef(OptRef<TOther> const&other) : _value(other.value){ };
-
-        T const& operator*()const { return *_value; };
-        T const* operator->()const { return &*_value; };
-        T & operator*(){ return *_value; };
-        T * operator->(){ return &*_value; };
-        p(bool, IsValid){ return !!_value.get(); }
-
-        p(dataContainerType, value){ return _value; }
+        OptRef(OptRef<TOther> const&other) : baseType(other){ };
+        p(bool, IsValid){ return baseType::IsValid; }
     };
 }
 

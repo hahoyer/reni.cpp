@@ -10,6 +10,7 @@
     <ClInclude Include="OptRef.h" />
     <ClInclude Include="Optional.h" />
     <ClInclude Include="OptWeakRef.h" />
+    <ClInclude Include="RefBase.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="ValueCacheBase.h" />
