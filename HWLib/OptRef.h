@@ -19,9 +19,11 @@ namespace HWLib
         OptRef(T *value) :baseType(value){ }
         OptRef(OptRef<T> const&other) : baseType(other){ };
         OptRef(Ref<T> const&other) : baseType(other.value){ };
-        DefaultAssignmentOperator;
         template<typename TOther>
         OptRef(OptRef<TOther> const&other) : baseType(other){ };
+
+        DefaultAssignmentOperator;
+
         p(bool, IsValid){ return baseType::IsValid; }
     };
 }
