@@ -18,6 +18,7 @@
 #include "../OptWeakRef.h"
 #include "../Process.h"
 #include "../Ref.h"
+#include "../RefCountProvider.h"
 #include "../Stack.h"
 #include "../System.h"
 #include "../ValueCache.h"

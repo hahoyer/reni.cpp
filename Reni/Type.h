@@ -1,5 +1,6 @@
 #pragma once
 #include "../HWLib/OptWeakRef.h"
+#include "../HWLib/RefCountProvider.h"
 #include "../HWLib/Ref.h"
 
 using namespace HWLib;
@@ -15,7 +16,9 @@ namespace Reni{
 
     template<typename T, typename ...> class FeatureProvider;
 
-    class Type: public WithId<DumpableObject, Type>{
+    class Type
+        : public WithId<DumpableObject, Type>
+    {
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
         struct internal;
@@ -27,8 +30,8 @@ namespace Reni{
         Type const& array(int count)const;
         ResultData const GetResultData(Category category, BitsConst const&value)const;
         ref_p;
-        virtual operator CtrlPtr<FeatureProvider<DumpPrintToken>>()const;
-        virtual operator CtrlPtr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return{}; };
+        virtual operator Ptr<FeatureProvider<DumpPrintToken>>()const;
+        virtual operator Ptr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return{}; };
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };

@@ -11,8 +11,8 @@ override_p_implementation(ArrayType, Size, size){
     return elementType.size * count;
 };
 
-ArrayType::operator CtrlPtr<FeatureProvider<DumpPrintToken>>()const {
-    CtrlPtr<FeatureProvider<DumpPrintToken, ArrayType>> f = elementType;
+ArrayType::operator Ptr<FeatureProvider<DumpPrintToken>>()const {
+    Ptr<FeatureProvider<DumpPrintToken, ArrayType>> f = elementType;
     if (f.IsValid)
         return f->Convert(*this);
     return{};

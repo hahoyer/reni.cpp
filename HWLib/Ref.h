@@ -16,7 +16,7 @@ namespace HWLib
         friend class CtrlPtr<T>;
         friend class CtrlRef<T const>;
     public:
-        CtrlRef(T *value) :baseType(value){ }
+        CtrlRef(T *value) :baseType(value){ a_if_(IsValid); }
         CtrlRef(CtrlPtr<T> const&other) : baseType(other){ a_if_(IsValid); };
         CtrlRef(CtrlRef<T> const&other) : baseType(other.value){ };
         CtrlRef(CtrlRef<T const> const&other) ;

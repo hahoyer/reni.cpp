@@ -10,9 +10,9 @@ using namespace Reni;
 
 override_p_implementation(BitType, Size, size){ return Size(1); }
 
-BitType::operator CtrlPtr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return &ref; }
+BitType::operator Ptr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return &ref; }
 
-CtrlPtr<FeatureProvider<DumpPrintToken>>const BitType::Convert(ArrayType const&top)const{
+Ptr<FeatureProvider<DumpPrintToken>>const BitType::Convert(ArrayType const&top)const{
     md(top);
     b_;
     return{};

@@ -7,6 +7,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="RefCountProvider.h" />
     <ClInclude Include="OptRef.h" />
     <ClInclude Include="Optional.h" />
     <ClInclude Include="OptWeakRef.h" />

@@ -33,4 +33,4 @@ Type const& Type::array(int count)const{
     return *_internal->arrayCache[count];
 };
 
-Type::operator CtrlPtr<FeatureProvider<DumpPrintToken>>()const{ return{}; }
+Type::operator Ptr<FeatureProvider<DumpPrintToken>>()const{ return{}; }
