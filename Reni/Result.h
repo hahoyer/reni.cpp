@@ -5,7 +5,7 @@
 #include "Code.h"
 #include "Size.h"
 #include "../HWLib/WeakRef.h"
-#include "../HWLib/OptWeakRef.h"
+#include "../HWLib/WeakPtr.h"
 
 namespace Reni
 {
@@ -20,7 +20,7 @@ namespace Reni
     public:
         Optional<Size> const size;
         CtrlPtr<CodeItem> const code;
-        OptWeakRef<Type> const type;
+        WeakPtr<Type> const type;
 
         ResultData(){};
         ResultData(CtrlRef<CodeItem> code)
@@ -29,7 +29,7 @@ namespace Reni
         ResultData(WeakRef<Type> type)
             : size(type->size)
             , type(type){};
-        ResultData(Optional<Size> const&size, CtrlPtr<CodeItem> code, OptWeakRef<Type> type)
+        ResultData(Optional<Size> const&size, CtrlPtr<CodeItem> code, WeakPtr<Type> type)
             : size(size)
             , code(code)
             , type(type){};

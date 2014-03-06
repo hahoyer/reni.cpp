@@ -5,6 +5,9 @@
 
 namespace HWLib
 {
+    template<class T>
+    bool IsValidValue(T const&value);
+
     template<class T, class TDataContainer>
     class RefBase{
         using thisType = RefBase;
@@ -27,7 +30,12 @@ namespace HWLib
         T & operator*(){ return *value; };
         T * operator->(){ return &*value; };
     protected:
-        p(bool, IsValid){ return !!value; }
+        p(bool, IsValid){ return IsValidValue(value); }
     };
+
+    template<class T>
+    bool IsValidValue(boost::shared_ptr<T> const&value){
+        return !!value.get();
+    }
 }
 

@@ -1,7 +1,7 @@
 #pragma once
-#include "../HWLib/OptWeakRef.h"
-#include "../HWLib/RefCountProvider.h"
 #include "../HWLib/Ref.h"
+#include "../HWLib/RefCountProvider.h"
+#include "../HWLib/CtrlRef.h"
 
 using namespace HWLib;
 

@@ -3,8 +3,10 @@
 
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
-#include "OptRef.h"
-#include "Ref.h"
+#include "CtrlPtr.h"
+#include "CtrlRef.h"
+
+using namespace std;
 
 namespace HWLib
 {

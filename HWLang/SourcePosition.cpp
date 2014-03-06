@@ -3,8 +3,11 @@
 
 #include "Source.h"
 #include "SourcePart.h"
+#include "../HWLib/Optional.h"
+#include "../HWLib/Common.h"
 
 using namespace HWLang;
+using namespace HWLib;
 
 SourcePosition::SourcePosition(CtrlRef<Source> source, int position)
 : _source(source)
@@ -65,7 +68,7 @@ p_implementation(SourcePosition, String, DumpAfterCurrent)
 {
     if (IsEnd)
         return "";
-    auto length = min(DumpWidth, _source->Count - _position - 1);
+    auto length = HWLib::min(DumpWidth, _source->Count - _position - 1);
     auto result = _source->Part(_position + 1, length);
     if (length == DumpWidth)
         result += "...";
@@ -74,7 +77,7 @@ p_implementation(SourcePosition, String, DumpAfterCurrent)
 
 p_implementation(SourcePosition, String, DumpBeforeCurrent)
 {
-    auto start = max(0, _position - DumpWidth);
+    auto start = HWLib::max(0, _position - DumpWidth);
     auto result = _source->Part(start, _position - start);
     if (_position >= DumpWidth)
         result = "..." + result;
@@ -103,7 +106,7 @@ p_implementation(SourcePart, String, DumpAfterCurrent)
 {
     if (_source->IsEnd(_position + _count))
         return "";
-    auto length = min(DumpWidth, _source->Count - _position - _count);
+    auto length = HWLib::min(DumpWidth, _source->Count - _position - _count);
     auto result = _source->Part(_position + _count, length);
     if (length == DumpWidth)
         result += "...";
@@ -112,7 +115,7 @@ p_implementation(SourcePart, String, DumpAfterCurrent)
 
 p_implementation(SourcePart, String, DumpBeforeCurrent)
 {
-    auto start = max(0, _position - DumpWidth);
+    auto start = HWLib::max(0, _position - DumpWidth);
     auto result = _source->Part(start, _position - start);
     if (_position >= DumpWidth)
         result = "..." + result;

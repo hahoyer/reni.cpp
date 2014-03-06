@@ -18,7 +18,7 @@ namespace HWLib
     public:
         WeakRef(T *value) :_value(value){ a_if_(IsValid); }
         WeakRef(WeakRef<T> const&value) : _value(value.value){ };
-        WeakRef(OptWeakRef<T> const&value) : _value(value.value){ a_if_(IsValid); };
+        WeakRef(WeakPtr<T> const&value) : _value(value.value){ a_if_(IsValid); };
         template<typename TOther>
         WeakRef(WeakRef<TOther> const&other) : _value(other.value){ };
         DefaultAssignmentOperator;

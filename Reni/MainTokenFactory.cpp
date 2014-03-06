@@ -157,5 +157,4 @@ TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) con
     return *tokenClasses[name];
 }
 
-
-#include "TemplateInstances.h"
+#include "../HWLib/RefCountContainer.instance.h"

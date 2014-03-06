@@ -7,10 +7,12 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="RefCountContainer.instance.h" />
+    <ClInclude Include="Ref.h" />
     <ClInclude Include="RefCountProvider.h" />
-    <ClInclude Include="OptRef.h" />
+    <ClInclude Include="CtrlPtr.h" />
     <ClInclude Include="Optional.h" />
-    <ClInclude Include="OptWeakRef.h" />
+    <ClInclude Include="WeakPtr.h" />
     <ClInclude Include="RefBase.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Process.h" />
@@ -33,7 +35,7 @@
     <ClInclude Include="DumpableObject.h" />
     <ClInclude Include="PlacementNew.h" />
     <ClInclude Include="Properties.h" />
-    <ClInclude Include="Ref.h" />
+    <ClInclude Include="CtrlRef.h" />
     <ClInclude Include="SetupWarnings.h" />
     <ClInclude Include="String.h" />
     <ClCompile Include="File.cpp" />

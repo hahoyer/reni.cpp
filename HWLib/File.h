@@ -1,6 +1,6 @@
 #pragma once
 #include "Properties.h"
-#include "Ref.h"
+#include "CtrlRef.h"
 
 namespace HWLib
 {

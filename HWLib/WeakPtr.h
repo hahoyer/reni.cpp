@@ -10,23 +10,23 @@ namespace HWLib
     template<typename T>class WeakRef;
 
     template<typename T>
-    class OptWeakRef
+    class WeakPtr
     {
-        using thisType = OptWeakRef;
+        using thisType = WeakPtr;
     public:
         using dataContainerType = T*;
         friend class WeakRef<T>;
         friend class WeakRef<T const>;
-        friend class OptWeakRef<T const>;
+        friend class WeakPtr<T const>;
     private:
         dataContainerType value;
     public:
-        OptWeakRef() : value() { }
-        OptWeakRef(T *value) :value(value){ }
-        OptWeakRef(OptWeakRef<T const> const&value) : value(value.value){ };
-        OptWeakRef(OptWeakRef<T     > const&value) : value(value.value){ };
-        OptWeakRef(WeakRef  <T const> const&value) : value(value.value){ };
-        OptWeakRef(WeakRef <T      > const&value) : value(value.value){ };
+        WeakPtr() : value() { }
+        WeakPtr(T *value) :value(value){ }
+        WeakPtr(WeakPtr<T const> const&value) : value(value.value){ };
+        WeakPtr(WeakPtr<T     > const&value) : value(value.value){ };
+        WeakPtr(WeakRef  <T const> const&value) : value(value.value){ };
+        WeakPtr(WeakRef <T      > const&value) : value(value.value){ };
         DefaultAssignmentOperator;
 
         T const& operator*()const { return *value; };
@@ -37,23 +37,23 @@ namespace HWLib
     };
 
     template<typename T>
-    class OptWeakRef<T const>
+    class WeakPtr<T const>
     {
-        using thisType = OptWeakRef;
+        using thisType = WeakPtr;
     public:
         using dataContainerType = T const*;
         friend class WeakRef<T const>;
         friend class WeakRef<T>;
-        friend class OptWeakRef<T>;
+        friend class WeakPtr<T>;
     private:
         dataContainerType value;
     public:
-        OptWeakRef() : value() { }
-        OptWeakRef(T const*value) :value(value){ }
-        OptWeakRef(OptWeakRef<T const> const&value) : value(value.value){ };
-        OptWeakRef(OptWeakRef<T     > const&value) : value(value.value){ };
-        OptWeakRef(WeakRef  <T const> const&value) : value(value.value){ };
-        OptWeakRef(WeakRef <T      > const&value) : value(value.value){ };
+        WeakPtr() : value() { }
+        WeakPtr(T const*value) :value(value){ }
+        WeakPtr(WeakPtr<T const> const&value) : value(value.value){ };
+        WeakPtr(WeakPtr<T     > const&value) : value(value.value){ };
+        WeakPtr(WeakRef  <T const> const&value) : value(value.value){ };
+        WeakPtr(WeakRef <T      > const&value) : value(value.value){ };
         DefaultAssignmentOperator;
 
         T const& operator*()const { return *value; };

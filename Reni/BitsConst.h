@@ -1,8 +1,8 @@
 #pragma once
 
 #include "bigInt.h"
-#include "..\HWLib\DumpableObject.h"
-#include "../HWLib/OptWeakRef.h"
+#include "../HWLib/DumpableObject.h"
+
 using namespace HWLib;
 
 namespace Reni{

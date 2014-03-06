@@ -1,55 +1,53 @@
 #pragma once
 
 #include "DefaultAssignmentOperator.h"
-#include <boost/shared_ptr.hpp>
 #include "RefBase.h"
 
-namespace HWLib
-{
-    template<typename T>class CtrlPtr;
-
+namespace HWLib{
     template<typename T>
-    class CtrlRef final : public RefBase<T, boost::shared_ptr<T>>{
-        typedef RefBase<T, boost::shared_ptr<T>> baseType;
-        typedef CtrlRef thisType;
-        friend class CtrlRef<T>;
-        friend class CtrlPtr<T>;
-        friend class CtrlRef<T const>;
+    class RefCountContainer final{
+        typedef RefCountContainer thisType;
+        T * value;
     public:
-        CtrlRef(T *value) :baseType(value){ a_if_(IsValid); }
-        CtrlRef(CtrlPtr<T> const&other) : baseType(other){ a_if_(IsValid); };
-        CtrlRef(CtrlRef<T> const&other) : baseType(other.value){ };
-        CtrlRef(CtrlRef<T const> const&other) ;
-        template<typename TOther>
-        CtrlRef(CtrlPtr<TOther> const&other) : baseType(other){ a_if_(IsValid); };
-        template<typename TOther>
-        CtrlRef(CtrlRef<TOther> const&other) : baseType(other){ };
-
-        DefaultAssignmentOperator;
-    };
-
-    template<typename T>
-    class CtrlRef<T const>final : public RefBase<T const, boost::shared_ptr<T const>>{
-        typedef RefBase<T const, boost::shared_ptr<T const>> baseType;
-        typedef CtrlRef<T const> thisType;
-    
-    public:
-        CtrlRef(T const *value) :baseType(value){ a_if_(IsValid); }
-        CtrlRef(CtrlPtr<T> const&other) : baseType(other){ a_if_(IsValid); };
-        CtrlRef(CtrlPtr<T const> const&other) : baseType(other){ a_if_(IsValid); };
-        CtrlRef(CtrlRef<T const> const&other) : baseType(other){ };
-
-        DefaultAssignmentOperator;
+        RefCountContainer(T *value);
+        ~RefCountContainer();
         T const& operator*()const { return *value; };
-        T const* operator->()const { return &*value; };
-
-    private:
-        T & operator*();
-        T * operator->();
+        T const* operator->()const { return value; };
+        T & operator*(){ return *value; };
+        T * operator->(){ return value; };
     };
 
-    template<typename T>
-    CtrlRef<T>::CtrlRef(CtrlRef<T const> const&other) 
-        : baseType(other.value){ };
-}
+    template<class T>
+    bool IsValidValue(RefCountContainer<T> const&value){
+        return !!value.operator->();
+    }
 
+    template<typename T>
+    class Ref;
+
+    
+    template<typename T>
+    class Ptr final : public RefBase<T, RefCountContainer<T>>{
+        typedef RefBase<T, RefCountContainer<T>> baseType;
+        typedef Ptr thisType;
+    public:
+        Ptr() :baseType(null){};
+        Ptr(T *value) :baseType(value){};
+        Ptr(Ptr<T> const&other) : baseType(other){};
+        Ptr(Ref<T > const&other) : baseType(other){};
+        DefaultAssignmentOperator;
+        p(bool, IsValid){ return baseType::IsValid; }
+    };
+
+    
+    template<typename T>
+    class Ref final : public RefBase<T, RefCountContainer<T>>{
+        typedef RefBase<T , RefCountContainer<T>> baseType;
+        typedef Ref thisType;
+    public:
+        Ref(T const *value) :baseType(value){a_if_(IsValid);}
+        Ref(Ptr<T> const&other):baseType(other){a_if_(IsValid);};
+        Ref(Ref<T> const&other):baseType(other){};
+        DefaultAssignmentOperator;
+    };
+}

@@ -4,7 +4,7 @@
 #include "DumpToString.h"
 #include "DumpableObject.h"
 #include "FunctionCacheBase.h"
-#include "Ref.h"
+#include "CtrlRef.h"
 #include <boost/numeric/ublas/vector.hpp>
 
 using namespace HWLib;
@@ -456,10 +456,10 @@ inline String const HWLib::Dump(WeakRef<T> const&target){
 }
 
 template <typename T>
-inline String const HWLib::Dump(OptWeakRef<T> const&target){
+inline String const HWLib::Dump(WeakPtr<T> const&target){
     if (target.IsValid)
-        return "OptWeakRef{ " + HWLib::Dump(*target) + " }";
-    return "OptWeakRef{}";
+        return "WeakPtr{ " + HWLib::Dump(*target) + " }";
+    return "WeakPtr{}";
 }
 
 template <typename T>

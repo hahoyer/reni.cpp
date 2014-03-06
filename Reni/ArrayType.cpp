@@ -17,3 +17,6 @@ ArrayType::operator Ptr<FeatureProvider<DumpPrintToken>>()const {
         return f->Convert(*this);
     return{};
 };
+
+
+#include "../HWLib/RefCountContainer.instance.h"

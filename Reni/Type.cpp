@@ -34,3 +34,5 @@ Type const& Type::array(int count)const{
 };
 
 Type::operator Ptr<FeatureProvider<DumpPrintToken>>()const{ return{}; }
+
+#include "../HWLib/RefCountContainer.instance.h"
