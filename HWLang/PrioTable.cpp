@@ -5,7 +5,6 @@
 
 using namespace HWLang;
 using namespace HWLib;
-using namespace std;
 
 
 PrioTable::PrioTable()
