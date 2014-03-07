@@ -456,6 +456,18 @@ inline String const HWLib::Dump(WeakRef<T> const&target){
 }
 
 template <typename T>
+inline String const HWLib::Dump(Ptr<T> const&target){
+    if (target.IsValid)
+        return "Ptr{ " + HWLib::Dump(*target) + " }";
+    return "Ptr{}";
+}
+
+template <typename T>
+inline String const HWLib::Dump(Ref<T> const&target){
+    return "Ref{ " + HWLib::Dump(*target) + " }";
+}
+
+template <typename T>
 inline String const HWLib::Dump(WeakPtr<T> const&target){
     if (target.IsValid)
         return "WeakPtr{ " + HWLib::Dump(*target) + " }";
