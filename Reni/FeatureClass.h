@@ -30,7 +30,9 @@ namespace Reni{
 
     
     template <typename T, typename... TTypes>
-    class FeatureProvider : public RefCountProvider{
+    class FeatureProvider 
+        : public DumpableObject
+        , public RefCountProvider {
         using thisType = FeatureProvider;
     public:
         virtual ~FeatureProvider(){};
@@ -38,7 +40,9 @@ namespace Reni{
 
 
     template <typename T, typename T0, typename... TTypes>
-    class FeatureProvider<T, T0, TTypes...> : public RefCountProvider{
+    class FeatureProvider<T, T0, TTypes...> 
+        : public DumpableObject
+        , public RefCountProvider{
         using thisType = FeatureProvider;
     public:
         virtual Ptr<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;

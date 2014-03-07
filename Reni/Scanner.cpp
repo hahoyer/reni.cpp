@@ -1,10 +1,15 @@
 #include "Import.h"
 #include "Scanner.h"
+#include "../HWLib/Optional.h"
+#include "../HWLang/SourcePosition.h"
+#include "../HWLang/Pattern.h"
+#include "../HWLib/String.h"
 
 static bool Trace = true;
 
 using namespace Reni;
 using namespace HWLang;
+using namespace HWLib;
 
 
 Optional<int> const ExceptionGuard(SourcePosition const&position, Pattern pattern)

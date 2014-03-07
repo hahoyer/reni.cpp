@@ -1,4 +1,8 @@
 #pragma once
+#include "../HWLib/CtrlRef.h"
+
+using namespace HWLib;
+using namespace HWLang;
 
 namespace Reni
 {
