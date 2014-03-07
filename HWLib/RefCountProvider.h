@@ -10,11 +10,7 @@ namespace HWLib{
         };
 
         RefCountProvider(RefCountProvider const&) = delete;
-
-        ~RefCountProvider(){
-            if (value) 
-                throw "Invalid delete";
-        };
+        RefCountProvider& operator=(RefCountProvider const&) = delete;
 
         void AddReference()const{
             value++;
@@ -27,5 +23,10 @@ namespace HWLib{
                 return;
             delete this;
         }
+
+    protected:
+        virtual ~RefCountProvider(){
+            a_if_(value == 0);
+        };
     };
 }

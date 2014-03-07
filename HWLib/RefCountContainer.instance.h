@@ -13,6 +13,12 @@ RefCountContainer<T>::RefCountContainer(T *value) :value(value){
 };
 
 template<typename T>
+RefCountContainer<T>::RefCountContainer(RefCountContainer<T> const&other) :value(other.value) {
+    if(value)
+        value->AddReference();
+};
+
+template<typename T>
 RefCountContainer<T>::~RefCountContainer(){
     if (value)
         value->RemoveReference();
