@@ -19,7 +19,7 @@ ResultData const NumberToken::GetResultData(Context const&context, Category cate
     auto value = BitsConst::Convert(part);
     return context
         .rootContext
-        .bitType
-        .array(value.size.value)
-        .GetResultData(category, value);
+        ->bitType
+        ->array(value.size.value)
+        ->GetResultData(category, value);
 }

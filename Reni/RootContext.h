@@ -14,9 +14,10 @@ namespace Reni
     public:
         RootContext();
 
-        p(BitType const&, bitType);
+        p(Ref<BitType>, bitType);
+        ref_p;
     private:
-        override_p_function(RootContext const&, rootContext) { return *this; };
+        override_p_function(WeakRef<RootContext>, rootContext) { return &ref; };
         override_p_function(Array<String>, DumpData);
     };
 

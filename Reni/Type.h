@@ -18,6 +18,7 @@ namespace Reni{
 
     class Type
         : public WithId<DumpableObject, Type>
+        , public RefCountProvider
     {
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
@@ -27,7 +28,7 @@ namespace Reni{
         Type();
     public:
         virtual_p(Size, size) = 0;
-        Type const& array(int count)const;
+        Ref<Type> const array(int count)const;
         ResultData const GetResultData(Category category, BitsConst const&value)const;
         ref_p;
         virtual operator Ptr<FeatureProvider<DumpPrintToken>>()const;

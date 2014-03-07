@@ -2,6 +2,7 @@
 #include "ArrayType.h"
 
 #include "Size.h"
+#include "FeatureClass.h"
 
 using namespace Reni;
 static bool Trace = true;

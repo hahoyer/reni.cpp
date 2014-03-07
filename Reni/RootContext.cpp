@@ -11,7 +11,7 @@ RootContext::RootContext()
 {}
 
 
-p_implementation(RootContext, BitType const&, bitType){ return *bitTypeInstance; }
+p_implementation(RootContext, Ref<BitType>, bitType){ return bitTypeInstance; }
 
 
 override_p_implementation(RootContext, Array<String>, DumpData){

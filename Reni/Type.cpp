@@ -10,13 +10,14 @@
 
 #include "../HWLib/FunctionCache.h"
 
+
 using namespace Reni;
 static bool Trace = true;
 
 struct Type::internal{
     FunctionCache<int, Ref<ArrayType>> arrayCache;
 
-    internal(Type const&parent)
+    explicit internal(Type const&parent)
         : arrayCache([&](int count){return new ArrayType(parent, count); }){};
 };
 
@@ -26,11 +27,11 @@ Type::Type() : _internal(new internal(*this)){}
 pure_p_implementation(Type, Size, size);
 
 ResultData const Type::GetResultData(Category category, BitsConst const&value)const{
-    return ResultData(value.size, CodeItem::Const(value), &ref);
+    return ResultData(value.size, CodeItem::Const(value), &this->ref);
 };
 
-Type const& Type::array(int count)const{
-    return *_internal->arrayCache[count];
+Ref<Type> const Type::array(int count)const{
+    return &_internal->arrayCache[count]->ref;
 };
 
 Type::operator Ptr<FeatureProvider<DumpPrintToken>>()const{ return{}; }

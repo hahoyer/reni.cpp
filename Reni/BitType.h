@@ -2,26 +2,26 @@
 #include "Type.h"
 #include "FeatureClass.h"
 
-namespace Reni
-{
+namespace Reni{
     class ArrayType;
     class BitsConst;
     class Category;
     class DumpPrintToken;
     class ResultData;
 
-    class BitType 
-        : public Type
-        , public FeatureProvider<DumpPrintToken, ArrayType>
-    {
+    class BitType final : public Type{
         using baseType = Type;
         using thisType = BitType;
     public:
-        BitType(){ SetDumpString(); }
+
+        BitType(){
+            SetDumpString();
+        }
+
         ref_p;
+
     private:
         override_p_function(Size, size);
         virtual operator Ptr<FeatureProvider<DumpPrintToken, ArrayType>>()const override;
-        virtual Ptr<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override;
     };
 }

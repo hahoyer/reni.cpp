@@ -16,7 +16,7 @@ ResultData const Context::GetResultData(Category category, Syntax const&syntax)c
     return syntax.GetResultData(*this, category);
 }
 
-pure_p_implementation(Context, RootContext const&, rootContext) ;
+pure_p_implementation(Context, WeakRef<RootContext>, rootContext) ;
 
 SearchResult GetFeatureDefinition(TokenClass const&tokenClass, Type const& type){
     return tokenClass.featureClass->GetDefinition(type);
