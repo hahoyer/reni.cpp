@@ -10,7 +10,7 @@ namespace Reni
     {
         using baseType = Context;
         using thisType = RootContext;
-        CtrlRef<BitType> const bitTypeInstance;
+        Ref<BitType> const bitTypeInstance;
     public:
         RootContext();
 

@@ -14,7 +14,7 @@ using namespace Reni;
 static bool Trace = true;
 
 struct Type::internal{
-    FunctionCache<int, CtrlRef<ArrayType>> arrayCache;
+    FunctionCache<int, Ref<ArrayType>> arrayCache;
 
     internal(Type const&parent)
         : arrayCache([&](int count){return new ArrayType(parent, count); }){};
