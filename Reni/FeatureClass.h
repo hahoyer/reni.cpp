@@ -47,13 +47,3 @@ namespace Reni{
 }
 
 
-using namespace Reni;
-
-
-template <typename T> 
-SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&type)const{
-    md(type);
-    b_;
-    return{};
-}
-
