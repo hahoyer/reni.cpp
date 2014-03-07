@@ -45,7 +45,7 @@ namespace HWLib{
         typedef RefBase<T , RefCountContainer<T>> baseType;
         typedef Ref thisType;
     public:
-        Ref(T const *value) :baseType(value){a_if_(IsValid);}
+        Ref(T *value) :baseType(value){a_if_(IsValid);}
         Ref(Ptr<T> const&other):baseType(other){a_if_(IsValid);};
         Ref(Ref<T> const&other):baseType(other){};
         DefaultAssignmentOperator;
