@@ -6,8 +6,6 @@
 #include "CtrlPtr.h"
 #include "CtrlRef.h"
 
-using namespace std;
-
 namespace HWLib
 {
     template<typename T> class Array;
