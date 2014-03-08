@@ -32,6 +32,6 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     auto result = searchResult
         .feature
         ->FunctionResult(context, category, *this);
-    a_if_(category <= result.complete);
+    a_is(category, <=, result.complete);
     return result;
 }

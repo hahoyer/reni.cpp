@@ -5,6 +5,8 @@
 #include "Size.h"
 #include "Feature.h"
 #include "FeatureProvider.h"
+#include "RootContext.h"
+#include "VoidType.h"
 #include "../HWLib/RefCountContainer.instance.h"
 
 static bool Trace = true;
@@ -83,10 +85,9 @@ ResultData const DumpPrintBitArray::Feature::FunctionResult(
     if(expressionSyntax.right.IsValid)
         throw InvalidArgumentList(expressionSyntax);
 
-
-    md(context, category, expressionSyntax);
-    b_;
-    return{};
+    return ResultData(
+        Size(0),
+        CtrlPtr<CodeItem>(),
+        context.rootContext->voidType->ref
+        );
 };
-
-

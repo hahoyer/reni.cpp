@@ -51,6 +51,7 @@
     <ClInclude Include="DefineableToken .h" />
     <ClInclude Include="FeatureProvider.h" />
     <ClInclude Include="Feature.h" />
+    <ClInclude Include="VoidType.h" />
     <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="SearchResult.h" />
     <ClInclude Include="Size.h" />

@@ -3,10 +3,8 @@
 
 namespace Reni{
     class ArrayType;
-    class BitsConst;
-    class Category;
     class DumpPrintToken;
-    class ResultData;
+    class Size;
 
     class BitType final : public Type{
         using baseType = Type;
