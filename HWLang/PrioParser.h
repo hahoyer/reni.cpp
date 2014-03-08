@@ -5,14 +5,15 @@
 #include "../HWLib/Stack.h"
 
 namespace HWLang{
-    template <class Syntax, class TokenClass, class Token, class ScannerInstance>
-    Ptr<Syntax> const Parse(PrioTable const&prioTable, ScannerInstance&scanner){
-        Stack<OpenItem<Syntax, Token>> stack;
-        stack.Push(OpenItem<Syntax, Token>::StartItem(scanner.Step()));
+    template <class TSyntax, class TSyntaxOption, class TTokenClass, class TToken, class TScannerInstance>
+    TSyntaxOption const Parse(PrioTable const&prioTable, TScannerInstance&scanner){
+        typedef OpenItem<TSyntax, TSyntaxOption, TToken> OpenItem;
+        Stack<OpenItem> stack;
+        stack.Push(OpenItem::StartItem(scanner.Step()));
 
         do{
             auto item = scanner.Step();
-            Ptr<Syntax> result;
+            TSyntaxOption result;
             do{
                 auto topItem = stack.Top;
                 auto relation = topItem.Relation(item.Name, prioTable);
@@ -28,20 +29,20 @@ namespace HWLang{
 
                 if (relation != PrioTableConst::LowerTag)
                 {
-                    stack.Push(OpenItem<Syntax, Token>(result, item, relation == PrioTableConst::MatchTag));
+                    stack.Push(OpenItem(result, item, relation == PrioTableConst::MatchTag));
                     result = {};
                 }
             } while (result.IsValid);
         } while (true);
     };
 
-    template <class Syntax, class Token>
-    Ref<Syntax> const CreateSyntax(Ptr<Syntax> const&left, Token const&token, Ptr<Syntax> const&right, bool isMatch){
+    template <class TSyntax, class TSyntaxOption, class TToken>
+    TSyntax const CreateSyntax(TSyntaxOption const&left, TToken const&token, TSyntaxOption const&right, bool isMatch){
         if (left.IsValid)
             if (right.IsValid)
             {
-                Ref<Syntax> xl = left;
-                Ref<Syntax> xr = right;
+                TSyntax xl = left;
+                TSyntax xr = right;
 
                 return token.Class.CreateSyntax(xl, token.Part, xr, isMatch);
             }

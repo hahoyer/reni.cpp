@@ -25,7 +25,7 @@ namespace _HWLang
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Syntax, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Ptr<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
         a_if(syntax.IsValid, nd(syntax));
         a_if(!syntax->left.IsValid, nd(syntax));
@@ -44,7 +44,7 @@ namespace _HWLang
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Syntax, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Ptr<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, false, "(", true, false);
 
         auto rr = syntax->right;
@@ -96,7 +96,7 @@ namespace _HWLang
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Syntax, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Ptr<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, true, "+", true, false);
 
         auto rl = syntax->left;

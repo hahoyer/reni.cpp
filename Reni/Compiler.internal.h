@@ -67,7 +67,7 @@ public:
 private:
     Ref<Syntax> const GetSyntax()const{
         auto scannerInstance = scannerCache.Value;
-        return Parse<Syntax, TokenClass, Token>(prioTable, scannerInstance);
+        return Parse<Ref<Syntax>, Ptr<Syntax>, TokenClass, Token>(prioTable, scannerInstance);
     };
 
     CtrlRef<CodeItem> const GetCode()const{

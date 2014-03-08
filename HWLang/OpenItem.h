@@ -2,20 +2,21 @@
 
 #include "PrioTable.h"
 #include "PrioTableConst.h"
+#include "PrioParser.h"
 
 using namespace HWLib;
 
 namespace HWLang{
-    template <class Syntax, class Token>
+    template <class TSyntax, class TSyntaxOption, class TToken>
     class OpenItem final{
         using thisType = OpenItem;
 
-        Ptr<Syntax> const left;
-        Token const token;
+        TSyntaxOption const left;
+        TToken const token;
         bool const isMatch;
     public:
         OpenItem() = delete;
-        OpenItem(Ptr<Syntax> left, Token const&token, bool isMatch)
+        OpenItem(TSyntaxOption left, TToken const&token, bool isMatch)
             : left(left)
             , token(token)
             , isMatch(isMatch)
@@ -23,7 +24,7 @@ namespace HWLang{
 
         DefaultAssignmentOperator;
 
-        static OpenItem const StartItem(Token const&token){
+        static OpenItem const StartItem(TToken const&token){
             return OpenItem({}, token, false);
         };
         
@@ -31,8 +32,8 @@ namespace HWLang{
             return prioTable.Relation(newTokenName, token.Name); 
         };
 
-        Ref<Syntax> const CreateSyntax(Ptr<Syntax> right)const{
-            return HWLang::CreateSyntax(left, token, right, isMatch);
+        TSyntax const CreateSyntax(TSyntaxOption const& right)const{
+            return HWLang::CreateSyntax<TSyntax>(left, token, right, isMatch);
         }
     };
 }
