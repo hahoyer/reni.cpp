@@ -11,10 +11,10 @@ namespace Reni
     {
         using baseType = Syntax;
         using thisType = ExpressionSyntax;
+    public:
         TokenClass const& tokenClass;
         Ref<Syntax, true> const left;
         Ref<Syntax, true> const right;
-    public:
         ExpressionSyntax(TokenClass const& tokenClass, Ref<Syntax, true > const left, SourcePart const part, Ref<Syntax, true > const right);
     private:
         override_p_function(Array<String>, DumpData);

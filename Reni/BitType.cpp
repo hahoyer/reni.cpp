@@ -66,11 +66,24 @@ BitType::operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const{
     return new DumpPrintBitArray();
 }
 
+
+class InvalidArgumentList final : public DumpableObject{
+    WeakRef<ExpressionSyntax const> const expressionSyntax;
+public:
+    InvalidArgumentList(ExpressionSyntax const& expressionSyntax) : expressionSyntax(&expressionSyntax){}
+private:
+    override_p_function(Array<String>, DumpData){ return{nd(expressionSyntax)}; };
+};
+
 ResultData const DumpPrintBitArray::Feature::FunctionResult(
     Context const&context,
     Category category,
     ExpressionSyntax const& expressionSyntax
     )const{
+    if(expressionSyntax.right.IsValid)
+        throw InvalidArgumentList(expressionSyntax);
+
+
     md(context, category, expressionSyntax);
     b_;
     return{};
