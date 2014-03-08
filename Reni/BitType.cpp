@@ -3,6 +3,9 @@
 
 #include "ArrayType.h"
 #include "Size.h"
+#include "Feature.h"
+#include "FeatureProvider.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 static bool Trace = true;
 
@@ -12,6 +15,16 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
     typedef FeatureProvider<DumpPrintToken, ArrayType> baseType;
     typedef DumpPrintBitArray thisType;
 
+    class Feature final : public Reni::Feature{
+        ArrayType const& value;
+    public:
+        Feature(ArrayType const&value) : value(value){}
+    private:
+        override_p_function(Array<String>, DumpData) {
+            return{ nd(value) };
+        }
+    };
+
     class For final : public FeatureProvider<DumpPrintToken>{
         typedef FeatureProvider<DumpPrintToken> baseType;
         typedef For thisType;
@@ -19,12 +32,15 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
     public:
         For(ArrayType const&value) : value(value) {}
     private:
+
+        override_p_function(Ref<Reni::Feature>, feature){
+            return new Feature(value);
+        }
         override_p_function(Array<String>, DumpData) {
             return{nd(value)};
         }
     };
 
-private:
     virtual Ptr<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override {
         return new For(top);
     }
@@ -34,7 +50,6 @@ private:
     }
 
 };
-
 
 override_p_implementation(BitType, Size, size){ return Size(1); }
 

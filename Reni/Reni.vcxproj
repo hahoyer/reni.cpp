@@ -48,6 +48,8 @@
     <ClInclude Include="DefinitionPoint.h" />
     <ClInclude Include="DumpPrintToken.h" />
     <ClInclude Include="DefineableToken .h" />
+    <ClInclude Include="FeatureProvider.h" />
+    <ClInclude Include="Feature.h" />
     <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="SearchResult.h" />
     <ClInclude Include="Size.h" />

@@ -4,7 +4,8 @@
 #include "ArrayType.h"
 #include "BitsConst.h"
 #include "Code.h"
-#include "FeatureClass.h"
+#include "Feature.h"
+#include "FeatureProvider.h"
 #include "Size.h"
 #include "Result.h"
 

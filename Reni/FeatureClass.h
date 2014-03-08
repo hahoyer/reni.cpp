@@ -1,16 +1,16 @@
 #pragma once
-#include "../HWLib/DumpableObject.h"
-#include "DefinitionPoint.h"
-#include "SearchResult.h"
 
 using namespace HWLib;
 
 namespace Reni{
     class ArrayType;
+    class SearchResult;
     class Type;
 
-    
-    class FeatureClass : public WithId<DumpableObject, FeatureClass>, public RefCountProvider{
+
+    class FeatureClass 
+        : public WithId<DumpableObject, FeatureClass>
+        , public RefCountProvider{
         using baseType = WithId<DumpableObject, FeatureClass >;
         using thisType = FeatureClass;
     public:
@@ -22,32 +22,9 @@ namespace Reni{
 
     
     template <typename T>
-    class GenericFeatureClass : public FeatureClass {
+    class GenericFeatureClass final: public FeatureClass {
         using baseType = FeatureClass;
         using thisType = GenericFeatureClass;
         virtual SearchResult const GetDefinition(Type const&type)const override;
     };
-
-    
-    template <typename T, typename... TTypes>
-    class FeatureProvider 
-        : public DumpableObject
-        , public RefCountProvider {
-        using thisType = FeatureProvider;
-    public:
-        virtual ~FeatureProvider(){};
-    };
-
-
-    template <typename T, typename T0, typename... TTypes>
-    class FeatureProvider<T, T0, TTypes...> 
-        : public DumpableObject
-        , public RefCountProvider{
-        using thisType = FeatureProvider;
-    public:
-        virtual Ptr<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;
-        virtual ~FeatureProvider(){};
-    };
 }
-
-

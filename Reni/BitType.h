@@ -1,6 +1,5 @@
 #pragma once
 #include "Type.h"
-#include "FeatureClass.h"
 
 namespace Reni{
     class ArrayType;

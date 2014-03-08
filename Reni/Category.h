@@ -1,4 +1,7 @@
 #pragma once
+#include "../HWLib/DumpableObject.h"
+
+using namespace HWLib;
 
 namespace Reni{
     class Category final : public DumpableObject{

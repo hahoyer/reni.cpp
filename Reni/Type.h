@@ -2,6 +2,7 @@
 #include "../HWLib/Ref.h"
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/CtrlRef.h"
+#include "../HWLib/DumpableObject.h"
 
 using namespace HWLib;
 

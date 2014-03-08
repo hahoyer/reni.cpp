@@ -3,6 +3,7 @@
 
 #include "Size.h"
 #include "FeatureClass.h"
+#include "FeatureProvider.h"
 
 using namespace Reni;
 static bool Trace = true;

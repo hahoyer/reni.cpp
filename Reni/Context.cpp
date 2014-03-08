@@ -7,7 +7,6 @@
 #include "Syntax.h"
 #include "Type.h"
 
-
 using namespace Reni;
 static bool Trace = true;
 
@@ -27,6 +26,5 @@ SearchResult const Context::Search(CtrlPtr<Syntax> const&left, TokenClass const&
     if (left.IsValid)
         return GetFeatureDefinition(tokenClass, *left->Type(*this));
     md(left, tokenClass);
-    b_;
-    return{};
+    mb;
 }

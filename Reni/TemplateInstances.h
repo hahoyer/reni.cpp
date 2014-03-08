@@ -1,5 +1,6 @@
 #pragma once
 #include "DumpPrintToken.h"
+#include "FeatureProvider.h"
 #include "SearchResult.h"
 
 using namespace Reni;
@@ -7,22 +8,24 @@ using namespace HWLib;
 
 
 template <typename T>
-SearchResult const GetGenericDefinition(Type const&type){
+inline SearchResult const GetGenericDefinition(Type const&type){
     fd(type);
-    b_;
-    return{};
+    mb;
 }
 
 template <typename T>
-SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&type)const{ return GetGenericDefinition<T>(type); }
-
-template <>
-SearchResult const GetGenericDefinition<DumpPrintToken>(Type const&type){
-    Ptr<FeatureProvider<DumpPrintToken>> f = type;
-
-    fd(type, f);
-    b_;
-    return{};
+inline SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&type)const{
+    return GetGenericDefinition<T>(type);
 }
 
+template <>
+inline SearchResult const GetGenericDefinition<DumpPrintToken>(Type const&type){
+    Ptr<FeatureProvider<DumpPrintToken>> f = type;
+    return f->feature;
 
+    fd(type, f);
+    mb;
+}
+
+template <typename T>
+pure_p_implementation(FeatureProvider<T>, Ref<Feature>, feature);

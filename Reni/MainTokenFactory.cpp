@@ -3,6 +3,8 @@
 
 #include "ExpressionSyntax.h"
 #include "DumpPrintToken.h"
+#include "Feature.h"
+#include "FeatureClass.h"
 #include "NumberToken.h"
 #include "Syntax.h"
 #include "Terminal.h"
@@ -157,5 +159,5 @@ TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) con
     return *tokenClasses[name];
 }
 
-#include "../HWLib/RefCountContainer.instance.h"
 #include "TemplateInstances.h"
+#include "../HWLib/RefCountContainer.instance.h"

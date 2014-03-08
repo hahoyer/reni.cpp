@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Context.h"
+#include "../HWLib/WeakRef.h"
 
-namespace Reni
-{
+namespace Reni{
     class BitType;
 
-    class RootContext : public Context
-    {
+    class RootContext : public Context{
         using baseType = Context;
         using thisType = RootContext;
         Ref<BitType> const bitTypeInstance;
@@ -16,9 +15,12 @@ namespace Reni
 
         p(Ref<BitType>, bitType);
         ref_p;
+
     private:
-        override_p_function(WeakRef<RootContext>, rootContext) { return &ref; };
+        override_p_function(WeakRef<RootContext>, rootContext){
+            return &ref;
+        };
+
         override_p_function(Array<String>, DumpData);
     };
-
 }
