@@ -446,6 +446,18 @@ inline String const HWLib::DumpShort(CtrlPtr<T> const&target){
 }
 
 template <typename T>
+inline String const HWLib::DumpShort(Ptr<T> const&target){
+    if (target.IsValid)
+        return "Ptr{ " + HWLib::DumpShort(*target) + " }";
+    return "Ptr{}";
+}
+
+template <typename T>
+inline String const HWLib::DumpShort(Ref<T> const&target){
+    return "Ref{ " + HWLib::DumpShort(*target) + " }";
+}
+
+template <typename T>
 inline String const HWLib::Dump(CtrlRef<T> const&target){
     return "CtrlRef{ " + HWLib::Dump(*target) + " }";
 }
