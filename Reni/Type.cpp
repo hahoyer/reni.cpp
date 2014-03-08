@@ -35,6 +35,6 @@ Ref<Type> const Type::array(int count)const{
     return &_internal->arrayCache[count]->ref;
 };
 
-Type::operator Ptr<FeatureProvider<DumpPrintToken>>()const{ return{}; }
+Type::operator Ref<FeatureProvider<DumpPrintToken>, true>()const{ return{}; }
 
 #include "../HWLib/RefCountContainer.instance.h"

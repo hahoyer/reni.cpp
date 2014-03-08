@@ -21,6 +21,6 @@ namespace Reni{
 
     private:
         override_p_function(Size, size);
-        virtual operator Ptr<FeatureProvider<DumpPrintToken, ArrayType>>()const override;
+        virtual operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const override;
     };
 }

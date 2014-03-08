@@ -25,7 +25,7 @@ namespace Reni{
         , public RefCountProvider{
         using thisType = FeatureProvider;
     public:
-        virtual Ptr<FeatureProvider<T, TTypes...>>const Convert(T0 const&top)const = 0;
+        virtual Ref<FeatureProvider<T, TTypes...>, true>const Convert(T0 const&top)const = 0;
         virtual ~FeatureProvider(){};
     };
 

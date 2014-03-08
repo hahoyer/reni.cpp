@@ -17,7 +17,7 @@ namespace _HWLang
     typedef TokenFactory::TokenClass TokenClass;
     typedef TokenFactory::Syntax Syntax;
 
-    void Check(Ptr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
+    void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     void ParserBaseStructure()
     {
@@ -25,7 +25,7 @@ namespace _HWLang
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ptr<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Ref<Syntax,true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
         a_if(syntax.IsValid, nd(syntax));
         a_if(!syntax->left.IsValid, nd(syntax));
@@ -44,7 +44,7 @@ namespace _HWLang
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ptr<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, false, "(", true, false);
 
         auto rr = syntax->right;
@@ -96,7 +96,7 @@ namespace _HWLang
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ptr<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, true, "+", true, false);
 
         auto rl = syntax->left;
@@ -132,7 +132,7 @@ namespace _HWLang
         Check(rrrr, false, "f", false, false);
     }
 
-    void Check(Ptr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
+    void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
         a_if(target.IsValid, nd(target));
         a_is(target->name, == , part);
         a_if(target->left.IsValid == isLeft, nd(target));

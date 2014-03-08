@@ -50,7 +50,7 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
     };
 
     
-    virtual Ptr<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override {
+    virtual Ref<FeatureProvider<DumpPrintToken>, true>const Convert(ArrayType const&top)const override {
         return new For(top);
     }
     
@@ -62,7 +62,7 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
 
 override_p_implementation(BitType, Size, size){ return Size(1); }
 
-BitType::operator Ptr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ 
+BitType::operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const{
     return new DumpPrintBitArray();
 }
 

@@ -32,8 +32,8 @@ namespace Reni{
         Ref<Type> const array(int count)const;
         ResultData const GetResultData(Category category, BitsConst const&value)const;
         ref_p;
-        virtual operator Ptr<FeatureProvider<DumpPrintToken>>()const;
-        virtual operator Ptr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ return{}; };
+        virtual operator Ref<FeatureProvider<DumpPrintToken>, true>()const;
+        virtual operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const{ return{}; };
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };

@@ -446,14 +446,14 @@ inline String const HWLib::DumpShort(CtrlPtr<T> const&target){
 }
 
 template <typename T>
-inline String const HWLib::DumpShort(Ptr<T> const&target){
+inline String const HWLib::DumpShort(Ref<T, true> const&target){
     if (target.IsValid)
-        return "Ptr{ " + HWLib::DumpShort(*target) + " }";
-    return "Ptr{}";
+        return "Ref{ " + HWLib::DumpShort(*target) + " }";
+    return "Ref{}";
 }
 
 template <typename T>
-inline String const HWLib::DumpShort(Ref<T> const&target){
+inline String const HWLib::DumpShort(Ref<T,false> const&target){
     return "Ref{ " + HWLib::DumpShort(*target) + " }";
 }
 
@@ -468,14 +468,14 @@ inline String const HWLib::Dump(WeakRef<T> const&target){
 }
 
 template <typename T>
-inline String const HWLib::Dump(Ptr<T> const&target){
+inline String const HWLib::Dump(Ref<T, true> const&target){
     if (target.IsValid)
-        return "Ptr{ " + HWLib::Dump(*target) + " }";
-    return "Ptr{}";
+        return "Ref{ " + HWLib::Dump(*target) + " }";
+    return "Ref{}";
 }
 
 template <typename T>
-inline String const HWLib::Dump(Ref<T> const&target){
+inline String const HWLib::Dump(Ref<T,false> const&target){
     return "Ref{ " + HWLib::Dump(*target) + " }";
 }
 

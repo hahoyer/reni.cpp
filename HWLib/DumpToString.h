@@ -8,23 +8,22 @@ namespace HWLib
     template <typename T> class CtrlPtr;
     template <typename T> class WeakRef;
     template <typename T> class WeakPtr;
-    template <typename T> class Ref;
-    template <typename T> class Ptr;
+    template <typename T, bool > class Ref;
 
     template <typename T1, typename T2>String const Dump(std::pair<T1, T2> const&target);
     template <typename T>String const Dump(CtrlPtr<T> const&target);
     template <typename T>String const Dump(CtrlRef<T> const&target);
     template <typename T>String const Dump(WeakPtr<T> const&target);
     template <typename T>String const Dump(WeakRef<T> const&target);
-    template <typename T>String const Dump(Ptr<T> const&target);
-    template <typename T>String const Dump(Ref<T> const&target);
+    template <typename T>String const Dump(Ref<T, true> const&target);
+    template <typename T>String const Dump(Ref<T, false> const&target);
     template <typename T>String const Dump(T const&target);
     template <typename T>String const DumpShort(T const&target);
     template <typename T>String const Dump(T const*target);
     template <typename T>String const Dump(T *target);
     template <typename T>String const DumpShort(CtrlPtr<T> const&target);
-    template <typename T>String const DumpShort(Ptr<T> const&target);
-    template <typename T>String const DumpShort(Ref<T> const&target);
+    template <typename T>String const DumpShort(Ref<T, true> const&target);
+    template <typename T>String const DumpShort(Ref<T, false> const&target);
     template <typename T>String const DumpShort(T const*target);
     template <typename T>String const DumpShort(T *target);
     template <typename T>String const Dump(Array<T> const&target);

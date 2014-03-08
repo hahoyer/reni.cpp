@@ -15,7 +15,7 @@ namespace Reni{
         using baseType = DumpableObject;
         using thisType = SearchResult;
     public:
-        Ptr<Feature> const feature;
+        Ref<Feature,true> const feature;
         SearchResult(Ref<Feature> feature);
         SearchResult() = default;
 

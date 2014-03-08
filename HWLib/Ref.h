@@ -22,34 +22,32 @@ namespace HWLib{
     template<class T>
     bool IsValidValue(RefCountContainer<T> const&value){
         return !!value.operator->();
-    }
-
-    template<typename T>
-    class Ref;
-
-    
-    template<typename T>
-    class Ptr final : public RefBase<T, RefCountContainer<T>>{
-        typedef RefBase<T, RefCountContainer<T>> baseType;
-        typedef Ptr thisType;
-    public:
-        Ptr() :baseType(null){};
-        Ptr(T *value) :baseType(value){};
-        Ptr(Ptr<T> const&other) : baseType(other){};
-        Ptr(Ref<T > const&other) : baseType(other){};
-        DefaultAssignmentOperator;
-        p(bool, IsValid){ return baseType::IsValid; }
     };
 
-    
-    template<typename T>
+
+    template<typename T, bool isOptional = false>
     class Ref final : public RefBase<T, RefCountContainer<T>>{
         typedef RefBase<T , RefCountContainer<T>> baseType;
         typedef Ref thisType;
     public:
-        Ref(T *value) :baseType(value){a_if_(IsValid);}
-        Ref(Ptr<T> const&other):baseType(other){a_if_(IsValid);};
-        Ref(Ref<T> const&other):baseType(other){};
+        Ref(T *value) :baseType(value){ a_if_(IsValid); }
+        Ref(Ref<T, true> const&other) :baseType(other){ a_if_(IsValid); };
+        Ref(Ref<T, false> const&other):baseType(other){};
         DefaultAssignmentOperator;
     };
+
+
+    template<typename T>
+    class Ref<T,true> final : public RefBase<T, RefCountContainer<T>>{
+        typedef RefBase<T, RefCountContainer<T>> baseType;
+        typedef Ref thisType;
+    public:
+        Ref() :baseType(null){ }
+        Ref(T *value) :baseType(value){ }
+        Ref(Ref<T, true> const&other) :baseType(other){ };
+        Ref(Ref<T> const&other) :baseType(other){};
+        DefaultAssignmentOperator;
+        p(bool, IsValid){ return baseType::IsValid; }
+    };
+
 }

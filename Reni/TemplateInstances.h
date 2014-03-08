@@ -20,7 +20,7 @@ inline SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&type)
 
 template <>
 inline SearchResult const GetGenericDefinition<DumpPrintToken>(Type const&type){
-    Ptr<FeatureProvider<DumpPrintToken>> f = type;
+    Ref<FeatureProvider<DumpPrintToken>, true> f = type;
     return f->feature;
 
     fd(type, f);

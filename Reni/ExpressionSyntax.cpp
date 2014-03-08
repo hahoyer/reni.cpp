@@ -7,7 +7,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-ExpressionSyntax::ExpressionSyntax(TokenClass const& tokenClass, Ptr<Syntax > const left, SourcePart const part, Ptr<Syntax > const right)
+ExpressionSyntax::ExpressionSyntax(TokenClass const& tokenClass, Ref<Syntax, true> const left, SourcePart const part, Ref<Syntax, true > const right)
     : baseType(part)
       , tokenClass(tokenClass)
       , left(left)

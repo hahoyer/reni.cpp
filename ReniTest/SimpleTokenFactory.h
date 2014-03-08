@@ -26,13 +26,13 @@ namespace _HWLang{
         public:
             typedef TTokenClass TokenClass;
 
-            Ptr<thisType> const left;
+            Ref<thisType, true> const left;
             TokenClass const& tokenClass;
             String const name;
-            Ptr<thisType> const right;
+            Ref<thisType, true> const right;
             bool const isMatch;
 
-            SimpleSyntax(Ptr<thisType> const left, TokenClass const& tokenClass, String const&name, Ptr<thisType> const right, bool isMatch)
+            SimpleSyntax(Ref<thisType, true> const left, TokenClass const& tokenClass, String const&name, Ref<thisType, true> const right, bool isMatch)
                 : left(left)
                   , tokenClass(tokenClass)
                   , name(name)
