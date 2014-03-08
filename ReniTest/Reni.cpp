@@ -21,7 +21,7 @@ void Common::ParseSimple()
 {
     CompilerTest ct = "4711";
     auto s = ct.compiler.syntax;
-    a_if(Dump(s).BeginsWith("CtrlRef{ Reni::TerminalSyntax.Id"), nd(s));
+    a_if(Dump(s).BeginsWith("Ref{ Reni::TerminalSyntax.Id"), nd(s));
 }
 
 void Common::CodeSimple()

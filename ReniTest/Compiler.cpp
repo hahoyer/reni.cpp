@@ -12,12 +12,12 @@ using namespace HWLang;
 
 namespace _HWLang
 {
-    using TokenFactory = SimpleTokenFactory;
+    typedef SimpleTokenFactory TokenFactory;
     using ScannerInstance = TokenFactory::ScannerInstance;
-    using TokenClass = TokenFactory::TokenClass;
-    using Syntax = TokenFactory::Syntax;
+    typedef TokenFactory::TokenClass TokenClass;
+    typedef TokenFactory::Syntax Syntax;
 
-    void Check(CtrlPtr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
+    void Check(Ptr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     void ParserBaseStructure()
     {
@@ -132,7 +132,7 @@ namespace _HWLang
         Check(rrrr, false, "f", false, false);
     }
 
-    void Check(CtrlPtr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
+    void Check(Ptr<Syntax> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
         a_if(target.IsValid, nd(target));
         a_is(target->name, == , part);
         a_if(target->left.IsValid == isLeft, nd(target));
@@ -140,3 +140,5 @@ namespace _HWLang
         a_is(target->isMatch, == , isMatch);
     }
 }
+
+#include "../HWLib/RefCountContainer.instance.h"

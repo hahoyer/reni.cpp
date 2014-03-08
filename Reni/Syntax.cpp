@@ -11,7 +11,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-Syntax::Syntax(SourcePart const&part)
+Reni::Syntax::Syntax(SourcePart const&part)
     : part(part)
       , resultCache([&](Context const*context){
           return Result(*this, *context);

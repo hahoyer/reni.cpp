@@ -36,11 +36,11 @@ class Compiler::internal final
 public:
     ValueCache<CtrlRef<CodeItem>> codeCache;
     ValueCache<ScannerInstance> scannerCache;
-    ValueCache<CtrlRef<Syntax>> syntaxCache;
+    ValueCache<Ref<Syntax>> syntaxCache;
     ValueCache<String> cppCodeCache;
 private:
     ValueCache<CtrlRef < Source>> sourceCache;
-    CtrlRef<RootContext> rootContext;
+    Ref<RootContext> rootContext;
 public:
     internal() = delete;
     internal(internal const&) = delete;
@@ -65,7 +65,7 @@ public:
     }
 
 private:
-    CtrlRef<Syntax> const GetSyntax()const{
+    Ref<Syntax> const GetSyntax()const{
         auto scannerInstance = scannerCache.Value;
         return Parse<Syntax, TokenClass, Token>(prioTable, scannerInstance);
     };

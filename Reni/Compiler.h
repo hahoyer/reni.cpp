@@ -28,7 +28,7 @@ namespace Reni
         Compiler(String const&fileName);
     
         p(Array<Token>, tokens);
-        p(CtrlRef<Syntax>, syntax);
+        p(Ref<Syntax>, syntax);
         p(CtrlRef<CodeItem>, code);
         p(String, cppCode);
         ExecutionResult const Execute();

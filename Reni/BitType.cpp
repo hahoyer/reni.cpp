@@ -15,16 +15,24 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
     typedef FeatureProvider<DumpPrintToken, ArrayType> baseType;
     typedef DumpPrintBitArray thisType;
 
+    
     class Feature final : public Reni::Feature{
         ArrayType const& value;
     public:
         Feature(ArrayType const&value) : value(value){}
     private:
+        virtual ResultData const FunctionResult(
+            Context const&context,
+            Category category,
+            ExpressionSyntax const& expressionSyntax
+            )const override;
+
         override_p_function(Array<String>, DumpData) {
             return{ nd(value) };
         }
     };
 
+    
     class For final : public FeatureProvider<DumpPrintToken>{
         typedef FeatureProvider<DumpPrintToken> baseType;
         typedef For thisType;
@@ -41,6 +49,7 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
         }
     };
 
+    
     virtual Ptr<FeatureProvider<DumpPrintToken>>const Convert(ArrayType const&top)const override {
         return new For(top);
     }
@@ -56,4 +65,15 @@ override_p_implementation(BitType, Size, size){ return Size(1); }
 BitType::operator Ptr<FeatureProvider<DumpPrintToken, ArrayType>>()const{ 
     return new DumpPrintBitArray();
 }
+
+ResultData const DumpPrintBitArray::Feature::FunctionResult(
+    Context const&context,
+    Category category,
+    ExpressionSyntax const& expressionSyntax
+    )const{
+    md(context, category, expressionSyntax);
+    b_;
+    return{};
+};
+
 

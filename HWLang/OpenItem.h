@@ -10,12 +10,12 @@ namespace HWLang{
     class OpenItem final{
         using thisType = OpenItem;
 
-        CtrlPtr<Syntax> const left;
+        Ptr<Syntax> const left;
         Token const token;
         bool const isMatch;
     public:
         OpenItem() = delete;
-        OpenItem(CtrlPtr<Syntax> left, Token const&token, bool isMatch)
+        OpenItem(Ptr<Syntax> left, Token const&token, bool isMatch)
             : left(left)
             , token(token)
             , isMatch(isMatch)
@@ -31,7 +31,7 @@ namespace HWLang{
             return prioTable.Relation(newTokenName, token.Name); 
         };
 
-        CtrlRef<Syntax> const CreateSyntax(CtrlPtr<Syntax> right)const{
+        Ref<Syntax> const CreateSyntax(Ptr<Syntax> right)const{
             return HWLang::CreateSyntax(left, token, right, isMatch);
         }
     };

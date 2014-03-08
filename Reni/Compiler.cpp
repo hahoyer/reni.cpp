@@ -5,6 +5,7 @@
 #include "BitType.h"
 #include "Size.h"
 #include "Result.h"
+#include "FeatureProvider.h"
 #include "TokenClass.h"
 
 static bool Trace = true;
@@ -20,7 +21,7 @@ p_implementation(Compiler, Array<Reni::Token>, tokens){
     return _internal->scannerCache.Value.ToArray;
 };
 
-p_implementation(Compiler, CtrlRef<Syntax>, syntax){
+p_implementation(Compiler, Ref<Syntax>, syntax){
     return _internal->syntaxCache.Value;
 };
 
@@ -42,3 +43,5 @@ String Compiler::internal::CodeVisitor::Const(Size const size, BitsConst const& 
     a_if_(size <= BitCount<int>());
     return "return " + String::Convert(int(value)) + ";";
 }
+
+#include "../HWLib/RefCountContainer.instance.h"

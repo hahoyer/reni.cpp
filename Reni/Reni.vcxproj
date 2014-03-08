@@ -25,6 +25,7 @@
     <ClCompile Include="CppCompilerScripting.cpp" />
     <ClCompile Include="CodeVisitor.cpp" />
     <ClCompile Include="ExpressionSyntax.cpp" />
+    <ClCompile Include="Feature.cpp" />
     <ClCompile Include="Type.cpp" />
     <ClCompile Include="SearchResult.cpp" />
     <ClCompile Include="Size.cpp" />

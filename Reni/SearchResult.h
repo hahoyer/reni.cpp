@@ -14,17 +14,12 @@ namespace Reni{
     class SearchResult : public DumpableObject{
         using baseType = DumpableObject;
         using thisType = SearchResult;
-        Ptr<Feature> feature;
     public:
+        Ptr<Feature> const feature;
         SearchResult(Ref<Feature> feature);
         SearchResult() = default;
 
         p(bool, IsValid);
-        ResultData const FunctionResult(
-            Context const&context,
-            Category category,
-            ExpressionSyntax const& expressionSyntax
-        )const;
     private:
         override_p_function(Array<String>, DumpData);
     };

@@ -6,39 +6,41 @@
 #include "../HWLang/Token.h"
 #include "../Reni/Scanner.h"
 #include "../HWLib/File.h"
+#include "../HWLib/RefCountProvider.h"
 
 using namespace HWLib;
 using namespace HWLang;
 
-namespace _HWLang
-{
-    class SimpleTokenFactory final
-    {
+namespace _HWLang{
+    class SimpleTokenFactory final{
+        typedef RefCountProvider baseType;
+        typedef SimpleTokenFactory thisType;
     public:
+
         template<class TTokenClass>
-        class SimpleSyntax final : public DumpableObject
-        {
+        class SimpleSyntax final 
+            : public DumpableObject
+            , public RefCountProvider{
             using baseType = DumpableObject;
             using thisType = SimpleSyntax;
         public:
             typedef TTokenClass TokenClass;
-            //using TokenClass = TTokenClass;
 
-            CtrlPtr<thisType> const left;
+            Ptr<thisType> const left;
             TokenClass const& tokenClass;
             String const name;
-            CtrlPtr<thisType> const right;
+            Ptr<thisType> const right;
             bool const isMatch;
 
-            SimpleSyntax(CtrlPtr<thisType> const left, TokenClass const& tokenClass, String const&name, CtrlPtr<thisType> const right, bool isMatch)
+            SimpleSyntax(Ptr<thisType> const left, TokenClass const& tokenClass, String const&name, Ptr<thisType> const right, bool isMatch)
                 : left(left)
-                , tokenClass(tokenClass)
-                , name(name)
-                , right(right)
-                , isMatch(isMatch)
-            {
+                  , tokenClass(tokenClass)
+                  , name(name)
+                  , right(right)
+                  , isMatch(isMatch){
                 SetDumpString();
             }
+
         private:
             override_p_function(Array<String>, DumpData){
                 return{
@@ -49,6 +51,7 @@ namespace _HWLang
                     nd(isMatch)
                 };
             }
+
             override_p_function(String, DumpShort){
                 auto result = name;
                 if (left.IsValid)
@@ -61,8 +64,7 @@ namespace _HWLang
             }
         };
 
-        class TokenClass final : public DumpableObject
-        {
+        class TokenClass final : public DumpableObject{
             using baseType = DumpableObject;
             using thisType = TokenClass;
         public:
@@ -73,20 +75,26 @@ namespace _HWLang
             TokenClass() = default;
             TokenClass(TokenClass const&) = delete;
 
-            CtrlRef<Syntax> const CreateSyntax(CtrlRef<Syntax>const left, SourcePart const&part, CtrlRef<Syntax>const right, bool isMatch)const{
+            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
                 return new Syntax(left, *this, part, right, isMatch);
             };
-            CtrlRef<Syntax> const CreateSyntax(CtrlRef<Syntax>const left, SourcePart const&part, bool isMatch)const{
+
+            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, bool isMatch)const{
                 return new Syntax(left, *this, part, {}, isMatch);
             };
-            CtrlRef<Syntax> const CreateSyntax(SourcePart const&part, CtrlRef<Syntax>const right, bool isMatch)const{
+
+            Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
                 return new Syntax({}, *this, part, right, isMatch);
             };
-            CtrlRef<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const{
+
+            Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const{
                 return new Syntax({}, *this, part, {}, isMatch);
             };
+
         private:
-            override_p_function(Array<String>, DumpData){ return{}; };
+            override_p_function(Array<String>, DumpData){
+                return{};
+            };
         };
 
         static TokenClass const& Start;
@@ -100,12 +108,14 @@ namespace _HWLang
             using baseType = HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Reni::Scanner>;
             using thisType = ScannerInstance;
         public:
+
             ScannerInstance(String const&text)
-                :baseType(Source::FromText(text))
-            {};
+                :baseType(Source::FromText(text)){
+            };
+
             ScannerInstance(File const&file)
-                :baseType(Source::FromFile(file.FullName))
-            {};
+                :baseType(Source::FromFile(file.FullName)){
+            };
         };
 
         using Syntax = TokenClass::Syntax;

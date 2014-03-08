@@ -6,13 +6,13 @@
 
 namespace HWLang{
     template <class Syntax, class TokenClass, class Token, class ScannerInstance>
-    CtrlPtr<Syntax> const Parse(PrioTable const&prioTable, ScannerInstance&scanner){
+    Ptr<Syntax> const Parse(PrioTable const&prioTable, ScannerInstance&scanner){
         Stack<OpenItem<Syntax, Token>> stack;
         stack.Push(OpenItem<Syntax, Token>::StartItem(scanner.Step()));
 
         do{
             auto item = scanner.Step();
-            CtrlPtr<Syntax> result;
+            Ptr<Syntax> result;
             do{
                 auto topItem = stack.Top;
                 auto relation = topItem.Relation(item.Name, prioTable);
@@ -36,12 +36,12 @@ namespace HWLang{
     };
 
     template <class Syntax, class Token>
-    CtrlRef<Syntax> const CreateSyntax(CtrlPtr<Syntax> const&left, Token const&token, CtrlPtr<Syntax> const&right, bool isMatch){
+    Ref<Syntax> const CreateSyntax(Ptr<Syntax> const&left, Token const&token, Ptr<Syntax> const&right, bool isMatch){
         if (left.IsValid)
             if (right.IsValid)
             {
-                CtrlRef<Syntax> xl = left;
-                CtrlRef<Syntax> xr = right;
+                Ref<Syntax> xl = left;
+                Ref<Syntax> xr = right;
 
                 return token.Class.CreateSyntax(xl, token.Part, xr, isMatch);
             }

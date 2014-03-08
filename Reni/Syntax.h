@@ -15,7 +15,10 @@ namespace Reni
     class TokenClass;
     class Type;
 
-    class Syntax : public WithId<DumpableObject, Syntax>
+
+    class Syntax 
+        : public WithId<DumpableObject, Syntax>
+        , public RefCountProvider
     {
         using baseType = WithId<DumpableObject, Syntax>;
         using thisType = Syntax;
@@ -30,11 +33,10 @@ namespace Reni
     protected:
         Syntax(SourcePart const& part);
     public:
-        virtual CtrlRef<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
+        virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
             bool Trace = true;
             md(level, part);
-            b_;
-            return_d(CtrlPtr<Syntax >());
+            mb;
         };
 
         CtrlRef<CodeItem> Code(Context const&context)const;
@@ -43,16 +45,18 @@ namespace Reni
         virtual ResultData const GetResultData(Context const&context, Category category)const;
     };
 
+    
     class TokenClass;
+
 
     class InfixSyntax : public Syntax
     {
         using baseType = Syntax;
-        CtrlRef<Syntax > const left;
+        Ref<Syntax > const left;
         TokenClass const& tokenClass;
-        CtrlRef<Syntax > const right;
+        Ref<Syntax > const right;
     public:
-        InfixSyntax(CtrlRef<Syntax > const left, TokenClass const& tokenClass, SourcePart const part, CtrlRef<Syntax > const right)
+        InfixSyntax(Ref<Syntax > const left, TokenClass const& tokenClass, SourcePart const part, Ref<Syntax > const right)
             : baseType(part)
             , left(left)
             , tokenClass(tokenClass)
@@ -69,9 +73,9 @@ namespace Reni
     {
         using baseType = Syntax;
         TokenClass const& tokenClass;
-        CtrlRef<Syntax > const right;
+        Ref<Syntax > const right;
     public:
-        PrefixSyntax(TokenClass const& tokenClass, SourcePart const part, CtrlRef<Syntax > const right)
+        PrefixSyntax(TokenClass const& tokenClass, SourcePart const part, Ref<Syntax > const right)
             : baseType(part)
             , tokenClass(tokenClass)
             , right(right)
@@ -86,10 +90,10 @@ namespace Reni
     class SuffixSyntax : public Syntax
     {
         using baseType = Syntax;
-        CtrlRef<Syntax > const left;
+        Ref<Syntax > const left;
         TokenClass const& tokenClass;
     public:
-        SuffixSyntax(CtrlRef<Syntax > const left, TokenClass const& tokenClass, SourcePart const part)
+        SuffixSyntax(Ref<Syntax > const left, TokenClass const& tokenClass, SourcePart const part)
             : baseType(part)
             , left(left)
             , tokenClass(tokenClass)
@@ -101,5 +105,4 @@ namespace Reni
     };
 
 
-}
-
+};

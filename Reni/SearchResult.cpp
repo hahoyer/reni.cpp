@@ -20,16 +20,6 @@ p_implementation(SearchResult, bool, IsValid){
     return feature.IsValid;
 };
 
-ResultData const SearchResult::FunctionResult(
-    Context const&context, 
-    Category category, 
-    ExpressionSyntax const& expressionSyntax
-    )const{
-    md(context, category, expressionSyntax);
-    b_;
-    return{};
-};
-
 override_p_implementation(SearchResult, Array<String>, DumpData){
     return{nd(feature)};
 }

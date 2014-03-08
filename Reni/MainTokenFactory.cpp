@@ -59,7 +59,7 @@ class LeftParenthesisToken final : public TokenClass{
 public:
     LeftParenthesisToken(int level) : level(level){}
 private:
-    virtual CtrlRef<Syntax > const CreateSyntax(SourcePart const&part, CtrlRef<Syntax >const right, bool isMatch)const  override{
+    virtual Ref<Syntax > const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const  override{
         if (isMatch)
             return baseType::CreateSyntax(part, right, isMatch);
         return new OpenSyntax(level, part, right);
@@ -72,9 +72,9 @@ private:
     class OpenSyntax final : public Syntax{
         using baseType = Syntax;
         int const level;
-        CtrlRef<Syntax > const right;
+        Ref<Syntax > const right;
     public:
-        OpenSyntax(int level, SourcePart const part, CtrlRef<Syntax > const right)
+        OpenSyntax(int level, SourcePart const part, Ref<Syntax > const right)
             : baseType(part)
             , level(level)
             , right(right)
@@ -82,7 +82,7 @@ private:
             SetDumpString();
         }
     private:
-        virtual CtrlRef<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const override{
+        virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const override{
             if (level != this->level)
                 return baseType::ParenthesisMatch(level, part);
             return right;
@@ -105,7 +105,7 @@ class RightParenthesisToken final : public TokenClass{
 public:
     RightParenthesisToken(int level) : level(level){}
 private:
-    virtual CtrlRef<Syntax > const CreateSyntax(CtrlRef<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
+    virtual Ref<Syntax > const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const  override{
         if (!isMatch)
             return baseType::CreateSyntax(left, part, isMatch);
         return left->ParenthesisMatch(level, part);
