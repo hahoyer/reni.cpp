@@ -7,20 +7,6 @@ namespace HWLib
 {
     class String;
 
-    class DumpableObjectBase
-    {
-        mutable std::string dumpString;
-        mutable std::string dumpShortString;
-    public:
-        virtual_p(String, DumpLong) = 0;
-        virtual_p(String, DumpShort);
-        p(String, Dump);
-    protected:
-        DumpableObjectBase();
-        virtual ~DumpableObjectBase(){};
-        void SetDumpString();
-    };
-
     template<typename T> class Array;
 
     template<typename TBase, typename TRealm = TBase>
@@ -34,18 +20,22 @@ namespace HWLib
         override_p_function(String, DumpHeader);
     };
 
-    class DumpableObject : public DumpableObjectBase
+    class DumpableObject 
     {
-        using baseType = DumpableObjectBase;
         using thisType = DumpableObject;
+        mutable std::string dumpString;
+        mutable std::string dumpShortString;
     protected:
         DumpableObject();
+        virtual ~DumpableObject(){};
         virtual_p(Array<String>, DumpData) = 0;
         virtual_p(String, DumpHeader);
+        void SetDumpString();
     public:
-        override_p_function(String, DumpShort);
+        p(String, Dump);
+        virtual_p(String, DumpShort);
         p(bool, IsInDump){ return isInDump; }
-        override_p_function(String, DumpLong)final;
+        p(String, DumpLong);
     private:
         mutable bool isInDump;
     };

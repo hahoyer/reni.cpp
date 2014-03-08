@@ -8,44 +8,31 @@
 
 using namespace HWLib;
 
-//////////////////////////////////////////////////////
+DumpableObject::DumpableObject() 
+: isInDump(false)
+, dumpString("missing call to SetDumpString()")
+, dumpShortString("missing call to SetDumpString()")
+{};
 
-DumpableObjectBase::DumpableObjectBase()
-: dumpString(typeid(*this).name())
-, dumpShortString(typeid(*this).name())
-{}
-
-void DumpableObjectBase::SetDumpString()
+void DumpableObject::SetDumpString()
 {
-    if (!_console_ IsDebuggerPresent)
+    if(!_console_ IsDebuggerPresent)
         return;
 
     dumpString = DumpLong.RawData;
     dumpShortString = DumpShort.RawData;
 }
 
-pure_p_implementation(DumpableObjectBase, String, DumpLong);
-
-virtual_p_implementation(DumpableObjectBase, String, DumpShort){
+p_implementation(DumpableObject, String, Dump){
     return DumpLong;
 }
-
-p_implementation(DumpableObjectBase, String, Dump){
-    return DumpLong;
-}
-
-//////////////////////////////////////////////////////
-
-DumpableObject::DumpableObject() 
-: isInDump(false)
-{};
 
 pure_p_implementation(DumpableObject, String, DumpHeader);
 override_p_implementation(DumpableObject, String, DumpHeader){
     return HWLib::DumpTypeName(*this);
 };
 
-override_p_implementation(DumpableObject, String, DumpLong){
+p_implementation(DumpableObject, String, DumpLong){
     auto result = DumpHeader;
     Array<String> dataResult { "..." };
 
@@ -58,7 +45,7 @@ override_p_implementation(DumpableObject, String, DumpLong){
     return DumpHeader + String::Surround("{", dataResult, "}");
 };
 
-override_p_implementation(DumpableObject, String, DumpShort){
+virtual_p_implementation(DumpableObject, String, DumpShort){
     return DumpHeader;
 };
 
