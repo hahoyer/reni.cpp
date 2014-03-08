@@ -51,4 +51,4 @@ namespace HWLib
 
 #define errorabort(t) return (t)null
 
-#define a_is(left,comparer,right) a_if((left)comparer(right), ("\nleft: "+ nd(left) + "\nright: " + nd(right)).Indent() )
+#define a_is(left,comparer,right) a_if((left) comparer (right), ("\nleft: "+ nd(left) + "\nright: " + nd(right)).Indent() )

@@ -3,11 +3,11 @@
 #include "Properties.h"
 #include <string>
 
-namespace HWLib
-{
+namespace HWLib{
     class String;
+    template<typename T>
+    class Array;
 
-    template<typename T> class Array;
 
     template<typename TBase, typename TRealm = TBase>
     class WithId: public TBase{
@@ -20,13 +20,13 @@ namespace HWLib
         override_p_function(String, DumpHeader);
     };
 
-    class DumpableObject 
-    {
+
+    class DumpableObject{
         using thisType = DumpableObject;
         mutable std::string dumpString;
         mutable std::string dumpShortString;
     protected:
-        DumpableObject();
+        DumpableObject();                     
         virtual ~DumpableObject(){};
         virtual_p(Array<String>, DumpData) = 0;
         virtual_p(String, DumpHeader);
@@ -34,7 +34,7 @@ namespace HWLib
     public:
         p(String, Dump);
         virtual_p(String, DumpShort);
-        p(bool, IsInDump){ return isInDump; }
+        p(bool, IsInDump){return isInDump;}
         p(String, DumpLong);
     private:
         mutable bool isInDump;
@@ -44,4 +44,3 @@ namespace HWLib
 
 template<typename TBase, typename TRealm>
 int HWLib::WithId<TBase, TRealm>::NextObjectId = 0;
-
