@@ -22,6 +22,7 @@ namespace HWLib
         dataContainerType value;
     public:
         WeakPtr() : value() { }
+        WeakPtr(T &value) :value(&value){ }
         WeakPtr(T *value) :value(value){ }
         WeakPtr(WeakPtr<T const> const&value) : value(value.value){ };
         WeakPtr(WeakPtr<T     > const&value) : value(value.value){ };
