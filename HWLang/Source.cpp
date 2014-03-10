@@ -78,7 +78,8 @@ int const Source::LineNr(int iEnd)const
     return Text
         .ToArray
         .Take(iEnd)
-        ->Count([](char c){return c == '\n'; });
+        ->Where([](char c){return c == '\n'; })
+        ->Count;
 }
 
 
