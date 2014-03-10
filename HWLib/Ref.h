@@ -30,6 +30,7 @@ namespace HWLib{
         typedef RefBase<T , RefCountContainer<T>> baseType;
         typedef Ref thisType;
     public:
+        Ref(T &value) :baseType(&value){ }
         Ref(T *value) :baseType(value){ a_if_(IsValid); }
         Ref(Ref<T, true> const&other) :baseType(other){ a_if_(IsValid); };
         Ref(Ref<T, false> const&other):baseType(other){};
@@ -43,6 +44,7 @@ namespace HWLib{
         typedef Ref thisType;
     public:
         Ref() :baseType(null){ }
+        Ref(T &value) :baseType(&value){ }
         Ref(T *value) :baseType(value){ }
         Ref(Ref<T, true> const&other) :baseType(other){ };
         Ref(Ref<T> const&other) :baseType(other){};
