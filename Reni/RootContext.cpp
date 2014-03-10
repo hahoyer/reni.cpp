@@ -11,8 +11,9 @@ static bool Trace = true;
 
 RootContext::RootContext()
 : bitTypeInstance(new BitType())
-, voidTypeInstance(new VoidType())
-{}
+, voidTypeInstance(new VoidType()){
+    SetDumpString();
+}
 
 p_implementation(RootContext, WeakRef<BitType>, bitType){ return bitTypeInstance->ref; }
 p_implementation(RootContext, WeakRef<VoidType>, voidType){ return voidTypeInstance->ref; }

@@ -11,7 +11,8 @@ namespace Reni
     class Category;
     class CodeItem;
     class Context;
-    class Result;
+    class ResultFromSyntaxAndContext;
+    class ResultCache;
     class TokenClass;
     class Type;
 
@@ -26,11 +27,9 @@ namespace Reni
         using TokenClass = Reni::TokenClass;
 
     private:
-        FunctionCache<Context const*, Result> resultCache;
+        FunctionCache<Context const*, ResultFromSyntaxAndContext> resultCache;
     protected:
         SourcePart const part;
-
-    protected:
         Syntax(SourcePart const& part);
     public:
         virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
@@ -39,9 +38,9 @@ namespace Reni
             mb;
         };
 
-        CtrlRef<CodeItem> Code(Context const&context)const;
+        Ref<CodeItem> const Code(Context const&context)const;
         WeakRef<Type>const Type(Context const&context)const;
-        Result GetResult(Context const&context, Category category)const;
+        WeakRef<ResultCache> const GetResultCache(Context const&context)const;
         virtual ResultData const GetResultData(Context const&context, Category category)const;
     };
 

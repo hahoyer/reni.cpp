@@ -26,6 +26,8 @@
     <ClCompile Include="CodeVisitor.cpp" />
     <ClCompile Include="ExpressionSyntax.cpp" />
     <ClCompile Include="Feature.cpp" />
+    <ClCompile Include="Fiber.cpp" />
+    <ClCompile Include="ArgVisitor.cpp" />
     <ClCompile Include="Type.cpp" />
     <ClCompile Include="SearchResult.cpp" />
     <ClCompile Include="Size.cpp" />
@@ -51,6 +53,9 @@
     <ClInclude Include="DefineableToken .h" />
     <ClInclude Include="FeatureProvider.h" />
     <ClInclude Include="Feature.h" />
+    <ClInclude Include="Fiber.h" />
+    <ClInclude Include="ArgVisitor.h" />
+    <ClInclude Include="ReplaceVisitor.h" />
     <ClInclude Include="VoidType.h" />
     <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="SearchResult.h" />

@@ -25,7 +25,7 @@ p_implementation(Compiler, Ref<Syntax>, syntax){
     return _internal->syntaxCache.Value;
 };
 
-p_implementation(Compiler, CtrlRef<CodeItem>, code){
+p_implementation(Compiler, Ref<CodeItem>, code){
     return _internal->codeCache.Value;
 };
 

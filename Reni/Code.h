@@ -1,6 +1,10 @@
 #pragma once
 #include "../HWLib/String.h"
 #include "../Runtime/Common.h"
+#include "../HWLib/DumpableObject.h"
+#include "../HWLib/RefCountProvider.h"
+#include "../HWLib/Ref.h"
+#include "ArrayType.h"
 
 using namespace HWLib;
 
@@ -9,18 +13,28 @@ namespace Reni
     class BitsConst;
     class CodeVisitor;
     class Size;
+    class Result;
+    class FiberItem;
+    class ReplaceVisitor;
 
-    class CodeItem : public DumpableObject
+    class CodeItem 
+        : public DumpableObject
+        , public RefCountProvider
     {
-        using baseType = DumpableObject;
-        using thisType = CodeItem;
+        typedef DumpableObject baseType;
+        typedef CodeItem thisType;
     public:
-        using dataItemType = ReniRuntime::Stack::dataType;
-        using dataItemSizeType = ReniRuntime::Stack::sizeType;
+        typedef ReniRuntime::Stack::dataType dataItemType;
+        typedef ReniRuntime::Stack::sizeType dataItemSizeType;
     public:
-        static CtrlRef<CodeItem> const Const(BitsConst const&value);
+        static Ref<CodeItem> const Arg(Type const&value);
+        static Ref<CodeItem> const Const(BitsConst const&value);
+        static Ref<CodeItem> const DumpPrintNumber(ArrayType const&value);
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
+        ref_p;
+        virtual Ref<CodeItem> const Replace(ReplaceVisitor const&arg) const;
+        virtual Ref<CodeItem> const Fiber(Array<Ref<FiberItem>> const&items)const;
     };
 }
 

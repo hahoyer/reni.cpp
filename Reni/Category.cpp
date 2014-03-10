@@ -8,6 +8,7 @@ using namespace HWLib;
 using namespace Reni;
 
 Category const Category::None(false, false, false);
+Category const Category::Size(true, false, false);
 Category const Category::Code(false, true, false);
 Category const Category::Type(false, false, true);
 
@@ -27,6 +28,10 @@ Category::Category()
     : thisType(false, false, false){
 }
 
+p_implementation(Category, Category, typed){
+    return *this + Type;
+}
+
 Category const Category::operator+(Category const other)const{
     return Category(
         hasSize && other.hasSize,
@@ -44,12 +49,9 @@ Category const Category::operator-(Category const other)const{
 }
 
 bool Category::operator==(Category const other)const{
-    return
-        hasSize == other.hasSize
-        &&
-        hasCode == other.hasCode
-        &&
-        hasType == other.hasType
+    return hasSize == other.hasSize
+        && hasCode == other.hasCode
+        && hasType == other.hasType
         ;
 }
 

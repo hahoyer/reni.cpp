@@ -14,15 +14,10 @@ static bool Trace = true;
 using namespace HWLib;
 using namespace Reni;
 
-Result::Result(Syntax const& syntax, Context const&context)
-    : baseType()
-      , syntax(syntax)
-      , context(context){
-}
 
-void Result::Ensure(Category category)const{
+void ResultCache::Ensure(Category category)const{
     auto todo = category - complete;
-    if (todo == Category::None)
+    if(todo == Category::None)
         return;
     auto newTodo = todo - pending;
     a_if(newTodo != Category::None, nd(category) + nd(complete) + nd(pending));
@@ -30,38 +25,59 @@ void Result::Ensure(Category category)const{
     data = GetResultData(newTodo);
 }
 
-ResultData const Result::GetResultData(Category category)const{
-    return context.GetResultData(category, syntax);
-}
-
-p_implementation(Result, Category, complete){
-    if (data.code.IsValid)
+p_implementation(ResultCache, Category, complete){
+    if(data.code.IsValid)
         return Category::Code;
     return Category::None;
 }
 
+p_implementation(ResultCache, Size, size){
+    Ensure(Category::Size);
+    return data.size;
+}
 
-p_implementation(Result, CtrlRef<CodeItem>, code){
+p_implementation(ResultCache, Ref<CodeItem>, code){
     Ensure(Category::Code);
     return data.code;
 }
 
-p_implementation(Result, WeakRef<Type>, type){
+p_implementation(ResultCache, WeakRef<Type>, type){
     Ensure(Category::Type);
     return data.type;
 }
 
-override_p_implementation(Result, Array<String>, DumpData){
+override_p_implementation(ResultCache, Array<String>, DumpData){
     return{
-        nd(context),
-        nd(syntax),
         nd(pending),
         nd(data)
     };
 };
 
+
+ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context)
+    : syntax(syntax)
+      , context(context){
+    SetDumpString();
+}
+
+ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const{
+    return context.GetResultData(category, syntax);
+}
+
+override_p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
+    auto baseDump = baseType::virtual_p_name(DumpData)();
+    auto thisDump = Array<String>({
+        nd(context),
+        nd(syntax)
+    });
+    return baseDump + thisDump;
+};
+
+
 override_p_implementation(ResultData, Array<String>, DumpData){
     return{
+        nd(size),
+        nd(type),
         nd(code)
     };
 };

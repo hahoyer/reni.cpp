@@ -19,20 +19,26 @@ namespace Reni
         using thisType = ResultData;
     public:
         Optional<Size> const size;
-        CtrlPtr<CodeItem> const code;
+        Ref<CodeItem,true> const code;
         WeakPtr<Type> const type;
 
-        ResultData(){};
-        ResultData(CtrlRef<CodeItem> code)
+        ResultData(){ SetDumpString(); };
+        ResultData(Ref<CodeItem> code)
             : size(code->size)
-            , code(code){};
+            , code(code){
+            SetDumpString();
+        };
         ResultData(WeakRef<Type> type)
             : size(type->size)
-            , type(type){};
-        ResultData(Optional<Size> const&size, CtrlPtr<CodeItem> code, WeakPtr<Type> type)
+            , type(type){
+            SetDumpString();
+        };
+        ResultData(Optional<Size> const&size, Ref<CodeItem,true> code, WeakPtr<Type> type)
             : size(size)
             , code(code)
-            , type(type){};
+            , type(type){
+            SetDumpString();
+        };
 
         DefaultAssignmentOperator;
 
@@ -45,27 +51,40 @@ namespace Reni
     };
 
 
-    class Result final: public DumpableObject
+    class ResultCache : public DumpableObject
     {
-        using baseType = DumpableObject;
-        using thisType = Result;
-
-    public:
-        Syntax const& syntax;
-        Context const&context;
-    private:
+        typedef DumpableObject baseType;
+        typedef ResultCache thisType;
+    protected:
         mutable ResultData data;
         mutable Category pending;
     public:
-        Result(Syntax const& syntax, Context const&context);
-        p(CtrlRef<CodeItem >, code);
+        ref_p;
+        p(Size, size);
+        p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
     private:
-        override_p_function(Array<String>, DumpData);
-
         void Ensure(Category category)const;
-        ResultData const GetResultData(Category category)const;
+    protected:
+        override_p_function(Array<String>, DumpData);
+        virtual ResultData const GetResultData(Category category)const = 0;
+    private:
         p(Category, complete);
+    };
+
+
+    class ResultFromSyntaxAndContext final : public ResultCache
+    {
+        typedef ResultCache baseType;
+        typedef ResultFromSyntaxAndContext thisType;
+    public:
+        Syntax const& syntax;
+        Context const&context;
+    public:
+        ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context);
+    private:
+        override_p_function(Array<String>, DumpData);
+        virtual ResultData const GetResultData(Category category)const override;
     };
 
 }

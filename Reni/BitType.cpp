@@ -5,9 +5,11 @@
 #include "Size.h"
 #include "Feature.h"
 #include "FeatureProvider.h"
+#include "Result.h"
 #include "RootContext.h"
 #include "VoidType.h"
 #include "../HWLib/RefCountContainer.instance.h"
+#include "ArgVisitor.h"
 
 static bool Trace = true;
 
@@ -28,10 +30,8 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
             Category category,
             ExpressionSyntax const& expressionSyntax
             )const override;
-
-        override_p_function(Array<String>, DumpData) {
-            return{ nd(value) };
-        }
+        override_p_function(Array<String>, DumpData) {return{ nd(value) };}
+        p(Ref<CodeItem>, code){return CodeItem::DumpPrintNumber(value);}
     };
 
     
@@ -42,23 +42,15 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
     public:
         For(ArrayType const&value) : value(value) {}
     private:
-
-        override_p_function(Ref<Reni::Feature>, feature){
-            return new Feature(value);
-        }
-        override_p_function(Array<String>, DumpData) {
-            return{nd(value)};
-        }
+        override_p_function(Ref<Reni::Feature>, feature){return new Feature(value);}
+        override_p_function(Array<String>, DumpData) {return{nd(value)};}
     };
 
     
     virtual Ref<FeatureProvider<DumpPrintToken>, true>const Convert(ArrayType const&top)const override {
         return new For(top);
     }
-    
-    override_p_function(Array<String>, DumpData) {
-        return{};
-    }
+    override_p_function(Array<String>, DumpData) {return{};}
 
 };
 
@@ -85,9 +77,21 @@ ResultData const DumpPrintBitArray::Feature::FunctionResult(
     if(expressionSyntax.right.IsValid)
         throw InvalidArgumentList(expressionSyntax);
 
+
+    Ref<CodeItem,true> code;
+    if(category.hasCode){
+        auto result = expressionSyntax
+            .left
+            ->GetResultCache(context);
+        ArgVisitor visitor = *result;
+        code = this
+            ->code
+            ->Replace(visitor);
+    }
+
     return ResultData(
         Size(0),
-        CtrlPtr<CodeItem>(),
+        code,
         context.rootContext->voidType->ref
         );
 };

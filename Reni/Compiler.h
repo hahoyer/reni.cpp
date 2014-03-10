@@ -29,7 +29,7 @@ namespace Reni
     
         p(Array<Token>, tokens);
         p(Ref<Syntax>, syntax);
-        p(CtrlRef<CodeItem>, code);
+        p(Ref<CodeItem>, code);
         p(String, cppCode);
         ExecutionResult const Execute();
     };

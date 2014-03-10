@@ -4,8 +4,8 @@ namespace ReniRuntime{
     class Stack{
         using thisType = Stack;
     public:
-        using dataType = unsigned int;
-        using sizeType = unsigned int;
+        typedef unsigned int dataType;
+        typedef unsigned int sizeType;
     private:
         struct Item{
             Item* next;

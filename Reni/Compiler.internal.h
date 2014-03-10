@@ -34,7 +34,7 @@ class Compiler::internal final
 {
     String const fileName;
 public:
-    ValueCache<CtrlRef<CodeItem>> codeCache;
+    ValueCache<Ref<CodeItem>> codeCache;
     ValueCache<ScannerInstance> scannerCache;
     ValueCache<Ref<Syntax>> syntaxCache;
     ValueCache<String> cppCodeCache;
@@ -70,7 +70,7 @@ private:
         return Parse<Ref<Syntax>, Ref<Syntax,true>, TokenClass, Token>(prioTable, scannerInstance);
     };
 
-    CtrlRef<CodeItem> const GetCode()const{
+    Ref<CodeItem> const GetCode()const{
         auto syntax = syntaxCache.Value;
         return syntax->Code(*rootContext);
     };
