@@ -6,6 +6,8 @@
 #include "CtrlPtr.h"
 #include "CtrlRef.h"
 
+using std::function;
+
 namespace HWLib
 {
     template<typename T> class Array;
@@ -13,40 +15,42 @@ namespace HWLib
     template<typename T>
     class Enumerable
     {
-        using thisType = Enumerable<T>;
+        typedef Enumerable thisType;
     public:
-        using targetType = T;
+        typedef T targetType;
         template<typename TResult>
         using AggregateFunction = function<TResult const(TResult, T)>;
 
         template<typename TResult>
-        TResult                    const Aggregate     (TResult start, AggregateFunction<TResult> selector)const;
+        TResult                          const Aggregate  (TResult start, AggregateFunction<TResult> selector)const;
         template<typename TResult>
-        TResult                     const Aggregate     (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
+        TResult                           const Aggregate  (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
         template<typename TResult>
-        CtrlRef<Enumerable<TResult>>     const Convert       () const;
+        CtrlRef<Enumerable<TResult>>       const Convert    () const;
         template<typename TResult>
-        CtrlRef<Enumerable<TResult>>      const ConvertMany   () const;
-        int                            const Count         (function<bool(T)> selector = [](T){return true; })const;
-        T                               const First         (function<bool(T)> selector = [](T){return true; })const;
-        CtrlPtr<T>                        const FirstOrDefault(function<bool(T)> selector = [](T){return true; })const;
-        CtrlPtr<T>                         const Max          ()const;
-        CtrlPtr<T>                          const Max        (function<bool(T)> selector)const;
-        CtrlPtr<T>                           const Max       (function<bool(T,T)> isLess)const;
-        CtrlRef<thisType>                        const operator+ (thisType const& right)const;
+        CtrlRef<Enumerable<TResult>>        const ConvertMany() const;
+        CtrlPtr<T>                            const Max      ()const;
+        CtrlPtr<T>                             const Max      (function<bool(T)> selector)const;
+        CtrlPtr<T>                              const Max      (function<bool(T,T)> isLess)const;
+        CtrlRef<thisType>                        const operator+(thisType const& right)const;
         template<typename TOther>
         CtrlRef<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>             const Select   (function<TResult(T)> selector) const;
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>            const SelectMany (function<TResult(T)> selector) const;
-        T                                  const Single       (function<bool(T)> selector = [](T){return true; })const;
-        CtrlPtr<T>                         const SingleOrDefault(function<bool(T)> selector = [](T){return true; })const;
-        CtrlRef<thisType>                    const Skip           (int count) const;
-        T                               const Stringify      (T const&delimiter)const;
-        CtrlRef<thisType>                  const Take           (int count) const;
-        CtrlRef<thisType>                 const Where          (function<bool(T)> selector)const;
-        
+        CtrlRef<thisType>                      const Skip       (int count) const;
+        T                                     const Stringify  (T const&delimiter)const;
+        CtrlRef<thisType>                    const Take       (int count) const;
+        CtrlRef<thisType>                   const Where      (function<bool(T)> selector)const;
+
+        p(int,      Count);
+        p(T,         First);
+        p(CtrlPtr<T>, FirstOrDefault);
+        p(T,         Last);
+        p(CtrlPtr<T>, LastOrDefault);
+        p(T,         Single);
+        p(CtrlPtr<T>, SingleOrDefault);
 
         p(Array<T>, ToArray);
 

@@ -155,9 +155,9 @@ public:
 protected:
     override_p_function(bool, IsValid){ return current.IsValid; }
     T const Step()override{ 
-        CtrlRef<T> result = current;
+        auto result = current;
         Align();
-        return T(*result); 
+        return *result; 
     }
 };
 
@@ -293,6 +293,18 @@ protected:
     TResult const Step()override{ return _parent->Step(); }
 };
 
+template<typename T>
+inline p_implementation(Enumerable<T>, T, Last){
+    auto i = ToIterator;
+    if(!i->IsValid)
+        throw "Enumerable contains no element";
+    while(true){
+        auto result = i->Step();
+        if(!i->IsValid)
+            return result;
+    }
+}
+
 
 template<typename T>
 CtrlRef<Enumerable<T>> const Enumerable<T>::Skip(int count) const
@@ -351,11 +363,9 @@ inline T const Enumerable<T>::Stringify(T const&delimiter)const
 }
 
 template<typename T>
-inline int const Enumerable<T>::Count(function<bool(T)> selector)const
-{
+inline p_implementation(Enumerable<T>, int, Count){
     auto result = 0;
     for (auto element : *this)
-        if(selector(element))
             result++;
     return result;
 }
