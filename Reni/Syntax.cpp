@@ -4,8 +4,10 @@
 #include "Category.h"
 #include "Code.h"
 #include "Context.h"
+#include "FeatureProvider.h"
 #include "Result.h"
 #include "TokenClass.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -14,20 +16,20 @@ static bool Trace = true;
 Reni::Syntax::Syntax(SourcePart const&part)
     : part(part)
       , resultCache([&](Context const*context){
-          return ResultFromSyntaxAndContext(*this, *context);
+          return new ResultFromSyntaxAndContext(*this, *context);
       }){
 };
 
 Ref<CodeItem> const Syntax::Code(Context const&context)const{
-    return resultCache[&context].code;
+    return resultCache[&context]->code;
 }
 
 WeakRef<Type>const Syntax::Type(Context const&context)const{
-    return resultCache[&context].type;
+    return resultCache[&context]->type;
 }
 
-WeakRef<ResultCache> const Syntax::GetResultCache(Context const&context)const{
-    WeakRef<ResultCache> r = resultCache[&context].ref;
+Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const {
+    Ref<ResultFromSyntaxAndContext> r = resultCache[&context];
     return r;
 }
 

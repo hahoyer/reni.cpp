@@ -51,7 +51,9 @@ namespace Reni
     };
 
 
-    class ResultCache : public DumpableObject
+    class ResultCache 
+        : public DumpableObject
+        , public RefCountProvider
     {
         typedef DumpableObject baseType;
         typedef ResultCache thisType;
