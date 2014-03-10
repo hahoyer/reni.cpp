@@ -5,8 +5,8 @@
 #include "Fiber.h"
 
 namespace Reni{
-    class ConstCode final : public FiberHead{
-        typedef FiberHead baseType;
+    class ConstCode final : public CodeItem{
+        typedef CodeItem baseType;
         typedef ConstCode thisType;
     public:
         Size const size;
@@ -38,8 +38,8 @@ namespace Reni{
     };
 
 
-    class ArgCode final : public FiberHead {
-        typedef FiberHead baseType;
+    class ArgCode final : public CodeItem {
+        typedef CodeItem baseType;
         typedef ArgCode thisType;
     public:
         Type const& type;
