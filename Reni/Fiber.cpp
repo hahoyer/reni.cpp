@@ -22,7 +22,7 @@ virtual_p_implementation(FiberItem, Size, outSize){
 }
 
 
-Ref<FiberItem> const FiberItem::Replace(ReplaceVisitor const&visitor) const {
+Ref<FiberItem,true> const FiberItem::Replace(ReplaceVisitor const&visitor) const {
     md(visitor);
     mb;
 };
@@ -38,15 +38,23 @@ override_p_implementation(Fiber, Size, size){
     return items.Last->outSize;
 };
 
-Ref<CodeItem> const Fiber::Replace(ReplaceVisitor const&visitor) const {
-    Ref<CodeItem> newHead = head->Replace(visitor);
-    Array<Ref<FiberItem>> newItems = items
-        .Select<Ref<FiberItem>>([&](Ref<FiberItem> item) {return item->Replace(visitor); })
+Ref<CodeItem, true> const Fiber::Replace(ReplaceVisitor const&visitor) const {
+    Ref<CodeItem, true> newHead = head->Replace(visitor);
+    Array<Ref<FiberItem,true>> newItems = items
+        .Select<Ref<FiberItem, true>>([&](Ref<FiberItem> item) {return item->Replace(visitor); })
         ->ToArray;
     return *ReCreate(newHead, newItems);
 };
 
-Ref<Fiber> Fiber::ReCreate(Ref<CodeItem> const&head, Array<Ref<FiberItem>> const& items)const{
-    md(head, items);
-    mb;
+Ref<Fiber, true> Fiber::ReCreate(Ref<CodeItem, true> const&head, Array<Ref<FiberItem, true>> const& items)const{
+    if(head.IsValid && !items.Where([](Ref<FiberItem, true> const&item){return !item.IsValid; })->Any)
+        return{};
+    Ref<CodeItem>  newHead = this->head;
+    if(head.IsValid)
+        newHead = head;
+    Array<Ref<FiberItem>> newItems = this->items;
+    for(auto index = 0; index < newItems.Count; index++)
+        if(items[index].IsValid)
+            newItems[index] = items[index];
+    return Create(newHead, newItems);
 }

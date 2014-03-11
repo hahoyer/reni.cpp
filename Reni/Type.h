@@ -34,6 +34,7 @@ namespace Reni{
         ref_p;
         virtual operator Ref<FeatureProvider<DumpPrintToken>, true>()const;
         virtual operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const{ return{}; };
+        bool operator==(Type const&other)const{ return this == &other; }
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };

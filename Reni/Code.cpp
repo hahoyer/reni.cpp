@@ -36,14 +36,13 @@ Ref<CodeItem> const CodeItem::Arg(Type const&value){
     return new ArgCode(value);
 };
 
-Ref<CodeItem> const CodeItem::Replace(ReplaceVisitor const&arg) const{
+Ref<CodeItem,true> const CodeItem::Replace(ReplaceVisitor const&arg) const{
     md(arg);
     mb;
 };
 
 Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const{
-    md(items);
-    mb;
+    return *Reni::Fiber::Create(ref, items);
 }
 
 
@@ -61,4 +60,8 @@ String const DumpPrintNumberCode::ToCpp(CodeVisitor const& visitor)const{
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const{
     md(visitor);
     mb;
+}
+
+Ref<CodeItem, true> const ArgCode::Replace(ReplaceVisitor const&visitor) const{
+    return visitor.Arg(type)->ref;
 };

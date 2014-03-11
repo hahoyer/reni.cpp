@@ -35,6 +35,7 @@ namespace Reni{
         override_p_function(Size, inSize){ return Size(0); };
         override_p_function(Size, outSize){ return size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
+        virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const{ return {}; }
     };
 
 
@@ -50,5 +51,6 @@ namespace Reni{
         override_p_function(Array<String>, DumpData){ return{nd(type)}; };
         override_p_function(Size, size){ return size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
+        virtual Ref<CodeItem, true> const Replace(ReplaceVisitor const&arg) const override;
     };
 }

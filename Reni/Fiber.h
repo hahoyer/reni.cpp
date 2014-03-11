@@ -19,7 +19,7 @@ namespace Reni{
         virtual_p(Size, inSize) = 0;
         virtual_p(Size, outSize) = 0;
         virtual String const ToCpp(CodeVisitor const& visitor)const;
-        virtual Ref<FiberItem> const Replace(ReplaceVisitor const&arg) const;
+        virtual Ref<FiberItem,true> const Replace(ReplaceVisitor const&arg) const;
     };
 
 
@@ -39,9 +39,9 @@ namespace Reni{
             return new thisType(head, items);
         }
     private:
-        virtual Ref<CodeItem> const Replace(ReplaceVisitor const&arg) const override;
+        virtual Ref<CodeItem,true> const Replace(ReplaceVisitor const&arg) const override;
         override_p_function(Array<String>, DumpData){ return{nd(head), nd(items)}; };
         override_p_function(Size, size);
-        Ref<Fiber> ReCreate(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items)const;
+        Ref<Fiber, true> ReCreate(Ref<CodeItem, true> const& head, Array<Ref<FiberItem, true>> const& items)const;
     };
 }

@@ -19,8 +19,8 @@ namespace Reni
         using thisType = ResultData;
     public:
         Optional<Size> const size;
-        Ref<CodeItem,true> const code;
         WeakPtr<Type> const type;
+        Ref<CodeItem, true> const code;
 
         ResultData(){ SetDumpString(); };
         ResultData(Ref<CodeItem> code)
