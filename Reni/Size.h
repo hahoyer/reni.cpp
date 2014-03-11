@@ -14,6 +14,8 @@ namespace Reni{
         Size(int value): value(value){
         }
 
+        DefaultAssignmentOperator;
+
         Size const operator*(int other)const{
             return value *other;
         };

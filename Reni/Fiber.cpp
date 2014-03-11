@@ -39,6 +39,20 @@ override_p_implementation(Fiber, Size, size){
     return items.Last->outSize;
 };
 
+p_implementation(Fiber, bool, IsValid) {
+    Size size = head->size;
+    for(auto item: items){
+        if(size != item->inSize)
+            return false;
+        size = item->outSize;
+    }
+    return true;
+};
+
+Ref<Fiber> Fiber::Create(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items) {
+    return new thisType(head, items);
+}
+
 Ref<CodeItem, true> const Fiber::Replace(ReplaceVisitor const&visitor) const {
     Ref<CodeItem, true> newHead = head->Replace(visitor);
     Array<Ref<FiberItem,true>> newItems = items
@@ -65,7 +79,9 @@ String const Fiber::ToCpp(CodeVisitor const&visitor) const{
     auto result = head->ToCpp(localVisitor);
     for(auto item :  items) 
         result = item->ToCpp(localVisitor).Replace("$(arg)", result);
-    return result + ";";
+    if(size == 0)
+        return result + "; return 0;";
+    return "return " + result + ";";
 }
 
 

@@ -32,8 +32,8 @@ namespace Reni{
         {}
     private:
         override_p_function(Array<String>, DumpData){ return{nd(size)}; };
-        override_p_function(Size, inSize){ return Size(0); };
-        override_p_function(Size, outSize){ return size; };
+        override_p_function(Size, inSize){ return size; };
+        override_p_function(Size, outSize){ return 0; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const{ return {}; }
     };
