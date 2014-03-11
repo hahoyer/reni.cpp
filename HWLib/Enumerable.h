@@ -44,15 +44,15 @@ namespace HWLib
         CtrlRef<thisType>                    const Take       (int count) const;
         CtrlRef<thisType>                   const Where      (function<bool(T)> selector)const;
 
-        p(int,      Count);
-        p(T,         First);
+        p(bool,    Any           );
+        p(int,      Count         );
+        p(T,         First         );
         p(CtrlPtr<T>, FirstOrDefault);
-        p(T,         Last);
+        p(T,         Last          );
         p(CtrlPtr<T>, LastOrDefault);
-        p(T,         Single);
+        p(T,         Single         );
         p(CtrlPtr<T>, SingleOrDefault);
-
-        p(Array<T>, ToArray);
+        p(Array<T>,  ToArray        );
 
         class Iterator // It's a one-time-access-forward-read-only iterator
         {
