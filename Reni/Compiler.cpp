@@ -38,7 +38,7 @@ ExecutionResult const Compiler::Execute(){
 }
 
 
-String Compiler::internal::CodeVisitor::Const(Size const size, BitsConst const& value) const
+String const Compiler::internal::CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
     a_if_(size <= BitCount<int>());
     return "return " + String::Convert(int(value)) + ";";

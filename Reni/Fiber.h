@@ -43,5 +43,19 @@ namespace Reni{
         override_p_function(Array<String>, DumpData){ return{nd(head), nd(items)}; };
         override_p_function(Size, size);
         Ref<Fiber, true> ReCreate(Ref<CodeItem, true> const& head, Array<Ref<FiberItem, true>> const& items)const;
+        virtual String const ToCpp(CodeVisitor const&) const override;
+    };
+
+
+    class FiberVisitor final : public CodeVisitor{
+        typedef CodeVisitor baseType;
+        typedef FiberVisitor thisType;
+        CodeVisitor const&parent;
+    public: 
+        FiberVisitor(CodeVisitor const&parent) : parent(parent) {}
+    private:
+        override_p_function(Array<String>, DumpData) {return{ nd(parent) };};
+        virtual String const Const(Size const size, BitsConst const& value) const override;
+        virtual String const DumpPrintNumber(Size const size) const override;
     };
 }

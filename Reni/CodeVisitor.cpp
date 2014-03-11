@@ -11,9 +11,15 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-String CodeVisitor::Const(Size const size, BitsConst const& value) const
+String const CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
     md(size, value);
+    b_;
+    return "";
+}
+
+String const CodeVisitor::DumpPrintNumber(Size const size) const{
+    md(size);
     b_;
     return "";
 }

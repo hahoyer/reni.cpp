@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Fiber.h"
 
+#include "BitsConst.h"
 #include "FeatureProvider.h"
 #include "Result.h"
 #include "Size.h"
@@ -57,4 +58,21 @@ Ref<Fiber, true> Fiber::ReCreate(Ref<CodeItem, true> const&head, Array<Ref<Fiber
         if(items[index].IsValid)
             newItems[index] = items[index];
     return Create(newHead, newItems);
+}
+
+String const Fiber::ToCpp(CodeVisitor const&visitor) const{
+    FiberVisitor localVisitor = visitor;
+    auto result = head->ToCpp(localVisitor);
+    for(auto item :  items) 
+        result = item->ToCpp(localVisitor).Replace("$(arg)", result);
+    return result + ";";
+}
+
+
+String const FiberVisitor::Const(Size const size, BitsConst const& value) const{
+    return value.format;
+}
+
+String const FiberVisitor::DumpPrintNumber(Size const size) const{
+    return "DumpPrint($(arg))";
 }

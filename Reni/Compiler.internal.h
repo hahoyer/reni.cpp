@@ -86,7 +86,7 @@ private:
     class CodeVisitor : public Reni::CodeVisitor
     {
         override_p_function(Array<String>, DumpData){ return{}; };
-        virtual String Const(Size const size, BitsConst const& value) const override;
+        virtual String const Const(Size const size, BitsConst const& value) const override;
 
     };
 

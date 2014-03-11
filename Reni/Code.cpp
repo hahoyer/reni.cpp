@@ -52,8 +52,7 @@ String const ConstCode::ToCpp(CodeVisitor const& visitor)const{
 
 
 String const DumpPrintNumberCode::ToCpp(CodeVisitor const& visitor)const{
-    md(visitor);
-    mb;
+    return visitor.DumpPrintNumber(size);
 };
 
 
