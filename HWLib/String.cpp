@@ -228,7 +228,7 @@ public:
 
 protected:
     override_p_function(bool, IsValid){
-        return _index + _delimiter.Count <= _parent.Count; 
+        return _index < _parent.Count; 
     }
     
     String const Step() override

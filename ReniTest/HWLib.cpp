@@ -1,5 +1,8 @@
 #include "Import.h"
 #include "HWLib.h"
+#include "../HWLang/Source.h"
+#include "../HWLib/Process.h"
+#include "../HWLib/System.h"
 
 using namespace Reni;
 using namespace HWLang;
@@ -132,6 +135,12 @@ namespace _String
         a_is(b, ==, "A.B.C");
 
     }
+    void Replace1() {
+        String a = "DumpPrint($(arg))";
+        auto b = a.Replace("$(arg)", "3");
+        a_is(b, == , "DumpPrint(3)");
+
+    }
 
     void RunAll()
     {
@@ -141,6 +150,7 @@ namespace _String
         Split();
         Stringify();
         Replace();
+        Replace1();
         WriteHallo();
     }
 }
