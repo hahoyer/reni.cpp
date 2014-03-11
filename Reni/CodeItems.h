@@ -49,7 +49,7 @@ namespace Reni{
         {}
     private:
         override_p_function(Array<String>, DumpData){ return{nd(type)}; };
-        override_p_function(Size, size){ return size; };
+        override_p_function(Size, size){ return type.size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<CodeItem, true> const Replace(ReplaceVisitor const&arg) const override;
     };
