@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>  
 
 namespace ReniRuntime{
     class Stack{
@@ -24,6 +25,10 @@ namespace ReniRuntime{
     
     inline void push(Stack& stack, Stack::sizeType size, Stack::dataType value){
         stack.Push(size, value);
+    };
+
+    inline void DumpPrint(int value){
+        std::cout << value;
     };
 }
 
