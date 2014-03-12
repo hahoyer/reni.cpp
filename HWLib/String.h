@@ -63,8 +63,15 @@ namespace HWLib
 namespace std {
 
     template <>
-    struct hash<HWLib::String const>{
-        std::size_t operator()(const HWLib::String& key) const{
+    struct hash<String const>{
+        std::size_t operator()(String const& key) const{
+            return key.HashCode;
+        }
+    };
+
+    template <>
+    struct hash<String >{
+        std::size_t operator()(String const& key) const{
             return key.HashCode;
         }
     };
