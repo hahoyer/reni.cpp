@@ -13,5 +13,7 @@ namespace ReniTest{
     {
         static void RunAll();
         static void Simple();
+        static void Negative();
+
     };
 }

@@ -45,10 +45,25 @@ void Common::CompileSimple()
 void Number::RunAll()
 {
     Simple();
+    Negative();
 }
 
 void Number::Simple()
 {
     CompilerTest::Check("3 dump_print", "3");
 
+}
+
+void Number::Negative()
+{
+    CompilerTest::Check("(-1)dump_print", "-1");
+    CompilerTest::Check("(-12)dump_print", "-12");
+    CompilerTest::Check("(-123)dump_print", "-123");
+    CompilerTest::Check("(-1234)dump_print", "-1234");
+    CompilerTest::Check("(-12345)dump_print", "-12345");
+    CompilerTest::Check("(-123456)dump_print", "-123456");
+    CompilerTest::Check("(-1234567)dump_print", "-1234567");
+    CompilerTest::Check("(-12345678)dump_print", "-12345678");
+    CompilerTest::Check("(-123456789)dump_print", "-123456789");
+    CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
 }

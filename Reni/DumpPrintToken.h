@@ -18,5 +18,17 @@ namespace Reni{
         }
     };
 
+    class SignToken final : public DefineableToken{
+        using baseType = DefineableToken;
+        using thisType = SignToken;
+    public:
+        SignToken(String const&name) : baseType(name){}
+    private:
+        GenericFeatureClass<thisType> feature;
+        override_p_function(WeakRef<FeatureClass>, featureClass){
+            return &feature.ref;
+        }
+    };
+
 
 }

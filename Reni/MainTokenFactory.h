@@ -1,7 +1,7 @@
 #pragma once
 #include "..\HWLib\FunctionCache.h"
-#include <unordered_map>
 #include "..\HWLib\String.h"
+#include "../HWLib/Map.h"
 
 using namespace HWLib;
 namespace Reni
@@ -10,9 +10,9 @@ namespace Reni
 
     class MainTokenFactory 
     {
-        FunctionCache<String const, CtrlRef<TokenClass const>> tokenClasses;
-        std::unordered_map<String const, CtrlRef<TokenClass const>> predefinedTokenClasses;
-        FunctionCache<String const, CtrlRef<TokenClass const>> errorClasses;
+        FunctionCache<String , Ref<TokenClass >> tokenClasses;
+        Map<String, Ref<TokenClass>> predefinedTokenClasses;
+        FunctionCache<String , Ref<TokenClass >> errorClasses;
 
         MainTokenFactory();
     public:
@@ -27,6 +27,8 @@ namespace Reni
     private:
         TokenClass const& InternalGetTokenClass(String const&name)const;
 
+        template<class TTokenClass>
+        void AddTokenClass(TTokenClass const*tokenClass);
     };
 
 }

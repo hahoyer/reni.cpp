@@ -55,6 +55,8 @@
     <ClInclude Include="Feature.h" />
     <ClInclude Include="Fiber.h" />
     <ClInclude Include="ArgVisitor.h" />
+    <ClInclude Include="ParenthesisToken.h" />
+    <ClInclude Include="SyntaxErrorToken .h" />
     <ClInclude Include="ReplaceVisitor.h" />
     <ClInclude Include="VoidType.h" />
     <ClInclude Include="TemplateInstances.h" />
