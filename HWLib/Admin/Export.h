@@ -15,6 +15,7 @@
 #include "../FunctionCache.h"
 #include "../initializer_list.h"
 #include "../LevelValue.h"
+#include "../Map.h"
 #include "../Optional.h"
 #include "../Process.h"
 #include "../Ref.h"

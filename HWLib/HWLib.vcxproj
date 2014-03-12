@@ -7,6 +7,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="Map.h" />
     <ClInclude Include="RefCountContainer.instance.h" />
     <ClInclude Include="Ref.h" />
     <ClInclude Include="RefCountProvider.h" />
