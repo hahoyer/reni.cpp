@@ -1,8 +1,6 @@
 #include "Import.h"
 #include "CppCompilerScripting.h"
-#include "..\HWLib\Process.h"
-#include "..\HWLib\Console.h"
-#include "..\HWLib\DumpMacros.h"
+#include "../HWLib/Array.h"
 
 using namespace Reni;
 using namespace HWLib;
@@ -42,7 +40,6 @@ void CppCompilerScripting::Execute()
 {
     bool Trace = false;
     InitializeFile();
-    _console_ Write("Compiling:\n");
     auto cpp = fullFileName + ".cpp";
     auto exe = fullFileName + ".exe";
     d(cpp);

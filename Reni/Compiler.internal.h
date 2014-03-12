@@ -56,9 +56,7 @@ public:
     {}
 
     ExecutionResult const Execute(){
-        auto s = cppCodeCache.Value;
-        dd(s);
-        CppCompilerScripting ccs = s;
+        CppCompilerScripting ccs = cppCodeCache.Value;
         ccs.Execute();
         return ExecutionResult{ ccs.result, ccs.output };
 
