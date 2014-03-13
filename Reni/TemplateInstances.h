@@ -8,38 +8,31 @@ using namespace HWLib;
 
 
 template <typename T>
-inline SearchResult const GetGenericDefinition(Type const&type){
-    fd(type);
-    mb;
-}
-
-template <typename T>
-inline SearchResult const GetGenericDefinition(Context const&context){
-    fd(context);
-    mb;
-}
-
-template <typename T>
 inline SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&type)const{
-    return GetGenericDefinition<T>(type);
+    md(type);
+    mb;
 }
 
 template <typename T>
 inline SearchResult const GenericFeatureClass<T>::GetDefinition(Context const&context)const{
-    return GetGenericDefinition<T>(context);
-}
-
-template <>
-inline SearchResult const GetGenericDefinition<DumpPrintToken>(Type const&type){
-    Ref<FeatureProvider<DumpPrintToken>, true> f = type;
-    return f->feature;
-}
-
-template <>
-inline SearchResult const GetGenericDefinition<SignToken>(Context const&context){
-    fd(context);
+    md(context);
     mb;
 }
+
+#define TypeFeature(tokenClass)\
+template <>\
+    inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Type const&target)const {\
+    return target.GetGenericDefinition<tokenClass>();\
+}
+
+#define ContextFeature(tokenClass)\
+    template <>\
+    inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Context const&target)const {\
+    return target.GetGenericDefinition<tokenClass>();\
+}
+
+TypeFeature(DumpPrintToken);
+ContextFeature(SignToken);
 
 template <typename T>
 pure_p_implementation(FeatureProvider<T>, Ref<Feature>, feature);

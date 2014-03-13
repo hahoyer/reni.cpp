@@ -3,6 +3,7 @@
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/CtrlRef.h"
 #include "../HWLib/DumpableObject.h"
+#include "SearchResult.h"
 
 using namespace HWLib;
 
@@ -32,8 +33,15 @@ namespace Reni{
         Ref<Type> const array(int count)const;
         ResultData const GetResultData(Category category, BitsConst const&value)const;
         ref_p;
-        virtual operator Ref<FeatureProvider<DumpPrintToken>, true>()const;
-        virtual operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const{ return{}; };
+
+        template<class T>
+        SearchResult const GetGenericDefinition()const{
+            Ref<FeatureProvider<T>> f = *this;
+            return f->feature;
+        }
+        virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const;
+        virtual operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const { return{}; };
+        
         bool operator==(Type const&other)const{ return this == &other; }
     private:
         override_p_function(Array<String>, DumpData){ return{}; };

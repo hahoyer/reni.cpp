@@ -10,6 +10,7 @@
 #include "Result.h"
 
 #include "../HWLib/FunctionCache.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 
 using namespace Reni;
@@ -35,6 +36,5 @@ Ref<Type> const Type::array(int count)const{
     return &_internal->arrayCache[count]->ref;
 };
 
-Type::operator Ref<FeatureProvider<DumpPrintToken>, true>()const{ return{}; }
+Type::operator Ref<FeatureProvider<DumpPrintToken>,true>()const{ return{}; }
 
-#include "../HWLib/RefCountContainer.instance.h"
