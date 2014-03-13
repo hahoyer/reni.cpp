@@ -17,7 +17,7 @@ SearchResult::SearchResult(Ref<Feature> feature) : feature(feature){
 }
 
 p_implementation(SearchResult, bool, IsValid){
-    return feature.IsValid;
+    return !feature.IsEmpty;
 };
 
 override_p_implementation(SearchResult, Array<String>, DumpData){

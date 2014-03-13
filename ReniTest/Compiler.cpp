@@ -27,9 +27,9 @@ namespace _HWLang
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Ref<Syntax>, Ref<Syntax,true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
-        a_if(syntax.IsValid, nd(syntax));
-        a_if(!syntax->left.IsValid, nd(syntax));
-        a_if(!syntax->right.IsValid, nd(syntax));
+        a_if(!syntax.IsEmpty, nd(syntax));
+        a_if(syntax->left.IsEmpty, nd(syntax));
+        a_if(syntax->right.IsEmpty, nd(syntax));
         a_is(syntax->name, == , text);
     };
 
@@ -133,10 +133,10 @@ namespace _HWLang
     }
 
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch){
-        a_if(target.IsValid, nd(target));
+        a_if(!target.IsEmpty, nd(target));
         a_is(target->name, == , part);
-        a_if(target->left.IsValid == isLeft, nd(target));
-        a_is(target->right.IsValid, == , isRight);
+        a_if(!target->left.IsEmpty == isLeft, nd(target));
+        a_is(!target->right.IsEmpty, == , isRight);
         a_is(target->isMatch, == , isMatch);
     }
 }

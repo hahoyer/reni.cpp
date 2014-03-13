@@ -62,14 +62,14 @@ Ref<CodeItem, true> const Fiber::Replace(ReplaceVisitor const&visitor) const {
 };
 
 Ref<Fiber, true> Fiber::ReCreate(Ref<CodeItem, true> const&head, Array<Ref<FiberItem, true>> const& items)const{
-    if(head.IsValid && !items.Where([](Ref<FiberItem, true> const&item){return !item.IsValid; })->Any)
+    if(!head.IsEmpty&& !items.Where([](Ref<FiberItem, true> const&item){return item.IsEmpty; })->Any)
         return{};
     Ref<CodeItem>  newHead = this->head;
-    if(head.IsValid)
+    if(!head.IsEmpty)
         newHead = head;
     Array<Ref<FiberItem>> newItems = this->items;
     for(auto index = 0; index < newItems.Count; index++)
-        if(items[index].IsValid)
+        if(!items[index].IsEmpty)
             newItems[index] = items[index];
     return Create(newHead, newItems);
 }

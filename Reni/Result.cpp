@@ -26,7 +26,7 @@ void ResultCache::Ensure(Category category)const{
 }
 
 p_implementation(ResultCache, Category, complete){
-    if(data.code.IsValid)
+    if(!data.code.IsEmpty)
         return Category::Code;
     return Category::None;
 }

@@ -15,7 +15,7 @@ override_p_implementation(ArrayType, Size, size){
 
 ArrayType::operator Ref<FeatureProvider<DumpPrintToken>,true>()const {
     Ref<FeatureProvider<DumpPrintToken, ArrayType>,true> f = elementType;
-    if (f.IsValid)
+    if(!f.IsEmpty)
         return f->Convert(*this);
     return{};
 };

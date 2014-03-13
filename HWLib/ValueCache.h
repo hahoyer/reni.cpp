@@ -1,6 +1,8 @@
 #pragma once
 #include "ValueCacheBase.h"
 
+using std::function;
+
 namespace HWLib
 {
     template<typename T>
@@ -38,7 +40,7 @@ namespace HWLib
 
         virtual TValue GetValue() const override{ return getValue(); };
         virtual TData GetResult(TValue & value) const override{ return value; }
-        virtual bool const IsValidValue(TValue & value) const override{return value.IsValid;}
+        virtual bool const IsValidValue(TValue & value) const override{return !value.IsEmpty;}
     public:
         function<CtrlRef<T>()> const getValue;
         ValueCache(function<CtrlRef<T>()> getValue) : getValue(getValue){}

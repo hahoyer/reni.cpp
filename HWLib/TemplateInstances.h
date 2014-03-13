@@ -153,7 +153,7 @@ public:
         current= {};
     }
 protected:
-    override_p_function(bool, IsValid){ return current.IsValid; }
+    override_p_function(bool, IsValid){ return !current.IsEmpty; }
     T const Step()override{ 
         auto result = current;
         Align();
@@ -192,7 +192,7 @@ public:
     }
 protected:
     override_p_function(bool, IsValid){
-        return _subParent.IsValid && _subParent->IsValid;
+        return !_subParent.IsEmpty && _subParent->IsValid;
     }
 
     TResult const Step()override
@@ -205,7 +205,7 @@ protected:
 private:
     void Align(){
         while (true){
-            if (_subParent.IsValid && _subParent->IsValid)
+            if(!_subParent.IsEmpty && _subParent->IsValid)
                 return;
             if (!_parent->IsValid)
                 return;
@@ -379,7 +379,7 @@ template<typename T>
 CtrlPtr<T> const Enumerable<T>::Max() const{
     CtrlPtr<T> result;
     for (auto element : *this)
-        if (!result.IsValid || *result < element)
+        if(result.IsEmpty || *result < element)
             result = new T(element);
     return result;
 };
@@ -448,23 +448,23 @@ inline override_p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader)
 
 template <typename T>
 inline String const HWLib::Dump(CtrlPtr<T> const&target){
-    if (target.IsValid)
-        return "CtrlPtr{ " + HWLib::Dump(*target)+" }";
-    return "CtrlPtr{}";
+    if(target.IsEmpty)
+        return "CtrlPtr{}";
+    return "CtrlPtr{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::DumpShort(CtrlPtr<T> const&target){
-    if (target.IsValid)
-        return "CtrlPtr{ " + HWLib::DumpShort(*target) + " }";
-    return "CtrlPtr{}";
+    if(target.IsEmpty)
+        return "CtrlPtr{}";
+    return "CtrlPtr{ " + HWLib::DumpShort(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::DumpShort(Ref<T, true> const&target){
-    if (target.IsValid)
-        return "Ref{ " + HWLib::DumpShort(*target) + " }";
-    return "Ref{}";
+    if(target.IsEmpty)
+        return "Ref{}";
+    return "Ref{ " + HWLib::DumpShort(*target) + " }";
 }
 
 template <typename T>
@@ -484,9 +484,9 @@ inline String const HWLib::Dump(WeakRef<T> const&target){
 
 template <typename T>
 inline String const HWLib::Dump(Ref<T, true> const&target){
-    if (target.IsValid)
-        return "Ref{ " + HWLib::Dump(*target) + " }";
-    return "Ref{}";
+    if(target.IsEmpty)
+        return "Ref{}";
+    return "Ref{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>
@@ -496,9 +496,9 @@ inline String const HWLib::Dump(Ref<T,false> const&target){
 
 template <typename T>
 inline String const HWLib::Dump(WeakPtr<T> const&target){
-    if (target.IsValid)
-        return "WeakPtr{ " + HWLib::Dump(*target) + " }";
-    return "WeakPtr{}";
+    if(target.IsEmpty)
+        return "WeakPtr{}";
+    return "WeakPtr{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>

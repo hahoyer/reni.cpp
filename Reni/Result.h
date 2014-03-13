@@ -44,7 +44,7 @@ namespace Reni
 
         p(Category, complete) 
         {
-            return Category::Instance(size.IsValid, code.IsValid, type.IsValid);
+            return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty);
         }
     private:
         override_p_function(Array<String>, DumpData);

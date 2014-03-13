@@ -53,9 +53,9 @@ namespace HWLib{
 
         Ref<TValue, true> const Find(TKey const&key)const{
             auto result = baseType::Find(key);
-            if(result.IsValid)
-                return *result;
-            return{};
+            if(result.IsEmpty)
+                return{};
+            return *result;
         };
     };
 

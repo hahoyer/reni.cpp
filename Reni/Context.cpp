@@ -17,14 +17,9 @@ ResultData const Context::GetResultData(Category category, Syntax const&syntax)c
 
 pure_p_implementation(Context, WeakRef<RootContext>, rootContext) ;
 
-SearchResult GetFeatureDefinition(TokenClass const&tokenClass, Type const& type){
-    return tokenClass.featureClass->GetDefinition(type);
-}
-
 
 SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const{
-    if (left.IsValid)
-        return GetFeatureDefinition(tokenClass, *left->Type(*this));
-    md(left, tokenClass);
-    mb;
+    if(left.IsEmpty)
+        return tokenClass.featureClass->GetDefinition(*this);
+    return tokenClass.featureClass->GetDefinition(*left->Type(*this));
 }

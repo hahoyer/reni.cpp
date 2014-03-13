@@ -34,7 +34,7 @@ namespace HWLib
         T const* operator->()const { return value; };
         T     & operator*()       { return *value; };
         T    * operator->()      { return  value; };
-        p(bool, IsValid){ return !!value; }
+        p(bool, IsEmpty){ return !value; }
     };
 
     template<typename T>
@@ -59,7 +59,7 @@ namespace HWLib
 
         T const& operator*()const { return *value; };
         T const* operator->()const { return value; };
-        p(bool, IsValid){ return !!value; }
+        p(bool, IsEmpty){ return !value; }
     };
 }
 

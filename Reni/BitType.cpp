@@ -74,7 +74,7 @@ ResultData const DumpPrintBitArray::Feature::FunctionResult(
     Category category,
     ExpressionSyntax const& expressionSyntax
     )const{
-    if(expressionSyntax.right.IsValid)
+    if(!expressionSyntax.right.IsEmpty)
         throw InvalidArgumentList(expressionSyntax);
 
 

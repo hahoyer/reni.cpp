@@ -54,9 +54,9 @@ namespace _HWLang{
 
             override_p_function(String, DumpShort){
                 auto result = name;
-                if (left.IsValid)
+                if(!left.IsEmpty)
                     result = "<" + HWLib::DumpShort(left) + ">" + result;
-                if (right.IsValid)
+                if(!right.IsEmpty)
                     result += "<" + HWLib::DumpShort(right) + ">";
                 if (isMatch)
                     result = "[" + result + "]!";

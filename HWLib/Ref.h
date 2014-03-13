@@ -20,8 +20,8 @@ namespace HWLib{
     };
 
     template<class T>
-    bool IsValidValue(RefCountContainer<T> const&value){
-        return !!value.operator->();
+    bool IsEmptyValue(RefCountContainer<T> const&value){
+        return !value.operator->();
     };
 
 
@@ -31,8 +31,8 @@ namespace HWLib{
         typedef Ref thisType;
     public:
         Ref(T &value) :baseType(&value){ }
-        Ref(T *value) :baseType(value){ a_if_(IsValid); }
-        Ref(Ref<T, true> const&other) :baseType(other){ a_if_(IsValid); };
+        Ref(T *value) :baseType(value){ a_if_(!IsEmpty); }
+        Ref(Ref<T, true> const&other) :baseType(other){ a_if_(!IsEmpty); };
         Ref(Ref<T, false> const&other):baseType(other){};
         DefaultAssignmentOperator;
     };
@@ -49,7 +49,7 @@ namespace HWLib{
         Ref(Ref<T, true> const&other) :baseType(other){ };
         Ref(Ref<T> const&other) :baseType(other){};
         DefaultAssignmentOperator;
-        p(bool, IsValid){ return baseType::IsValid; }
+        p(bool, IsEmpty){ return baseType::IsEmpty; }
     };
 
 }

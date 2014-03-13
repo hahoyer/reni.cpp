@@ -24,7 +24,7 @@ namespace HWLib
 
         DefaultAssignmentOperator;
 
-        p(bool, IsValid){ return baseType::IsValid; }
+        p(bool, IsEmpty){ return baseType::IsEmpty; }
     };
 }
 

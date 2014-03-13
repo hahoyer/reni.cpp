@@ -76,6 +76,7 @@ private:
     p(PrioTable, prioTable){
         return
             HWLang::PrioTable::CreateLeft({ Any })
+            .Left({"+", "-"})
             .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
             .ParenthesisLevel(Start, End)
             ;

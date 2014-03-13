@@ -161,15 +161,15 @@ namespace _Ref
     {
         CtrlPtr<int> c;
 
-        a_if_(!c.IsValid);
+        a_if_(c.IsEmpty);
         c = new int(1);
-        a_if_(c.IsValid);
+        a_if_(!c.IsEmpty);
         c = CtrlPtr<int>();
-        a_if_(!c.IsValid);
+        a_if_(c.IsEmpty);
 
         c = new int(12);
         a_if_(*c == 12);
-        a_if_(c.IsValid);
+        a_if_(!c.IsEmpty);
     }
 
     void RunAll()

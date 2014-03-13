@@ -77,10 +77,9 @@ TokenClass const& MainTokenFactory::GetErrorClass(String const&name){
 TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) const
 {
     auto result = predefinedTokenClasses.Find(name);
-    if(result.IsValid)
-        return *result;
-
-    return *tokenClasses[name];
+    if(result.IsEmpty)
+        return *tokenClasses[name];
+    return *result;
 }
 
 #include "TemplateInstances.h"

@@ -95,7 +95,7 @@ namespace HWLib
             
             bool operator !=(RangeBasedForLoopSimulator other)const
             {
-                a_if_(!other._data.IsValid);
+                a_if_(other._data.IsEmpty);
                 return _data->IsValid;
             }
 

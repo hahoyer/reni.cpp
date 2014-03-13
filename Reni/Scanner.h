@@ -1,5 +1,8 @@
 #pragma once
 #include "../HWLib/CtrlRef.h"
+#include "../HWLang/SourcePosition.h"
+#include "../HWLib/Optional.h"
+#include "../HWLib/String.h"
 
 using namespace HWLib;
 using namespace HWLang;

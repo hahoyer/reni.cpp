@@ -17,42 +17,39 @@ namespace HWLang{
             do{
                 auto topItem = stack.Top;
                 auto relation = topItem.Relation(item.Name, prioTable);
-                if (item.IsEnd && relation == PrioTableConst::MatchTag)
-                {
+                if (item.IsEnd && relation == PrioTableConst::MatchTag){
                     stack.Pop();
                     a_if_(stack.IsEmpty);
                     return result;
                 }
- 
+
                 if (relation != PrioTableConst::HigherTag)
                     result = stack.Pop().CreateSyntax(result);
 
-                if (relation != PrioTableConst::LowerTag)
-                {
+                if (relation != PrioTableConst::LowerTag){
                     stack.Push(OpenItem(result, item, relation == PrioTableConst::MatchTag));
                     result = {};
                 }
-            } while (result.IsValid);
+            } while (!result.IsEmpty);
         } while (true);
     };
 
     template <class TSyntax, class TSyntaxOption, class TToken>
     TSyntax const CreateSyntax(TSyntaxOption const&left, TToken const&token, TSyntaxOption const&right, bool isMatch){
-        if (left.IsValid)
-            if (right.IsValid)
-            {
+        if(left.IsEmpty){
+            if(right.IsEmpty)
+                return token.Class.CreateSyntax(token.Part, isMatch);
+            else
+                return token.Class.CreateSyntax(token.Part, right, isMatch);
+        }
+        else{
+            if(right.IsEmpty)
+                return token.Class.CreateSyntax(left, token.Part, isMatch);
+            else{
                 TSyntax xl = left;
                 TSyntax xr = right;
-
                 return token.Class.CreateSyntax(xl, token.Part, xr, isMatch);
             }
-            else
-                return token.Class.CreateSyntax(left, token.Part, isMatch);
-        else
-            if (right.IsValid)
-                return token.Class.CreateSyntax(token.Part, right, isMatch);
-            else
-                return token.Class.CreateSyntax(token.Part, isMatch);
+        }
     }
-
 }
