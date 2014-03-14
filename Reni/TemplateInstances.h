@@ -36,3 +36,5 @@ ContextFeature(SignToken);
 
 template <typename T>
 pure_p_implementation(FeatureProvider<T>, Ref<Feature>, feature);
+template <typename T>
+pure_p_implementation(ContextFeatureProvider<T>, Ref<ContextFeature>, feature);

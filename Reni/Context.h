@@ -1,8 +1,9 @@
 #pragma once
 #include "TokenClass.h"
 #include "../HWLib/RefCountProvider.h"
-#include "FeatureProvider.h"
 #include "SearchResult.h"
+#include "ContextFeature.h"
+#include "ContextFeatureProvider.h"
 
 using namespace HWLib;
 
@@ -25,12 +26,13 @@ namespace Reni
         virtual_p(WeakRef<RootContext>, rootContext) = 0;
         SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;
 
-        virtual operator Ref<FeatureProvider<SignToken>, true>()const{return {};};
+        virtual operator Ref<ContextFeatureProvider<SignToken>, true>()const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const {
-            Ref<FeatureProvider<T>> f = *this;
-            return f->feature;
+            Ref<ContextFeatureProvider<T>> f = *this;
+            Ref<ContextFeature> ff = f->feature;
+            return *ff;
         }
     };
 }

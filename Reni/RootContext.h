@@ -17,6 +17,7 @@ namespace Reni{
         p(WeakRef<BitType>, bitType);
         p(WeakRef<VoidType>, voidType);
         ref_p;
+        virtual operator Ref<ContextFeatureProvider<SignToken>, true>()const override;
     private:
         override_p_function(WeakRef<RootContext>, rootContext){return &ref;};
         override_p_function(Array<String>, DumpData);

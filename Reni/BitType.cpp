@@ -10,6 +10,7 @@
 #include "VoidType.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "ArgVisitor.h"
+#include "ExpressionSyntax.h"
 
 static bool Trace = true;
 

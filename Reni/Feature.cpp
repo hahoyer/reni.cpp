@@ -1,5 +1,9 @@
 #include "Import.h"
 #include "Feature.h"
+#include "ContextFeature.h"
+#include "ExpressionSyntax.h"
+#include "Result.h"
+#include "../HWLib/Ref.h"
 
 static bool Trace = true;
 
@@ -16,3 +20,23 @@ ResultData const Feature::FunctionResult(
     b_;
     return{};
 };
+
+
+ResultData const ContextFeature::FunctionResult(
+    Context const&context,
+    Category category,
+    ExpressionSyntax const& expressionSyntax
+    )const{
+    a_if(expressionSyntax.left.IsEmpty, nd(expressionSyntax.left));    
+    return FunctionResult(context, category, expressionSyntax.right);
+}
+
+ResultData const ContextFeature::FunctionResult(
+    Context const&context,
+    Category category,
+    Ref<Syntax, true> const& right
+    )const{
+    md(context, category, right);
+    b_;
+    return{};
+}

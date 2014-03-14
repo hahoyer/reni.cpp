@@ -1,13 +1,15 @@
 #pragma once
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/DumpableObject.h"
-#include "ExpressionSyntax.h"
 
 using namespace HWLib;
 
 namespace Reni{
     class ArrayType;
-
+    class ExpressionSyntax;
+    class ResultData;
+    class Context;
+    class Category;
 
     class Feature
         : public DumpableObject
