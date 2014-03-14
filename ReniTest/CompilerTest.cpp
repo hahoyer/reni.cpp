@@ -14,8 +14,8 @@ void CompilerTest::Check(String const& text, String const expectedResult){
         return;
     
     dd("Text:\n" + text +"\n");
-    nd(expectedResult);
-    nd(result.data);
-    dd("c++:\n" + co.cppCode + "\n");
+    d(expectedResult);
+    d(result.data);
+    dd("c++ code:\n" + co.cppCode + "\n");
     a_fail_throw_;
 };

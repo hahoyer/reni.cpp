@@ -24,7 +24,7 @@ SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass cons
     return tokenClass.featureClass->GetDefinition(*left->Type(*this));
 }
 
-Context::operator Ref<ContextFeatureProvider<SignToken>, true>() const{
+Context::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{
     md_;
     mb;
 }

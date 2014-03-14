@@ -8,17 +8,20 @@ typedef TokenFactory::TokenClass TokenClass;
 //using TokenFactory = SimpleTokenFactory;
 //using TokenClass = TokenFactory::TokenClass;
 
-static TokenClass const theOnlyInstance;
+static TokenClass const theMatchInstance = true;
+static TokenClass const theNormalInstance = false;
 
-TokenClass const & TokenFactory::End =(theOnlyInstance);
-TokenClass const & TokenFactory::Number(theOnlyInstance);
-TokenClass const & TokenFactory::Text(theOnlyInstance);
-TokenClass const & TokenFactory::Start(theOnlyInstance);
+TokenClass const & TokenFactory::End =(theMatchInstance);
+TokenClass const & TokenFactory::Number(theNormalInstance);
+TokenClass const & TokenFactory::Text(theNormalInstance);
+TokenClass const & TokenFactory::Start(theNormalInstance);
 
-TokenClass const & TokenFactory::GetTokenClass(String const &){
-    return theOnlyInstance;
+TokenClass const & TokenFactory::GetTokenClass(String const &name){
+    if(name.Count == 1 && String(")]}").Contains(name[0]))
+        return theMatchInstance;
+    return theNormalInstance;
 };
 
 TokenClass const& TokenFactory::GetErrorClass(String const&){
-    return theOnlyInstance;
+    return theNormalInstance;
 };

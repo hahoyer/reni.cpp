@@ -24,11 +24,13 @@ namespace Reni
         TokenClass() = default;
         TokenClass(TokenClass const&) = delete;
 
-        ref_p;
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax >const right, bool isMatch)const;
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, bool isMatch)const;
-        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right, bool isMatch)const;
-        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const;
+        AssumeConstObject;
+        virtual bool AcceptsMatch(bool isMatch)const{ return !isMatch; };
+        Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const;
+        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax >const right)const;
+        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part)const;
+        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right)const;
+        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part)const;
         virtual_p(WeakRef<FeatureClass>, featureClass) = 0;
     private:
         override_p_function(Array<String>, DumpData){

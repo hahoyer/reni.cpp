@@ -15,7 +15,6 @@ namespace Reni{
         virtual ResultData const FunctionResult(
             Context const&context,
             Category category,
-            TokenClass const&tokenClass,
             Ref<Syntax, true> const& right
             )const;
     private:

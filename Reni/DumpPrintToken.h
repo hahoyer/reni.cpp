@@ -18,11 +18,11 @@ namespace Reni{
         }
     };
 
-    class SignToken final : public DefineableToken{
+    class MinusToken final : public DefineableToken{
         using baseType = DefineableToken;
-        using thisType = SignToken;
+        using thisType = MinusToken;
     public:
-        SignToken(String const&name) : baseType(name){}
+        MinusToken() : baseType("-"){}
     private:
         GenericFeatureClass<thisType> feature;
         override_p_function(WeakRef<FeatureClass>, featureClass){

@@ -8,25 +8,26 @@ namespace Reni
     class Category;
     class ResultData;
 
-    class TerminalTokenClass{
-    public:
-        virtual ResultData const GetResultData(Context const&context, Category category, SourcePart const&part)const;
-    };
-
-
+    template <class TTokenClass>
     class TerminalSyntax : public Syntax
     {
-        using baseType = Syntax;
-        TerminalTokenClass const& tokenClass;
+        typedef Syntax baseType;
+        typedef TerminalSyntax thisType;
+        TTokenClass const& tokenClass;
     public:
-        TerminalSyntax(TerminalTokenClass const& tokenClass, SourcePart const part)
+        TerminalSyntax(TTokenClass const& tokenClass, SourcePart const part)
             : baseType(part)
             , tokenClass(tokenClass)
         {
             SetDumpString();
         }
     private:
-        override_p_function(Array<String>, DumpData);
-        virtual ResultData const GetResultData(Context const&context, Category category)const override;
+        override_p_function(Array<String>, DumpData){ return{nd(tokenClass)}; };
+
+        ResultData const GetResultData(Context const&context, Category category)const override{
+            return tokenClass.GetResultData(context, category, part);
+        }
+
+        Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const override{return{};};
     };
 };

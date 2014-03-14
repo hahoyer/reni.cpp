@@ -35,3 +35,17 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     a_is(category, <=, result.complete);
     return result;
 }
+
+Ref<Syntax, true> ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+    Ref<Syntax, true> newLeft;
+    if(!left.IsEmpty)
+        newLeft = left->Replace(visitor);
+    Ref<Syntax, true> newRight;
+    if(!right.IsEmpty)
+        newRight = right->Replace(visitor);
+
+    if(newLeft.IsEmpty && newRight.IsEmpty)
+        return{};
+
+    return new ExpressionSyntax(tokenClass, newLeft || left, part, newRight || right);
+}

@@ -67,6 +67,7 @@ namespace _HWLang{
         class TokenClass final : public DumpableObject{
             using baseType = DumpableObject;
             using thisType = TokenClass;
+            bool const isMatch;
         public:
             typedef SimpleSyntax<TokenClass> Syntax;
 
@@ -74,20 +75,27 @@ namespace _HWLang{
 
             TokenClass() = default;
             TokenClass(TokenClass const&) = delete;
+            TokenClass(bool isMatch):isMatch(isMatch){};
 
-            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
+            bool AcceptsMatch(bool isMatch) const{ return isMatch == this->isMatch; }
+            
+            Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const{
+                return new Syntax(left, *this, part, right, !isMatch);
+            };
+
+            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const{
                 return new Syntax(left, *this, part, right, isMatch);
             };
 
-            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part, bool isMatch)const{
+            Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part)const{
                 return new Syntax(left, *this, part, {}, isMatch);
             };
 
-            Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right, bool isMatch)const{
+            Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right)const{
                 return new Syntax({}, *this, part, right, isMatch);
             };
 
-            Ref<Syntax> const CreateSyntax(SourcePart const&part, bool isMatch)const{
+            Ref<Syntax> const CreateSyntax(SourcePart const&part)const{
                 return new Syntax({}, *this, part, {}, isMatch);
             };
 

@@ -8,6 +8,7 @@
 #include "Result.h"
 #include "TokenClass.h"
 #include "../HWLib/RefCountContainer.instance.h"
+#include "SyntaxVisitor.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -33,15 +34,20 @@ Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&conte
     return r;
 }
 
-
 ResultData const Syntax::GetResultData(Context const&context, Category category)const{
     md(context, category);
     b_;
     return_d(ResultData());
 }
 
-Ref<Syntax> const Syntax::SignMacro(TokenClass const&sign) const{
-    md(sign);
+
+Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const{
+    SyntaxArgVisitor visitor = arg;
+    return Replace(visitor) || Ref<Syntax> (ref);
+}
+
+Ref<Syntax,true> Syntax::Replace(SyntaxArgVisitor const&visitor) const{
+    md(visitor);
     mb;
 }
 

@@ -32,7 +32,7 @@ template <>\
 }
 
 TypeFeature(DumpPrintToken);
-ContextFeature(SignToken);
+ContextFeature(MinusToken);
 
 template <typename T>
 pure_p_implementation(FeatureProvider<T>, Ref<Feature>, feature);

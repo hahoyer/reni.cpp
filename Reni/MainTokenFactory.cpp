@@ -26,6 +26,26 @@ private:
 };
 
 
+class ArgToken final : public TokenClass{
+    using baseType = TokenClass;
+    using thisType = TextToken;
+    GenericFeatureClass<thisType> feature;
+public:
+    p(String, name){ return "arg"; };
+
+    ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
+        md(context, category);
+        b_;
+        return{};
+    }
+private:
+    Ref<Syntax> const CreateSyntax(SourcePart const&part)const override{
+        return new TerminalSyntax<ArgToken>(*this, part);
+    }
+    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+};
+
+
 class UserDefinedToken final : public DefineableToken {
     using baseType = DefineableToken;
     using thisType = UserDefinedToken;
@@ -55,15 +75,15 @@ MainTokenFactory::MainTokenFactory()
 :tokenClasses([](String const& key){return new UserDefinedToken(key);})
 , errorClasses([](String const& key){return new SyntaxErrorToken(key); })
 {
+    AddTokenClass(new ArgToken);
+    AddTokenClass(new DumpPrintToken);
     AddTokenClass(new LeftParenthesisToken(1));
     AddTokenClass(new LeftParenthesisToken(2));
     AddTokenClass(new LeftParenthesisToken(3));
+    AddTokenClass(new MinusToken);
     AddTokenClass(new RightParenthesisToken(1));
     AddTokenClass(new RightParenthesisToken(2));
     AddTokenClass(new RightParenthesisToken(3));
-    AddTokenClass(new SignToken("+"));
-    AddTokenClass(new SignToken("-"));
-    AddTokenClass(new DumpPrintToken);
 }
 
 TokenClass const& MainTokenFactory::GetTokenClass(String const&name){

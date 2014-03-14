@@ -36,19 +36,21 @@ namespace HWLang{
 
     template <class TSyntax, class TSyntaxOption, class TToken>
     TSyntax const CreateSyntax(TSyntaxOption const&left, TToken const&token, TSyntaxOption const&right, bool isMatch){
+        if(!token.Class.AcceptsMatch(isMatch))
+            return token.Class.Mismatch(left, token.Part, right);
         if(left.IsEmpty){
             if(right.IsEmpty)
-                return token.Class.CreateSyntax(token.Part, isMatch);
+                return token.Class.CreateSyntax(token.Part);
             else
-                return token.Class.CreateSyntax(token.Part, right, isMatch);
+                return token.Class.CreateSyntax(token.Part, right);
         }
         else{
             if(right.IsEmpty)
-                return token.Class.CreateSyntax(left, token.Part, isMatch);
+                return token.Class.CreateSyntax(left, token.Part);
             else{
                 TSyntax xl = left;
                 TSyntax xr = right;
-                return token.Class.CreateSyntax(xl, token.Part, xr, isMatch);
+                return token.Class.CreateSyntax(xl, token.Part, xr);
             }
         }
     }

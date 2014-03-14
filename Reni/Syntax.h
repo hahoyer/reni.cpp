@@ -15,7 +15,7 @@ namespace Reni
     class ResultCache;
     class TokenClass;
     class Type;
-
+    class SyntaxArgVisitor;
 
     class Syntax 
         : public WithId<DumpableObject, Syntax>
@@ -38,12 +38,14 @@ namespace Reni
             mb;
         };
 
+        AssumeConstObject;
         Ref<CodeItem> const Code(Context const&context)const;
         WeakRef<Type>const Type(Context const&context)const;
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;
         virtual ResultData const GetResultData(Context const&context, Category category)const;
 
-        Ref<Syntax> const SignMacro(TokenClass const&sign)const;
+        Ref<Syntax> const ReplaceArg(Ref<Syntax> const&arg)const;
+        virtual Ref<Syntax,true> Replace(SyntaxArgVisitor const&visitor)const;
     };
 
     

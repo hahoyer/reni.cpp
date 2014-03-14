@@ -13,7 +13,7 @@ namespace Reni
     class ResultData;
     class Syntax;
     class RootContext;
-    class SignToken;
+    class MinusToken;
 
     class Context 
         : public WithId<DumpableObject, Context>
@@ -26,7 +26,7 @@ namespace Reni
         virtual_p(WeakRef<RootContext>, rootContext) = 0;
         SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;
 
-        virtual operator Ref<ContextFeatureProvider<SignToken>, true>()const;
+        virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const {
