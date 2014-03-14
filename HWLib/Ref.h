@@ -50,6 +50,19 @@ namespace HWLib{
         Ref(Ref<T> const&other) :baseType(other){};
         DefaultAssignmentOperator;
         p(bool, IsEmpty){ return baseType::IsEmpty; }
+
+        template <class TOther>
+        friend TOther operator||(Ref<T, true> left, TOther right){
+            if(left.IsEmpty)
+                return right;
+            return left;
+        }
+        template <class TOther>
+        friend TOther operator||(Ref<T, true> left, std::function<TOther()> right){
+            if(left.IsEmpty)
+                return right();
+            return left;
+        }
     };
 
 }
