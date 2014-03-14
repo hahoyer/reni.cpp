@@ -1,5 +1,7 @@
 #pragma once
-#include "..\HWLang\Token.h"
+#include "../HWLib/String.h"
+#include "../HWLang/Token.h"
+#include "../HWLib/Ref.h"
 
 using namespace HWLib;
 using namespace HWLang;
@@ -32,6 +34,7 @@ namespace Reni
         p(Ref<CodeItem>, code);
         p(String, cppCode);
         ExecutionResult const Execute();
-    };
 
+        static Ref<Syntax> const GetSyntaxFromText(String const& text);
+    };
 }

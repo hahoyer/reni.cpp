@@ -35,11 +35,9 @@ class Compiler::internal final
     String const fileName;
 public:
     ValueCache<Ref<CodeItem>> codeCache;
-    ValueCache<ScannerInstance> scannerCache;
     ValueCache<Ref<Syntax>> syntaxCache;
     ValueCache<String> cppCodeCache;
 private:
-    ValueCache<CtrlRef < Source>> sourceCache;
     Ref<RootContext> rootContext;
 public:
     internal() = delete;
@@ -48,8 +46,6 @@ public:
     internal(String const&fileName)
         : fileName  (fileName)
         , rootContext(new RootContext)
-        , sourceCache([=]{return Source::CreateFromFile(fileName); })
-        , scannerCache([&]{return Reni::ScannerInstance(*sourceCache.Value); })
         , syntaxCache([&]{return GetSyntax(); })
         , codeCache  ([&]{return GetCode(); })
         , cppCodeCache([&]{return GetCppCode(); })
@@ -62,10 +58,24 @@ public:
 
     }
 
+    static Ref<Syntax> const GetSyntaxFromText(String const& text){
+        return GetSyntax(*Source::CreateFromText(text));
+    };
+
 private:
     Ref<Syntax> const GetSyntax()const{
-        auto scannerInstance = scannerCache.Value;
-        return Parse<Ref<Syntax>, Ref<Syntax,true>, TokenClass, Token>(prioTable, scannerInstance);
+        auto source = *Source::CreateFromFile(fileName);
+        auto scannerInstance = Reni::ScannerInstance(source);
+        return Parse<Ref<Syntax>, Ref<Syntax,true>, TokenClass, Token>(prioTable(), scannerInstance);
+    };
+
+    static Ref<Syntax> const GetSyntaxFromFIle(String const& file){
+        return GetSyntax(*Source::CreateFromFile(file));
+    };
+
+    static Ref<Syntax> const GetSyntax(Source const&source){
+        auto scannerInstance = Reni::ScannerInstance(source);
+        return Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token>(prioTable(), scannerInstance);
     };
 
     Ref<CodeItem> const GetCode()const{
@@ -73,7 +83,7 @@ private:
         return syntax->Code(*rootContext);
     };
 
-    p(PrioTable, prioTable){
+    static PrioTable const prioTable(){
         return
             HWLang::PrioTable::CreateLeft({ Any })
             .Left({"+", "-"})

@@ -7,6 +7,7 @@
 #include "Result.h"
 #include "FeatureProvider.h"
 #include "TokenClass.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 static bool Trace = true;
 #include "Compiler.internal.h"
@@ -16,10 +17,6 @@ using namespace Reni;
 Compiler::Compiler(String const&fileName)
 : _internal(new internal(fileName))
 {}
-
-p_implementation(Compiler, Array<Reni::Token>, tokens){
-    return _internal->scannerCache.Value.ToArray;
-};
 
 p_implementation(Compiler, Ref<Syntax>, syntax){
     return _internal->syntaxCache.Value;
@@ -37,6 +34,10 @@ ExecutionResult const Compiler::Execute(){
     return _internal->Execute();
 }
 
+Ref<Syntax> const Compiler::GetSyntaxFromText(String const& text){
+    return internal::GetSyntaxFromText(text);
+};
+
 
 String const Compiler::internal::CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
@@ -44,4 +45,3 @@ String const Compiler::internal::CodeVisitor::Const(Size const size, BitsConst c
     return "return " + String::Convert(int(value)) + ";";
 }
 
-#include "../HWLib/RefCountContainer.instance.h"
