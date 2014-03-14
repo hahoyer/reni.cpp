@@ -1,13 +1,15 @@
 #pragma once
 
+using namespace HWLib;
+
 namespace HWLang{
-    template <class Token, class TTokenFactory, class Scanner>
-    class ScannerInstance : public Enumerable<Token>::Iterator, public DumpableObject{
-        using thisType = ScannerInstance;
-        using baseType = typename Enumerable<Token>::Iterator;
+    template <class TToken, class TTokenFactory, class Scanner>
+    class ScannerInstance : public Enumerable<TToken>::Iterator, public DumpableObject{
+        typedef ScannerInstance thisType;
+        typedef typename Enumerable<TToken>::Iterator baseType;
     public:
-        using TokenClass = typename Token::TokenClass;
-        using TokenFactory = typename TTokenFactory;
+        typedef typename TToken::TokenClass TokenClass;
+        typedef typename TTokenFactory TokenFactory;
     private:
         SourcePosition position;
         bool endTokenReturned;
@@ -22,9 +24,9 @@ namespace HWLang{
         DefaultAssignmentOperator;
 
         override_p_function(bool, IsValid){ return !endTokenReturned; };
-        Token const Step() override;
+        TToken const Step() override;
     private:
-        Token const Step(int count, TokenClass const& tokenClass);
+        TToken const Step(int count, TokenClass const& tokenClass);
         override_p_function(Array<String>, DumpData);
     };
 }
