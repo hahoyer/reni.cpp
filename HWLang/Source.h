@@ -1,6 +1,8 @@
 #pragma once
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/ValueCache.h"
+#include "../HWLib/RefCountProvider.h"
+#include "../HWLib/Ref.h"
 
 using namespace HWLib;
 
@@ -8,7 +10,9 @@ namespace HWLang
 {
     class SourcePosition;
 
-    class Source final : public DumpableObject
+    class Source final 
+        : public DumpableObject
+        , public RefCountProvider
     {
         using thisType = Source;
         String const fileName;
@@ -19,7 +23,8 @@ namespace HWLang
         Source(Source const& other);
         static Source const FromFile(String const& fileName);
         static Source const FromText(String const& text);
-        static CtrlRef<Source>const CreateFromFile(String const& fileName);
+        static Ref<Source>const CreateFromFile(String const& fileName);
+        static Ref<Source>const CreateFromText(String const& text);
 
         virtual ~Source(){};
 

@@ -4,6 +4,8 @@
 #include "SourcePosition.h"
 #include "../HWLib/String.h"
 #include "../HWLib/File.h"
+#include "../HWLib/Ref.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 using namespace HWLang;
 using namespace HWLib;
@@ -20,9 +22,14 @@ Source const Source::FromFile(String const& fileName)
     return Source(fileName,"");
 }
 
-CtrlRef<Source>const Source::CreateFromFile(HWLib::String const& fileName)
+Ref<Source>const Source::CreateFromFile(String const& fileName)
 {
     return new Source(fileName, "");
+}
+
+Ref<Source>const Source::CreateFromText(String const& text)
+{
+    return new Source("", text);
 }
 
 Source const Source::FromText(String const& text)
