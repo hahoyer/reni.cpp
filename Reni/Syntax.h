@@ -42,6 +42,8 @@ namespace Reni
         WeakRef<Type>const Type(Context const&context)const;
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;
         virtual ResultData const GetResultData(Context const&context, Category category)const;
+
+        Ref<Syntax> const SignMacro(TokenClass const&sign)const;
     };
 
     

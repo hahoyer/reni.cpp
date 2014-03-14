@@ -40,6 +40,10 @@ ResultData const Syntax::GetResultData(Context const&context, Category category)
     return_d(ResultData());
 }
 
+Ref<Syntax> const Syntax::SignMacro(TokenClass const&sign) const{
+    md(sign);
+    mb;
+}
 
 override_p_implementation(InfixSyntax, Array<String>, DumpData){
     return {

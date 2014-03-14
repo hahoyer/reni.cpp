@@ -26,17 +26,18 @@ ResultData const ContextFeature::FunctionResult(
     Context const&context,
     Category category,
     ExpressionSyntax const& expressionSyntax
-    )const{
+)const{
     a_if(expressionSyntax.left.IsEmpty, nd(expressionSyntax.left));    
-    return FunctionResult(context, category, expressionSyntax.right);
+    return FunctionResult(context, category, expressionSyntax.tokenClass,expressionSyntax.right);
 }
 
 ResultData const ContextFeature::FunctionResult(
     Context const&context,
     Category category,
+    TokenClass const&tokenClass,
     Ref<Syntax, true> const& right
-    )const{
-    md(context, category, right);
+)const{
+    md(context, category, tokenClass, right);
     b_;
     return{};
 }

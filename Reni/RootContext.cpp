@@ -5,25 +5,14 @@
 #include "ContextFeature.h"
 #include "ContextFeatureProvider.h"
 #include "FeatureProvider.h"
+#include "Result.h"
+#include "SignFeatureProvider.h"
+#include "Syntax.h"
 #include "VoidType.h"
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;
 static bool Trace = true;
-
-
-class SignFeatureProvider final : public ContextFeatureProvider<SignToken>{
-    typedef FeatureProvider<SignToken> baseType;
-    typedef SignFeatureProvider thisType;
-
-    class Feature final : public ContextFeature{
-    private:
-        override_p_function(Array<String>, DumpData) { return{}; }
-    };
-
-    override_p_function(Ref<ContextFeature>, feature){ return new Feature(); }
-    override_p_function(Array<String>, DumpData) { return{}; }
-};
 
 
 RootContext::RootContext()
