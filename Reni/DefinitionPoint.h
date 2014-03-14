@@ -11,7 +11,7 @@ namespace Reni{
         using baseType = WithId<DumpableObject, DefinitionPoint>;
         using thisType = DefinitionPoint;
     public:
-        ref_p;
+        AssumeConstObject;
     private:
         override_p_function(Array<String>, DumpData){ return{}; };
     };

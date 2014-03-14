@@ -8,16 +8,16 @@ namespace Reni{
     class VoidType;
 
     class RootContext : public Context{
-        using baseType = Context;
-        using thisType = RootContext;
-        Ref<BitType> const bitTypeInstance;
-        Ref<VoidType> const voidTypeInstance;
+        typedef Context baseType;
+        typedef RootContext thisType;
+        class internal;
+        WeakRef<internal> _internal;
     public:
         RootContext();
         p(WeakRef<BitType>, bitType);
         p(WeakRef<VoidType>, voidType);
-        ref_p;
-        virtual operator Ref<ContextFeatureProvider<SignToken>, true>()const override;
+        AssumeConstObject;
+        virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const override;
     private:
         override_p_function(WeakRef<RootContext>, rootContext){return &ref;};
         override_p_function(Array<String>, DumpData);

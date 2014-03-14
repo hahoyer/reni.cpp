@@ -15,7 +15,7 @@ namespace Reni{
         using baseType = WithId<DumpableObject, FeatureClass >;
         using thisType = FeatureClass;
     public:
-        ref_p;
+        AssumeConstObject;
 
         virtual SearchResult const GetDefinition(Type const&type)const = 0;
         virtual SearchResult const GetDefinition(Context const&context)const = 0;

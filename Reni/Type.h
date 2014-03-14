@@ -32,7 +32,7 @@ namespace Reni{
         virtual_p(Size, size) = 0;
         Ref<Type> const array(int count)const;
         ResultData const GetResultData(Category category, BitsConst const&value)const;
-        ref_p;
+        AssumeConstObject;
 
         template<class T>
         SearchResult const GetGenericDefinition()const{

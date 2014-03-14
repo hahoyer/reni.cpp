@@ -32,7 +32,7 @@ namespace Reni
         static Ref<CodeItem> const DumpPrintNumber(ArrayType const&value);
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
-        ref_p;
+        AssumeConstObject;
         virtual Ref<CodeItem,true> const Replace(ReplaceVisitor const&arg) const;
         virtual Ref<CodeItem> const Fiber(Array<Ref<FiberItem>> const&items)const;
     };

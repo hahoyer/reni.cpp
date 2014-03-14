@@ -53,4 +53,4 @@
 
 #define base_p_name(NAME) baseType::virtual_get_##NAME()
 
-#define ref_p mutable_p(thisType&, ref)const{return const_cast<thisType&>(*this);}
+#define AssumeConstObject mutable_p(thisType&, ref)const{return const_cast<thisType&>(*this);}

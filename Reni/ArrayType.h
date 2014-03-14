@@ -18,7 +18,7 @@ namespace Reni{
             SetDumpString();
         }
 
-        ref_p;
+        AssumeConstObject;
     private:
         virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const override;
         override_p_function(Size, size);
