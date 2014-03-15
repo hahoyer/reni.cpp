@@ -44,7 +44,7 @@ namespace Reni
         virtual Ref<Syntax> const CreateSyntax(SourcePart const&part)const = 0;
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
-            a_if(left.IsEmpty, nd(left) + nd(*this)+ nd(part) + nd(right));
+            a_if(left.IsEmpty, nd(left) + "\n" + nd(*this) + "\n" + nd(part) + "\n" + nd(right));
             a_if_(right.IsEmpty);
             return CreateSyntax(part);
         };

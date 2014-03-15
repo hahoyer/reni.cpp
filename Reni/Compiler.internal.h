@@ -11,6 +11,7 @@
 #include "../HWLib/ValueCache.h"
 #include "../HWLang/ScannerInstance.h"
 #include "../HWLang/PrioParser.h"
+#include "PrioTable.h"
 
 using namespace HWLib;
 using namespace HWLang;
@@ -63,33 +64,17 @@ public:
     };
 
 private:
-    Ref<Syntax> const GetSyntax()const{
-        auto source = *Source::CreateFromFile(fileName);
-        auto scannerInstance = Reni::ScannerInstance(source);
-        return Parse<Ref<Syntax>, Ref<Syntax,true>, TokenClass, Token>(prioTable(), scannerInstance);
-    };
-
-    static Ref<Syntax> const GetSyntaxFromFIle(String const& file){
-        return GetSyntax(*Source::CreateFromFile(file));
-    };
-
+    Ref<Syntax> const GetSyntax()const{return GetSyntaxFromFile(fileName);};
+    static Ref<Syntax> const GetSyntaxFromFile(String const& file){return GetSyntax(*Source::CreateFromFile(file));};
+    
     static Ref<Syntax> const GetSyntax(Source const&source){
         auto scannerInstance = Reni::ScannerInstance(source);
-        return Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token>(prioTable(), scannerInstance);
+        return Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token>(PrioTable::Main(), scannerInstance);
     };
 
     Ref<CodeItem> const GetCode()const{
         auto syntax = syntaxCache.Value;
         return syntax->Code(*rootContext);
-    };
-
-    static PrioTable const prioTable(){
-        return
-            HWLang::PrioTable::CreateLeft({ Any })
-            .Left({"+", "-"})
-            .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
-            .ParenthesisLevel(Start, End)
-            ;
     };
 
     class CodeVisitor : public Reni::CodeVisitor
