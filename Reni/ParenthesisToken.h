@@ -3,8 +3,8 @@
 #include "FeatureClass.h"
 
 namespace Reni{
-    class LeftParenthesisToken final : public TokenClass{
-        using baseType = TokenClass;
+    class LeftParenthesisToken final : public PrefixTokenClass{
+        using baseType = PrefixTokenClass;
         using thisType = LeftParenthesisToken;
 
         int const level;
@@ -17,10 +17,7 @@ namespace Reni{
             return level[" {[("];
         }
     private:
-        p_function(Optional<bool>,HasLeft) override{ return false; }
-        p_function(Optional<bool>,HasRight) override{ return true; }
-
-        Ref<Syntax > const Prefix(SourcePart const&part, Ref<Syntax>const right)const  override{
+        Ref<Syntax > const CreateSyntax(SourcePart const&part, Ref<Syntax>const right)const  override final{
             return new OpenSyntax(level, part, right);
         };
         p_function(Array<String>,DumpData) override{
@@ -55,8 +52,8 @@ namespace Reni{
     };
 
 
-    class RightParenthesisToken final : public TokenClass{
-        using baseType = TokenClass;
+    class RightParenthesisToken final : public SuffixTokenClass{
+        using baseType = SuffixTokenClass;
         using thisType = RightParenthesisToken;
 
         int const level;
@@ -69,10 +66,7 @@ namespace Reni{
         }
     private:
         bool AcceptsMatch(bool isMatch) const override{ return isMatch; }
-        p_function(Optional<bool>,HasLeft) override{ return true; }
-        p_function(Optional<bool>,HasRight) override{ return false; }
-
-        virtual Ref<Syntax > const Suffix(Ref<Syntax >const left, SourcePart const&part)const  override{
+        Ref<Syntax > const CreateSyntax(Ref<Syntax >const left, SourcePart const&part)const  override final{
             return left->ParenthesisMatch(level, part);
         };
 

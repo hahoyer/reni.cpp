@@ -37,33 +37,8 @@ namespace HWLang{
     template <class TSyntax, class TSyntaxOption, class TToken>
     TSyntax const CreateSyntax(TSyntaxOption const&left, TToken const&token, TSyntaxOption const&right, bool isMatch){
         auto& tc = token.Class;
-
-        if(!tc.AcceptsMatch(isMatch)
-            || tc.HasLeft.IsValid && tc.HasLeft == left.IsEmpty
-            || tc.HasRight.IsValid && tc.HasRight == right.IsEmpty)
-            return tc.Mismatch(left, token.Part, right);
-
-        if(!tc.HasLeft.IsValid){
-            if(!tc.HasRight.IsValid)
-                return tc.Anyfix(left, token.Part, right);
-            if(tc.HasRight)
-                return tc.Preanyfix(left, token.Part, right);
-            return tc.NoPrefix(left, token.Part);
-        }
-
-        if(tc.HasLeft){
-            if(!tc.HasRight.IsValid)
-                return tc.Sufanyfix(left, token.Part, right);
-            if(tc.HasRight)
-                return tc.Infix(left, token.Part, right);
-            return tc.Suffix(left, token.Part);
-        }
-
-        if(!tc.HasRight.IsValid)
-            return tc.NoSuffix(token.Part, right);
-        if(tc.HasRight)
-            return tc.Prefix(token.Part, right);
-        return tc.Terminal(token.Part);
-
+        if(tc.AcceptsMatch(isMatch))
+            return tc.CreateSyntax(left, token.Part, right);
+        return tc.Mismatch(left, token.Part, right);
     }
 }

@@ -13,7 +13,7 @@ namespace Reni{
     protected:
         DefineableToken(String const&name) : name(name){};
     private:
-        Ref<Syntax> const Anyfix(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override{
+        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override{
             return new ExpressionSyntax(*this, left, part, right);
         };
     };

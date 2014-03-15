@@ -9,7 +9,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-Ref<Syntax> const NumberToken::Terminal(SourcePart const&part)const{
+Ref<Syntax> const NumberToken::CreateSyntax(SourcePart const&part)const{
     return new TerminalSyntax<NumberToken>(*this, part);
 };
 

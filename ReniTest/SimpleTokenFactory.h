@@ -78,39 +78,11 @@ namespace _HWLang{
             TokenClass(bool isMatch):isMatch(isMatch){};
 
             bool AcceptsMatch(bool isMatch) const{ return isMatch == this->isMatch; }
-            virtual_p(Optional<bool>, HasLeft){ return{}; }
-            virtual_p(Optional<bool>, HasRight){ return{}; }
 
             Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const{
                 return new Syntax(left, *this, part, right, !isMatch);
             };
-            Ref<Syntax> const Infix(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax      >const right)const{
-                return new Syntax(left, *this, part, right, isMatch);
-            };
-            Ref<Syntax> const Suffix(Ref<Syntax >const left, SourcePart const&part)const{
-                return new Syntax(left, *this, part, {}, isMatch);
-            };
-            Ref<Syntax> const Sufanyfix(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax, true>const right)const{
-                return new Syntax(left, *this, part, right, isMatch);
-            };
-
-            Ref<Syntax> const Prefix(SourcePart const&part, Ref<Syntax      >const right)const{
-                return new Syntax({}, *this, part, right, isMatch);
-            };
-            Ref<Syntax> const Terminal(SourcePart const&part)const{
-                return new Syntax({}, *this, part, {}, isMatch);
-            };
-            Ref<Syntax> const NoSuffix(SourcePart const&part, Ref<Syntax, true>const right)const{
-                return new Syntax({}, *this, part, right, isMatch);
-            };
-
-            Ref<Syntax> const Preanyfix(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax    >const right)const{
-                return new Syntax(left, *this, part, right, isMatch);
-            };
-            Ref<Syntax> const NoPrefix(Ref<Syntax, true>const left, SourcePart const&part)const{
-                return new Syntax(left, *this, part, {}, isMatch);
-            };
-            Ref<Syntax> const Anyfix(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const{
+            Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const{
                 return new Syntax(left, *this, part, right, isMatch);
             };
 

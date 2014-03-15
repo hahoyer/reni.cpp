@@ -11,24 +11,32 @@
 #include "TokenClass.h"
 #include "SyntaxErrorToken .h"
 #include "ParenthesisToken.h"
+#include "TemplateInstances.h"
+#include "../HWLib/RefCountContainer.instance.h"
+
 
 bool Trace = true;
 using namespace Reni;
 using namespace HWLang;
 
 
-class TextToken final : public TokenClass{
-    using baseType = TokenClass;
+class TextToken final : public TerminalTokenClass{
+    using baseType = TerminalTokenClass;
     using thisType = TextToken;
 private:
     GenericFeatureClass<thisType> feature;
     p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
+    
+    Ref<Syntax> const CreateSyntax(SourcePart const&part)const override final{
+        md(part);
+        mb;
+    }
 };
 
 
-class ArgToken final : public TokenClass{
-    using baseType = TokenClass;
-    using thisType = TextToken;
+class ArgToken final : public TerminalTokenClass {
+    using baseType = TerminalTokenClass;
+    using thisType = ArgToken;
     GenericFeatureClass<thisType> feature;
 public:
     p(String, name){ return "arg"; };
@@ -39,9 +47,7 @@ public:
         return{};
     }
 private:
-    p_function(Optional<bool>,HasLeft) override{ return false; }
-    p_function(Optional<bool>,HasRight) override{ return false; }
-    Ref<Syntax> const Terminal(SourcePart const&part)const override{
+    Ref<Syntax> const CreateSyntax(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);
     }
     p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
@@ -104,5 +110,8 @@ TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) con
     return *result;
 }
 
-#include "TemplateInstances.h"
-#include "../HWLib/RefCountContainer.instance.h"
+
+Ref<Syntax> const SyntaxErrorToken::CreateSyntax(SourcePart const&part)const{
+    md(part);
+    mb;
+}

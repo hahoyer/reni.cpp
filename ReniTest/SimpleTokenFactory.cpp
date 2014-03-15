@@ -25,6 +25,3 @@ TokenClass const & TokenFactory::GetTokenClass(String const &name){
 TokenClass const& TokenFactory::GetErrorClass(String const&){
     return theNormalInstance;
 };
-
-pure_p_implementation(TokenClass, Optional<bool>, HasLeft);
-pure_p_implementation(TokenClass, Optional<bool>, HasRight);

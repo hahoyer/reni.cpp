@@ -2,14 +2,15 @@
 #include "TokenClass.h"
 
 namespace Reni{
-    class SyntaxErrorToken final : public TokenClass{
+    class SyntaxErrorToken final : public TerminalTokenClass{
         using baseType = TokenClass;
         using thisType = SyntaxErrorToken;
         String const text;
     public:
         SyntaxErrorToken(String const text) : text(text){}
     private:
-        p_function(Array<String>,DumpData) override{
+        Ref<Syntax> const CreateSyntax(SourcePart const&part)const override final;
+        p_function(Array<String>, DumpData) override{
             return{nd(text)};
         };
 
