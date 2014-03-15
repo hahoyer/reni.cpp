@@ -27,7 +27,7 @@
 #define virtual_p_mutator_name(NAME) virtual_set_##NAME
 
 #define virtual_p_function(TYPE, NAME) TYPE const virtual_p_name(NAME)()const
-#define virtual_p_mutator_function(TYPE, NAME) virtual void p_mutator_name(NAME)(TYPE const&value)
+#define virtual_p_mutator_function(TYPE, NAME) virtual void virtual_p_mutator_name(NAME)(TYPE const&value)
 
 #define virtual_p(TYPE, NAME) virtual_p_definition(TYPE,NAME);\
     virtual_p_function(TYPE,NAME);\
@@ -37,14 +37,12 @@
     virtual p_function(TYPE,NAME)
 
 #define virtual_mutable_p(TYPE, NAME) \
-    p_mutable_definition(TYPE,NAME);\
+    virtual_p_mutable_definition(TYPE,NAME);\
     virtual_p_mutator_function(TYPE,NAME)\
-    virtual_p_function(TYPE,NAME)
-
-#define override_p_mutator_implementation(CLASS, TYPE, NAME) void CLASS::virtual_p_mutator_name(NAME)(TYPE const&value)
+    virtual p_function(TYPE,NAME)
 
 #define pure_p_implementation(CLASS, TYPE, NAME) TYPE const CLASS::virtual_p_name(NAME)()const{ return p_name(NAME)(); }; 
-#define pure_p_mutator_implementation(CLASS, TYPE, NAME) p_mutator_implementation(CLASS, TYPE, NAME){virtual_p_mutator_name(NAME)(value);} 
+#define pure_p_mutator_implementation(CLASS, TYPE, NAME) void CLASS::virtual_p_mutator_name(NAME)(TYPE const&value){p_mutator_name(NAME)(value);} 
 
 #define virtual_p_implementation(CLASS, TYPE, NAME) \
     pure_p_implementation(CLASS, TYPE, NAME);\
@@ -52,7 +50,7 @@
 
 #define virtual_p_mutator_implementation(CLASS, TYPE, NAME) \
     pure_p_mutator_implementation(CLASS,TYPE,NAME);\
-    override_p_mutator_implementation(CLASS, TYPE, NAME) 
+    p_mutator_implementation(CLASS, TYPE, NAME) 
 
 #define base_p_name(NAME) baseType::get_##NAME()
 

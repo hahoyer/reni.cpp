@@ -65,7 +65,7 @@ ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)con
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
-    auto baseDump = baseType::p_name(DumpData)();
+    auto baseDump = base_p_name(DumpData);
     auto thisDump = Array<String>({
         nd(context),
         nd(syntax)

@@ -442,7 +442,7 @@ CtrlRef<Enumerable<TResult>> const Enumerable<T>::Convert() const{
 template<typename TBase, typename TRealm>
 inline p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
     auto objectId = HWLib::Dump(ObjectId);
-    return baseType::p_name(DumpHeader)() + ".Id" + objectId;
+    return base_p_name(DumpHeader) + ".Id" + objectId;
 };
 
 
