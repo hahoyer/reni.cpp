@@ -44,6 +44,6 @@ namespace Reni{
         
         bool operator==(Type const&other)const{ return this == &other; }
     private:
-        override_p_function(Array<String>, DumpData){ return{}; };
+        p_function(Array<String>,DumpData) override{ return{}; };
     };
 }

@@ -90,7 +90,7 @@ namespace HWLib
             {
             }
 
-            override_p_function(bool, IsValid){ return _index >= 0 && _index < _parent.Count; }
+            p_function(bool, IsValid) override{ return _index >= 0 && _index < _parent.Count; }
             T const Step() override{ return _parent[_index++]; }
 
             void operator=(LocalIterator const&) = delete;

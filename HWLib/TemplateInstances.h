@@ -71,7 +71,7 @@ public:
     }
 
 protected:
-    override_p_function(bool, IsValid) {
+    p_function(bool,IsValid) override {
         return _parent->IsValid; 
     }
     T const Step()override{ return _parent->Step(); }
@@ -97,7 +97,7 @@ public:
     {
     }
 protected:
-    override_p_function(bool, IsValid){
+    p_function(bool,IsValid) override{
         return _count > 0 && _parent->IsValid; 
     }
     T const Step()override{ --_count; return _parent->Step(); }
@@ -116,7 +116,7 @@ public:
     {
     }
 private:
-    override_p_function(bool, IsValid){
+    p_function(bool,IsValid) override{
         return _left->IsValid || _right->IsValid; 
     }
 
@@ -153,7 +153,7 @@ public:
         current= {};
     }
 protected:
-    override_p_function(bool, IsValid){ return !current.IsEmpty; }
+    p_function(bool,IsValid) override{ return !current.IsEmpty; }
     T const Step()override{ 
         auto result = current;
         Align();
@@ -174,7 +174,7 @@ public:
     {
     }
 protected:
-    override_p_function(bool, IsValid){ return _parent->IsValid; }
+    p_function(bool,IsValid) override{ return _parent->IsValid; }
     TResult const Step()override{ return _selector(_parent->Step()); }
 };
 
@@ -191,7 +191,7 @@ public:
         Align();
     }
 protected:
-    override_p_function(bool, IsValid){
+    p_function(bool,IsValid) override{
         return !_subParent.IsEmpty && _subParent->IsValid;
     }
 
@@ -232,7 +232,7 @@ public:
     };
 
 protected:
-    override_p_function(bool, IsValid){
+    p_function(bool,IsValid) override{
         a_if_(rightIterator.IsValid);
         return rightIterator->IsValid;
     };
@@ -289,7 +289,7 @@ public:
     {
     }
 protected:
-    override_p_function(bool, IsValid){ return _parent->IsValid; }
+    p_function(bool,IsValid) override{ return _parent->IsValid; }
     TResult const Step()override{ return _parent->Step(); }
 };
 
@@ -440,9 +440,9 @@ CtrlRef<Enumerable<TResult>> const Enumerable<T>::Convert() const{
 };
 
 template<typename TBase, typename TRealm>
-inline override_p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
+inline p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
     auto objectId = HWLib::Dump(ObjectId);
-    return baseType::virtual_p_name(DumpHeader)() + ".Id" + objectId;
+    return baseType::p_name(DumpHeader)() + ".Id" + objectId;
 };
 
 

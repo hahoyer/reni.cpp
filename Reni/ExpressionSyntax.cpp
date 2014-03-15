@@ -16,7 +16,7 @@ ExpressionSyntax::ExpressionSyntax(TokenClass const& tokenClass, Ref<Syntax, tru
     SetDumpString();
 };
 
-override_p_implementation(ExpressionSyntax, Array<String>, DumpData)
+p_implementation(ExpressionSyntax, Array<String>, DumpData)
 {
     return{
         nd(left),

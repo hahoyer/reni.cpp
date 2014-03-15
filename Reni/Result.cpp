@@ -46,7 +46,7 @@ p_implementation(ResultCache, WeakRef<Type>, type){
     return data.type;
 }
 
-override_p_implementation(ResultCache, Array<String>, DumpData){
+p_implementation(ResultCache, Array<String>, DumpData){
     return{
         nd(pending),
         nd(data)
@@ -64,8 +64,8 @@ ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)con
     return context.GetResultData(category, syntax);
 }
 
-override_p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
-    auto baseDump = baseType::virtual_p_name(DumpData)();
+p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
+    auto baseDump = baseType::p_name(DumpData)();
     auto thisDump = Array<String>({
         nd(context),
         nd(syntax)
@@ -74,7 +74,7 @@ override_p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
 };
 
 
-override_p_implementation(ResultData, Array<String>, DumpData){
+p_implementation(ResultData, Array<String>, DumpData){
     return{
         nd(size),
         nd(type),

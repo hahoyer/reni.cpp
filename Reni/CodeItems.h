@@ -16,8 +16,8 @@ namespace Reni{
             , value(value)
         {}
     private:
-        override_p_function(Array<String>, DumpData){ return{ nd(size), nd(value) }; };
-        override_p_function(Size, size){ return size; };
+        p_function(Array<String>,DumpData) override{ return{ nd(size), nd(value) }; };
+        p_function(Size,size) override{ return size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
     };
 
@@ -31,9 +31,9 @@ namespace Reni{
             : size(size)
         {}
     private:
-        override_p_function(Array<String>, DumpData){ return{nd(size)}; };
-        override_p_function(Size, inSize){ return size; };
-        override_p_function(Size, outSize){ return 0; };
+        p_function(Array<String>,DumpData) override{ return{nd(size)}; };
+        p_function(Size,inSize) override{ return size; };
+        p_function(Size,outSize) override{ return 0; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const{ return {}; }
     };
@@ -48,8 +48,8 @@ namespace Reni{
             : type(type)
         {}
     private:
-        override_p_function(Array<String>, DumpData){ return{nd(type)}; };
-        override_p_function(Size, size){ return type.size; };
+        p_function(Array<String>,DumpData) override{ return{nd(type)}; };
+        p_function(Size,size) override{ return type.size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<CodeItem, true> const Replace(ReplaceVisitor const&arg) const override;
     };

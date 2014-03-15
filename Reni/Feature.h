@@ -23,7 +23,7 @@ namespace Reni{
             ExpressionSyntax const& expressionSyntax
             )const;
     private:
-        override_p_function(Array<String>, DumpData) {
+        p_function(Array<String>,DumpData) override {
             return{};
         }
     };

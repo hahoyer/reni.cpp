@@ -32,6 +32,6 @@ namespace Reni{
         bool operator==(Category const other)const;
         bool operator<=(Category const other)const;
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
     };
 }

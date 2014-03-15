@@ -17,7 +17,7 @@ namespace HWLib{
         static int NextObjectId;
         int const ObjectId;
         WithId() : ObjectId(NextObjectId++){};
-        override_p_function(String, DumpHeader);
+        p_function(String, DumpHeader) override;
     };
 
 

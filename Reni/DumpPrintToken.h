@@ -13,7 +13,7 @@ namespace Reni{
         DumpPrintToken() : baseType("dump_print"){}
     private:
         GenericFeatureClass<thisType> feature;
-        override_p_function(WeakRef<FeatureClass>, featureClass){
+        p_function(WeakRef<FeatureClass>,featureClass) override{
             return &feature.ref;
         }
     };
@@ -25,7 +25,7 @@ namespace Reni{
         MinusToken() : baseType("-"){}
     private:
         GenericFeatureClass<thisType> feature;
-        override_p_function(WeakRef<FeatureClass>, featureClass){
+        p_function(WeakRef<FeatureClass>,featureClass) override{
             return &feature.ref;
         }
     };

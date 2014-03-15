@@ -31,7 +31,7 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
             Category category,
             ExpressionSyntax const& expressionSyntax
             )const override;
-        override_p_function(Array<String>, DumpData) {return{ nd(value) };}
+        p_function(Array<String>,DumpData) override {return{ nd(value) };}
         p(Ref<CodeItem>, code){return CodeItem::DumpPrintNumber(value);}
     };
 
@@ -43,19 +43,19 @@ class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType
     public:
         For(ArrayType const&value) : value(value) {}
     private:
-        override_p_function(Ref<Reni::Feature>, feature){return new Feature(value);}
-        override_p_function(Array<String>, DumpData) {return{nd(value)};}
+        p_function(Ref<Reni::Feature>,feature) override{return new Feature(value);}
+        p_function(Array<String>,DumpData) override {return{nd(value)};}
     };
 
     
     virtual Ref<FeatureProvider<DumpPrintToken>, true>const Convert(ArrayType const&top)const override {
         return new For(top);
     }
-    override_p_function(Array<String>, DumpData) {return{};}
+    p_function(Array<String>,DumpData) override {return{};}
 
 };
 
-override_p_implementation(BitType, Size, size){ return Size(1); }
+p_implementation(BitType, Size, size){ return Size(1); }
 
 BitType::operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const{
     return new DumpPrintBitArray();
@@ -67,7 +67,7 @@ class InvalidArgumentList final : public DumpableObject{
 public:
     InvalidArgumentList(ExpressionSyntax const& expressionSyntax) : expressionSyntax(&expressionSyntax){}
 private:
-    override_p_function(Array<String>, DumpData){ return{nd(expressionSyntax)}; };
+    p_function(Array<String>,DumpData) override{ return{nd(expressionSyntax)}; };
 };
 
 ResultData const DumpPrintBitArray::Feature::FunctionResult(

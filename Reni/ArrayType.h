@@ -21,8 +21,8 @@ namespace Reni{
         AssumeConstObject;
     private:
         virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const override;
-        override_p_function(Size, size);
-        override_p_function(Array<String>, DumpData){
+        p_function(Size,size) override;
+        p_function(Array<String>,DumpData) override{
             return{
                     nd(elementType),
                     nd(count)

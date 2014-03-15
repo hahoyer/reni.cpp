@@ -42,7 +42,7 @@ namespace _HWLang{
             }
 
         private:
-            override_p_function(Array<String>, DumpData){
+            p_function(Array<String>,DumpData) override{
                 return{
                     nd(left),
                     nd(tokenClass),
@@ -52,7 +52,7 @@ namespace _HWLang{
                 };
             }
 
-            override_p_function(String, DumpShort){
+            p_function(String,DumpShort) override{
                 auto result = name;
                 if(!left.IsEmpty)
                     result = "<" + HWLib::DumpShort(left) + ">" + result;
@@ -115,7 +115,7 @@ namespace _HWLang{
             };
 
         private:
-            override_p_function(Array<String>, DumpData){
+            p_function(Array<String>,DumpData) override{
                 return{};
             };
         };

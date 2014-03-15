@@ -37,7 +37,7 @@ namespace Reni{
         }
 
     private:
-        override_p_function(Array<String>, DumpData){
+        p_function(Array<String>,DumpData) override{
             return{ HWLib::Dump(value) };
         };
     };

@@ -47,7 +47,7 @@ namespace Reni
             return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty);
         }
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
     };
 
 
@@ -68,7 +68,7 @@ namespace Reni
     private:
         void Ensure(Category category)const;
     protected:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
         virtual ResultData const GetResultData(Category category)const = 0;
     private:
         p(Category, complete);
@@ -85,7 +85,7 @@ namespace Reni
     public:
         ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context);
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
         virtual ResultData const GetResultData(Category category)const override;
     };
 

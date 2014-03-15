@@ -68,7 +68,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
     };
 
 
@@ -86,7 +86,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
     };
 
     
@@ -104,7 +104,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
     };
 
 

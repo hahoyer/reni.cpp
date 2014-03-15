@@ -13,10 +13,10 @@ namespace Reni
     public:
         ResultData const GetResultData(Context const&context, Category category, SourcePart const&part)const;
     private:
-        override_p_function(Optional<bool>, HasLeft){ return false; }
-        override_p_function(Optional<bool>, HasRight){ return false; }
+        p_function(Optional<bool>,HasLeft) override{ return false; }
+        p_function(Optional<bool>,HasRight) override{ return false; }
         Ref<Syntax> const Terminal(SourcePart const&part) const override;
-        override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
     };
 }
 

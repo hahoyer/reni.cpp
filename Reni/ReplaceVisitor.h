@@ -17,7 +17,7 @@ namespace Reni
     public:
         virtual Ref<CodeItem> const Arg(Type const&type)const = 0;
     private:
-        override_p_function(Array<String>, DumpData){return {};};
+        p_function(Array<String>,DumpData) override{return {};};
     };
 
 }

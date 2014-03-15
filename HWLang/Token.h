@@ -8,7 +8,7 @@ namespace HWLang{
         using baseType = DumpableObject;
         using thisType = Token;
     public:
-        using TokenClass = TTokenClass;
+        typedef TTokenClass TokenClass;
         
         TokenClass const&Class;
         SourcePart const Part;
@@ -33,13 +33,13 @@ namespace HWLang{
         p(bool, IsStart){ return Part.IsStart; };
 
     private:
-        override_p_function(Array<String>, DumpData){
+        p_function(Array<String>,DumpData) override{
             return{
                 nd(Class),
                 nd(Part)
             };
         };
-        override_p_function(String, DumpShort){
+        p_function(String,DumpShort) override{
             return base_p_name(DumpShort) + "{" + Name + "}";
         };
     };

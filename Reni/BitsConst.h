@@ -27,6 +27,6 @@ namespace Reni{
         p(String, format);
         p(Array<dataChunkType>, ToArray);
     private:
-        override_p_function(Array<String>, DumpData){ return{ value.toStrDec() }; };
+        p_function(Array<String>,DumpData) override{ return{ value.toStrDec() }; };
     };
 }

@@ -18,13 +18,13 @@ namespace Reni{
                 Category category,
                 Ref<Syntax, true> const& right
                 )const override;
-            override_p_function(Array<String>, DumpData) { return{}; }
+            p_function(Array<String>,DumpData) override { return{}; }
         };
     public:
         AssumeConstObject;
     private:
-        override_p_function(Ref<ContextFeature>, feature){ return new Feature(); }
-        override_p_function(Array<String>, DumpData) { return{}; }
+        p_function(Ref<ContextFeature>,feature) override{ return new Feature(); }
+        p_function(Array<String>,DumpData) override { return{}; }
     };
 
 

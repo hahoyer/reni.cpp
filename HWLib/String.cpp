@@ -227,7 +227,7 @@ public:
     }
 
 protected:
-    override_p_function(bool, IsValid){
+    p_function(bool,IsValid) override{
         return _index < _parent.Count; 
     }
     

@@ -28,7 +28,7 @@ p_implementation(DumpableObject, String, Dump){
 }
 
 pure_p_implementation(DumpableObject, String, DumpHeader);
-override_p_implementation(DumpableObject, String, DumpHeader){
+p_implementation(DumpableObject, String, DumpHeader){
     return HWLib::DumpTypeName(*this);
 };
 

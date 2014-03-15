@@ -9,11 +9,11 @@ namespace Reni{
     public:
         SyntaxErrorToken(String const text) : text(text){}
     private:
-        override_p_function(Array<String>, DumpData){
+        p_function(Array<String>,DumpData) override{
             return{nd(text)};
         };
 
         GenericFeatureClass<thisType> feature;
-        override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
     };
 }

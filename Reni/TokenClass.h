@@ -46,7 +46,7 @@ namespace Reni
 
         virtual_p(WeakRef<FeatureClass>, featureClass) = 0;
     private:
-        override_p_function(Array<String>, DumpData){
+        p_function(Array<String>,DumpData) override{
             return{};
         };
     };

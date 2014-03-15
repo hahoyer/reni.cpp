@@ -20,7 +20,7 @@ namespace Reni{
         virtual SearchResult const GetDefinition(Type const&type)const = 0;
         virtual SearchResult const GetDefinition(Context const&context)const = 0;
     private:
-        override_p_function(Array<String>, DumpData){
+        p_function(Array<String>,DumpData) override{
             return{};
         }
     };

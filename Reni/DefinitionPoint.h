@@ -13,7 +13,7 @@ namespace Reni{
     public:
         AssumeConstObject;
     private:
-        override_p_function(Array<String>, DumpData){ return{}; };
+        p_function(Array<String>,DumpData) override{ return{}; };
     };
 
     template <typename T>

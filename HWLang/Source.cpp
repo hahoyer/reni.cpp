@@ -112,7 +112,7 @@ bool const Source::BeginsWith(int position, String value)const
     return Text.BeginsWith(value, position);
 }
 
-override_p_implementation(Source, Array<String>, DumpData){
+p_implementation(Source, Array<String>, DumpData){
     return Array<String>{ FilePosition(0, "", "")};
 }
 

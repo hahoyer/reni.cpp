@@ -20,7 +20,7 @@ p_implementation(SearchResult, bool, IsValid){
     return !feature.IsEmpty;
 };
 
-override_p_implementation(SearchResult, Array<String>, DumpData){
+p_implementation(SearchResult, Array<String>, DumpData){
     return{nd(feature)};
 }
 

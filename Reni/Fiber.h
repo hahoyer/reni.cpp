@@ -39,8 +39,8 @@ namespace Reni{
         static Ref<Fiber> Create(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items);
     private:
         virtual Ref<CodeItem,true> const Replace(ReplaceVisitor const&arg) const override;
-        override_p_function(Array<String>, DumpData){ return{nd(head), nd(items)}; };
-        override_p_function(Size, size);
+        p_function(Array<String>,DumpData) override{ return{nd(head), nd(items)}; };
+        p_function(Size,size) override;
         Ref<Fiber, true> ReCreate(Ref<CodeItem, true> const& head, Array<Ref<FiberItem, true>> const& items)const;
         virtual String const ToCpp(CodeVisitor const&) const override;
         p(bool, IsValid);
@@ -54,7 +54,7 @@ namespace Reni{
     public: 
         FiberVisitor(CodeVisitor const&parent) : parent(parent) {}
     private:
-        override_p_function(Array<String>, DumpData) {return{ nd(parent) };};
+        p_function(Array<String>,DumpData) override {return{ nd(parent) };};
         virtual String const Const(Size const size, BitsConst const& value) const override;
         virtual String const DumpPrintNumber(Size const size) const override;
     };

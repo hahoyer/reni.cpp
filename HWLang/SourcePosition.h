@@ -43,7 +43,7 @@ namespace HWLang
 
         bool const BeginsWith(String value)const;
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(HWLib::Array<HWLib::String>,DumpData) override;
         p(String, DumpCurrent);
         p(String, DumpAfterCurrent);
         p(String, DumpBeforeCurrent);

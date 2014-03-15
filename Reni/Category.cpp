@@ -66,7 +66,7 @@ bool Category::operator<=(Category const other)const{
     return true;
 }
 
-override_p_implementation(Category, Array<String>, DumpData){
+p_implementation(Category, Array<String>, DumpData){
     auto result =
         _({
             hasSize ? String("Size") : "",

@@ -78,7 +78,7 @@ PrioTableConst::Tag const PrioTable::Relation(String const&newTokenName, String 
     return Relation(Index(newTokenName), Index(recentTokenName));
 }
 
-override_p_implementation(PrioTable, Array<String>, DumpData){
+p_implementation(PrioTable, Array<String>, DumpData){
     if (Count == 0)
         return{nd(Count)};
 

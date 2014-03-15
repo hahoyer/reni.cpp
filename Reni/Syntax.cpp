@@ -51,7 +51,7 @@ Ref<Syntax,true> Syntax::Replace(SyntaxArgVisitor const&visitor) const{
     mb;
 }
 
-override_p_implementation(InfixSyntax, Array<String>, DumpData){
+p_implementation(InfixSyntax, Array<String>, DumpData){
     return {
         nd(left),
         nd(tokenClass),
@@ -60,7 +60,7 @@ override_p_implementation(InfixSyntax, Array<String>, DumpData){
 };
 
 
-override_p_implementation(PrefixSyntax, Array<String>, DumpData){
+p_implementation(PrefixSyntax, Array<String>, DumpData){
     return {
         nd(tokenClass),
         nd(right)
@@ -68,7 +68,7 @@ override_p_implementation(PrefixSyntax, Array<String>, DumpData){
 };
 
 
-override_p_implementation(SuffixSyntax, Array<String>, DumpData){
+p_implementation(SuffixSyntax, Array<String>, DumpData){
     return {
         nd(left),
         nd(tokenClass)

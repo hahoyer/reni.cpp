@@ -9,7 +9,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-override_p_implementation(ArrayType, Size, size){
+p_implementation(ArrayType, Size, size){
     return elementType.size * count;
 };
 

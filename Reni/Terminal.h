@@ -22,7 +22,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        override_p_function(Array<String>, DumpData){ return{nd(tokenClass)}; };
+        p_function(Array<String>,DumpData) override{ return{nd(tokenClass)}; };
 
         ResultData const GetResultData(Context const&context, Category category)const override{
             return tokenClass.GetResultData(context, category, part);

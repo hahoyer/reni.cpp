@@ -22,7 +22,7 @@ class TextToken final : public TokenClass{
     using thisType = TextToken;
 private:
     GenericFeatureClass<thisType> feature;
-    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
 };
 
 
@@ -39,12 +39,12 @@ public:
         return{};
     }
 private:
-    override_p_function(Optional<bool>, HasLeft){ return false; }
-    override_p_function(Optional<bool>, HasRight){ return false; }
+    p_function(Optional<bool>,HasLeft) override{ return false; }
+    p_function(Optional<bool>,HasRight) override{ return false; }
     Ref<Syntax> const Terminal(SourcePart const&part)const override{
         return new TerminalSyntax<ArgToken>(*this, part);
     }
-    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
 };
 
 
@@ -55,7 +55,7 @@ public:
     UserDefinedToken(String const&name) : baseType(name){};
 private:
     GenericFeatureClass<thisType> feature;
-    override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
 };
 
 

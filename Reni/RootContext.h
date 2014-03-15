@@ -19,7 +19,7 @@ namespace Reni{
         AssumeConstObject;
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const override;
     private:
-        override_p_function(WeakRef<RootContext>, rootContext){return &ref;};
-        override_p_function(Array<String>, DumpData);
+        p_function(WeakRef<RootContext>,rootContext) override{return &ref;};
+        p_function(Array<String>,DumpData) override;
     };
 }

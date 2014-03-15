@@ -32,7 +32,7 @@ p_implementation(RootContext, WeakRef<VoidType>, voidType){ return _internal->vo
 
 RootContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{ return _internal->minus->ref; }
 
-override_p_implementation(RootContext, Array<String>, DumpData){
+p_implementation(RootContext, Array<String>, DumpData){
     return{};
 };
 

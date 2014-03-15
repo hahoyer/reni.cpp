@@ -54,9 +54,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
 
 
 template <class Token, class TokenFactory, class Scanner>
-Array<String> const
-ScannerInstance<Token, TokenFactory, Scanner>
-::virtual_p_name(DumpData)()const{
+p_implementation(ScannerInstance<Token COMMA TokenFactory COMMA Scanner>, Array<String>, DumpData){
     return{
         nd(position)
     };

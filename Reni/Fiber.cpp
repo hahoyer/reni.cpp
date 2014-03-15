@@ -35,7 +35,7 @@ String const FiberItem::ToCpp(CodeVisitor const& visitor)const{
 };
 
 
-override_p_implementation(Fiber, Size, size){
+p_implementation(Fiber, Size, size){
     return items.Last->outSize;
 };
 

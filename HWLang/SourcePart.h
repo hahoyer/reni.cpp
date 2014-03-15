@@ -29,7 +29,7 @@ namespace HWLang{
         p(bool, IsEnd);
         operator String const()const;
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
         p(String, DumpCurrent);
         p(String, DumpAfterCurrent);
         p(String, DumpBeforeCurrent);

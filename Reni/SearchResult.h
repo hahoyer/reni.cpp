@@ -21,6 +21,6 @@ namespace Reni{
 
         p(bool, IsValid);
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
     };
 }

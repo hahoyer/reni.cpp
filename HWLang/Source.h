@@ -44,6 +44,6 @@ namespace HWLang
         bool const BeginsWith(int position, String value)const;
 
     private:
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
     };
 }

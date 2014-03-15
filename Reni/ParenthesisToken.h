@@ -17,13 +17,13 @@ namespace Reni{
             return level[" {[("];
         }
     private:
-        override_p_function(Optional<bool>, HasLeft){ return false; }
-        override_p_function(Optional<bool>, HasRight){ return true; }
+        p_function(Optional<bool>,HasLeft) override{ return false; }
+        p_function(Optional<bool>,HasRight) override{ return true; }
 
         Ref<Syntax > const Prefix(SourcePart const&part, Ref<Syntax>const right)const  override{
             return new OpenSyntax(level, part, right);
         };
-        override_p_function(Array<String>, DumpData){
+        p_function(Array<String>,DumpData) override{
             return{nd(level)};
         };
 
@@ -45,13 +45,13 @@ namespace Reni{
                     return baseType::ParenthesisMatch(level, part);
                 return right;
             };
-            override_p_function(Array<String>, DumpData){
+            p_function(Array<String>,DumpData) override{
                 return{nd(level), nd(right)};
             }
         };
     private:
         GenericFeatureClass<thisType> feature;
-        override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
     };
 
 
@@ -69,19 +69,19 @@ namespace Reni{
         }
     private:
         bool AcceptsMatch(bool isMatch) const override{ return isMatch; }
-        override_p_function(Optional<bool>, HasLeft){ return true; }
-        override_p_function(Optional<bool>, HasRight){ return false; }
+        p_function(Optional<bool>,HasLeft) override{ return true; }
+        p_function(Optional<bool>,HasRight) override{ return false; }
 
         virtual Ref<Syntax > const Suffix(Ref<Syntax >const left, SourcePart const&part)const  override{
             return left->ParenthesisMatch(level, part);
         };
 
-        override_p_function(Array<String>, DumpData){
+        p_function(Array<String>,DumpData) override{
             return{nd(level)};
         };
     private:
         GenericFeatureClass<thisType> feature;
-        override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
+        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
     };
 
 }

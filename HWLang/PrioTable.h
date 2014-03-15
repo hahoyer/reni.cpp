@@ -58,7 +58,7 @@ namespace HWLang
         /// <returns> </returns>
         PrioTable const Level(PrioTableConst::TagTable const& subTable, Array<String> const&leftToken, Array<String>const&rightToken)const;
         PrioTableConst::Tag const Relation(String const&newTokenName, String const&recentTokenName)const;
-        override_p_function(Array<String>, DumpData);
+        p_function(Array<String>,DumpData) override;
 
         static bool Trace;
 
