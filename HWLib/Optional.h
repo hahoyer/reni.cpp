@@ -23,7 +23,9 @@ namespace HWLib
         Optional(decltype(null)) : value(Constants<T>::NotValid){}
         Optional(T const value) :value(value){}
 
-        p(bool, IsValid){ return value != Constants<T>::NotValid; }
+        p(bool, IsValid){
+            return value != Constants<T>::NotValid;
+        }
         
         DefaultAssignmentOperator;
 
@@ -41,5 +43,34 @@ namespace HWLib
         }
     };
 
+    template<>
+    class Optional<bool> final{
+        using thisType = Optional;
+
+        char const value;
+    public:
+        Optional() : value(1){}
+        Optional(decltype(null)) : value(1){}
+        Optional(bool const value) :value(value?-1:0){}
+
+        p(bool, IsValid){
+            return value < 1;
+        }
+
+        DefaultAssignmentOperator;
+
+        p(bool, Value){
+            a_if_(IsValid);
+            return value < 0;
+        };
+
+        operator bool const ()const{ return Value; };
+
+        friend Optional<bool> operator||(Optional<bool> left, std::function<Optional<bool>()> right){
+            if(left.IsValid)
+                return left;
+            return right();
+        }
+    };
 }
 

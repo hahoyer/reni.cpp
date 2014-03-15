@@ -13,18 +13,9 @@ namespace Reni{
     protected:
         DefineableToken(String const&name) : name(name){};
     private:
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part, Ref<Syntax >const right)const override{
+        Ref<Syntax> const Anyfix(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override{
             return new ExpressionSyntax(*this, left, part, right);
         };
-
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax >const left, SourcePart const&part)const override{
-            return new ExpressionSyntax(*this, left, part, {});
-        };
-
-        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax >const right)const override{
-            return new ExpressionSyntax(*this, {}, part, right);
-        };
-
     };
 
 

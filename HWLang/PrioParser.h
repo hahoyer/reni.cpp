@@ -36,22 +36,34 @@ namespace HWLang{
 
     template <class TSyntax, class TSyntaxOption, class TToken>
     TSyntax const CreateSyntax(TSyntaxOption const&left, TToken const&token, TSyntaxOption const&right, bool isMatch){
-        if(!token.Class.AcceptsMatch(isMatch))
-            return token.Class.Mismatch(left, token.Part, right);
-        if(left.IsEmpty){
-            if(right.IsEmpty)
-                return token.Class.CreateSyntax(token.Part);
-            else
-                return token.Class.CreateSyntax(token.Part, right);
+        auto& tc = token.Class;
+
+        if(!tc.AcceptsMatch(isMatch)
+            || tc.HasLeft.IsValid && tc.HasLeft == left.IsEmpty
+            || tc.HasRight.IsValid && tc.HasRight == right.IsEmpty)
+            return tc.Mismatch(left, token.Part, right);
+
+        if(!tc.HasLeft.IsValid){
+            if(!tc.HasRight.IsValid)
+                return tc.Anyfix(left, token.Part, right);
+            if(tc.HasRight)
+                return tc.Preanyfix(left, token.Part, right);
+            return tc.NoPrefix(left, token.Part);
         }
-        else{
-            if(right.IsEmpty)
-                return token.Class.CreateSyntax(left, token.Part);
-            else{
-                TSyntax xl = left;
-                TSyntax xr = right;
-                return token.Class.CreateSyntax(xl, token.Part, xr);
-            }
+
+        if(tc.HasLeft){
+            if(!tc.HasRight.IsValid)
+                return tc.Sufanyfix(left, token.Part, right);
+            if(tc.HasRight)
+                return tc.Infix(left, token.Part, right);
+            return tc.Suffix(left, token.Part);
         }
+
+        if(!tc.HasRight.IsValid)
+            return tc.NoSuffix(token.Part, right);
+        if(tc.HasRight)
+            return tc.Prefix(token.Part, right);
+        return tc.Terminal(token.Part);
+
     }
 }

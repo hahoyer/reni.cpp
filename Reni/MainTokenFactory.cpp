@@ -39,7 +39,9 @@ public:
         return{};
     }
 private:
-    Ref<Syntax> const CreateSyntax(SourcePart const&part)const override{
+    override_p_function(Optional<bool>, HasLeft){ return false; }
+    override_p_function(Optional<bool>, HasRight){ return false; }
+    Ref<Syntax> const Terminal(SourcePart const&part)const override{
         return new TerminalSyntax<ArgToken>(*this, part);
     }
     override_p_function(WeakRef<FeatureClass>, featureClass){ return &feature.ref; }
