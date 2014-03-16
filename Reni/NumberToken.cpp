@@ -19,5 +19,6 @@ ResultData const NumberToken::GetResultData(Context const&context, Category cate
         .rootContext
         ->bitType
         ->array(value.size.value)
+        ->numberType
         ->GetResultData(category, value);
 }

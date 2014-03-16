@@ -9,9 +9,10 @@ namespace Reni{
     class ArrayType final: public Type{
         using baseType = Type;
         using thisType = ArrayType;
+    public:
         Type const& elementType;
         int const count;
-    public:
+
         ArrayType(Type const& elementType, int count)
             : elementType(elementType)
               , count(count){
@@ -20,13 +21,12 @@ namespace Reni{
 
         AssumeConstObject;
     private:
-        virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const override;
         p_function(Size,size) override;
         p_function(Array<String>,DumpData) override{
             return{
                     nd(elementType),
                     nd(count)
                 };
-        };
+        }
     };
 };

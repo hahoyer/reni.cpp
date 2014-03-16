@@ -5,6 +5,7 @@
 #include "CodeItems.h"
 #include "CodeVisitor.h"
 #include "FeatureProvider.h"
+#include "NumberType.h"
 #include "ReplaceVisitor.h"
 #include "Result.h"
 #include "Size.h"
@@ -27,7 +28,7 @@ Ref<CodeItem> const CodeItem::Const(BitsConst const&value){
     return new ConstCode(value.size, value);
 };
 
-Ref<CodeItem> const CodeItem::DumpPrintNumber(ArrayType const&value){
+Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value){
     return Arg(value)
         ->Fiber({new DumpPrintNumberCode(value.size)});
 };

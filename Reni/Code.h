@@ -29,7 +29,7 @@ namespace Reni
     public:
         static Ref<CodeItem> const Arg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
-        static Ref<CodeItem> const DumpPrintNumber(ArrayType const&value);
+        static Ref<CodeItem> const DumpPrint(NumberType const&value);
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
         AssumeConstObject;

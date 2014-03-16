@@ -3,38 +3,65 @@
 
 #include "ArrayType.h"
 #include "BitsConst.h"
+#include "BitType.h"
 #include "Code.h"
+#include "DumpPrintToken.h"
 #include "Feature.h"
 #include "FeatureProvider.h"
+#include "NumberType.h"
 #include "Size.h"
 #include "Result.h"
 
+#include "../HWLib/_EditorTemplates.h"
 #include "../HWLib/FunctionCache.h"
 #include "../HWLib/RefCountContainer.instance.h"
+#include "../HWLib/ValueCache.h"
 
 
 using namespace Reni;
 static bool Trace = true;
 
 struct Type::internal{
-    FunctionCache<int, Ref<ArrayType>> arrayCache;
+    FunctionCache<int, WeakRef<ArrayType>> array;
+    ValueCache<WeakRef<NumberType>> number;
 
     explicit internal(Type const&parent)
-        : arrayCache([&](int count){return new ArrayType(parent, count); }){};
+        : array([&](int count){return new ArrayType(parent, count);})
+          , number([&]{return parent.CreateNumberType();}){
+    };
 };
 
 
-Type::Type() : _internal(new internal(*this)){}
+Type::Type() : _internal(new internal(*this)){
+}
 
-pure_p_implementation(Type, Size, size);
+pure_p_implementation(Type, Size, size) ;
 
 ResultData const Type::GetResultData(Category category, BitsConst const&value)const{
     return ResultData(value.size, CodeItem::Const(value), &this->ref);
 };
 
-Ref<Type> const Type::array(int count)const{
-    return &_internal->arrayCache[count]->ref;
+WeakRef<Type> const Type::array(int count)const{
+    return _internal->array[count]->ref;
 };
 
-Type::operator Ref<FeatureProvider<DumpPrintToken>,true>()const{ return{}; }
+p_implementation(Type, WeakRef<Type>, numberType){
+    return &_internal->number.Value->ref;
+};
 
+Type::operator Ref<FeatureProvider<DumpPrintToken>, true>()const{
+    md_;
+    mb;
+};
+
+
+WeakRef<NumberType> const Type::CreateNumberType() const{
+    auto a = dynamic_cast<ArrayType const*>(this);
+    a_if(a && dynamic_cast<BitType const*>(&a->elementType), nd(*this) + " cannot be flagged as number type");
+    return new NumberType(a->ref);
+};
+
+Type::operator Ref<FeatureProvider<MinusToken>, true>()const{
+    md_;
+    mb;
+};

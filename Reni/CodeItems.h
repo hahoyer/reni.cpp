@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BitsConst.h"
 #include "Code.h"
 #include "Size.h"
 #include "Fiber.h"

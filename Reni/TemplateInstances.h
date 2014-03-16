@@ -32,6 +32,7 @@ template <>\
 }
 
 TypeFeature(DumpPrintToken);
+ContextFeature(DumpPrintToken);
 ContextFeature(MinusToken);
 
 template <typename T>

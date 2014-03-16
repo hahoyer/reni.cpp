@@ -1,98 +1,9 @@
 #include "Import.h"
 #include "BitType.h"
 
-#include "ArrayType.h"
 #include "Size.h"
-#include "Feature.h"
-#include "FeatureProvider.h"
-#include "Result.h"
-#include "RootContext.h"
-#include "VoidType.h"
-#include "../HWLib/RefCountContainer.instance.h"
-#include "ArgVisitor.h"
-#include "ExpressionSyntax.h"
-
-static bool Trace = true;
 
 using namespace Reni;
-
-class DumpPrintBitArray final : public FeatureProvider<DumpPrintToken, ArrayType> {
-    typedef FeatureProvider<DumpPrintToken, ArrayType> baseType;
-    typedef DumpPrintBitArray thisType;
-
-    
-    class Feature final : public Reni::Feature{
-        ArrayType const& value;
-    public:
-        Feature(ArrayType const&value) : value(value){}
-    private:
-        virtual ResultData const FunctionResult(
-            Context const&context,
-            Category category,
-            ExpressionSyntax const& expressionSyntax
-            )const override;
-        p_function(Array<String>,DumpData) override {return{ nd(value) };}
-        p(Ref<CodeItem>, code){return CodeItem::DumpPrintNumber(value);}
-    };
-
-    
-    class For final : public FeatureProvider<DumpPrintToken>{
-        typedef FeatureProvider<DumpPrintToken> baseType;
-        typedef For thisType;
-        ArrayType const& value;
-    public:
-        For(ArrayType const&value) : value(value) {}
-    private:
-        p_function(Ref<Reni::Feature>,feature) override{return new Feature(value);}
-        p_function(Array<String>,DumpData) override {return{nd(value)};}
-    };
-
-    
-    virtual Ref<FeatureProvider<DumpPrintToken>, true>const Convert(ArrayType const&top)const override {
-        return new For(top);
-    }
-    p_function(Array<String>,DumpData) override {return{};}
-
-};
+static bool Trace = true;
 
 p_implementation(BitType, Size, size){ return Size(1); }
-
-BitType::operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const{
-    return new DumpPrintBitArray();
-}
-
-
-class InvalidArgumentList final : public DumpableObject{
-    WeakRef<ExpressionSyntax const> const expressionSyntax;
-public:
-    InvalidArgumentList(ExpressionSyntax const& expressionSyntax) : expressionSyntax(&expressionSyntax){}
-private:
-    p_function(Array<String>,DumpData) override{ return{nd(expressionSyntax)}; };
-};
-
-ResultData const DumpPrintBitArray::Feature::FunctionResult(
-    Context const&context,
-    Category category,
-    ExpressionSyntax const& expressionSyntax
-    )const{
-    if(!expressionSyntax.right.IsEmpty)
-        throw InvalidArgumentList(expressionSyntax);
-
-
-    Ref<CodeItem,true> code;
-    if(category.hasCode){
-        auto result = expressionSyntax
-            .left
-            ->GetResultCache(context);
-        ArgVisitor visitor = *result;
-        code = this
-            ->code
-            ->Replace(visitor);
-    }
-
-    return ResultData(
-        Size(0),
-        code,
-        context.rootContext->voidType->ref
-        );
-};

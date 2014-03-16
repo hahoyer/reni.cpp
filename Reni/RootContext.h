@@ -11,12 +11,14 @@ namespace Reni{
         typedef Context baseType;
         typedef RootContext thisType;
         class internal;
-        WeakRef<internal> _internal;
+        CtrlRef<internal> _internal;
     public:
         RootContext();
+        AssumeConstObject;
+
         p(WeakRef<BitType>, bitType);
         p(WeakRef<VoidType>, voidType);
-        AssumeConstObject;
+
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const override;
     private:
         p_function(WeakRef<RootContext>,rootContext) override{return &ref;};

@@ -12,15 +12,16 @@ namespace Reni{
     class BitsConst;
     class DefinitionPoint;
     class DumpPrintToken;
+    class MinusToken;
     class ResultData;
     class Category;
     class Size;
+    class NumberType;
 
     template<typename T, typename ...> class FeatureProvider;
 
     class Type
         : public WithId<DumpableObject, Type>
-        , public RefCountProvider
     {
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
@@ -29,20 +30,24 @@ namespace Reni{
     protected:
         Type();
     public:
-        virtual_p(Size, size) = 0;
-        Ref<Type> const array(int count)const;
-        ResultData const GetResultData(Category category, BitsConst const&value)const;
         AssumeConstObject;
+        bool operator==(Type const&other)const{ return this == &other; }
+
+        virtual_p(Size, size) = 0;
+        WeakRef<Type> const array(int count)const;
+        p(WeakRef<Type>, numberType);
+        ResultData const GetResultData(Category category, BitsConst const&value)const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const{
             Ref<FeatureProvider<T>> f = *this;
             return f->feature;
         }
+
         virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const;
-        virtual operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const { return{}; };
-        
-        bool operator==(Type const&other)const{ return this == &other; }
+        virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
+
+        WeakRef<NumberType> const CreateNumberType()const;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };

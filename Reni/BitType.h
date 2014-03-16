@@ -10,15 +10,11 @@ namespace Reni{
         using baseType = Type;
         using thisType = BitType;
     public:
-
         BitType(){
             SetDumpString();
         }
-
         AssumeConstObject;
-
     private:
         p_function(Size,size) override;
-        virtual operator Ref<FeatureProvider<DumpPrintToken, ArrayType>, true>()const override;
     };
 }
