@@ -39,5 +39,25 @@ namespace Reni{
         virtual_p(Ref<Feature>, feature) = 0;
         virtual ~FeatureProvider(){};
     };
+
+
+    template<class TTokenClass, class TTargetTypeHandler>
+    class ArglessFunctionProvider final
+        : public FeatureProvider<TTokenClass>
+    {
+        typedef FeatureProvider<TTokenClass> baseType;
+        typedef ArglessFunctionProvider thisType;
+        typedef typename TTargetTypeHandler::targetType targetType;
+        class Feature;
+        Ref<Feature> feature;
+    public:
+        ArglessFunctionProvider(targetType const&value);
+        AssumeConstObject;
+    private:
+        p_function(Array<String>, DumpData) override;
+        p_function(Ref<Reni::Feature>, feature) override;
+    };
+
+
 }
 

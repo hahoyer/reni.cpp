@@ -2,6 +2,7 @@
 #include "Type.h"
 #include "Size.h"
 #include "../HWLib/WeakRef.h"
+#include "FeatureProvider.h"
 
 using namespace HWLib;
 
@@ -12,9 +13,20 @@ namespace Reni{
     class NumberType final : public Type{
         typedef Type baseType;
         typedef NumberType thisType;
-        class DumpPrintProvider;
 
-        Ref<DumpPrintProvider> dumpPrintFeature;
+        struct DumpPrintProvider{
+            typedef class NumberType targetType;
+            friend class NumberType;
+            static ResultData const Result(
+                NumberType const&type,
+                Context const&context,
+                Category category,
+                Ref<Syntax> target
+                );
+        };
+
+        typedef ArglessFunctionProvider<DumpPrintToken, DumpPrintProvider> dumpPrintProviderType;
+        Ref<dumpPrintProviderType> dumpPrintFeature;
     public:
         WeakRef<ArrayType> const parent;
         NumberType(WeakRef<ArrayType> const parent);
@@ -25,10 +37,5 @@ namespace Reni{
 
         operator Ref<FeatureProvider<DumpPrintToken>, true>() const override;
 
-        ResultData const DumpPrintResult(
-            Context const&context,
-            Category category,
-            Ref<Syntax> target
-            )const;
     };
 }
