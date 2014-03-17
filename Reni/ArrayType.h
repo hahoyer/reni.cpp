@@ -1,5 +1,6 @@
 #pragma once
 #include "Type.h"
+#include "../HWLib/WeakRef.h"
 
 using namespace HWLib;
 
@@ -22,7 +23,8 @@ namespace Reni{
         AssumeConstObject;
     private:
         p_function(Size,size) override;
-        p_function(Array<String>,DumpData) override{
+        p_function(WeakRef<Global>, global) override{ return elementType.global; };
+        p_function(Array<String>, DumpData) override{
             return{
                     nd(elementType),
                     nd(count)

@@ -59,5 +59,23 @@ namespace Reni{
     };
 
 
+    template<class TTokenClass, class TTargetTypeHandler>
+    class InfixFunctionProvider final
+        : public FeatureProvider<TTokenClass>
+    {
+        typedef FeatureProvider<TTokenClass> baseType;
+        typedef InfixFunctionProvider thisType;
+        typedef typename TTargetTypeHandler::targetType targetType;
+        class Feature;
+        Ref<Feature> feature;
+    public:
+        InfixFunctionProvider(targetType const&value);
+        AssumeConstObject;
+    private:
+        p_function(Array<String>, DumpData) override;
+        p_function(Ref<Reni::Feature>, feature) override;
+    };
+
+
 }
 

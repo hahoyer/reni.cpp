@@ -5,11 +5,13 @@
 #include "ContextFeature.h"
 #include "ContextFeatureProvider.h"
 
+
 using namespace HWLib;
 
 namespace Reni
 {
     class Category;
+    class Global;
     class ResultData;
     class Syntax;
     class RootContext;
@@ -23,7 +25,7 @@ namespace Reni
         using thisType = Context;
     public:
         ResultData const GetResultData(Category category, Syntax const&syntax)const;
-        virtual_p(WeakRef<RootContext>, rootContext) = 0;
+        virtual_p(WeakRef<Global>, global) = 0;
         SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;
 
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;

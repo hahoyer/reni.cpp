@@ -3,7 +3,8 @@
 
 #include "BitsConst.h"
 #include "BitType.h"
-#include "RootContext.h"
+#include "Context.h"
+#include "Global.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -16,9 +17,9 @@ Ref<Syntax> const NumberToken::CreateSyntax(SourcePart const&part)const{
 ResultData const NumberToken::GetResultData(Context const&context, Category category, SourcePart const&part)const{
     auto value = BitsConst::Convert(part);
     return context
-        .rootContext
+        .global
         ->bitType
-        ->array(value.size.value)
+        .array(value.size.value)
         ->numberType
-        ->GetResultData(category, value);
+        ->GetResultData(category, CodeItem::Const(value));
 }

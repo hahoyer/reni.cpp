@@ -10,13 +10,15 @@ using namespace HWLib;
 namespace Reni{
     class ArrayType;
     class BitsConst;
+    class Category;
+    class CodeItem;
     class DefinitionPoint;
     class DumpPrintToken;
+    class Global;
     class MinusToken;
-    class ResultData;
-    class Category;
-    class Size;
     class NumberType;
+    class ResultData;
+    class Size;
 
     template<typename T, typename ...> class FeatureProvider;
 
@@ -34,9 +36,12 @@ namespace Reni{
         bool operator==(Type const&other)const{ return this == &other; }
 
         virtual_p(Size, size) = 0;
+        virtual_p(WeakRef<Global>, global) = 0;
+        
         WeakRef<Type> const array(int count)const;
         p(WeakRef<Type>, numberType);
-        ResultData const GetResultData(Category category, BitsConst const&value)const;
+        
+        ResultData const GetResultData(Category category, Ref<CodeItem> code)const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const{
@@ -47,7 +52,11 @@ namespace Reni{
         virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const;
         virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
 
+
+
+
         WeakRef<NumberType> const CreateNumberType()const;
+
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };

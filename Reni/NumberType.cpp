@@ -7,7 +7,8 @@
 #include "ExpressionSyntax.h"
 #include "Feature.h"
 #include "FeatureProvider.h"
-#include "RootContext.h"
+#include "Context.h"
+#include "Global.h"
 #include "Result.h"
 #include "VoidType.h"
 #include "TemplateInstances.h"
@@ -18,41 +19,27 @@ using namespace Reni;
 static bool Trace = true;
 
 NumberType::NumberType(WeakRef<ArrayType> const parent) 
-: parent(parent)
-, dumpPrintFeature(new dumpPrintProviderType(*this)){
+: parent(*parent){
     SetDumpString();
 }
 
-
-NumberType::operator Ref<FeatureProvider<DumpPrintToken>, true>() const {
-    return dumpPrintFeature->ref;
-};
-
-p_implementation(NumberType, Size, size){ return parent->size; };
+p_implementation(NumberType, Size, size){ return parent.size; };
+p_implementation(NumberType, WeakRef<Global>, global) { return parent.global; };
 
 p_implementation(NumberType, Array<String>, DumpData){
     return{nd(parent)};
 };
 
-ResultData const NumberType::DumpPrintProvider::Result(
-    NumberType const&type,
-    Context const&context,
-    Category category,
-    Ref<Syntax> target
-    ){
-
-    Ref<CodeItem, true> code;
-    if(category.hasCode){
-        auto result = target->GetResultCache(context);
-        ArgVisitor visitor = *result;
-        code = CodeItem::DumpPrint(type)
-            ->Replace(visitor);
-    }
-
-    return ResultData(
-        Size(0),
-        code,
-        context.rootContext->voidType->ref
-        );
+ResultData const NumberType::DumpPrintProvider::Result(NumberType const&type,Category category){
+    return type.global->voidType
+        .GetResultData(category, CodeItem::DumpPrint(type));
 };
 
+ResultData const NumberType::MinusProvider::Result(
+    NumberType const&type,
+    Category category
+    ){
+    fd(type, category);
+    b_;
+    return{};
+};

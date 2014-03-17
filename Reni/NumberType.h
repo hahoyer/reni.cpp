@@ -16,26 +16,28 @@ namespace Reni{
 
         struct DumpPrintProvider{
             typedef class NumberType targetType;
-            friend class NumberType;
-            static ResultData const Result(
-                NumberType const&type,
-                Context const&context,
-                Category category,
-                Ref<Syntax> target
-                );
+            static ResultData const Result(NumberType const&type, Category );
+        };
+        struct MinusProvider{
+            typedef class NumberType targetType;
+            static ResultData const Result(NumberType const&type, Category );
         };
 
-        typedef ArglessFunctionProvider<DumpPrintToken, DumpPrintProvider> dumpPrintProviderType;
-        Ref<dumpPrintProviderType> dumpPrintFeature;
+        ArrayType const& parent;
     public:
-        WeakRef<ArrayType> const parent;
         NumberType(WeakRef<ArrayType> const parent);
         AssumeConstObject;
     private:
         p_function(Size, size) override;
+        p_function(WeakRef<Global>, global) override;
         p_function(Array<String>, DumpData) override;
 
-        operator Ref<FeatureProvider<DumpPrintToken>, true>() const override;
+        operator Ref<FeatureProvider<DumpPrintToken>, true>() const override{
+            return new ArglessFunctionProvider<DumpPrintToken, DumpPrintProvider>(*this);
+        };
+        operator Ref<FeatureProvider<MinusToken>, true>() const override{
+            return new InfixFunctionProvider<MinusToken, MinusProvider>(*this);
+        };
 
     };
 }

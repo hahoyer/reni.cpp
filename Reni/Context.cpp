@@ -15,7 +15,7 @@ ResultData const Context::GetResultData(Category category, Syntax const&syntax)c
     return syntax.GetResultData(*this, category);
 }
 
-pure_p_implementation(Context, WeakRef<RootContext>, rootContext) ;
+pure_p_implementation(Context, WeakRef<Global>, global);
 
 
 SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const{

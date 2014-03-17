@@ -36,9 +36,10 @@ Type::Type() : _internal(new internal(*this)){
 }
 
 pure_p_implementation(Type, Size, size) ;
+pure_p_implementation(Type, WeakRef<Global>, global);
 
-ResultData const Type::GetResultData(Category category, BitsConst const&value)const{
-    return ResultData(value.size, CodeItem::Const(value), &this->ref);
+ResultData const Type::GetResultData(Category category, Ref<CodeItem> code)const{
+    return ResultData(size, code, &this->ref);
 };
 
 WeakRef<Type> const Type::array(int count)const{

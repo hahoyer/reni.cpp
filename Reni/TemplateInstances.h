@@ -22,10 +22,42 @@ private:
         Category category,
         ExpressionSyntax const& expressionSyntax
     )const override{
+        a_throw_(!expressionSyntax.left.IsEmpty);
         a_throw_(expressionSyntax.right.IsEmpty);
-        return TTargetTypeHandler::Result(value, context, category, expressionSyntax.left);
+        ArgVisitor visitor;
+        auto result = expressionSyntax.left->GetResultCache(context);
+        visitor.Assign(&ArgVisitor::Tag::expressionArg, *result);
+        return TTargetTypeHandler::Result(value, category)
+            .Replace(visitor);
     };
     p_function(Array<String>, DumpData) override{return{nd(value)};}
+};
+
+
+template<class TTokenClass, class TTargetTypeHandler>
+class InfixFunctionProvider<TTokenClass, TTargetTypeHandler> ::Feature final : public Reni::Feature{
+    typedef Reni::Feature baseType;
+    typedef Feature thisType;
+    targetType const& value;
+public:
+    Feature(targetType const&value) : value(value){}
+    AssumeConstObject;
+private:
+    ResultData const FunctionResult(
+        Context const&context,
+        Category category,
+        ExpressionSyntax const& expressionSyntax
+        )const override{
+        a_throw_(!expressionSyntax.right.IsEmpty);
+        auto thisResult = expressionSyntax.left->GetResultCache(context);
+        auto argResult = expressionSyntax.left->GetResultCache(context);
+        ArgVisitor visitor;
+        visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
+        visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
+        return TTargetTypeHandler::Result(value, category)
+            .Replace(visitor);
+    };
+    p_function(Array<String>, DumpData) override{ return{nd(value)}; }
 };
 
 
@@ -39,6 +71,16 @@ p_implementation(ArglessFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, 
 template<class TTokenClass, class TTargetTypeHandler>
 p_implementation(ArglessFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Ref<Reni::Feature>, feature){ return feature->ref; }
 
+
+template<class TTokenClass, class TTargetTypeHandler>
+InfixFunctionProvider<TTokenClass, TTargetTypeHandler>::InfixFunctionProvider(targetType const&value)
+: feature(new Feature(value)) {}
+
+template<class TTokenClass, class TTargetTypeHandler>
+p_implementation(InfixFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Array<String>, DumpData) { return{nd(feature)}; }
+
+template<class TTokenClass, class TTargetTypeHandler>
+p_implementation(InfixFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Ref<Reni::Feature>, feature){ return feature->ref; }
 
 
 template <typename T>

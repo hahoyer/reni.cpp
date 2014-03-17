@@ -42,10 +42,12 @@ namespace Reni
 
         DefaultAssignmentOperator;
 
-        p(Category, complete) 
-        {
+        p(Category, complete){
             return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty);
         }
+
+        ResultData const Replace(ReplaceVisitor const&arg) const;
+
     private:
         p_function(Array<String>,DumpData) override;
     };

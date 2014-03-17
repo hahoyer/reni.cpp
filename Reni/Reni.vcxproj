@@ -28,6 +28,7 @@
     <ClCompile Include="Feature.cpp" />
     <ClCompile Include="Fiber.cpp" />
     <ClCompile Include="ArgVisitor.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="NumberType.cpp" />
     <ClCompile Include="MinusFeatureProvider.cpp" />
     <ClCompile Include="Type.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="ContextFeature.h" />
     <ClInclude Include="Fiber.h" />
     <ClInclude Include="ArgVisitor.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="NumberType.h" />
     <ClInclude Include="PrioTable.h" />
     <ClInclude Include="SyntaxVisitor.h" />
