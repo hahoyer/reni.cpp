@@ -8,12 +8,23 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-
-ArgVisitor::ArgVisitor(ResultCache const& result):result(result){
-    SetDumpString();
+p_implementation(ArgVisitor, Array<String>, DumpData){
+    return results
+        .keys
+        .Select<String>([&](Tag const* key)
+    {
+        return HWLib::DumpTypeName(key) + ": " + HWLib::Dump(results[key]); 
+    })
+        ->ToArray;
 }
 
+
 Ref<CodeItem> const ArgVisitor::Arg(Type const&type) const{
-    a_is(type, == , *result.type);
-    return result.code;
+    auto result = results.Find(&Tag::expressionArg);
+    if(result.IsEmpty)
+        return baseType::Arg(type);
+
+    a_is(type, == , *result->type);
+    return result->code;
 };
+

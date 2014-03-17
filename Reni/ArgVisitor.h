@@ -1,5 +1,6 @@
 #pragma once
 #include "ReplaceVisitor.h"
+#include "../HWLib/Map.h"
 
 using namespace HWLib;
 
@@ -11,12 +12,21 @@ namespace Reni
     {
         typedef ReplaceVisitor baseType;
         typedef ArgVisitor thisType;
-        ResultCache const& result;
     public:
-        ArgVisitor(ResultCache const& result);
+        struct Tag{
+            static Tag expressionThis;
+            static Tag expressionArg;
+        };
     private:
-        p_function(Array<String>,DumpData) override{ return{nd(result)}; }
+        Map<Tag const*, Ref<ResultCache>> results;
+    public:
+        ArgVisitor&  Assign(Tag const*tag, Ref<ResultCache> result){
+            results.Assign(tag, result);
+            return *this;
+        }
+
+    private:
+        p_function(Array<String>, DumpData) override;
         virtual Ref<CodeItem> const Arg(Type const&) const override;;
     };
-
 }
