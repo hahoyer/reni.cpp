@@ -63,6 +63,19 @@ namespace HWLib{
                 return right();
             return left;
         }
+
+        template <class TOther>
+        friend Ref<T, true> const operator&&(bool left, Ref<T, true> right){
+            if(left)
+                return right;
+            return {};
+        }
+        template <class TOther>
+        friend Ref<T, true> const operator&&(bool left, std::function<Ref<T, true>> right){
+            if(left)
+                return right();
+            return {};
+        }
     };
 
 }
