@@ -8,10 +8,16 @@ namespace HWLib{
     class MapBase{
         typedef MapBase thisType;
         typedef std::unordered_map<TKey, TValue> dataType;
+    public: 
+        typedef TKey keyType;
+    private:
         dataType data;
     public:
         bool const ContainsKey(TKey const&key)const{
             return data.find(key) != data.end();
+        }
+        p(Array<TKey>, keys){
+            return data.keys();
         }
     protected:
         TValue const operator[](TKey const&key)const{
