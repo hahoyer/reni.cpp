@@ -1,6 +1,7 @@
 #pragma once
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
+#include "Common.h"
 #include "Properties.h"
 
 #undef _
@@ -12,6 +13,9 @@ namespace HWLib
     template<typename T>
     class Box_
     {
+        template<typename T, typename TContainer>
+        friend class Enumerable_;
+
         using thisType = Box_<T>;
         T & _data;
     public:
@@ -25,6 +29,9 @@ namespace HWLib
         template<typename TDestination>
         TDestination Convert(){ return convert<TDestination>(_data); };
         String const DumpToString()const;
+        template<typename TElement>
+        Enumerable_<TElement, T> const ToEnumerable()const;
+
     };
 
     template<typename TPointer>

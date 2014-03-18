@@ -2,6 +2,7 @@
 #include "Import.h"
 #include "../_.h"
 #include "../Array.h"
+#include "../BeginEndIterator.h"
 #include "../Console.h"
 #include "../CtrlPtr.h"
 #include "../CtrlRef.h"

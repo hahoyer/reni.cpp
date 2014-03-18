@@ -2,6 +2,7 @@
 #include "Ref.h"
 #include "CtrlPtr.h"
 #include <unordered_map>
+#include "_.h"
 
 namespace HWLib{
     template<class TKey, class TValue, class TOptionalValue = TValue>
@@ -17,7 +18,10 @@ namespace HWLib{
             return data.find(key) != data.end();
         }
         p(Array<TKey>, keys){
-            return data.keys();
+            return _(data)
+                .ToEnumerable<dataType::value_type>()
+                .Select<keyType>([&](dataType::value_type const&pair){return pair.first; })
+                ->ToArray;
         }
     protected:
         TValue const operator[](TKey const&key)const{
