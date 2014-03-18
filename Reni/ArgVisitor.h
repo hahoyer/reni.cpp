@@ -30,3 +30,12 @@ namespace Reni
         Ref<CodeItem, true> const Arg(Type const&type) const override;
     };
 }
+
+template<>
+inline String const HWLib::Dump(Reni::ArgVisitor::Tag const*value){
+    if(value == &Reni::ArgVisitor::Tag::expressionThis)
+        return  "expressionThis";
+    if(value == &Reni::ArgVisitor::Tag::expressionArg)
+        return  "expressionArg";
+    return "<unknown>";
+}

@@ -17,7 +17,7 @@ p_implementation(ArgVisitor, Array<String>, DumpData){
         .keys
         .Select<String>([&](Tag const* key)
     {
-        return HWLib::DumpTypeName(key) + ": " + HWLib::Dump(results[key]); 
+        return HWLib::Dump(key) + ": " + HWLib::Dump(results[key]); 
     })
         ->ToArray;
 };
