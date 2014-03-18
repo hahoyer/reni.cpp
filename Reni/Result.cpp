@@ -4,6 +4,7 @@
 #include "Category.h"
 #include "Code.h"
 #include "Context.h"
+#include "ReplaceVisitor.h"
 #include "Syntax.h"
 #include "..\HWLib\LevelValue.h"
 #include "..\HWLib\DumpMacros.h"
@@ -72,7 +73,11 @@ p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
     });
     return baseDump + thisDump;
 };
-
+                                                                      
+ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
+    md(arg);
+    mb;
+}
 
 p_implementation(ResultData, Array<String>, DumpData){
     return{

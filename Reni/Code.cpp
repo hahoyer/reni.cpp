@@ -63,5 +63,5 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const{
 }
 
 Ref<CodeItem, true> const ArgCode::Replace(ReplaceVisitor const&visitor) const{
-    return visitor.Arg(type)->ref;
+    return visitor.Arg(type);
 };
