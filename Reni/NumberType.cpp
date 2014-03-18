@@ -30,16 +30,13 @@ p_implementation(NumberType, Array<String>, DumpData){
     return{nd(parent)};
 };
 
-ResultData const NumberType::DumpPrintProvider::Result(NumberType const&type,Category category){
+ResultData const NumberType::DumpPrintProvider::Result(Category category, NumberType const&type){
     return type.global->voidType
         .GetResultData(category, CodeItem::DumpPrint(type));
 };
 
-ResultData const NumberType::MinusProvider::Result(
-    NumberType const&type,
-    Category category
-    ){
-    fd(type, category);
+ResultData const NumberType::MinusProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
+    fd(category, _thisType, argType);
     b_;
     return{};
 };

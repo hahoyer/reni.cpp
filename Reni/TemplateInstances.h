@@ -28,7 +28,7 @@ private:
         ArgVisitor visitor;
         auto result = expressionSyntax.left->GetResultCache(context);
         visitor.Assign(&ArgVisitor::Tag::expressionArg, *result);
-        return TTargetTypeHandler::Result(value, category)
+        return TTargetTypeHandler::Result(category, value)
             .Replace(visitor);
     };
     p_function(Array<String>, DumpData) override{return{nd(value)};}
@@ -55,7 +55,7 @@ private:
         ArgVisitor visitor;
         visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
         visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
-        return TTargetTypeHandler::Result(value, category)
+        return TTargetTypeHandler::Result(category, value, *argResult->type)
             .Replace(visitor);
     };
     p_function(Array<String>, DumpData) override{ return{nd(value)}; }
