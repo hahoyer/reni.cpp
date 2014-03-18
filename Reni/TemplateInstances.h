@@ -3,6 +3,7 @@
 #include "Feature.h"
 #include "FeatureProvider.h"
 #include "SearchResult.h"
+#include "ArgVisitor.h"
 
 using namespace Reni;
 using namespace HWLib;

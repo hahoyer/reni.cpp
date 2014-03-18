@@ -75,8 +75,12 @@ p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
 };
                                                                       
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
-    md(arg);
-    mb;
+    if(!complete.hasCode)
+        return *this;
+    auto newCode = code->Replace(arg);
+    if(newCode.IsEmpty)
+        return *this;
+    return ResultData(size, newCode, type);
 }
 
 p_implementation(ResultData, Array<String>, DumpData){
