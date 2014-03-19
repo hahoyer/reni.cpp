@@ -30,6 +30,10 @@ p_implementation(NumberType, Array<String>, DumpData){
     return{nd(parent)};
 };
 
+p_implementation(NumberType, String, DumpShort){
+    return base_p_name(DumpShort) + " size=" + size.DumpShort;
+};
+
 ResultData const NumberType::DumpPrintProvider::Result(Category category, NumberType const&type){
     return type.global->voidType
         .GetResultData(category, CodeItem::DumpPrint(type));

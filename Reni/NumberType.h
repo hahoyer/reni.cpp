@@ -31,6 +31,7 @@ namespace Reni{
         p_function(Size, size) override;
         p_function(WeakRef<Global>, global) override;
         p_function(Array<String>, DumpData) override;
+        p_function(String, DumpShort) override;
 
         operator Ref<FeatureProvider<DumpPrintToken>, true>() const override{
             return new ArglessFunctionProvider<DumpPrintToken, DumpPrintProvider>(*this);
