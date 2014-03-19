@@ -5,7 +5,7 @@
     <!-- ********************************************************************************************* -->
     <Type Name="HWLib::DumpableObject">
         <!-- ********************************************************************************************* -->
-        <DisplayString>{_dumpString,sb}</DisplayString>
+        <DisplayString>{dumpShortString,sb}</DisplayString>
     </Type>
 
     <!-- ********************************************************************************************* -->
@@ -30,12 +30,19 @@
     <!-- ********************************************************************************************* -->
     <Type Name="HWLib::Ref&lt;*&gt;">
         <!-- ********************************************************************************************* -->
-        <DisplayString Condition="_value._Myptr == 0">{null}</DisplayString>
-        <DisplayString Condition="_value._Myptr != 0">{*_value._Myptr}</DisplayString>
+        <DisplayString Condition="value.value == 0">{null}</DisplayString>
+        <DisplayString Condition="value.value != 0">{*value.value}</DisplayString>
         <Expand>
-            <Item Condition="_value._Myptr != 0" Name="Value">_value._Myptr</Item>
+            <Item Condition="value.value != 0" Name="value">value.value</Item>
         </Expand>
     </Type>
+
+    <!-- ********************************************************************************************* -->
+    <Type Name="HWLib::MapBase&lt;*&gt;">
+        <!-- ********************************************************************************************* -->
+        <DisplayString>{data}</DisplayString>
+    </Type>
+
 
 
     <!-- ********************************************************************************************* -->

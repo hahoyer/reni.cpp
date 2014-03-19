@@ -103,7 +103,7 @@ SourcePosition const Source::operator +(int position)const{
     return SourcePosition(*this, position);
 }
 
-SourcePosition const HWLang::operator +(CtrlRef<Source> const& source, int position){
+SourcePosition const HWLang::operator +(Ref<Source> const& source, int position){
     return SourcePosition(source, position);
 }
 
@@ -116,3 +116,30 @@ p_implementation(Source, Array<String>, DumpData){
     return Array<String>{ FilePosition(0, "", "")};
 }
 
+String const Source::DumpAfterCurrent(int position, int count, int dumpWidth)const{
+    if(IsEnd(position + count))
+        return "";
+    auto length = min(dumpWidth, Count - position - count);
+    auto result = Part(position + count, length);
+    if(length == dumpWidth)
+        result += "...";
+    return result;
+};
+
+String const Source::DumpCurrent(int position, int count)const{
+    return Part(position,count);
+}
+
+String const Source::DumpBeforeCurrent(int position, int dumpWidth)const{
+    auto start = max(0, position - dumpWidth);
+    auto result = Part(start, position - start);
+    if(position >= dumpWidth)
+        result = "..." + result;
+    return result;
+}
+
+String const Source::DumpAroundCurrent(int position, int count, int dumpWidth)const{
+    return DumpBeforeCurrent(position,dumpWidth) 
+        + "[" + DumpCurrent(position, count) + "]" 
+        + DumpAfterCurrent(position,count,dumpWidth);
+}

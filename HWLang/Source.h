@@ -39,10 +39,13 @@ namespace HWLang
         String const FilePosition(int position, String flagText, String tag = "")const;
         int const LineNr(int position)const;
         int const ColNr(int position)const;
-        friend SourcePosition const operator +(CtrlRef<Source> const& source, int position);
+        friend SourcePosition const operator +(Ref<Source> const& source, int position);
         SourcePosition const operator +(int position)const;
         bool const BeginsWith(int position, String value)const;
-
+        String const DumpAfterCurrent(int position, int count, int dumpWidth)const;
+        String const DumpCurrent(int position, int count)const;
+        String const DumpBeforeCurrent(int position, int dumpWidth)const;
+        String const DumpAroundCurrent(int position, int count, int dumpWidth)const;
     private:
         p_function(Array<String>,DumpData) override;
     };

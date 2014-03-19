@@ -16,6 +16,7 @@ Ref<Syntax> const NumberToken::CreateSyntax(SourcePart const&part)const{
 
 ResultData const NumberToken::GetResultData(Context const&context, Category category, SourcePart const&part)const{
     auto value = BitsConst::Convert(part);
+    auto size = value.size.value;
     return context
         .global
         ->bitType

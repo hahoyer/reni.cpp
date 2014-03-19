@@ -33,5 +33,6 @@ namespace Reni{
         bool operator<=(Category const other)const;
     private:
         p_function(Array<String>,DumpData) override;
+        p_function(String, DumpShort) override{ return DumpData.Stringify(","); }
     };
 }

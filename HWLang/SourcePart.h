@@ -1,6 +1,8 @@
 #pragma once
 
 #include "SourcePosition.h"
+#include "../HWLib/DumpableObject.h"
+#include "../HWLib/Ref.h"
 
 using namespace HWLib;
 
@@ -13,11 +15,11 @@ namespace HWLang{
         using baseType = DumpableObject;
         using thisType = SourcePart;
 
-        CtrlRef<Source > const _source;
+        Ref<Source> const _source;
         int const _position;
         int const _count;
     public:
-        SourcePart(CtrlRef<Source> source, int position, int count)
+        SourcePart(Ref<Source> source, int position, int count)
             : _source(source)
             , _position(position)
             , _count(count)
@@ -30,6 +32,7 @@ namespace HWLang{
         operator String const()const;
     private:
         p_function(Array<String>,DumpData) override;
+        p_function(String, DumpShort) override;
         p(String, DumpCurrent);
         p(String, DumpAfterCurrent);
         p(String, DumpBeforeCurrent);

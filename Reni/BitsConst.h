@@ -8,7 +8,7 @@ using namespace HWLib;
 namespace Reni{
     class Size;
 
-    class BitsConst
+    class BitsConst final
         : public DumpableObject
     {
         using baseType = DumpableObject;
@@ -17,7 +17,7 @@ namespace Reni{
         using dataChunkType = BigInt::Ulong;
     private:
         BigInt::Rossi const value;
-        BitsConst(String const&text): value(text.RawData,10){}
+        BitsConst(String const&text) : value(text.RawData, 10){ SetDumpString(); }
     public:
         static BitsConst const Convert(String const&text);
         operator int const()const;
@@ -28,5 +28,6 @@ namespace Reni{
         p(Array<dataChunkType>, ToArray);
     private:
         p_function(Array<String>,DumpData) override{ return{ value.toStrDec() }; };
+        p_function(String, DumpShort) override;
     };
 }

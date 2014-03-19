@@ -45,3 +45,10 @@ p_implementation(BitsConst, String, format){
         ->Stringify(", ");
 
 }
+
+
+p_implementation(BitsConst, String, DumpShort){
+    return String(value.toStrDec())
+        + String(" size=") 
+        + size.DumpShort;
+};

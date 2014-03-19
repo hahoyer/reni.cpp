@@ -23,7 +23,9 @@ public:
 
 RootContext::RootContext()
 : _internal(new internal)
-, _global(new Global){}
+, _global(new Global){
+    SetDumpString();
+}
 
 RootContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{ return _internal->minus->ref; }
 
