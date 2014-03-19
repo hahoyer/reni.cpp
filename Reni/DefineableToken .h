@@ -16,8 +16,10 @@ namespace Reni{
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override{
             return new ExpressionSyntax(*this, left, part, right);
         };
+        p_function(Array<String>, DumpData) override{
+            auto result = name.Quote;
+            return{result};
+        };
+        p_function(String, DumpShort) override{return Dump;};
     };
-
-
-
 }

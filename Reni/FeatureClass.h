@@ -32,5 +32,7 @@ namespace Reni{
         using thisType = GenericFeatureClass;
         virtual SearchResult const GetDefinition(Type const&type)const override;
         virtual SearchResult const GetDefinition(Context const&context)const override;
+    public:
+        GenericFeatureClass(){ SetDumpString(); }
     };
 }
