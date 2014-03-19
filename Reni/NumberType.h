@@ -22,6 +22,14 @@ namespace Reni{
             typedef class NumberType targetType;
             static ResultData const Result(Category, NumberType const&_thisType, Type const&argType);
         };
+        struct PlusProvider{
+            typedef class NumberType targetType;
+            static ResultData const Result(Category, NumberType const&_thisType, Type const&argType);
+        };
+        struct TimesProvider{
+            typedef class NumberType targetType;
+            static ResultData const Result(Category, NumberType const&_thisType, Type const&argType);
+        };
 
         ArrayType const& parent;
     public:
@@ -38,6 +46,12 @@ namespace Reni{
         };
         operator Ref<FeatureProvider<MinusToken>, true>() const override{
             return new InfixFunctionProvider<MinusToken, MinusProvider>(*this);
+        };
+        operator Ref<FeatureProvider<PlusToken>, true>() const override{
+            return new InfixFunctionProvider<PlusToken, PlusProvider>(*this);
+        };
+        operator Ref<FeatureProvider<StarToken>, true>() const override{
+            return new InfixFunctionProvider<StarToken, TimesProvider>(*this);
         };
 
         NumberType const& Resize(int newSize)const;

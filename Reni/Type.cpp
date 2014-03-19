@@ -50,23 +50,21 @@ p_implementation(Type, WeakRef<NumberType>, numberType){
     return &_internal->number.Value->ref;
 };
 
-Type::operator Ref<FeatureProvider<DumpPrintToken>, true>()const{
-    md_;
-    mb;
-};
-
-
 WeakRef<NumberType> const Type::CreateNumberType() const{
     auto a = dynamic_cast<ArrayType const*>(this);
     a_if(a && dynamic_cast<BitType const*>(&a->elementType), nd(*this) + " cannot be flagged as number type");
     return new NumberType(a->ref);
 };
 
-Type::operator Ref<FeatureProvider<MinusToken>, true>()const{
+Type::operator Ref<FeatureProvider<DumpPrintToken>, true>()const{
     md_;
     mb;
 };
 
+Type::operator Ref<FeatureProvider<MinusToken>, true>()const{
+    md_;
+    mb;
+};
 
 Type::operator Ref<FeatureProvider<PlusToken>, true>() const{
     md_;
@@ -77,4 +75,3 @@ Type::operator Ref<FeatureProvider<StarToken>, true>() const{
     md_;
     mb;
 }
-

@@ -56,6 +56,18 @@ ResultData const NumberType::MinusProvider::Result(Category category, NumberType
     return{};
 };
 
+ResultData const NumberType::PlusProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
+    fd(category, _thisType, argType);
+    b_;
+    return{};
+};
+
+ResultData const NumberType::TimesProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
+    fd(category, _thisType, argType);
+    b_;
+    return{};
+};
+
 NumberType const& NumberType::Resize(int newSize)const{
     return parent
         .elementType
