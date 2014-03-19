@@ -51,7 +51,7 @@ private:
         )const override{
         a_throw_(!expressionSyntax.right.IsEmpty);
         auto thisResult = expressionSyntax.left->GetResultCache(context);
-        auto argResult = expressionSyntax.left->GetResultCache(context);
+        auto argResult = expressionSyntax.right->GetResultCache(context);
         ArgVisitor visitor;
         visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
         visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
