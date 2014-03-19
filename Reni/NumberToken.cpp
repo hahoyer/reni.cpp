@@ -5,6 +5,7 @@
 #include "BitType.h"
 #include "Context.h"
 #include "Global.h"
+#include "NumberType.h"
 
 using namespace Reni;
 static bool Trace = true;

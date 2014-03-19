@@ -39,7 +39,7 @@ namespace Reni{
         virtual_p(WeakRef<Global>, global) = 0;
         
         WeakRef<Type> const array(int count)const;
-        p(WeakRef<Type>, numberType);
+        p(WeakRef<NumberType>, numberType);
         
         ResultData const GetResultData(Category category, Ref<CodeItem> code)const;
 
@@ -51,9 +51,6 @@ namespace Reni{
 
         virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const;
         virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
-
-
-
 
         WeakRef<NumberType> const CreateNumberType()const;
 

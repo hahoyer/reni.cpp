@@ -46,7 +46,7 @@ WeakRef<Type> const Type::array(int count)const{
     return _internal->array[count]->ref;
 };
 
-p_implementation(Type, WeakRef<Type>, numberType){
+p_implementation(Type, WeakRef<NumberType>, numberType){
     return &_internal->number.Value->ref;
 };
 

@@ -40,5 +40,6 @@ namespace Reni{
             return new InfixFunctionProvider<MinusToken, MinusProvider>(*this);
         };
 
+        NumberType const& Resize(int newSize)const;
     };
 }
