@@ -42,7 +42,7 @@ ResultData const NumberType::DumpPrintProvider::Result(Category category, Number
 ResultData const NumberType::MinusProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
     auto argTypeAsNumber = dynamic_cast<thisType const*>(&argType);
     if(argTypeAsNumber){
-        auto resultType = _thisType.Resize(BitsConst::MinusSize(_thisType.size.value, argTypeAsNumber->size.value));
+        Type const& resultType = _thisType.Resize(BitsConst::MinusSize(_thisType.size.value, argTypeAsNumber->size.value));
         if(category == Category::Type)
             return resultType;
         fd(category, _thisType, argType, resultType);

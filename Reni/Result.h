@@ -28,9 +28,9 @@ namespace Reni
             , code(code){
             SetDumpString();
         };
-        ResultData(WeakRef<Type> type)
-            : size(type->size)
-            , type(type){
+        ResultData(Type const& type)
+            : size(type.size)
+            , type(type.ref){
             SetDumpString();
         };
         ResultData(Optional<Size> const&size, Ref<CodeItem,true> code, WeakPtr<Type> type)
