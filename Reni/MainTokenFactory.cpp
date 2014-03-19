@@ -89,9 +89,11 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new LeftParenthesisToken(2));
     AddTokenClass(new LeftParenthesisToken(3));
     AddTokenClass(new MinusToken);
+    AddTokenClass(new PlusToken);
     AddTokenClass(new RightParenthesisToken(1));
     AddTokenClass(new RightParenthesisToken(2));
     AddTokenClass(new RightParenthesisToken(3));
+    AddTokenClass(new StarToken);
 }
 
 TokenClass const& MainTokenFactory::GetTokenClass(String const&name){

@@ -15,6 +15,7 @@ namespace Reni
     class Size;
     class Result;
     class FiberItem;
+    class NumberType;
     class ReplaceVisitor;
 
     class CodeItem 

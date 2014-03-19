@@ -111,6 +111,8 @@ inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Context
 
 TypeFeature(DumpPrintToken);
 TypeFeature(MinusToken);
+TypeFeature(PlusToken);
+TypeFeature(StarToken);
 ContextFeature(MinusToken);
 
 template <typename T>

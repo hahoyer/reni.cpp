@@ -17,8 +17,10 @@ namespace Reni{
     class Global;
     class MinusToken;
     class NumberType;
+    class PlusToken;
     class ResultData;
     class Size;
+    class StarToken;
 
     template<typename T, typename ...> class FeatureProvider;
 
@@ -51,6 +53,8 @@ namespace Reni{
 
         virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const;
         virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
+        virtual operator Ref<FeatureProvider<PlusToken>, true>()const;
+        virtual operator Ref<FeatureProvider<StarToken>, true>()const;
 
         WeakRef<NumberType> const CreateNumberType()const;
 

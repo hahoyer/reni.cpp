@@ -30,5 +30,27 @@ namespace Reni{
         }
     };
 
+    class PlusToken final : public DefineableToken{
+        using baseType = DefineableToken;
+        using thisType = PlusToken;
+    public:
+        PlusToken() : baseType("+"){}
+    private:
+        GenericFeatureClass<thisType> feature;
+        p_function(WeakRef<FeatureClass>, featureClass) override{
+            return &feature.ref;
+        }
+    };
 
+    class StarToken final : public DefineableToken{
+        using baseType = DefineableToken;
+        using thisType = StarToken;
+    public:
+        StarToken() : baseType("*"){}
+    private:
+        GenericFeatureClass<thisType> feature;
+        p_function(WeakRef<FeatureClass>, featureClass) override{
+            return &feature.ref;
+        }
+    };
 }

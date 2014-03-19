@@ -66,3 +66,15 @@ Type::operator Ref<FeatureProvider<MinusToken>, true>()const{
     md_;
     mb;
 };
+
+
+Type::operator Ref<FeatureProvider<PlusToken>, true>() const{
+    md_;
+    mb;
+}
+
+Type::operator Ref<FeatureProvider<StarToken>, true>() const{
+    md_;
+    mb;
+}
+
