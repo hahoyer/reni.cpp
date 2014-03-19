@@ -2,6 +2,7 @@
 
 #include "bigInt.h"
 #include "../HWLib/DumpableObject.h"
+#include "../HWLib/Common.h"
 
 using namespace HWLib;
 
@@ -20,6 +21,7 @@ namespace Reni{
         BitsConst(String const&text) : value(text.RawData, 10){ SetDumpString(); }
     public:
         static BitsConst const Convert(String const&text);
+        static int const MinusSize(int left, int right){ return max(left, right) + 1; }
         operator int const()const;
 
         p(Size, size);
