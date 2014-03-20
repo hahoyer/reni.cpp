@@ -33,31 +33,32 @@ namespace Reni{
         {}
     private:
         p_function(Array<String>,DumpData) override{ return{nd(size)}; };
-        p_function(Size,inSize) override{ return size; };
-        p_function(Size,outSize) override{ return 0; };
+        p_function(Size,argSize) override{ return size; };
+        p_function(Size,size) override{ return 0; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const{ return {}; }
     };
 
 
-    class BinaryOperationCode final : public FiberItem {
-        typedef FiberItem baseType;
+    class BinaryOperationCode final : public FiberConnector {
+        typedef FiberConnector baseType;
         typedef BinaryOperationCode thisType;
+        Size const _size;
+        Size const _leftSize;
+        Size const _rightSize;
     public:
-        Size const size;
-        Size const leftSize;
-        Size const rightSize;
         String const name;
         BinaryOperationCode(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)
             : name(name)
-            , size(size)
-            , leftSize(leftSize)
-            , rightSize(rightSize)
+            , _size(size)
+            , _leftSize(leftSize)
+            , _rightSize(rightSize)
         {}
     private:
         p_function(Array<String>, DumpData) override{ return{nd(size), nd(leftSize), nd(name), nd(rightSize)}; };
-        p_function(Size, inSize) override{ return leftSize + rightSize; };
-        p_function(Size, outSize) override{ return size; };
+        p_function(Size, leftSize) override{ return _leftSize; };
+        p_function(Size, rightSize) override {return _rightSize;};
+        p_function(Size, size) override {return _size;};
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const{ return{}; }
     };
@@ -101,9 +102,11 @@ namespace Reni{
     public:
         Ref<CodeItem> const left;
         Ref<CodeItem> const right;
-        PairCode(CodeItem const&left, CodeItem const&right)
-            : left(left.ref)
-            , right(right.ref)
+        Ref<FiberConnector> const connector;
+        PairCode(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector)
+            : left(left)
+            , right(right)
+            , connector(connector)
         {}
     private:
         p_function(Array<String>, DumpData) override{ return{nd(left),nd(right)}; };

@@ -23,3 +23,15 @@ String const CodeVisitor::DumpPrintNumber(Size const size) const{
     b_;
     return "";
 }
+
+String const CodeVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right) const{
+    md(left, right);
+    b_;
+    return "";
+}
+
+String const CodeVisitor::BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const{
+    md(name, size, leftSize, rightSize);
+    b_;
+    return "";
+};

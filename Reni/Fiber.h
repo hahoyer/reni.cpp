@@ -16,8 +16,8 @@ namespace Reni{
         typedef DumpableObject baseType;
         typedef CodeItem thisType;
     public:
-        virtual_p(Size, inSize) = 0;
-        virtual_p(Size, outSize) = 0;
+        virtual_p(Size, argSize) = 0;
+        virtual_p(Size, size) = 0;
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual Ref<FiberItem,true> const Replace(ReplaceVisitor const&arg) const;
     };
@@ -33,7 +33,7 @@ namespace Reni{
             : head(head)
               , items(items){
             SetDumpString();
-            a_if_(IsValid);
+            a_if(IsValid, Dump);
         }
     public:
         static Ref<Fiber> Create(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items);
@@ -46,6 +46,19 @@ namespace Reni{
         p(bool, IsValid);
     };
 
+    class FiberConnector 
+        : public DumpableObject
+        , public RefCountProvider {
+        typedef DumpableObject baseType; 
+        typedef FiberConnector thisType;
+    public:
+        AssumeConstObject;
+        virtual_p(Size, leftSize) = 0;
+        virtual_p(Size, rightSize) = 0;
+        virtual_p(Size, size) = 0;
+        virtual String const ToCpp(CodeVisitor const& visitor)const = 0;
+        virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&arg) const = 0;
+    };
 
     class FiberVisitor final : public CodeVisitor{
         typedef CodeVisitor baseType;
@@ -55,7 +68,9 @@ namespace Reni{
         FiberVisitor(CodeVisitor const&parent) : parent(parent) {}
     private:
         p_function(Array<String>,DumpData) override {return{ nd(parent) };};
-        virtual String const Const(Size const size, BitsConst const& value) const override;
-        virtual String const DumpPrintNumber(Size const size) const override;
+        String const Const(Size const size, BitsConst const& value) const override;
+        String const DumpPrintNumber(Size const size) const override;
+        String const Pair(Ref<CodeItem> const&left, Ref<CodeItem> const&right) const override;
+        String const BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const override;
     };
 }

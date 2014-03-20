@@ -14,11 +14,11 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-virtual_p_implementation(FiberItem, Size, inSize){
+virtual_p_implementation(FiberItem, Size, argSize){
     return Size(0);
 }
 
-virtual_p_implementation(FiberItem, Size, outSize){
+virtual_p_implementation(FiberItem, Size, size){
     return Size(0);
 }
 
@@ -36,15 +36,15 @@ String const FiberItem::ToCpp(CodeVisitor const& visitor)const{
 
 
 p_implementation(Fiber, Size, size){
-    return items.Last->outSize;
+    return items.Last->size;
 };
 
 p_implementation(Fiber, bool, IsValid) {
     Size size = head->size;
     for(auto item: items){
-        if(size != item->inSize)
+        if(size != item->argSize)
             return false;
-        size = item->outSize;
+        size = item->size;
     }
     return true;
 };
@@ -85,10 +85,28 @@ String const Fiber::ToCpp(CodeVisitor const&visitor) const{
 }
 
 
-String const FiberVisitor::Const(Size const size, BitsConst const& value) const{
+pure_p_implementation(FiberConnector, Size, leftSize);
+pure_p_implementation(FiberConnector, Size, rightSize);
+pure_p_implementation(FiberConnector, Size, size);
+
+String const FiberVisitor::Const(Size const size, BitsConst const& value) const {
     return value.format;
 }
 
 String const FiberVisitor::DumpPrintNumber(Size const size) const{
     return "DumpPrint($(arg))";
 }
+
+String const FiberVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right) const {
+    auto leftCode = left->ToCpp(*this);
+    auto rightCode = right->ToCpp(*this);
+    return leftCode + ", " + rightCode;
+}
+
+String const FiberVisitor::BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const {
+    md(name, size, leftSize, rightSize);
+    b_;
+    return "";
+};
+
+

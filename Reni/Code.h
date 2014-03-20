@@ -19,7 +19,7 @@ namespace Reni
     class ReplaceVisitor;
 
     class CodeItem 
-        : public DumpableObject
+        : public WithId<DumpableObject>
         , public RefCountProvider
     {
         typedef DumpableObject baseType;
@@ -33,10 +33,6 @@ namespace Reni
         static Ref<CodeItem> const BinaryOperation(String name, NumberType const&result, NumberType const&left, NumberType const&right);
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
         static Ref<CodeItem> const This(Type const&value);
-
-        Ref<CodeItem> const operator+(Ref<CodeItem> const&other)const;
-        Ref<CodeItem> const operator+(CodeItem const&other)const;
-        friend Ref<CodeItem> const operator+(Ref<CodeItem> const&left, Ref<CodeItem> const&right);
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
