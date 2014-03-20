@@ -30,3 +30,12 @@ Ref<CodeItem,true> const ArgVisitor::Arg(Type const&type) const{
     a_is(type, == , *result->type);
     return result->code;
 };
+
+Ref<CodeItem, true> const ArgVisitor::This(Type const&type) const{
+    auto result = results.Find(&Tag::expressionThis);
+    if(result.IsEmpty)
+        return{};
+
+    a_is(type, == , *result->type);
+    return result->code;
+};

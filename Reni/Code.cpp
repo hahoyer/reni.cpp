@@ -33,17 +33,34 @@ Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value){
         ->Fiber({new DumpPrintNumberCode(value.size)});
 };
 
+Ref<CodeItem> const CodeItem::BinaryOperation(String name, NumberType const&result, NumberType const&left, NumberType const&right){
+    auto action = new BinaryOperationCode(name, result.size, left.size, right.size);
+    return (This(left) + Arg(right))->Fiber({action});
+};
+
 Ref<CodeItem> const CodeItem::Arg(Type const&value){
     return new ArgCode(value);
 };
 
-Ref<CodeItem,true> const CodeItem::Replace(ReplaceVisitor const&arg) const{
+Ref<CodeItem> const CodeItem::This(Type const&value){
+    return new ThisCode(value);
+};
+
+Ref<CodeItem, true> const CodeItem::Replace(ReplaceVisitor const&arg) const{
     md(arg);
     mb;
 };
 
 Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const{
     return *Reni::Fiber::Create(ref, items);
+}
+
+Ref<CodeItem> const CodeItem::operator+(Ref<CodeItem> const&other)const{
+    return (*this) + *other;
+}
+
+Ref<CodeItem> const CodeItem::operator+(CodeItem const&other)const{
+    return new PairCode(*this, other);
 }
 
 
@@ -65,3 +82,39 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const{
 Ref<CodeItem, true> const ArgCode::Replace(ReplaceVisitor const&visitor) const{
     return visitor.Arg(type);
 };
+
+
+String const ThisCode::ToCpp(CodeVisitor const& visitor)const{
+    md(visitor);
+    mb;
+}
+
+Ref<CodeItem, true> const ThisCode::Replace(ReplaceVisitor const&visitor) const{
+    return visitor.This(type);
+};
+
+
+String const BinaryOperationCode::ToCpp(CodeVisitor const& visitor)const{
+    md(visitor);
+    mb;
+}
+
+
+String const PairCode::ToCpp(CodeVisitor const& visitor)const{
+    md(visitor);
+    mb;
+}
+
+Ref<CodeItem, true> const PairCode::Replace(ReplaceVisitor const&visitor) const{
+    auto newLeft = left->Replace(visitor);
+    auto newRight = right->Replace(visitor);
+    if(newLeft.IsEmpty && newRight.IsEmpty)
+        return{};
+    return new PairCode(*(newLeft || left),*(newRight|| right));
+};
+
+
+Ref<CodeItem> const Reni::operator+(Ref<CodeItem> const&left, Ref<CodeItem> const&right){
+    return (*left) + *right;
+}
+

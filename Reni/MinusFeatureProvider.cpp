@@ -13,7 +13,7 @@ ResultData const MinusFeatureProvider::Feature::FunctionResult(
     )const {
     if(right.IsEmpty)
         return baseType::FunctionResult(context, category, right);
-    auto macro = Compiler::GetSyntaxFromText("(0-1)*arg");
+    auto macro = Compiler::GetSyntaxFromText("arg*(0-1)");
     auto syntax = macro->ReplaceArg(right);
     return syntax->GetResultData(context, category);
 }
