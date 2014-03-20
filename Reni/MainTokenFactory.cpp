@@ -41,8 +41,8 @@ class ArgToken final : public TerminalTokenClass {
 public:
     p(String, name){ return "arg"; };
 
-    ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
-        md(context, category);
+    ResultData const GetResultData(Context const&context, Category category, SourcePart const&part)const{
+        md(context, category, part);
         b_;
         return{};
     }
