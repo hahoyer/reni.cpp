@@ -1,20 +1,22 @@
 #pragma once
 #include "TokenClass.h"
-#include "../HWLib/RefCountProvider.h"
 #include "SearchResult.h"
 #include "ContextFeature.h"
 #include "ContextFeatureProvider.h"
 
+#include "../HWLib/RefCountProvider.h"
+#include "../Util/Category.h"
 
 using namespace HWLib;
+using namespace Util;
 
 namespace Reni
 {
     class Global;
-    class ResultData;
-    class Syntax;
-    class RootContext;
     class MinusToken;
+    class ResultData;
+    class RootContext;
+    class Syntax;
 
     class Context 
         : public WithId<DumpableObject, Context>
