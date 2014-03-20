@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "SearchResult.h"
 
-#include "Category.h"
 #include "Context.h"
 #include "ExpressionSyntax.h"
 #include "Feature.h"

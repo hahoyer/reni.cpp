@@ -1,9 +1,7 @@
 #include "Import.h"
 #include "Compiler.h"
 
-#include "BitsConst.h"
 #include "BitType.h"
-#include "Size.h"
 #include "Result.h"
 #include "FeatureProvider.h"
 #include "TokenClass.h"

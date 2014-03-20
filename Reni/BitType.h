@@ -2,10 +2,11 @@
 #include "Type.h"
 #include "../HWLib/WeakRef.h"
 
+using namespace Util;
+
 namespace Reni{
     class ArrayType;
     class DumpPrintToken;
-    class Size;
 
     class BitType final : public Type{
         using baseType = Type;

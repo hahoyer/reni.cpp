@@ -3,11 +3,11 @@
 #include "CodeVisitor.h"
 
 using namespace HWLib;
+using namespace Util;
 
 namespace Reni{
     class CodeItem;
     class FiberItem;
-    class Size;
     class ReplaceVisitor;
 
     class FiberItem

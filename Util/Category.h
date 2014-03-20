@@ -3,7 +3,7 @@
 
 using namespace HWLib;
 
-namespace Reni{
+namespace Util{
     class Category final : public DumpableObject{
         using baseType = DumpableObject;
         using thisType = Category;

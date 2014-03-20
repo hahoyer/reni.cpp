@@ -8,7 +8,6 @@ namespace Reni{
     class ExpressionSyntax;
     class ResultData;
     class Context;
-    class Category;
     class Feature;
 
     class SearchResult : public DumpableObject{

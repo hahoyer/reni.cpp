@@ -1,10 +1,8 @@
 #include "Import.h"
 #include "Fiber.h"
 
-#include "BitsConst.h"
 #include "FeatureProvider.h"
 #include "Result.h"
-#include "Size.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "ReplaceVisitor.h"
 

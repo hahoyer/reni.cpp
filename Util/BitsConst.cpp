@@ -5,7 +5,7 @@
 
 static bool Trace = true;
 
-using namespace Reni;
+using namespace Util;
 
 BitsConst const BitsConst::Convert(String const&text){
     return BitsConst(text);

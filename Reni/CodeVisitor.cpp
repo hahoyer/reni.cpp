@@ -1,8 +1,6 @@
 #include "Import.h"
 #include "CodeVisitor.h"
 
-#include "BitsConst.h"
-#include "Size.h"
 #include "..\HWLib\DumpMacros.h"
 #include "..\HWLib\BreakHandling.h"
 #include "Fiber.h"

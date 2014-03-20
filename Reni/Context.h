@@ -10,7 +10,6 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class Category;
     class Global;
     class ResultData;
     class Syntax;

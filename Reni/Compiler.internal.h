@@ -2,7 +2,6 @@
 #include "Compiler.h"
 
 #include "CodeVisitor.h"
-#include "CppCompilerScripting.h"
 #include "MainTokenFactory.h"
 #include "RootContext.h"
 #include "Scanner.h"

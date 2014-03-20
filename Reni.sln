@@ -16,7 +16,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HWLang", "HWLang\HWLang.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Runtime", "Runtime\Runtime.vcxproj", "{50AED5D9-37C7-4A6E-8E77-F7BC6F144C50}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util", "Util\Util.vcxproj", "{396A6A68-D493-45FD-B1EF-69D229C85225}"
+EndProject
 Global
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 878793f1-abcc-45e1-8da7-e950c0bb39f3
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
@@ -42,6 +47,10 @@ Global
 		{50AED5D9-37C7-4A6E-8E77-F7BC6F144C50}.Debug|Win32.Build.0 = Debug|Win32
 		{50AED5D9-37C7-4A6E-8E77-F7BC6F144C50}.Release|Win32.ActiveCfg = Release|Win32
 		{50AED5D9-37C7-4A6E-8E77-F7BC6F144C50}.Release|Win32.Build.0 = Release|Win32
+		{396A6A68-D493-45FD-B1EF-69D229C85225}.Debug|Win32.ActiveCfg = Debug|Win32
+		{396A6A68-D493-45FD-B1EF-69D229C85225}.Debug|Win32.Build.0 = Debug|Win32
+		{396A6A68-D493-45FD-B1EF-69D229C85225}.Release|Win32.ActiveCfg = Release|Win32
+		{396A6A68-D493-45FD-B1EF-69D229C85225}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,13 +3,13 @@
 #include "../HWLib/DumpableObject.h"
 
 using namespace HWLib;
+using namespace Util;
 
 namespace Reni{
     class ArrayType;
     class ExpressionSyntax;
     class ResultData;
     class Context;
-    class Category;
 
     class Feature
         : public DumpableObject

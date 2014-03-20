@@ -1,16 +1,17 @@
 #pragma once
+#include "SearchResult.h"
+
 #include "../HWLib/Ref.h"
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/CtrlRef.h"
 #include "../HWLib/DumpableObject.h"
-#include "SearchResult.h"
+#include "../HWLib/WeakRef.h"
 
 using namespace HWLib;
+using namespace Util;
 
 namespace Reni{
     class ArrayType;
-    class BitsConst;
-    class Category;
     class CodeItem;
     class DefinitionPoint;
     class DumpPrintToken;
@@ -19,7 +20,6 @@ namespace Reni{
     class NumberType;
     class PlusToken;
     class ResultData;
-    class Size;
     class StarToken;
 
     template<typename T, typename ...> class FeatureProvider;

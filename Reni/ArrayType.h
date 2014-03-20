@@ -1,6 +1,7 @@
 #pragma once
 #include "Type.h"
 #include "../HWLib/WeakRef.h"
+#include "../Util/Size.h"
 
 using namespace HWLib;
 

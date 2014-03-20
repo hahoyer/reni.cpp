@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "Result.h"
 
-#include "Category.h"
 #include "Code.h"
 #include "Context.h"
 #include "ReplaceVisitor.h"

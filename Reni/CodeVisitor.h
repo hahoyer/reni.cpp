@@ -6,8 +6,6 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class Size;
-    class BitsConst;
     class FiberConnector;
 
     class CodeVisitor: public DumpableObject

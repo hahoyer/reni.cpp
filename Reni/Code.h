@@ -10,9 +10,7 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class BitsConst;
     class CodeVisitor;
-    class Size;
     class Result;
     class FiberItem;
     class NumberType;

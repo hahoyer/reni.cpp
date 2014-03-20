@@ -5,10 +5,8 @@
 
 using namespace HWLib;
 
-namespace Reni
-{
-    class CppCompilerScripting 
-    {
+namespace Util{
+    class CppCompilerScripting{
         using thisType = CppCompilerScripting;
         String const cppCode;
         Process currentProcess;

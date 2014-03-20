@@ -1,13 +1,12 @@
 #pragma once
 #include "Type.h"
-#include "Size.h"
-#include "../HWLib/WeakRef.h"
 #include "FeatureProvider.h"
+#include "../HWLib/WeakRef.h"
 
 using namespace HWLib;
+using namespace Util;
 
 namespace Reni{
-    class Size;
     class Syntax;
 
     class NumberType final : public Type{

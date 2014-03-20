@@ -1,10 +1,8 @@
 #pragma once
-#include "..\HWLib\DumpableObject.h"
-#include "..\HWLib\DumpToString.h"
 
 using namespace HWLib;
 
-namespace Reni{
+namespace Util{
     class Size: public DumpableObject{
         using baseType = DumpableObject;
         using thisType = Size;
@@ -31,14 +29,14 @@ namespace Reni{
 
 namespace HWLib{
     template<>
-    class Constants<Reni::Size>{
+    class Constants<Util::Size>{
     public:
-        static Reni::Size const NotValid;
+        static Util::Size const NotValid;
     };
 
     template<>
-    class Constants<Reni::Size const>{
+    class Constants<Util::Size const>{
     public:
-        static Reni::Size const NotValid;
+        static Util::Size const NotValid;
     };
 }

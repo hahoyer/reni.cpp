@@ -2,14 +2,12 @@
 #include "Type.h"
 
 #include "ArrayType.h"
-#include "BitsConst.h"
 #include "BitType.h"
 #include "Code.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
 #include "FeatureProvider.h"
 #include "NumberType.h"
-#include "Size.h"
 #include "Result.h"
 
 #include "../HWLib/_EditorTemplates.h"

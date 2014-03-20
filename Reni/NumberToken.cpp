@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "NumberToken.h"
 
-#include "BitsConst.h"
 #include "BitType.h"
 #include "Context.h"
 #include "Global.h"

@@ -1,14 +1,12 @@
 #include "Import.h"
 #include "Code.h"
 
-#include "BitsConst.h"
 #include "CodeItems.h"
 #include "CodeVisitor.h"
 #include "FeatureProvider.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
 #include "Result.h"
-#include "Size.h"
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;

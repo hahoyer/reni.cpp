@@ -5,7 +5,7 @@
 static bool Trace = true;
 
 using namespace HWLib;
-using namespace Reni;
+using namespace Util;
 
 Category const Category::None(false, false, false);
 Category const Category::Size(true, false, false);

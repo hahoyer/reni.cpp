@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Category.h"
-#include "Type.h"
-#include "Code.h"
-#include "Size.h"
 #include "../HWLib/WeakRef.h"
 #include "../HWLib/WeakPtr.h"
+#include "Type.h"
+#include "Code.h"
 
 namespace Reni
 {

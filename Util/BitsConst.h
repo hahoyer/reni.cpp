@@ -1,14 +1,13 @@
 #pragma once
 
 #include "bigInt.h"
+#include "Size.h"
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/Common.h"
 
 using namespace HWLib;
 
-namespace Reni{
-    class Size;
-
+namespace Util{
     class BitsConst final
         : public DumpableObject
     {

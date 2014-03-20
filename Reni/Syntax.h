@@ -8,7 +8,6 @@ using namespace HWLang;
 
 namespace Reni
 {
-    class Category;
     class CodeItem;
     class Context;
     class ResultFromSyntaxAndContext;

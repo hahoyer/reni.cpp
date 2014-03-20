@@ -5,7 +5,6 @@
 namespace Reni
 {
     class Context;
-    class Category;
     class ResultData;
 
     template <class TTokenClass>
