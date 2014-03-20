@@ -13,6 +13,7 @@ namespace Reni
     class SearchResult;
     class Syntax;
     class Type;
+    class SyntaxArgVisitor;
 
     class TokenClass 
         : public WithId<DumpableObject, TokenClass>
@@ -42,6 +43,7 @@ namespace Reni
         typedef TerminalTokenClass thisType;
     public:
         virtual Ref<Syntax> const CreateSyntax(SourcePart const&part)const = 0;
+        Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const { return {}; };
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
             a_if(left.IsEmpty, nd(left) + "\n" + nd(*this) + "\n" + nd(part) + "\n" + nd(right));

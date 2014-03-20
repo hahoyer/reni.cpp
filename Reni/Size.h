@@ -12,8 +12,9 @@ namespace Reni{
         int const value;
         Size(int value): value(value){}
         DefaultAssignmentOperator;
-        Size const operator*(int other)const{return value *other;};
-        bool const operator==(Size const&other)const{return value == other.value;};
+        Size const operator+(Size const&other)const{return value + other.value;};
+        Size const operator*(int other)const{ return value *other; };
+        bool const operator==(Size const&other)const{ return value == other.value; };
         bool const operator<(Size const&other)const{return value < other.value;};
         bool const operator<=(Size const&other)const{return value <= other.value;};
 

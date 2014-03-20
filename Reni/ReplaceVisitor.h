@@ -16,6 +16,7 @@ namespace Reni
         typedef ReplaceVisitor thisType;
     public:
         virtual Ref<CodeItem, true> const Arg(Type const&type)const = 0;
+        virtual Ref<CodeItem, true> const This(Type const&type)const = 0;
     private:
         p_function(Array<String>,DumpData) override{return {};};
     };

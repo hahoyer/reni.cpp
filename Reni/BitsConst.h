@@ -22,6 +22,18 @@ namespace Reni{
     public:
         static BitsConst const Convert(String const&text);
         static int const MinusSize(int left, int right){ return max(left, right) + 1; }
+        static int const PlusSize(int left, int right){ return max(left, right) + 1; }
+        static int const TimesSize(int left, int right){
+            if(left < right)
+                return TimesSize(right, left);
+            a_if_(left >= right);
+            
+            if(left == 0 || right == 0)
+                return 0;
+            if(left == 1)
+                return 1;
+            return left + right;
+        }
         operator int const()const;
 
         p(Size, size);

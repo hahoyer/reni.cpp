@@ -28,6 +28,7 @@ namespace Reni
     private:
         p_function(Array<String>, DumpData) override;
         Ref<CodeItem, true> const Arg(Type const&type) const override;
+        Ref<CodeItem, true> const This(Type const&type) const override;
     };
 }
 

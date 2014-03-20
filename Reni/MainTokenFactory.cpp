@@ -13,6 +13,7 @@
 #include "ParenthesisToken.h"
 #include "TemplateInstances.h"
 #include "../HWLib/RefCountContainer.instance.h"
+#include "SyntaxVisitor.h"
 
 
 bool Trace = true;
@@ -46,6 +47,7 @@ public:
         b_;
         return{};
     }
+    Ref<Syntax, true> Replace(ReplaceSyntaxVisitor const&visitor) const { return visitor.arg; };
 private:
     Ref<Syntax> const CreateSyntax(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);

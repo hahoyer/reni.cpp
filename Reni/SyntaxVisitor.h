@@ -22,7 +22,7 @@ namespace Reni
         typedef SyntaxArgVisitor thisType;
         Ref<Syntax> const value;
     public:
-        SyntaxArgVisitor(Ref<Syntax> const& value): value(value){}
+        SyntaxArgVisitor(Ref<Syntax> const& value) : value(value){ SetDumpString(); }
     private:
         p_function(Array<String>,DumpData) override{ return{nd(value)}; };
         p_function(Ref<Syntax>,arg) override{ return value; };
