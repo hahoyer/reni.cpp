@@ -20,6 +20,7 @@ namespace Reni
     private:
         Map<Tag const*, Ref<ResultCache>> results;
     public:
+        ArgVisitor() {SetDumpString();}
         ArgVisitor&  Assign(Tag const*tag, Ref<ResultCache> result){
             results.Assign(tag, result);
             return *this;

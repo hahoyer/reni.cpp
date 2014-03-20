@@ -5,6 +5,7 @@
 #include "Size.h"
 #include "..\HWLib\DumpMacros.h"
 #include "..\HWLib\BreakHandling.h"
+#include "Fiber.h"
 
 using namespace Reni;
 using namespace HWLib;
@@ -24,8 +25,8 @@ String const CodeVisitor::DumpPrintNumber(Size const size) const{
     return "";
 }
 
-String const CodeVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right) const{
-    md(left, right);
+String const CodeVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right, Ref<FiberConnector> const&connector) const {
+    md(left, right, connector);
     b_;
     return "";
 }

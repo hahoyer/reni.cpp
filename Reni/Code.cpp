@@ -91,8 +91,16 @@ String const BinaryOperationCode::ToCpp(CodeVisitor const& visitor)const{
 }
 
 
-String const PairCode::ToCpp(CodeVisitor const& visitor)const{
-    return visitor.Pair(left, right);
+PairCode::PairCode(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector)
+: left(left)
+, right(right)
+, connector(connector) {
+    SetDumpString();
+    a_if(IsValid, Dump);
+}
+
+String const PairCode::ToCpp(CodeVisitor const& visitor)const {
+    return visitor.Pair(left, right, connector);
 }
 
 Ref<CodeItem, true> const PairCode::Replace(ReplaceVisitor const&visitor) const{

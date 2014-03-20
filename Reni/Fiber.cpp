@@ -97,16 +97,17 @@ String const FiberVisitor::DumpPrintNumber(Size const size) const{
     return "DumpPrint($(arg))";
 }
 
-String const FiberVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right) const {
+String const FiberVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right, Ref<FiberConnector> const&connector) const {
     auto leftCode = left->ToCpp(*this);
     auto rightCode = right->ToCpp(*this);
-    return leftCode + ", " + rightCode;
+    auto connectorCodeRaw = connector->ToCpp(*this);
+    return connectorCodeRaw
+        .Replace("$(left)", leftCode)
+        .Replace("$(right)", rightCode);
 }
 
 String const FiberVisitor::BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const {
-    md(name, size, leftSize, rightSize);
-    b_;
-    return "";
+    return "($(left)) " + name + " ($(right))";
 };
 
 

@@ -70,7 +70,7 @@ namespace Reni{
         p_function(Array<String>,DumpData) override {return{ nd(parent) };};
         String const Const(Size const size, BitsConst const& value) const override;
         String const DumpPrintNumber(Size const size) const override;
-        String const Pair(Ref<CodeItem> const&left, Ref<CodeItem> const&right) const override;
+        String const Pair(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector) const override;
         String const BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const override;
     };
 }

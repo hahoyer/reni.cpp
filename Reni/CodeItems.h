@@ -14,8 +14,9 @@ namespace Reni{
         BitsConst const value;
         ConstCode(Size const&size, BitsConst const&value)
             : size(size)
-            , value(value)
-        {}
+            , value(value) {
+            SetDumpString();
+        }
     private:
         p_function(Array<String>,DumpData) override{ return{ nd(size), nd(value) }; };
         p_function(Size,size) override{ return size; };
@@ -29,8 +30,9 @@ namespace Reni{
     public:
         Size const size;
         DumpPrintNumberCode(Size const&size)
-            : size(size)
-        {}
+            : size(size) {
+            SetDumpString();
+        }
     private:
         p_function(Array<String>,DumpData) override{ return{nd(size)}; };
         p_function(Size,argSize) override{ return size; };
@@ -52,8 +54,9 @@ namespace Reni{
             : name(name)
             , _size(size)
             , _leftSize(leftSize)
-            , _rightSize(rightSize)
-        {}
+            , _rightSize(rightSize) {
+            SetDumpString();
+        }
     private:
         p_function(Array<String>, DumpData) override{ return{nd(size), nd(leftSize), nd(name), nd(rightSize)}; };
         p_function(Size, leftSize) override{ return _leftSize; };
@@ -70,8 +73,9 @@ namespace Reni{
     public:
         Type const& type;
         ArgCode(Type const&type)
-            : type(type)
-        {}
+            : type(type) {
+            SetDumpString();
+        }
     private:
         p_function(Array<String>,DumpData) override{ return{nd(type)}; };
         p_function(Size,size) override{ return type.size; };
@@ -86,8 +90,9 @@ namespace Reni{
     public:
         Type const& type;
         ThisCode(Type const&type)
-            : type(type)
-        {}
+            : type(type) {
+            SetDumpString();
+        }
     private:
         p_function(Array<String>, DumpData) override{ return{nd(type)}; };
         p_function(Size, size) override{ return type.size; };
@@ -103,14 +108,14 @@ namespace Reni{
         Ref<CodeItem> const left;
         Ref<CodeItem> const right;
         Ref<FiberConnector> const connector;
-        PairCode(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector)
-            : left(left)
-            , right(right)
-            , connector(connector)
-        {}
+        PairCode(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector);
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(left),nd(right)}; };
-        p_function(Size, size) override{ return left->size + right->size; };
+        p_function(Array<String>, DumpData) override{ return{nd(left),nd(right),nd(connector)}; };
+        p_function(Size, size) override{ return connector->size; };
+        p(bool, IsValid) {
+            return left->size == connector->leftSize 
+                && right->size == connector->rightSize;
+        };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<CodeItem, true> const Replace(ReplaceVisitor const&arg) const override;
     };
