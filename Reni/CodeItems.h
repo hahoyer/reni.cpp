@@ -55,7 +55,7 @@ namespace Reni{
             , rightSize(rightSize)
         {}
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(leftSize), nd(rightSize)}; };
+        p_function(Array<String>, DumpData) override{ return{nd(size), nd(leftSize), nd(name), nd(rightSize)}; };
         p_function(Size, inSize) override{ return leftSize + rightSize; };
         p_function(Size, outSize) override{ return size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
