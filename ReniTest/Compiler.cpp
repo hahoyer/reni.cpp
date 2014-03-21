@@ -1,6 +1,6 @@
 #include "Import.h"
 
-#include "Reni.h"
+#include "Test.h"
 #include "SimpleTokenFactory.h"
 #include "../Reni/Syntax.h"
 #include "../HWLang/PrioTable.h"
@@ -19,7 +19,7 @@ namespace _HWLang
 
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
-    void ParserBaseStructure()
+    DefineTest(ParserBaseStructure)
     {
         auto pt = PrioTable::CreateLeft({ Any }).ParenthesisLevel(Start, End);
 
@@ -33,7 +33,7 @@ namespace _HWLang
         a_is(syntax->name, == , text);
     };
 
-    void Parenthesis()
+    DefineTest(Parenthesis)
     {
 
         String text = "({)} [(asdf)as][yxcv]";
@@ -84,7 +84,7 @@ namespace _HWLang
         Check(rrlr, false, "yxcv", false, false);
     }
 
-    void PlusTimes()
+    DefineTest(PlusTimes)
     {
         String text = "a*b+c*d+e*f";
 

@@ -30,12 +30,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HWLib.h" />
     <ClInclude Include="CompilerTest.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="SimpleTokenFactory.h" />
-    <ClInclude Include="HWLang.h" />
-    <ClInclude Include="Reni.h" />
-    <ClInclude Include="Main.h" />
   </ItemGroup>
   <ItemDefinitionGroup>
     <ClCompile>

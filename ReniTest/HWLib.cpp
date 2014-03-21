@@ -1,36 +1,32 @@
 #include "Import.h"
-#include "HWLib.h"
+#include "Test.h"
 #include "../HWLang/Source.h"
 #include "../HWLib/Process.h"
 #include "../HWLib/System.h"
 
-using namespace Reni;
 using namespace HWLang;
-using namespace _HWLib;
+using namespace HWLib;
 
 static bool Trace = true;
-namespace _File
-{
-    void RunAll()
-    {
+
+DefineTest(FileTest){
         auto s = Source::FromFile(__FILE__);
         auto t = s.Text;
         a_is(t.Part(0, 8), == ,"#include");
-    };
 }
 
 namespace _Process
 {
-    void Simple()
+    DefineTest(Simple)
     {
         auto p = Process("echo example");
         auto t = p.data;
         a_is(t, == , "example\r\n");
     };
 
-    void StartProgram()
+    DefineTest(StartProgram)
     {
-        auto path = HWLib::System::EnvironmentVariable("VS120COMNTOOLS");
+        auto path = System::EnvironmentVariable("VS120COMNTOOLS");
         a_if(path.Contains(" "), nd(path));
         auto name = "..\\ide\\vb7to8.exe";
         auto p = Process("\""+ path + "\\"+ name+"\"");
@@ -39,7 +35,7 @@ namespace _Process
         a_is(e, == , "");
     };
 
-    void Double()
+    DefineTest(Double)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -48,7 +44,7 @@ namespace _Process
         a_is(t0, == , t1);
     };
 
-    void Double2()
+    DefineTest(Double2)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -58,7 +54,7 @@ namespace _Process
         a_is(t0, != , t1);
     };
 
-    void Error()
+    DefineTest(Error)
     {
         auto p = Process("%");
         auto d = p.data;
@@ -67,7 +63,7 @@ namespace _Process
         a_is(e, != , "");
     };
 
-    void RunAll()
+    DefineTest(RunAll)
     {
         Simple();
         Double();
@@ -79,12 +75,12 @@ namespace _Process
 
 namespace _String
 {
-    void WriteHallo()
+    DefineTest(WriteHallo)
     {
         _console_ WriteLine("Hallo");
     }
 
-    void Find()
+    DefineTest(Find)
     {
         String a = "Hallo";
         auto b = a.Find("a");
@@ -93,21 +89,21 @@ namespace _String
         a_if_(!c.IsValid);
     }
 
-    void Part()
+    DefineTest(Part)
     {
         String a = "Hallo";
         String b = a.Part(1,2);
         a_is(b, ==, "al");
     }
 
-    void Plus()
+    DefineTest(Plus)
     {
         String a = "Hallo";
         String b = a + a;
         a_is(b, ==, "HalloHallo");
     }
 
-    void Split()
+    DefineTest(Split)
     {
         String a = "A B C";
         auto b = a.Split(" ")->ToArray;
@@ -116,7 +112,7 @@ namespace _String
 
     }
 
-    void Stringify()
+    DefineTest(Stringify)
     {
         String a = "A B C";
         auto split = a.Split(" ")->ToArray;
@@ -127,7 +123,7 @@ namespace _String
 
     }
 
-    void Replace()
+    DefineTest(Replace)
     {
         String a = "A B C";
         auto b = a.Replace(" ", ".");
@@ -135,29 +131,18 @@ namespace _String
         a_is(b, ==, "A.B.C");
 
     }
-    void Replace1() {
+    DefineTest(Replace1) {
         String a = "DumpPrint($(arg))";
         auto b = a.Replace("$(arg)", "3");
         a_is(b, == , "DumpPrint(3)");
 
     }
 
-    void RunAll()
-    {
-        Part();
-        Find();
-        Plus();
-        Split();
-        Stringify();
-        Replace();
-        Replace1();
-        WriteHallo();
-    }
 }
 
 namespace _Ref
 {
-    void WriteHallo()
+    DefineTest(WriteHallo)
     {
         CtrlPtr<int> c;
 
@@ -171,16 +156,11 @@ namespace _Ref
         a_if_(*c == 12);
         a_if_(!c.IsEmpty);
     }
-
-    void RunAll()
-    {
-        WriteHallo();
-    }
 }
 
 namespace _Array
 {
-    void WriteHallo()
+    DefineTest(WriteHallo)
     {
         auto c = Array<int>(3, [](int i){return i; });
         a_if_(c.Count == 3);
@@ -189,22 +169,18 @@ namespace _Array
         a_if_(c[2] == 2);
     }
 
-    void RunAll()
-    {
-        WriteHallo();
-    }
 }
 
 namespace _Enumerable
 {
-    void FromInt0()
+    DefineTest(FromInt0)
     {
         Array<Array<int>> c ;
         auto cc = c.ConvertMany<int>()->ToArray;
         a_if_(cc.Count == 0);
     }
 
-    void FromInt1()
+    DefineTest(FromInt1)
     {
         Array<Array<int>> c = { { 12 } };
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -212,7 +188,7 @@ namespace _Enumerable
         a_if_(cc[0]== 12);
     }
 
-    void FromInt1_1()
+    DefineTest(FromInt1_1)
     {
         Array<Array<int>> c = { { 12 }, { 13 } };
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -221,7 +197,7 @@ namespace _Enumerable
         a_if_(cc[1] == 13);
     }
 
-    void FromInt1_2()
+    DefineTest(FromInt1_2)
     {
         Array<Array<int>> c = { { 12 }, { 13, 14 } };
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -231,7 +207,7 @@ namespace _Enumerable
         a_if_(cc[2] == 14);
     }
 
-    void FromInt0_1_1()
+    DefineTest(FromInt0_1_1)
     {
         Array<Array<int>> c = { { }, { 12 }, { 13 } };
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -240,7 +216,7 @@ namespace _Enumerable
         a_if_(cc[1] == 13);
     }
 
-    void FromString()
+    DefineTest(FromString)
     {
         Array<Array<String>> c = { { "asdf" } };
         auto cc = c.ConvertMany<String>()->ToArray;
@@ -248,19 +224,11 @@ namespace _Enumerable
         a_if_(cc[0] == "asdf");
     }
 
-    void RunAll()
-    {
-        FromInt0();
-        FromInt1();
-        FromInt1_1();
-        FromInt1_2();
-        FromString();
-    }
 }
 
 namespace _ValueCache
 {
-    void Simple()
+    DefineTest(Simple)
     {
         ValueCache<int> c ([](){return 12; });
         a_if_(!c.IsValid);
@@ -275,7 +243,7 @@ namespace _ValueCache
     }
 
     int _value;
-    void Context()
+    DefineTest(Context)
     {
         _value = 12;
         ValueCache<int>c = ([&]{return _value; });
@@ -308,7 +276,7 @@ namespace _ValueCache
         ValueCache<int> functionValueCache;
     };
 
-    void Member(){
+    DefineTest(Member){
         Container c(17);
 
         a_if_(!c.fixValueCache.IsValid);
@@ -318,26 +286,4 @@ namespace _ValueCache
 
     }
 
-    void RunAll()
-    {
-        Simple();
-        Context();
-        Member();
-    }
-}
-
-void _HWLib::RunAll()
-{
-    _String::RunAll();
-    _Array::RunAll();
-    _Enumerable::RunAll();
-    _Ref::RunAll();
-    _ValueCache::RunAll();
-    _File::RunAll();
-    _Process::RunAll();
-}
-
-void _HWLib::RunSpecial()
-{
-    _String::Split();
 }
