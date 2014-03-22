@@ -11,5 +11,6 @@ using std::function;
 #define STRING(x) STRING2(x)
 #define ID(x) x
 #define COMMA ,
+#define QUINE(x) #x COMMA x
 
 

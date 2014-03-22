@@ -21,6 +21,7 @@
 #include "../Process.h"
 #include "../Ref.h"
 #include "../RefCountProvider.h"
+#include "../RuntimeChain.h"
 #include "../Stack.h"
 #include "../System.h"
 #include "../ValueCache.h"
