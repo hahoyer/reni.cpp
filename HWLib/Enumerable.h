@@ -40,9 +40,10 @@ namespace HWLib
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>            const SelectMany (function<TResult(T)> selector) const;
         CtrlRef<thisType>                      const Skip       (int count) const;
-        T                                     const Stringify  (T const&delimiter)const;
-        CtrlRef<thisType>                    const Take       (int count) const;
-        CtrlRef<thisType>                   const Where      (function<bool(T)> selector)const;
+        CtrlRef<Enumerable>                   const Sort       (function<bool(T,T)>isLeftSmaller) const;
+        T                                    const Stringify  (T const&delimiter)const;
+        CtrlRef<thisType>                   const Take       (int count) const;
+        CtrlRef<thisType>                  const Where      (function<bool(T)> selector)const;
 
         p(bool,    Any           );
         p(int,      Count         );

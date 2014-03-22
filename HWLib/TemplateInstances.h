@@ -528,4 +528,17 @@ inline String const HWLib::Dump(std::pair<T1, T2> const&target){
 }
 
 
+template<typename T>
+CtrlRef<Enumerable<T>> const Enumerable<T>::Sort(function<bool(T, T)>isLeftSmaller) const{
+    struct sorter{
+        function<bool(T, T)> const isLeftSmaller;
+        sorter(function<bool(T, T)>isLeftSmaller) :isLeftSmaller(isLeftSmaller){}
+        bool const operator()(T const&left, T const&right)const{ return isLeftSmaller(left, right); };
+    };
+    Array<T> result = ToArray;
+    T * dataForSort = const_cast<T*>(result.RawData);
+    std::sort<T*, sorter>(dataForSort, dataForSort + result.Count, sorter(isLeftSmaller));
+    return new Array<T>(result);
+}
+
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
