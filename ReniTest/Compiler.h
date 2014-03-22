@@ -1,12 +1,8 @@
-#include "Import.h"
-
-#include "Test.h"
+#pragma once
 #include "SimpleTokenFactory.h"
 #include "../Reni/Syntax.h"
 #include "../HWLang/PrioTable.h"
 #include "../HWLang/PrioParser.h"
-
-static bool Trace = true;
 
 using namespace HWLang;
 
@@ -19,13 +15,13 @@ namespace _HWLang
 
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
-    DefineTest(ParserBaseStructure)
+    test(ParserBaseStructure)
     {
-        auto pt = PrioTable::CreateLeft({ Any }).ParenthesisLevel(Start, End);
+        auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevel(Start, End);
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ref<Syntax,true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
         a_if(!syntax.IsEmpty, nd(syntax));
         a_if(syntax->left.IsEmpty, nd(syntax));
@@ -33,13 +29,13 @@ namespace _HWLang
         a_is(syntax->name, == , text);
     };
 
-    DefineTest(Parenthesis)
+    test(Parenthesis)
     {
 
         String text = "({)} [(asdf)as][yxcv]";
 
-        auto pt = PrioTable::CreateLeft({ Any })
-            .ParenthesisLevel({ "(", "[", "{" },{ ")", "]", "}" })
+        auto pt = PrioTable::CreateLeft({Any})
+            .ParenthesisLevel({"(", "[", "{"}, {")", "]", "}"})
             .ParenthesisLevel(Start, End)
             ;
 
@@ -84,14 +80,14 @@ namespace _HWLang
         Check(rrlr, false, "yxcv", false, false);
     }
 
-    DefineTest(PlusTimes)
+    test(PlusTimes)
     {
         String text = "a*b+c*d+e*f";
 
-        auto pt = PrioTable::CreateLeft({ Any })
-            .Left({ "*" })
-            .Left({ "+" })
-            .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
+        auto pt = PrioTable::CreateLeft({Any})
+            .Left({"*"})
+            .Left({"+"})
+            .ParenthesisLevel({"(", "[", "{"}, {")", "]", "}"})
             .ParenthesisLevel(Start, End)
             ;
 
@@ -110,7 +106,7 @@ namespace _HWLang
 
         auto rr = syntax->right;
         Check(rr, true, "+", true, false);
-        
+
 
         auto rrl = rr->left;
         Check(rrl, true, "*", true, false);
@@ -141,4 +137,3 @@ namespace _HWLang
     }
 }
 
-#include "../HWLib/RefCountContainer.instance.h"

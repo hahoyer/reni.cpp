@@ -1,25 +1,22 @@
-#include "Import.h"
+#pragma once
 #include "CompilerTest.h"
 #include "../HWLib/DumpToString.h"
 #include "../Util/BitsConst.h"
 #include "../Reni/CodeItems.h"
-#include "Test.h"
-
-static bool Trace = true;
 
 using namespace Util;
 using namespace Reni;
 using namespace ReniTest;
 
 namespace _Reni{
-    DefineTest(ParseSimple){
+    test(ParseSimple){
         CompilerTest ct = "4711";
         auto s = ct.compiler.syntax;
         a_if(Dump(s).BeginsWith("Ref{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), nd(s));
 
     }
 
-    DefineTest(CodeSimple)
+    test(CodeSimple)
     {
         CompilerTest ct = "4711";
         auto s = ct.compiler.code;
@@ -30,20 +27,20 @@ namespace _Reni{
         a_is(sc->value, == , c4711);
     }
 
-    DefineTest(CompileSimple)
+    test(CompileSimple)
     {
         CompilerTest ct = "4711";
         auto result = ct.compiler.Execute();
         a_is(result.result, == , 4711);
     }
 
-    DefineTest(Simple)
+    test(Simple)
     {
         CompilerTest::Check("3 dump_print", "3");
 
     }
 
-    DefineTest(Negative)
+    test(Negative)
     {
         CompilerTest::Check("(-1)dump_print", "-1");
         CompilerTest::Check("(-12)dump_print", "-12");

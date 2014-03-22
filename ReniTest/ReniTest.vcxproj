@@ -7,12 +7,8 @@
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="HWLib.cpp" />
-    <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="CompilerTest.cpp" />
     <ClCompile Include="SimpleTokenFactory.cpp" />
-    <ClCompile Include="HWLang.cpp" />
-    <ClCompile Include="Reni.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +27,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CompilerTest.h" />
+    <ClInclude Include="HWLib.h" />
+    <ClInclude Include="HWLang.h" />
+    <ClInclude Include="Compiler.h" />
+    <ClInclude Include="Reni.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="SimpleTokenFactory.h" />
   </ItemGroup>

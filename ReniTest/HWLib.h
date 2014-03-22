@@ -1,4 +1,4 @@
-#include "Import.h"
+#pragma once
 #include "Test.h"
 #include "../HWLang/Source.h"
 #include "../HWLib/Process.h"
@@ -9,33 +9,33 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-DefineTest(FileTest){
-        auto s = Source::FromFile(__FILE__);
-        auto t = s.Text;
-        a_is(t.Part(0, 8), == ,"#include");
+test(FileTest){
+    auto s = Source::FromFile(__FILE__);
+    auto t = s.Text;
+    a_is(t.Part(0, 8), == , "#include");
 }
 
 namespace _Process
 {
-    DefineTest(Simple)
+    test(Simple)
     {
         auto p = Process("echo example");
         auto t = p.data;
         a_is(t, == , "example\r\n");
     };
 
-    DefineTest(StartProgram)
+    test(StartProgram, Simple)
     {
         auto path = System::EnvironmentVariable("VS120COMNTOOLS");
         a_if(path.Contains(" "), nd(path));
         auto name = "..\\ide\\vb7to8.exe";
-        auto p = Process("\""+ path + "\\"+ name+"\"");
+        auto p = Process("\"" + path + "\\" + name + "\"");
         auto d = p.data;
         auto e = p.errorData;
         a_is(e, == , "");
     };
 
-    DefineTest(Double)
+    test(Double)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -44,7 +44,7 @@ namespace _Process
         a_is(t0, == , t1);
     };
 
-    DefineTest(Double2)
+    test(Double2)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -54,7 +54,7 @@ namespace _Process
         a_is(t0, != , t1);
     };
 
-    DefineTest(Error)
+    test(Error)
     {
         auto p = Process("%");
         auto d = p.data;
@@ -63,75 +63,67 @@ namespace _Process
         a_is(e, != , "");
     };
 
-    DefineTest(RunAll)
-    {
-        Simple();
-        Double();
-        Double2();
-        Error();
-        StartProgram();
-    };
 }
 
 namespace _String
 {
-    DefineTest(WriteHallo)
+    test(WriteHallo)
     {
         _console_ WriteLine("Hallo");
     }
 
-    DefineTest(Find)
+    test(Find)
     {
         String a = "Hallo";
         auto b = a.Find("a");
-        a_is(b, ==, 1);
+        a_is(b, == , 1);
         auto c = a.Find("c");
         a_if_(!c.IsValid);
     }
 
-    DefineTest(Part)
+    test(Part)
     {
         String a = "Hallo";
-        String b = a.Part(1,2);
-        a_is(b, ==, "al");
+        String b = a.Part(1, 2);
+        a_is(b, == , "al");
     }
 
-    DefineTest(Plus)
+    test(Plus)
     {
         String a = "Hallo";
         String b = a + a;
-        a_is(b, ==, "HalloHallo");
+        a_is(b, == , "HalloHallo");
     }
 
-    DefineTest(Split)
+    test(Split)
     {
         String a = "A B C";
         auto b = a.Split(" ")->ToArray;
-        a_is(b.Count, ==, 3);
-        a_is(b[0], ==, "A");
+        a_is(b.Count, == , 3);
+        a_is(b[0], == , "A");
 
     }
 
-    DefineTest(Stringify)
+    test(Stringify)
     {
         String a = "A B C";
         auto split = a.Split(" ")->ToArray;
-        a_is(split.Count, ==, 3);
+        a_is(split.Count, == , 3);
 
         auto b = split.Stringify(".");
-        a_is(b, ==, "A.B.C");
+        a_is(b, == , "A.B.C");
 
     }
 
-    DefineTest(Replace)
+    test(Replace)
     {
         String a = "A B C";
         auto b = a.Replace(" ", ".");
-        a_is(b.Count, ==, a.Count);
-        a_is(b, ==, "A.B.C");
+        a_is(b.Count, == , a.Count);
+        a_is(b, == , "A.B.C");
 
     }
-    DefineTest(Replace1) {
+    test(Replace1) {
         String a = "DumpPrint($(arg))";
         auto b = a.Replace("$(arg)", "3");
         a_is(b, == , "DumpPrint(3)");
@@ -142,7 +134,7 @@ namespace _String
 
 namespace _Ref
 {
-    DefineTest(WriteHallo)
+    test(WriteHallo)
     {
         CtrlPtr<int> c;
 
@@ -160,7 +152,7 @@ namespace _Ref
 
 namespace _Array
 {
-    DefineTest(WriteHallo)
+    test(WriteHallo)
     {
         auto c = Array<int>(3, [](int i){return i; });
         a_if_(c.Count == 3);
@@ -173,33 +165,33 @@ namespace _Array
 
 namespace _Enumerable
 {
-    DefineTest(FromInt0)
+    test(FromInt0)
     {
-        Array<Array<int>> c ;
+        Array<Array<int>> c;
         auto cc = c.ConvertMany<int>()->ToArray;
         a_if_(cc.Count == 0);
     }
 
-    DefineTest(FromInt1)
+    test(FromInt1)
     {
-        Array<Array<int>> c = { { 12 } };
+        Array<Array<int>> c = {{12}};
         auto cc = c.ConvertMany<int>()->ToArray;
         a_if_(cc.Count == 1);
-        a_if_(cc[0]== 12);
+        a_if_(cc[0] == 12);
     }
 
-    DefineTest(FromInt1_1)
+    test(FromInt1_1)
     {
-        Array<Array<int>> c = { { 12 }, { 13 } };
+        Array<Array<int>> c = {{12}, {13}};
         auto cc = c.ConvertMany<int>()->ToArray;
         a_if_(cc.Count == 2);
         a_if_(cc[0] == 12);
         a_if_(cc[1] == 13);
     }
 
-    DefineTest(FromInt1_2)
+    test(FromInt1_2)
     {
-        Array<Array<int>> c = { { 12 }, { 13, 14 } };
+        Array<Array<int>> c = {{12}, {13, 14}};
         auto cc = c.ConvertMany<int>()->ToArray;
         a_if_(cc.Count == 3);
         a_if_(cc[0] == 12);
@@ -207,18 +199,18 @@ namespace _Enumerable
         a_if_(cc[2] == 14);
     }
 
-    DefineTest(FromInt0_1_1)
+    test(FromInt0_1_1)
     {
-        Array<Array<int>> c = { { }, { 12 }, { 13 } };
+        Array<Array<int>> c = {{}, {12}, {13}};
         auto cc = c.ConvertMany<int>()->ToArray;
         a_if_(cc.Count == 2);
         a_if_(cc[0] == 12);
         a_if_(cc[1] == 13);
     }
 
-    DefineTest(FromString)
+    test(FromString)
     {
-        Array<Array<String>> c = { { "asdf" } };
+        Array<Array<String>> c = {{"asdf"}};
         auto cc = c.ConvertMany<String>()->ToArray;
         a_if_(cc.Count == 1);
         a_if_(cc[0] == "asdf");
@@ -228,9 +220,9 @@ namespace _Enumerable
 
 namespace _ValueCache
 {
-    DefineTest(Simple)
+    test(Simple)
     {
-        ValueCache<int> c ([](){return 12; });
+        ValueCache<int> c([](){return 12; });
         a_if_(!c.IsValid);
         c.IsValid = true;
         a_if_(c.IsValid);
@@ -243,12 +235,12 @@ namespace _ValueCache
     }
 
     int _value;
-    DefineTest(Context)
+    test(Context)
     {
         _value = 12;
         ValueCache<int>c = ([&]{return _value; });
         c.IsValid = true;
-        a_is(c.Value, ==, 12);
+        a_is(c.Value, == , 12);
         _value = 13;
         a_is(c.Value, == , 12);
         c.IsValid = true;
@@ -258,7 +250,7 @@ namespace _ValueCache
         a_is(c.Value, == , 13);
         _value = 14;
         c.IsValid = false;
-        a_is(c.Value ,==, 14);
+        a_is(c.Value, == , 14);
     }
 
     class Container{
@@ -276,7 +268,7 @@ namespace _ValueCache
         ValueCache<int> functionValueCache;
     };
 
-    DefineTest(Member){
+    test(Member){
         Container c(17);
 
         a_if_(!c.fixValueCache.IsValid);

@@ -5,8 +5,6 @@ using namespace _HWLang;
 
 typedef SimpleTokenFactory TokenFactory;
 typedef TokenFactory::TokenClass TokenClass;
-//using TokenFactory = SimpleTokenFactory;
-//using TokenClass = TokenFactory::TokenClass;
 
 static TokenClass const theMatchInstance = true;
 static TokenClass const theNormalInstance = false;

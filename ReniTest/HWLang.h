@@ -1,12 +1,8 @@
-#include "Import.h"
-
-#include "Test.h"
+#pragma once
 #include "SimpleTokenFactory.h"
 #include "../HWLang/Source.h"
 #include "../HWLang/Pattern.h"
 #include "../HWLib/File.h"
-
-static bool Trace = true;
 #include "../Reni/Compiler.internal.h"
 
 using namespace HWLang;
@@ -14,7 +10,7 @@ using namespace _HWLang;
 
 namespace _HWLang{
 
-    DefineTest(SimpleAndDetailed)
+    test(SimpleAndDetailed)
     {
         using TokenFactory = SimpleTokenFactory;
         using ScannerInstance = TokenFactory::ScannerInstance;
@@ -47,7 +43,7 @@ namespace _HWLang{
             a_fail(nd(i) + nd(ss[i].Part));
     }
 
-    DefineTest(Simple)
+    test(Simple)
     {
         Test(" asd \"cc\" 1234 ",
         {
@@ -59,7 +55,7 @@ namespace _HWLang{
         });
     }
 
-    DefineTest(Text)
+    test(Text)
     {
         Test(" \"a_if\"\" b\" '\" ' ",
         {
@@ -70,7 +66,7 @@ namespace _HWLang{
         });
     }
 
-    DefineTest(Comment)
+    test(Comment)
     {
         Test(R"(
 12## line comment
@@ -92,7 +88,7 @@ abc#( comment
         });
     };
 
-    DefineTest(LineCommentError)
+    test(LineCommentError)
     {
         Test(R"(
 12## line comment
@@ -108,7 +104,7 @@ asdf
         });
     };
 
-    DefineTest(CommentError)
+    test(CommentError)
     {
         Test(R"(
 12## line comment
@@ -125,7 +121,7 @@ asdf
         });
     };
 
-    DefineTest(Pattern)
+    test(Pattern)
     {
         auto s = Source::FromText("asdf") + 0;
 
