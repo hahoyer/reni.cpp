@@ -12,7 +12,7 @@ static bool Trace = true;
 test(FileTest){
     auto s = Source::FromFile(__FILE__);
     auto t = s.Text;
-    a_is(t.Part(0, 8), == , "#include");
+    a_is(t.Part(0, 8), == , "#pragma ");
 }
 
 namespace _Process

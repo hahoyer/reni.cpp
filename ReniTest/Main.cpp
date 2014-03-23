@@ -8,6 +8,7 @@
 
 int main()
 {
+    test_item(FileTest).isLowPriority = true;
     HWTest::TestFixture::RunAll();
     return 0;
 }
