@@ -1,5 +1,4 @@
 #pragma once
-#include "Test.h"
 #include "../HWLang/Source.h"
 #include "../HWLib/Process.h"
 #include "../HWLib/System.h"
@@ -24,7 +23,7 @@ namespace _Process
         a_is(t, == , "example\r\n");
     };
 
-    test(StartProgram, Simple)
+    test(StartProgram)
     {
         auto path = System::EnvironmentVariable("VS120COMNTOOLS");
         a_if(path.Contains(" "), nd(path));

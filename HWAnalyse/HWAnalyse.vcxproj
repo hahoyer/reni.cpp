@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2ADA25BD-56A2-4432-B4EA-23643DB12004}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HWLib\HWLib.vcxproj">
+      <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestMacros.h" />
+    <ClInclude Include="TestFixture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TestFixture.cpp" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)sys.targets" />
+</Project>

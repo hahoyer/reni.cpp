@@ -12,6 +12,9 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HWAnalyse\HWAnalyse.vcxproj">
+      <Project>{2ada25bd-56a2-4432-b4ea-23643db12004}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\HWLang\HWLang.vcxproj">
       <Project>{77c95811-31db-44f1-a4a9-a9b5c29aaa42}</Project>
     </ProjectReference>
@@ -31,7 +34,6 @@
     <ClInclude Include="HWLang.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="Reni.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="SimpleTokenFactory.h" />
   </ItemGroup>
   <ItemDefinitionGroup>
