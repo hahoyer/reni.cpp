@@ -82,7 +82,7 @@ namespace _HWLang
         Check(rrlr, false, "yxcv", false, false);
     }
 
-    test_(PlusTimes)
+    test(PlusTimes, ParserBaseStructure)
     {
         String text = "a*b+c*d+e*f";
 

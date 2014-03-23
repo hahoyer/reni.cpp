@@ -16,7 +16,7 @@ namespace _Reni{
 
     }
 
-    test_(CodeSimple)
+    test(CodeSimple, ParseSimple)
     {
         CompilerTest ct = "4711";
         auto s = ct.compiler.code;
@@ -27,20 +27,20 @@ namespace _Reni{
         a_is(sc->value, == , c4711);
     }
 
-    test_(CompileSimple)
+    test(CompileSimple, CodeSimple)
     {
         CompilerTest ct = "4711";
         auto result = ct.compiler.Execute();
         a_is(result.result, == , 4711);
     }
 
-    test_(Simple)
+    test(Simple, CompileSimple)
     {
         CompilerTest::Check("3 dump_print", "3");
 
     }
 
-    test_(Negative)
+    test(Negative, Simple)
     {
         CompilerTest::Check("(-1)dump_print", "-1");
         CompilerTest::Check("(-12)dump_print", "-12");

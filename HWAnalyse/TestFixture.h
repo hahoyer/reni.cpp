@@ -16,18 +16,26 @@ namespace HWAnalyse{
         struct base{
             Array<CtrlRef<base>> dependencies;
             bool isLowPriority;
+            bool isSuccessful;
+            bool isStarted;
             base(Array<CtrlRef<base>> const& dependencies)
                 : isLowPriority(false)
+                , isSuccessful(false)
+                , isStarted(false)
                 , dependencies(dependencies){
             };
             virtual void Run()const = 0;
             virtual String const location()const = 0;
+            bool CheckedRun(bool skipLowPriority);
+        private:
+            void WatchedRun();
         };
 
         typedef base* dataType;
         static base* currentTest;
 
         static void RunAll();
-        static bool HasHigherPriority(base const* left, base const* right);
+    private:
+        static bool RunAny(Array<base*> const&all, bool skipLowPriority);
     };
 };

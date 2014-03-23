@@ -9,38 +9,57 @@ using namespace HWLib;
 
 void TestFixture::RunAll(){
     auto all = RuntimeChain<TestFixture>::All()
-        ->Sort(HasHigherPriority)
         ->ToArray;
-    for(int i = 0; i < all.Count; i++){
-        currentTest = all[i];
-        auto name = typeid(*currentTest).name();
-        _console_ WriteLine(currentTest->location());
-        _console_ IndentLevel++;
-        try{
-            currentTest->Run();
-        }
-        catch(TestFailedException const&exception){
-            _console_ IndentLevel--;
-            _console_ WriteLine(String("test_(") + name + ") exception: ");
-            _console_ IndentLevel++;
-            _console_ WriteLine(HWLib::Dump(exception));
-        }
-        catch(...){
-            _console_ IndentLevel--;
-            _console_ WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
-            throw;
-        }
-        _console_ IndentLevel--;
-    }
+    while(RunAny(all, true))
+        continue;
+    while(RunAny(all, false))
+        continue;
 };
 
-bool TestFixture::HasHigherPriority(base const* left, base const* right){
-    if(left->isLowPriority != right->isLowPriority)
-        return right->isLowPriority;
-    a_if_(left->dependencies.Count == 0);
-    String leftName = typeid(*left).name();
-    String rightName = typeid(*right).name();
-    return leftName < rightName;
+bool TestFixture::RunAny(Array<base*> const&all, bool skipLowPriority){
+    auto result = false;
+    for(int i = 0; i < all.Count; i++)
+        result = all[i]->CheckedRun(skipLowPriority) || result;
+    return result;
+};
+
+bool TestFixture::base::CheckedRun(bool skipLowPriority){
+    if(isStarted)
+        return false;
+    if(!skipLowPriority&& isLowPriority)
+        return false;
+    bool hasUnsuccessfulDependant 
+        = dependencies
+        .Where([](CtrlRef<base> dependant){return !dependant->isSuccessful;})
+        ->Any;
+    if(hasUnsuccessfulDependant)
+        return false;
+    isStarted = true;
+    currentTest = this;
+    WatchedRun();
+    return true;
+};
+
+void TestFixture::base::WatchedRun(){
+    auto name = typeid(*this).name();
+    _console_ WriteLine(location());
+    _console_ IndentLevel++;
+    try{
+        Run();
+        isSuccessful = true;
+    }
+    catch(TestFailedException const&exception){
+        _console_ IndentLevel--;
+        _console_ WriteLine(String("test_(") + name + ") exception: ");
+        _console_ IndentLevel++;
+        _console_ WriteLine(Dump(exception));
+    }
+    catch(...){
+        _console_ IndentLevel--;
+        _console_ WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
+        throw;
+    }
+    _console_ IndentLevel--;
 };
 
 TestFixture::base* TestFixture::currentTest = {};
