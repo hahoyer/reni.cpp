@@ -25,10 +25,9 @@ namespace HWLib{
         };
 
         static RuntimeChain const* begin;
-        dataType data;
         RuntimeChain const*const next;
-
     public:
+        dataType data;
         RuntimeChain(dataType data);
 
         static CtrlRef<Enumerable<dataType>> const All(){
