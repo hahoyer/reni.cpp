@@ -16,9 +16,10 @@ namespace HWAnalyse{
         struct base{
             Array<CtrlRef<base>> dependencies;
             bool isLowPriority;
-            base() 
+            base(Array<CtrlRef<base>> const& dependencies)
                 : isLowPriority(false)
-                , dependencies(){};
+                , dependencies(dependencies){
+            };
             virtual void Run()const = 0;
             virtual String const location()const = 0;
         };

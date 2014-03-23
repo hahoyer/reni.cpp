@@ -3,6 +3,8 @@
 #include "../Reni/Syntax.h"
 #include "../HWLang/PrioTable.h"
 #include "../HWLang/PrioParser.h"
+#include "../HWAnalyse/TestMacros.h"
+#include "../HWAnalyse/TestFixture.h"
 
 using namespace HWLang;
 
@@ -15,7 +17,7 @@ namespace _HWLang
 
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
-    test(ParserBaseStructure)
+    test_(ParserBaseStructure)
     {
         auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevel(Start, End);
 
@@ -29,7 +31,7 @@ namespace _HWLang
         a_is(syntax->name, == , text);
     };
 
-    test(Parenthesis)
+    test(Parenthesis, ParserBaseStructure)
     {
 
         String text = "({)} [(asdf)as][yxcv]";
@@ -80,7 +82,7 @@ namespace _HWLang
         Check(rrlr, false, "yxcv", false, false);
     }
 
-    test(PlusTimes)
+    test_(PlusTimes)
     {
         String text = "a*b+c*d+e*f";
 

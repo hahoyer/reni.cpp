@@ -8,7 +8,7 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-test(FileTest){
+test_(FileTest){
     auto s = Source::FromFile(__FILE__);
     auto t = s.Text;
     a_is(t.Part(0, 8), == , "#pragma ");
@@ -16,14 +16,14 @@ test(FileTest){
 
 namespace _Process
 {
-    test(Simple)
+    test_(Simple)
     {
         auto p = Process("echo example");
         auto t = p.data;
         a_is(t, == , "example\r\n");
     };
 
-    test(StartProgram)
+    test(StartProgram, Simple)
     {
         auto path = System::EnvironmentVariable("VS120COMNTOOLS");
         a_if(path.Contains(" "), nd(path));
@@ -34,7 +34,7 @@ namespace _Process
         a_is(e, == , "");
     };
 
-    test(Double)
+    test_(Double)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -43,7 +43,7 @@ namespace _Process
         a_is(t0, == , t1);
     };
 
-    test(Double2)
+    test_(Double2)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -53,7 +53,7 @@ namespace _Process
         a_is(t0, != , t1);
     };
 
-    test(Error)
+    test_(Error)
     {
         auto p = Process("%");
         auto d = p.data;
@@ -66,12 +66,12 @@ namespace _Process
 
 namespace _String
 {
-    test(WriteHallo)
+    test_(WriteHallo)
     {
         _console_ WriteLine("Hallo");
     }
 
-    test(Find)
+    test_(Find)
     {
         String a = "Hallo";
         auto b = a.Find("a");
@@ -80,21 +80,21 @@ namespace _String
         a_if_(!c.IsValid);
     }
 
-    test(Part)
+    test_(Part)
     {
         String a = "Hallo";
         String b = a.Part(1, 2);
         a_is(b, == , "al");
     }
 
-    test(Plus)
+    test_(Plus)
     {
         String a = "Hallo";
         String b = a + a;
         a_is(b, == , "HalloHallo");
     }
 
-    test(Split)
+    test_(Split)
     {
         String a = "A B C";
         auto b = a.Split(" ")->ToArray;
@@ -103,7 +103,7 @@ namespace _String
 
     }
 
-    test(Stringify)
+    test_(Stringify)
     {
         String a = "A B C";
         auto split = a.Split(" ")->ToArray;
@@ -114,7 +114,7 @@ namespace _String
 
     }
 
-    test(Replace)
+    test_(Replace)
     {
         String a = "A B C";
         auto b = a.Replace(" ", ".");
@@ -122,7 +122,7 @@ namespace _String
         a_is(b, == , "A.B.C");
 
     }
-    test(Replace1) {
+    test_(Replace1) {
         String a = "DumpPrint($(arg))";
         auto b = a.Replace("$(arg)", "3");
         a_is(b, == , "DumpPrint(3)");
@@ -133,7 +133,7 @@ namespace _String
 
 namespace _Ref
 {
-    test(WriteHallo)
+    test_(WriteHallo)
     {
         CtrlPtr<int> c;
 
@@ -151,7 +151,7 @@ namespace _Ref
 
 namespace _Array
 {
-    test(WriteHallo)
+    test_(WriteHallo)
     {
         auto c = Array<int>(3, [](int i){return i; });
         a_if_(c.Count == 3);
@@ -164,14 +164,14 @@ namespace _Array
 
 namespace _Enumerable
 {
-    test(FromInt0)
+    test_(FromInt0)
     {
         Array<Array<int>> c;
         auto cc = c.ConvertMany<int>()->ToArray;
         a_if_(cc.Count == 0);
     }
 
-    test(FromInt1)
+    test_(FromInt1)
     {
         Array<Array<int>> c = {{12}};
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -179,7 +179,7 @@ namespace _Enumerable
         a_if_(cc[0] == 12);
     }
 
-    test(FromInt1_1)
+    test_(FromInt1_1)
     {
         Array<Array<int>> c = {{12}, {13}};
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -188,7 +188,7 @@ namespace _Enumerable
         a_if_(cc[1] == 13);
     }
 
-    test(FromInt1_2)
+    test_(FromInt1_2)
     {
         Array<Array<int>> c = {{12}, {13, 14}};
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -198,7 +198,7 @@ namespace _Enumerable
         a_if_(cc[2] == 14);
     }
 
-    test(FromInt0_1_1)
+    test_(FromInt0_1_1)
     {
         Array<Array<int>> c = {{}, {12}, {13}};
         auto cc = c.ConvertMany<int>()->ToArray;
@@ -207,7 +207,7 @@ namespace _Enumerable
         a_if_(cc[1] == 13);
     }
 
-    test(FromString)
+    test_(FromString)
     {
         Array<Array<String>> c = {{"asdf"}};
         auto cc = c.ConvertMany<String>()->ToArray;
@@ -219,7 +219,7 @@ namespace _Enumerable
 
 namespace _ValueCache
 {
-    test(Simple)
+    test_(Simple)
     {
         ValueCache<int> c([](){return 12; });
         a_if_(!c.IsValid);
@@ -234,7 +234,7 @@ namespace _ValueCache
     }
 
     int _value;
-    test(Context)
+    test_(Context)
     {
         _value = 12;
         ValueCache<int>c = ([&]{return _value; });
@@ -267,7 +267,7 @@ namespace _ValueCache
         ValueCache<int> functionValueCache;
     };
 
-    test(Member){
+    test_(Member){
         Container c(17);
 
         a_if_(!c.fixValueCache.IsValid);

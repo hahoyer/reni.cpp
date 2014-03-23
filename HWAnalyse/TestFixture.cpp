@@ -21,13 +21,13 @@ void TestFixture::RunAll(){
         }
         catch(TestFailedException const&exception){
             _console_ IndentLevel--;
-            _console_ WriteLine(String("test(") + name + ") exception: ");
+            _console_ WriteLine(String("test_(") + name + ") exception: ");
             _console_ IndentLevel++;
             _console_ WriteLine(HWLib::Dump(exception));
         }
         catch(...){
             _console_ IndentLevel--;
-            _console_ WriteLine(String("test(") + name + ") unexpected exception. Execution aborted.");
+            _console_ WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
             throw;
         }
         _console_ IndentLevel--;

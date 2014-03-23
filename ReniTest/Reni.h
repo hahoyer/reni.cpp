@@ -9,14 +9,14 @@ using namespace Reni;
 using namespace ReniTest;
 
 namespace _Reni{
-    test(ParseSimple){
+    test_(ParseSimple){
         CompilerTest ct = "4711";
         auto s = ct.compiler.syntax;
         a_if(Dump(s).BeginsWith("Ref{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), nd(s));
 
     }
 
-    test(CodeSimple)
+    test_(CodeSimple)
     {
         CompilerTest ct = "4711";
         auto s = ct.compiler.code;
@@ -27,20 +27,20 @@ namespace _Reni{
         a_is(sc->value, == , c4711);
     }
 
-    test(CompileSimple)
+    test_(CompileSimple)
     {
         CompilerTest ct = "4711";
         auto result = ct.compiler.Execute();
         a_is(result.result, == , 4711);
     }
 
-    test(Simple)
+    test_(Simple)
     {
         CompilerTest::Check("3 dump_print", "3");
 
     }
 
-    test(Negative)
+    test_(Negative)
     {
         CompilerTest::Check("(-1)dump_print", "-1");
         CompilerTest::Check("(-12)dump_print", "-12");
