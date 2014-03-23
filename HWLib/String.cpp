@@ -115,6 +115,7 @@ p_implementation(String, String, Quote)
 }
 
 bool const String::operator== (String const& other)const{ return _data == (other._data); }
+bool const String::operator< (String const& other)const{ return _data < (other._data); }
 
 String const String::operator+ (String const& other)const
 {
