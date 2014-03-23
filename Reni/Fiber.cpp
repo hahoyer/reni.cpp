@@ -1,9 +1,10 @@
 #include "Import.h"
 #include "Fiber.h"
 
+#include "../HWLib/RefCountContainer.instance.h"
+#include "../Util/BitsConst.h"
 #include "FeatureProvider.h"
 #include "Result.h"
-#include "../HWLib/RefCountContainer.instance.h"
 #include "ReplaceVisitor.h"
 
 using namespace Reni;
@@ -104,7 +105,7 @@ String const FiberVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& 
         .Replace("$(right)", rightCode);
 }
 
-String const FiberVisitor::BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const {
+String const FiberVisitor::BinaryOperation(String const& name, Size const&, Size const&, Size const&)const {
     return "($(left)) " + name + " ($(right))";
 };
 
