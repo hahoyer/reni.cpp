@@ -9,6 +9,9 @@
   <ItemGroup>
     <ClCompile Include="CompilerTest.cpp" />
     <ClCompile Include="Compiler.cpp" />
+    <ClCompile Include="HWLang.cpp" />
+    <ClCompile Include="HWLib.cpp" />
+    <ClCompile Include="Reni.cpp" />
     <ClCompile Include="SimpleTokenFactory.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>

@@ -6,6 +6,7 @@
 #include "../HWLang/PrioParser.h"
 #include "../HWAnalyse/TestMacros.h"
 #include "../HWAnalyse/TestFixture.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 using namespace HWLang;
 
