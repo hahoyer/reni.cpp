@@ -8,6 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="CompilerTest.cpp" />
+    <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="SimpleTokenFactory.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
