@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
 
+#include "ConditionalSyntax.h"
 #include "ExpressionSyntax.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
@@ -74,6 +75,21 @@ private:
 };
 
 
+class ThenToken final : public InfixTokenClass {
+    using baseType = InfixTokenClass;
+    using thisType = ThenToken;
+    GenericFeatureClass<thisType> feature;
+public:
+    p(String, name){ return "then"; };
+
+private:
+    Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
+        return new ConditionalSyntax(left, part, right);
+    }
+    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.ref; }
+};
+
+
 class UserDefinedToken final : public DefineableToken {
     using baseType = DefineableToken;
     using thisType = UserDefinedToken;
@@ -115,6 +131,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new RightParenthesisToken(2));
     AddTokenClass(new RightParenthesisToken(3));
     AddTokenClass(new StarToken);
+    AddTokenClass(new ThenToken);
 }
 
 TokenClass const& MainTokenFactory::GetTokenClass(String const&name){

@@ -1,5 +1,5 @@
 #include "Import.h"
-#include "Compiler.h"
+#include "Parser.h"
 #include "SimpleTokenFactory.h"
 #include "../Reni/Syntax.h"
 #include "../HWLang/PrioTable.h"
@@ -20,7 +20,7 @@ namespace _HWLang {
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     test_(ParserBaseStructure) {
-        auto pt = PrioTable::CreateLeft({ Any }).ParenthesisLevel(Start, End);
+        auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevel(Start, End);
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
@@ -127,6 +127,57 @@ namespace _HWLang {
 
         auto rrrr = rrr->right;
         Check(rrrr, false, "f", false, false);
+    }
+
+
+    test(ThenElse, ParserBaseStructure) {
+
+        String text = "x then y else z";
+
+        auto pt = PrioTable::CreateLeft({Any})
+            .ParenthesisLevel("then", "else")
+            .ParenthesisLevel(Start, End)
+            ;
+
+        auto sc = ScannerInstance(text);
+        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        Check(syntax, false, "(", true, false);
+
+        auto rr = syntax->right;
+        Check(rr, true, "]", false, true);
+
+        auto rrl = rr->left;
+        Check(rrl, true, "[", true, false);
+
+        auto rrll = rrl->left;
+        Check(rrll, true, "]", false, true);
+
+        auto rrlll = rrll->left;
+        Check(rrlll, true, "[", true, false);
+
+        auto rrllll = rrlll->left;
+        Check(rrllll, true, "}", false, true);
+
+        auto rrlllll = rrllll->left;
+        Check(rrlllll, false, "{", true, false);
+
+        auto rrlllllr = rrlllll->right;
+        Check(rrlllllr, false, ")", false, false);
+
+        auto rrlllr = rrlll->right;
+        Check(rrlllr, true, "as", false, false);
+
+        auto rrlllrl = rrlllr->left;
+        Check(rrlllrl, true, ")", false, true);
+
+        auto rrlllrll = rrlllrl->left;
+        Check(rrlllrll, false, "(", true, false);
+
+        auto rrlllrllr = rrlllrll->right;
+        Check(rrlllrllr, false, "asdf", false, false);
+
+        auto rrlr = rrl->right;
+        Check(rrlr, false, "yxcv", false, false);
     }
 
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch) {

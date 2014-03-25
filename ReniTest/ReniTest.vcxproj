@@ -8,8 +8,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="CompilerTest.cpp" />
-    <ClCompile Include="Compiler.cpp" />
-    <ClCompile Include="HWLang.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="HWLib.cpp" />
     <ClCompile Include="Reni.cpp" />
     <ClCompile Include="SimpleTokenFactory.cpp" />
@@ -35,8 +35,8 @@
   <ItemGroup>
     <ClInclude Include="CompilerTest.h" />
     <ClInclude Include="HWLib.h" />
-    <ClInclude Include="HWLang.h" />
-    <ClInclude Include="Compiler.h" />
+    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="Reni.h" />
     <ClInclude Include="SimpleTokenFactory.h" />
   </ItemGroup>

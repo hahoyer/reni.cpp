@@ -1,5 +1,5 @@
 #include "Import.h"
-#include "HWLang.h"
+#include "Scanner.h"
 
 #include "SimpleTokenFactory.h"
 #include "../HWLang/Source.h"
