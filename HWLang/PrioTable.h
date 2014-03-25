@@ -2,6 +2,7 @@
 
 #include "PrioTableConst.h"
 #include "../HWLib/Array.h"
+#include "../HWLib/DumpableObject.h"
 
 using namespace HWLib;
 
@@ -34,7 +35,8 @@ namespace HWLang
         static PrioTable const CreateRight(Array<String> const& tokens);
         PrioTable const ParenthesisLevel(char const* leftToken, char const* rightToken)const;
         PrioTable const ParenthesisLevel(Array<String> leftToken, Array<String> rightToken)const;
-        
+        PrioTable const ThenElseLevel(Array<String> leftToken, Array<String> rightToken)const;
+
         /// <summary>
         ///     Define a prio table that adds a parenthesis level.
         ///     LToken and RToken should have the same number of elements.
@@ -78,14 +80,3 @@ namespace HWLang
     };
 
 }
-
-#if 0
-namespace HWLib{
-    template<>
-    struct pointer_dump_traits<HWLang::PrioTable const>
-        : public default_pointer_dump_traits<HWLang::PrioTable const>{
-        static bool const EnableSetDumpString = true;
-    };
-
-}
-#endif

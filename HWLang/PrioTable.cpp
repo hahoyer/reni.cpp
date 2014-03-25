@@ -70,6 +70,10 @@ PrioTable const PrioTable::ParenthesisLevel(Array<String> leftToken, Array<Strin
     return Level(PrioTableConst::ParenthesisTable, leftToken, rightToken);
 }
 
+PrioTable const PrioTable::ThenElseLevel(Array<String> leftToken, Array<String> rightToken)const{
+    return Level(PrioTableConst::ThenElseTable, leftToken, rightToken);
+}
+
 PrioTable const PrioTable::Level(PrioTableConst::TagTable const& subTable, Array<String> const&leftToken, Array<String>const&rightToken)const {
     return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, leftToken.Count);
 }
