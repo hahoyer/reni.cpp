@@ -10,8 +10,11 @@ using namespace HWLib;
 void TestFixture::RunAll(){
     auto all = RuntimeChain<TestFixture>::All()
         ->ToArray;
+
     while(RunAny(all, true))
         continue;
+
+    _console_ WriteLine("\n--- RUnning low priority tests ---");
     while(RunAny(all, false))
         continue;
 };
@@ -26,7 +29,7 @@ bool TestFixture::RunAny(Array<base*> const&all, bool skipLowPriority){
 bool TestFixture::base::CheckedRun(bool skipLowPriority){
     if(isStarted)
         return false;
-    if(!skipLowPriority&& isLowPriority)
+    if(skipLowPriority&& isLowPriority)
         return false;
     bool hasUnsuccessfulDependant 
         = dependencies
