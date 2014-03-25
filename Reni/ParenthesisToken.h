@@ -17,7 +17,7 @@ namespace Reni{
             return level[" {[("];
         }
     private:
-        Ref<Syntax > const CreateSyntax(SourcePart const&part, Ref<Syntax>const right)const  override final{
+        Ref<Syntax > const Create(SourcePart const&part, Ref<Syntax>const right)const  override final{
             return new OpenSyntax(level, part, right);
         };
         p_function(Array<String>,DumpData) override{
@@ -65,8 +65,8 @@ namespace Reni{
             return level[" }])"];
         }
     private:
-        bool AcceptsMatch(bool isMatch) const override{ return isMatch; }
-        Ref<Syntax > const CreateSyntax(Ref<Syntax >const left, SourcePart const&part)const  override final{
+        p_function(bool, AcceptsMatch) override{ return true; }
+        Ref<Syntax > const Create(Ref<Syntax >const left, SourcePart const&part)const  override final{
             return left->ParenthesisMatch(level, part);
         };
 

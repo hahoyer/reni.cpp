@@ -37,7 +37,7 @@ namespace HWLang{
     template <class TSyntax, class TSyntaxOption, class TToken>
     TSyntax const CreateSyntax(TSyntaxOption const&left, TToken const&token, TSyntaxOption const&right, bool isMatch){
         auto& tc = token.Class;
-        if(tc.AcceptsMatch(isMatch))
+        if(tc.AcceptsMatch == isMatch)
             return tc.CreateSyntax(left, token.Part, right);
         return tc.Mismatch(left, token.Part, right);
     }

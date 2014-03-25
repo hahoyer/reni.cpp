@@ -77,7 +77,7 @@ namespace _HWLang{
             TokenClass(TokenClass const&) = delete;
             TokenClass(bool isMatch):isMatch(isMatch){};
 
-            bool AcceptsMatch(bool isMatch) const{ return isMatch == this->isMatch; }
+            p(bool, AcceptsMatch){ return this->isMatch; }
 
             Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const{
                 return new Syntax(left, *this, part, right, !isMatch);
