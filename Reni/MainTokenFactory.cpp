@@ -28,7 +28,7 @@ private:
     GenericFeatureClass<thisType> feature;
     p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
     
-    Ref<Syntax> const CreateSyntax(SourcePart const&part)const override final{
+    Ref<Syntax> const Create(SourcePart const&part)const override final{
         md(part);
         mb;
     }
@@ -49,10 +49,28 @@ public:
     }
     Ref<Syntax, true> Replace(ReplaceSyntaxVisitor const&visitor) const { return visitor.arg; };
 private:
-    Ref<Syntax> const CreateSyntax(SourcePart const&part)const override final{
+    Ref<Syntax> const Create(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);
     }
     p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
+};
+
+
+class ElseToken final : public InfixTokenClass {
+    using baseType = InfixTokenClass;
+    using thisType = ElseToken;
+    GenericFeatureClass<thisType> feature;
+public:
+    p(String, name){ return "else"; };
+
+private:
+    p_function(bool, AcceptsMatch) override { return true; };
+    Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
+        md(left, part, right);
+        b_;
+        return left;
+    }
+    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.ref; }
 };
 
 
@@ -87,6 +105,7 @@ MainTokenFactory::MainTokenFactory()
 {
     AddTokenClass(new ArgToken);
     AddTokenClass(new DumpPrintToken);
+    AddTokenClass(new ElseToken);
     AddTokenClass(new LeftParenthesisToken(1));
     AddTokenClass(new LeftParenthesisToken(2));
     AddTokenClass(new LeftParenthesisToken(3));
@@ -115,7 +134,7 @@ TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) con
 }
 
 
-Ref<Syntax> const SyntaxErrorToken::CreateSyntax(SourcePart const&part)const{
+Ref<Syntax> const SyntaxErrorToken::Create(SourcePart const&part)const{
     md(part);
     mb;
 }

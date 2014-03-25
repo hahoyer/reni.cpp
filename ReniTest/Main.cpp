@@ -8,7 +8,7 @@
 
 int main()
 {
-    test_item(FileTest).isLowPriority = true;
+    test_item(_Reni::Negative).isLowPriority = true;
     HWAnalyse::TestFixture::RunAll();
     return 0;
 }

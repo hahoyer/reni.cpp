@@ -55,4 +55,30 @@ namespace _Reni{
         CompilerTest::Check("(-123456789)dump_print", "-123456789");
         CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
     }
+
+    test(RecursiveFunction,Simple)
+    {
+        CompilerTest::Check(R"(
+f: /\
+{
+1000 type instance
+    (
+        {
+            arg = 1 then 1
+            else
+            (
+                arg * f
+                [
+                    arg type instance((arg - 1)enable_cut)
+                ]
+            )
+        }
+        enable_cut
+    )
+};
+f(4)dump_print
+        
+        )", "3");
+
+    }
 }

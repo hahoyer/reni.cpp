@@ -10,9 +10,11 @@ namespace Reni{
         static HWLang::PrioTable const Main(){
             return
                 HWLang::PrioTable::CreateLeft({Any})
-                .Left({"arg"})
+                .Left({"<", ">", "<=", ">="})
+                .Left({"=", "<>"})
                 .Left({"*", "/"})
                 .Left({"+", "-"})
+                .ThenElseLevel({"then"}, {"else"})
                 .ParenthesisLevel({"(", "[", "{"}, {")", "]", "}"})
                 .ParenthesisLevel(Start, End)
                 ;

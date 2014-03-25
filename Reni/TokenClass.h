@@ -27,7 +27,7 @@ namespace Reni
 
         AssumeConstObject;
 
-        virtual bool AcceptsMatch(bool isMatch)const{ return !isMatch; };
+        virtual_p(bool, AcceptsMatch){ return false; };
         Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const;
         virtual Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const = 0;
 
@@ -42,13 +42,13 @@ namespace Reni
         typedef TokenClass baseType;
         typedef TerminalTokenClass thisType;
     public:
-        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part)const = 0;
+        virtual Ref<Syntax> const Create(SourcePart const&part)const = 0;
         Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const { return {}; };
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
             a_if(left.IsEmpty, nd(left) + "\n" + nd(*this) + "\n" + nd(part) + "\n" + nd(right));
-            a_if_(right.IsEmpty);
-            return CreateSyntax(part);
+            a_if(right.IsEmpty, nd(left) + "\n" + nd(*this) + "\n" + nd(part) + "\n" + nd(right));
+            return Create(part);
         };
     };
 
@@ -56,12 +56,12 @@ namespace Reni
         typedef TokenClass baseType;
         typedef PrefixTokenClass thisType;
     public:
-        virtual Ref<Syntax> const CreateSyntax(SourcePart const&part, Ref<Syntax>const right)const = 0;
+        virtual Ref<Syntax> const Create(SourcePart const&part, Ref<Syntax>const right)const = 0;
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
             a_if_(left.IsEmpty);
             a_if_(!right.IsEmpty);
-            return CreateSyntax(part, right);
+            return Create(part, right);
         };
     };
 
@@ -69,12 +69,25 @@ namespace Reni
         typedef TokenClass baseType;
         typedef SuffixTokenClass thisType;
     public:
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax>const left, SourcePart const&part)const = 0;
+        virtual Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part)const = 0;
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
             a_if_(!left.IsEmpty);
             a_if_(right.IsEmpty);
-            return CreateSyntax(left, part);
+            return Create(left, part);
+        };
+    };
+
+    class InfixTokenClass : public TokenClass{
+        typedef TokenClass baseType;
+        typedef InfixTokenClass thisType;
+    public:
+        virtual Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const = 0;
+    private:
+        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
+            a_if_(!left.IsEmpty);
+            a_if_(!right.IsEmpty);
+            return Create(left, part, right);
         };
     };
 };
