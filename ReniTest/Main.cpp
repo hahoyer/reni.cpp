@@ -7,8 +7,7 @@
 int main()
 {
     test_item(_Reni::Negative).isLowPriority = true;
-    test_item(_HWLang::ThenElse).Run();
-    test_item(_Reni::RecursiveFunction).Run();
+    test_item(_Reni::RecursiveFunction).WatchedRun();
     HWAnalyse::TestFixture::RunAll();
     return 0;
 }

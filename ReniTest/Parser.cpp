@@ -20,7 +20,7 @@ namespace _HWLang {
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     test_(ParserBaseStructure) {
-        auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevel(Start, End);
+        auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevel({Start}, {End});
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
@@ -38,7 +38,7 @@ namespace _HWLang {
 
         auto pt = PrioTable::CreateLeft({ Any })
             .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
-            .ParenthesisLevel(Start, End)
+            .ParenthesisLevel({Start}, {End})
             ;
 
         auto sc = ScannerInstance(text);
@@ -89,7 +89,7 @@ namespace _HWLang {
             .Left({ "*" })
             .Left({ "+" })
             .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
-            .ParenthesisLevel(Start, End)
+            .ParenthesisLevel({Start}, {End})
             ;
 
         auto sc = ScannerInstance(text);
@@ -132,52 +132,31 @@ namespace _HWLang {
 
     test(ThenElse, ParserBaseStructure) {
 
+        bool Trace = true;
         String text = "x then y else z";
 
         auto pt = PrioTable::CreateLeft({Any})
-            .ParenthesisLevel("then", "else")
-            .ParenthesisLevel(Start, End)
+            .ThenElseLevel({"then"}, {"else"})
+            .ParenthesisLevel({Start}, {End})
             ;
 
+        md(pt);
+
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
-        Check(syntax, false, "(", true, false);
+        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token<TokenClass>>(pt, sc);
+        Check(syntax, true, "else", true, true);
+
+        auto rl = syntax->left;
+        Check(rl, true, "then", true, false);
 
         auto rr = syntax->right;
-        Check(rr, true, "]", false, true);
+        Check(rr, false, "z", false, false);
 
-        auto rrl = rr->left;
-        Check(rrl, true, "[", true, false);
+        auto rll = rl->left;
+        Check(rll, false, "x", false, false);
 
-        auto rrll = rrl->left;
-        Check(rrll, true, "]", false, true);
-
-        auto rrlll = rrll->left;
-        Check(rrlll, true, "[", true, false);
-
-        auto rrllll = rrlll->left;
-        Check(rrllll, true, "}", false, true);
-
-        auto rrlllll = rrllll->left;
-        Check(rrlllll, false, "{", true, false);
-
-        auto rrlllllr = rrlllll->right;
-        Check(rrlllllr, false, ")", false, false);
-
-        auto rrlllr = rrlll->right;
-        Check(rrlllr, true, "as", false, false);
-
-        auto rrlllrl = rrlllr->left;
-        Check(rrlllrl, true, ")", false, true);
-
-        auto rrlllrll = rrlllrl->left;
-        Check(rrlllrll, false, "(", true, false);
-
-        auto rrlllrllr = rrlllrll->right;
-        Check(rrlllrllr, false, "asdf", false, false);
-
-        auto rrlr = rrl->right;
-        Check(rrlr, false, "yxcv", false, false);
+        auto rlr = rl->right;
+        Check(rlr, false, "y", false, false);
     }
 
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch) {

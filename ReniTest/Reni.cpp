@@ -2,6 +2,7 @@
 #include "Reni.h"
 
 #include "CompilerTest.h"
+#include "Parser.h"
 #include "../HWLib/DumpToString.h"
 #include "../Util/BitsConst.h"
 #include "../Reni/CodeItems.h"
@@ -56,7 +57,7 @@ namespace _Reni{
         CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
     }
 
-    test(RecursiveFunction,Simple)
+    test(RecursiveFunction, Simple, _HWLang::ThenElse)
     {
         CompilerTest::Check(R"(
 f: /\
