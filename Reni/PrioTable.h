@@ -16,7 +16,7 @@ namespace Reni{
                 .Left({"+", "-"})
                 .ThenElseLevel({"then"}, {"else"})
                 .ParenthesisLevel({"(", "[", "{"}, {")", "]", "}"})
-                .ParenthesisLevel(Start, End)
+                .ParenthesisLevel({Start}, {End})
                 ;
         };
 
