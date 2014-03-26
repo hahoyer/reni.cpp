@@ -106,10 +106,12 @@ namespace _HWLang{
 
             ScannerInstance(String const&text)
                 :baseType(Source::FromText(text)){
+                SetDumpString();
             };
 
             ScannerInstance(File const&file)
                 :baseType(Source::FromFile(file.FullName)){
+                SetDumpString();
             };
         };
 
