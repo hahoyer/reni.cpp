@@ -27,7 +27,6 @@ namespace HWAnalyse{
             virtual void Run()const = 0;
             virtual String const location()const = 0;
             bool CheckedRun(bool skipLowPriority);
-        private:
             void WatchedRun();
         };
 
