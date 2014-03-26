@@ -7,17 +7,37 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class ConditionalSyntax : public Syntax
+    class IfThenElseSyntax : public Syntax
     {
         typedef Syntax baseType;
-        typedef ConditionalSyntax thisType;
+        typedef IfThenElseSyntax  thisType;
     public:
-        Ref<Syntax> const left;
-        Ref<Syntax> const right;
-        ConditionalSyntax (Ref<Syntax> const left, SourcePart const part, Ref<Syntax> const right);
+        Ref<Syntax> const condition;
+        Ref<Syntax> const thenClause;
+        Ref<Syntax> const elseClause;
+        IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> const thenClause, SourcePart const part, Ref<Syntax> const elseClause);
     private:
         p_function(Array<String>, DumpData) override;
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
         virtual Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const override;
     };
+
+    class IfThenSyntax : public Syntax
+    {
+        typedef Syntax baseType;
+        typedef IfThenSyntax thisType;
+    public:
+        Ref<Syntax> const condition;
+        Ref<Syntax> const thenClause;
+        IfThenSyntax(Ref<Syntax> const left, SourcePart const part, Ref<Syntax> const right);
+
+        Ref<Syntax> const AddElse(SourcePart const part, Ref<Syntax> const clause)const{
+            return new IfThenElseSyntax(condition, thenClause, part, clause);
+        }
+    private:
+        p_function(Array<String>, DumpData) override;
+        virtual ResultData const GetResultData(Context const&context, Category category)const override;
+        virtual Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const override;
+    };
+
 }

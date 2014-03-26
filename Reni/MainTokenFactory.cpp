@@ -67,9 +67,8 @@ public:
 private:
     p_function(bool, AcceptsMatch) override { return true; };
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
-        md(left, part, right);
-        b_;
-        return left;
+        auto const&conditional = dynamic_cast<IfThenSyntax const&>(*left);
+        return conditional.AddElse(part, right);
     }
     p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.ref; }
 };
@@ -84,7 +83,7 @@ public:
 
 private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
-        return new ConditionalSyntax(left, part, right);
+        return new IfThenSyntax(left, part, right);
     }
     p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.ref; }
 };

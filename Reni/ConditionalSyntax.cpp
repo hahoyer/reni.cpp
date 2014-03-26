@@ -7,33 +7,68 @@ using namespace Reni;
 static bool Trace = true;
 
 
-ConditionalSyntax::ConditionalSyntax(Ref<Syntax> const left, SourcePart const part, Ref<Syntax> const right)
+IfThenSyntax::IfThenSyntax(Ref<Syntax> const condition, SourcePart const part, Ref<Syntax> const thenClause)
 : baseType(part)
-, left(left)
-, right(right)
+, condition(condition)
+, thenClause(thenClause)
 {
     SetDumpString();
 };
 
-p_implementation(ConditionalSyntax, Array<String>, DumpData)
+p_implementation(IfThenSyntax, Array<String>, DumpData)
 {
     return{
-        nd(left),
-        nd(right)
+        nd(condition),
+        nd(thenClause)
     };
 };
 
-ResultData const ConditionalSyntax::GetResultData(Context const&context, Category category)const
+ResultData const IfThenSyntax::GetResultData(Context const&context, Category category)const
 {
     md(context, category);
     b_;
     return{};
 }
 
-Ref<Syntax, true> ConditionalSyntax::Replace(SyntaxArgVisitor const&visitor) const{
-    auto newLeft = left->Replace(visitor);
-    auto newRight = right->Replace(visitor);
+Ref<Syntax, true> IfThenSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+    auto newLeft = condition->Replace(visitor);
+    auto newRight = thenClause->Replace(visitor);
     if(newLeft.IsEmpty && newRight.IsEmpty)
         return{};
-    return new ConditionalSyntax(newLeft || left, part, newRight || right);
+    return new IfThenSyntax(newLeft || condition, part, newRight || thenClause);
+}
+
+
+IfThenElseSyntax::IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> const thenClause, SourcePart const part, Ref<Syntax> const elseClause)
+: baseType(part)
+, condition(condition)
+, thenClause(thenClause)
+, elseClause(elseClause)
+{
+    SetDumpString();
+};
+
+p_implementation(IfThenElseSyntax, Array<String>, DumpData)
+{
+    return{
+        nd(condition),
+        nd(thenClause),
+        nd(elseClause)
+    };
+};
+
+ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category category)const
+{
+    md(context, category);
+    b_;
+    return{};
+}
+
+Ref<Syntax, true> IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+    auto newLeft = condition->Replace(visitor);
+    auto newRight = thenClause->Replace(visitor);
+    auto newElse= elseClause->Replace(visitor);
+    if(newLeft.IsEmpty && newRight.IsEmpty&& newElse.IsEmpty)
+        return{};
+    return new IfThenElseSyntax(newLeft || condition, newRight || thenClause, part, newElse || elseClause);
 }
