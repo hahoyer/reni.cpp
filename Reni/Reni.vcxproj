@@ -59,6 +59,7 @@
     <ClInclude Include="ArgVisitor.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ConditionalSyntax.h" />
+    <ClInclude Include="UserDefinedToken.h" />
     <ClInclude Include="NumberType.h" />
     <ClInclude Include="PrioTable.h" />
     <ClInclude Include="SyntaxVisitor.h" />

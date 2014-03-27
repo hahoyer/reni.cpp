@@ -89,17 +89,6 @@ private:
 };
 
 
-class UserDefinedToken final : public DefineableToken {
-    using baseType = DefineableToken;
-    using thisType = UserDefinedToken;
-public:
-    UserDefinedToken(String const&name) : baseType(name){ SetDumpString(); };
-private:
-    GenericFeatureClass<thisType> feature;
-    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
-};
-
-
 MainTokenFactory const MainTokenFactory::Instance;
 
 TokenClass const& MainTokenFactory::Number = NumberToken();

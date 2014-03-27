@@ -18,3 +18,14 @@ ResultData const MinusFeatureProvider::Feature::FunctionResult(
     return syntax->GetResultData(context, category);
 }
 
+
+ResultData const SymbolFeatureProvider::Feature::FunctionResult(
+    Context const&context,
+    Category category,
+    Ref<Syntax, true> const& right
+    )const {
+    md(context, category, right);
+    b_;
+    return{};
+}
+

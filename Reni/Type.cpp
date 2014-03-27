@@ -9,6 +9,7 @@
 #include "FeatureProvider.h"
 #include "NumberType.h"
 #include "Result.h"
+#include "UserDefinedToken.h"
 
 #include "../HWLib/_EditorTemplates.h"
 #include "../HWLib/FunctionCache.h"
@@ -54,12 +55,17 @@ WeakRef<NumberType> const Type::CreateNumberType() const{
     return new NumberType(a->ref);
 };
 
-Type::operator Ref<FeatureProvider<DumpPrintToken>, true>()const{
+Type::operator Ref<FeatureProvider<UserDefinedToken>, true>()const{
     md_;
     mb;
 };
 
-Type::operator Ref<FeatureProvider<MinusToken>, true>()const{
+Type::operator Ref<FeatureProvider<DumpPrintToken>, true>()const {
+    md_;
+    mb;
+};
+
+Type::operator Ref<FeatureProvider<MinusToken>, true>()const {
     md_;
     mb;
 };

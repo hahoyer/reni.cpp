@@ -28,3 +28,8 @@ Context::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{
     md_;
     mb;
 }
+
+Context::operator Ref<ContextFeatureProvider<UserDefinedToken>, true>() const {
+    md_;
+    mb;
+}

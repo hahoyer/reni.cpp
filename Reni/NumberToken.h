@@ -3,6 +3,9 @@
 #include "TokenClass.h"
 #include "Terminal.h"
 #include "FeatureClass.h"
+#include "../Util/Category.h"
+
+using namespace Util;
 
 namespace Reni
 {

@@ -6,6 +6,7 @@
 #include "../HWLib/CtrlRef.h"
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/WeakRef.h"
+#include "../Util/Category.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -21,6 +22,7 @@ namespace Reni{
     class PlusToken;
     class ResultData;
     class StarToken;
+    class UserDefinedToken;
 
     template<typename T, typename ...> class FeatureProvider;
 
@@ -51,7 +53,8 @@ namespace Reni{
             return f->feature;
         }
 
-        virtual operator Ref<FeatureProvider<DumpPrintToken>,true>()const;
+        virtual operator Ref<FeatureProvider<UserDefinedToken>, true>()const;
+        virtual operator Ref<FeatureProvider<DumpPrintToken>, true>()const;
         virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
         virtual operator Ref<FeatureProvider<PlusToken>, true>()const;
         virtual operator Ref<FeatureProvider<StarToken>, true>()const;

@@ -4,6 +4,7 @@
 #include "FeatureProvider.h"
 #include "SearchResult.h"
 #include "ArgVisitor.h"
+#include "UserDefinedToken.h"
 
 using namespace Reni;
 using namespace HWLib;
@@ -109,10 +110,12 @@ inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Context
     return target.GetGenericDefinition<tokenClass>();\
 }
 
+TypeFeature(UserDefinedToken);
 TypeFeature(DumpPrintToken);
 TypeFeature(MinusToken);
 TypeFeature(PlusToken);
 TypeFeature(StarToken);
+ContextFeature(UserDefinedToken);
 ContextFeature(MinusToken);
 
 template <typename T>

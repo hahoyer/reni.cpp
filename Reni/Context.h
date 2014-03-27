@@ -17,6 +17,7 @@ namespace Reni
     class ResultData;
     class RootContext;
     class Syntax;
+    class UserDefinedToken;
 
     class Context 
         : public WithId<DumpableObject, Context>
@@ -30,6 +31,7 @@ namespace Reni
         SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;
 
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;
+        virtual operator Ref<ContextFeatureProvider<UserDefinedToken>, true>()const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const {
