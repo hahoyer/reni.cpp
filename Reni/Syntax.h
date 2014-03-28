@@ -48,7 +48,7 @@ namespace Reni
         Ref<ContainerSyntax> const Defines(SourcePart const& part, Ref<Syntax> const&value)const;
         Ref<Syntax> const ReplaceArg(Ref<Syntax> const&arg)const;
         virtual Ref<Syntax,true> const Replace(SyntaxArgVisitor const&visitor)const;
-        void AddTo(SyntaxContainer& syntaxContainer) const;
+        virtual void AddTo(SyntaxContainer& syntaxContainer) const;
     };
 
     

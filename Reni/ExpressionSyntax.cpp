@@ -2,6 +2,7 @@
 #include "ExpressionSyntax.h"
 
 #include "Feature.h"
+#include "SyntaxContainer.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -48,4 +49,8 @@ Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor
         return{};
 
     return new ExpressionSyntax(tokenClass, newLeft || left, part, newRight || right);
+}
+
+void ExpressionSyntax::AddTo(SyntaxContainer&main) const{
+    main.statements += thisRef;
 }
