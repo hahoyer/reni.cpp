@@ -13,9 +13,9 @@
 #include "SyntaxErrorToken .h"
 #include "ParenthesisToken.h"
 #include "TemplateInstances.h"
-#include "../HWLib/RefCountContainer.instance.h"
 #include "SyntaxVisitor.h"
 #include "SyntaxContainer.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 
 bool Trace = true;
