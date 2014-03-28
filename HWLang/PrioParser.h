@@ -17,17 +17,17 @@ namespace HWLang{
             do{
                 auto topItem = stack.Top;
                 auto relation = topItem.Relation(item.Name, prioTable);
-                if (item.IsEnd && relation == PrioTableConst::MatchTag){
+                if (item.IsEnd && relation == MatchTag){
                     stack.Pop();
                     a_if_(stack.IsEmpty);
                     return result;
                 }
 
-                if (relation != PrioTableConst::HigherTag)
+                if (relation != HigherTag)
                     result = stack.Pop().CreateSyntax(result);
 
-                if (relation != PrioTableConst::LowerTag){
-                    stack.Push(OpenItem(result, item, relation == PrioTableConst::MatchTag));
+                if (relation != LowerTag){
+                    stack.Push(OpenItem(result, item, relation == MatchTag));
                     result = {};
                 }
             } while (!result.IsEmpty);

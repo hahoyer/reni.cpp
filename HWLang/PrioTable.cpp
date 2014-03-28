@@ -42,7 +42,7 @@ PrioTable const PrioTable::Left(Array<String> const& tokens)const {
     return PrioTable(
         AllocTokens({ this->tokens, tokens }),
         data,
-        PrioTableConst::LeftTable,
+        LeftTable,
         0);
 }
 
@@ -50,7 +50,7 @@ PrioTable const PrioTable::Right(Array<String> const& tokens)const {
     return PrioTable(
         AllocTokens({ this->tokens, tokens }),
         data,
-        PrioTableConst::RightTable,
+        RightTable,
         0);
 }
 
