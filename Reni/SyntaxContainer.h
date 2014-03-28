@@ -6,6 +6,8 @@ namespace Reni{
     class SyntaxContainer final: public Syntax{
         typedef Syntax baseType;
         typedef SyntaxContainer thisType;
+        Array<Ref<Syntax>> statements;
+        Map<String, int> names;
     public:
         SyntaxContainer(SourcePart const&part);
 
