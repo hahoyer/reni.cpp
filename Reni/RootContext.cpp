@@ -27,7 +27,7 @@ RootContext::RootContext()
     SetDumpString();
 }
 
-RootContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{ return _internal->minus->ref; }
+RootContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{ return _internal->minus->thisRef; }
 
 RootContext::operator Ref<ContextFeatureProvider<UserDefinedToken>, true>() const { 
     md_;

@@ -19,7 +19,7 @@ namespace Reni {
     private:
         GenericFeatureClass<thisType> feature;
         p_function(WeakRef<FeatureClass>, featureClass) override {
-            return &feature.ref;
+            return &feature.thisRef;
         }
     };
 

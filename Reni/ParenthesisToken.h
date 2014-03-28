@@ -48,7 +48,7 @@ namespace Reni{
         };
     private:
         GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
+        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
     };
 
 
@@ -75,7 +75,7 @@ namespace Reni{
         };
     private:
         GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
+        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
     };
 
 }

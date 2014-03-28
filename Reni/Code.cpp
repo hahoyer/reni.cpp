@@ -50,7 +50,7 @@ Ref<CodeItem, true> const CodeItem::Replace(ReplaceVisitor const&arg) const{
 };
 
 Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const{
-    return *Reni::Fiber::Create(ref, items);
+    return *Reni::Fiber::Create(thisRef, items);
 }
 
 

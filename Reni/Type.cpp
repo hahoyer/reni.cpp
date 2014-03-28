@@ -38,21 +38,21 @@ pure_p_implementation(Type, Size, size) ;
 pure_p_implementation(Type, WeakRef<Global>, global);
 
 ResultData const Type::GetResultData(Category category, Ref<CodeItem> code)const{
-    return ResultData(size, code, &this->ref);
+    return ResultData(size, code, &this->thisRef);
 };
 
 WeakRef<Type> const Type::array(int count)const{
-    return _internal->array[count]->ref;
+    return _internal->array[count]->thisRef;
 };
 
 p_implementation(Type, WeakRef<NumberType>, numberType){
-    return &_internal->number.Value->ref;
+    return &_internal->number.Value->thisRef;
 };
 
 WeakRef<NumberType> const Type::CreateNumberType() const{
     auto a = dynamic_cast<ArrayType const*>(this);
     a_if(a && dynamic_cast<BitType const*>(&a->elementType), nd(*this) + " cannot be flagged as number type");
-    return new NumberType(a->ref);
+    return new NumberType(a->thisRef);
 };
 
 Type::operator Ref<FeatureProvider<UserDefinedToken>, true>()const{

@@ -88,5 +88,5 @@ NumberType const& NumberType::Resize(int newSize)const{
         .elementType
         .array(newSize)
         ->numberType
-        ->ref;
+        ->thisRef;
 }

@@ -54,7 +54,7 @@
 
 #define base_p_name(NAME) baseType::get_##NAME()
 
-#define AssumeConstObject mutable_p(thisType&, ref)const{return const_cast<thisType&>(*this);}
+#define AssumeConstObject mutable_p(thisType&, thisRef)const{return const_cast<thisType&>(*this);}
 
 
 #include "_EditorTemplates.h"

@@ -28,7 +28,7 @@ class TextToken final : public TerminalTokenClass{
     using thisType = TextToken;
 private:
     GenericFeatureClass<thisType> feature;
-    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
+    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
     
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         md(part);
@@ -54,7 +54,7 @@ private:
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);
     }
-    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.ref; }
+    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
 };
 
 
@@ -71,7 +71,7 @@ private:
         auto const&conditional = dynamic_cast<IfThenSyntax const&>(*left);
         return conditional.AddElse(part, right);
     }
-    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.ref; }
+    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.thisRef; }
 };
 
 
@@ -86,7 +86,7 @@ private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         return new IfThenSyntax(left, part, right);
     }
-    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.ref; }
+    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.thisRef; }
 };
 
 
@@ -98,7 +98,7 @@ public:
 private:
     GenericFeatureClass<thisType> feature;
     p_function(WeakRef<FeatureClass>, featureClass) override{
-        return &feature.ref;
+        return &feature.thisRef;
     }
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         auto result = new SyntaxContainer(part);
@@ -117,7 +117,7 @@ public:
 private:
     GenericFeatureClass<thisType> feature;
     p_function(WeakRef<FeatureClass>, featureClass) override{
-        return &feature.ref;
+        return &feature.thisRef;
     }
 
     Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
@@ -140,7 +140,7 @@ template<class TTokenClass>
 void MainTokenFactory::AddTokenClass(TTokenClass const*tokenClass){
     auto key = tokenClass->name;
     a_if(!predefinedTokenClasses.ContainsKey(key), nd(key) + nd(predefinedTokenClasses[key]));
-    predefinedTokenClasses.Assign(key,&tokenClass->ref);
+    predefinedTokenClasses.Assign(key,&tokenClass->thisRef);
 }
 
 MainTokenFactory::MainTokenFactory()

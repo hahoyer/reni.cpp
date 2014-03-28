@@ -43,7 +43,7 @@ ResultData const Syntax::GetResultData(Context const&context, Category category)
 
 Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const{
     SyntaxArgVisitor visitor = arg;
-    return Replace(visitor) || Ref<Syntax> (ref);
+    return Replace(visitor) || Ref<Syntax> (thisRef);
 }
 
 Ref<Syntax,true> const Syntax::Replace(SyntaxArgVisitor const&visitor) const{

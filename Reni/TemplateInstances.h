@@ -71,7 +71,7 @@ template<class TTokenClass, class TTargetTypeHandler>
 p_implementation(ArglessFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Array<String>, DumpData) { return{nd(feature)}; }
 
 template<class TTokenClass, class TTargetTypeHandler>
-p_implementation(ArglessFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Ref<Reni::Feature>, feature){ return feature->ref; }
+p_implementation(ArglessFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Ref<Reni::Feature>, feature){ return feature->thisRef; }
 
 
 template<class TTokenClass, class TTargetTypeHandler>
@@ -82,7 +82,7 @@ template<class TTokenClass, class TTargetTypeHandler>
 p_implementation(InfixFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Array<String>, DumpData) { return{nd(feature)}; }
 
 template<class TTokenClass, class TTargetTypeHandler>
-p_implementation(InfixFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Ref<Reni::Feature>, feature){ return feature->ref; }
+p_implementation(InfixFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Ref<Reni::Feature>, feature){ return feature->thisRef; }
 
 
 template <typename T>
