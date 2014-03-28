@@ -60,14 +60,14 @@ namespace HWLang
         {
             { UnknownTag, UnknownTag, UnknownTag },
             { UnknownTag, UnknownTag, HigherTag },
-            { UnknownTag, LowerTag , HigherTag }
+            { UnknownTag, LowerTag , LowerTag  }
         };
 
         static TagTable const RightTable =
         {
             { UnknownTag, UnknownTag, UnknownTag },
             { UnknownTag, UnknownTag, HigherTag },
-            { UnknownTag, LowerTag , LowerTag  }
+            { UnknownTag, LowerTag , HigherTag }
         };
     };
 
