@@ -74,6 +74,8 @@ namespace HWLib
         T& operator[](int Index){ return _data[Index]; }
         thisType const operator+(thisType const& other)const{ return baseType::operator+(other)->ToArray; }
         thisType const operator+(T const& other)const{ return (*this) + _({ other }); }
+        void operator+=(T const& other){ *this = *this + other; }
+        void operator+=(thisType const& other){ *this = *this + other; }
 
         bool const Compare(Array<T> const& other)const;
     private:
