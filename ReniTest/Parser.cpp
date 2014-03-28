@@ -129,7 +129,6 @@ namespace _HWLang {
         Check(rrrr, false, "f", false, false);
     }
 
-
     test(ThenElse, ParserBaseStructure) {
 
         bool Trace = true;
@@ -157,6 +156,29 @@ namespace _HWLang {
 
         auto rlr = rl->right;
         Check(rlr, false, "y", false, false);
+    }
+
+    test(TrainWreck, ParserBaseStructure) {
+
+        bool Trace = true;
+        String text = "x y z";
+
+        auto pt = PrioTable()
+            .Left({Any})
+            .ParenthesisLevel({Start}, {End})
+            ;
+
+        //md(pt);
+
+        auto sc = ScannerInstance(text);
+        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token<TokenClass>>(pt, sc);
+        Check(syntax, true, "z", false, false);
+
+        auto rl = syntax->left;
+        Check(rl, true, "y", false, false);
+
+        auto rll = rl->left;
+        Check(rll, false, "x", false, false);
     }
 
     void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch) {

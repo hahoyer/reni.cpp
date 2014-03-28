@@ -9,5 +9,6 @@ namespace _HWLang
     test_class(Parenthesis);
     test_class(PlusTimes);
     test_class(ThenElse);
+    test_class(TrainWreck);
 }
 

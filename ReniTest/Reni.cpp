@@ -57,7 +57,7 @@ namespace _Reni{
         CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
     }
 
-    test(RecursiveFunction, Simple, _HWLang::ThenElse)
+    test(RecursiveFunction, Simple, _HWLang::ThenElse, _HWLang::TrainWreck)
     {
         CompilerTest::Check(R"(
 f: /\
