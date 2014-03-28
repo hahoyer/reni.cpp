@@ -15,6 +15,7 @@
 #include "TemplateInstances.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "SyntaxVisitor.h"
+#include "SyntaxContainer.h"
 
 
 bool Trace = true;
@@ -89,6 +90,45 @@ private:
 };
 
 
+class Colon final : public InfixTokenClass{
+    typedef InfixTokenClass baseType;
+    typedef Colon thisType;
+public:
+    p(String, name){return ":";}
+private:
+    GenericFeatureClass<thisType> feature;
+    p_function(WeakRef<FeatureClass>, featureClass) override{
+        return &feature.ref;
+    }
+    Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
+        auto result = new SyntaxContainer(part);
+        result->Add(left, right);
+        return result;
+    }
+};
+
+
+class List final : public TokenClass{
+    typedef List baseType;
+    typedef TokenClass thisType;
+public:
+    String const name;
+    List(String const&name) : name(name){}
+private:
+    GenericFeatureClass<thisType> feature;
+    p_function(WeakRef<FeatureClass>, featureClass) override{
+        return &feature.ref;
+    }
+
+    Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
+        auto result = new SyntaxContainer(part);
+        left->AddTo(*result);
+        right->AddTo(*result);
+        return result;
+    };
+};
+
+
 MainTokenFactory const MainTokenFactory::Instance;
 
 TokenClass const& MainTokenFactory::Number = NumberToken();
@@ -108,11 +148,14 @@ MainTokenFactory::MainTokenFactory()
 , errorClasses([](String const& key){return new SyntaxErrorToken(key); })
 {
     AddTokenClass(new ArgToken);
+    AddTokenClass(new Colon);
     AddTokenClass(new DumpPrintToken);
     AddTokenClass(new ElseToken);
     AddTokenClass(new LeftParenthesisToken(1));
     AddTokenClass(new LeftParenthesisToken(2));
     AddTokenClass(new LeftParenthesisToken(3));
+    AddTokenClass(new List(","));
+    AddTokenClass(new List(";"));
     AddTokenClass(new MinusToken);
     AddTokenClass(new PlusToken);
     AddTokenClass(new RightParenthesisToken(1));

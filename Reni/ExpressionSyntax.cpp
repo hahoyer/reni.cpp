@@ -36,7 +36,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     return result;
 }
 
-Ref<Syntax, true> ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const{
     Ref<Syntax, true> newLeft;
     if(!left.IsEmpty)
         newLeft = left->Replace(visitor);

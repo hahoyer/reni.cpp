@@ -7,7 +7,7 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class IfThenElseSyntax : public Syntax
+    class IfThenElseSyntax final: public Syntax
     {
         typedef Syntax baseType;
         typedef IfThenElseSyntax  thisType;
@@ -19,10 +19,10 @@ namespace Reni
     private:
         p_function(Array<String>, DumpData) override;
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const override;
+        virtual Ref<Syntax, true> const Replace(SyntaxArgVisitor const&) const override;
     };
 
-    class IfThenSyntax : public Syntax
+    class IfThenSyntax final : public Syntax
     {
         typedef Syntax baseType;
         typedef IfThenSyntax thisType;
@@ -37,7 +37,7 @@ namespace Reni
     private:
         p_function(Array<String>, DumpData) override;
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const override;
+        virtual Ref<Syntax, true> const Replace(SyntaxArgVisitor const&) const override;
     };
 
 }

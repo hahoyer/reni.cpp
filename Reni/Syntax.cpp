@@ -6,8 +6,9 @@
 #include "FeatureProvider.h"
 #include "Result.h"
 #include "TokenClass.h"
-#include "../HWLib/RefCountContainer.instance.h"
+#include "SyntaxContainer.h"
 #include "SyntaxVisitor.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -45,9 +46,19 @@ Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const{
     return Replace(visitor) || Ref<Syntax> (ref);
 }
 
-Ref<Syntax,true> Syntax::Replace(SyntaxArgVisitor const&visitor) const{
+Ref<Syntax,true> const Syntax::Replace(SyntaxArgVisitor const&visitor) const{
     md(visitor);
     mb;
+}
+
+Ref<ContainerSyntax> const Syntax::Defines(SourcePart const& part, Ref<Syntax> const&value) const{
+    md(part, value);
+    mb;
+}
+
+void Syntax::AddTo(SyntaxContainer& syntaxContainer) const{
+    md(syntaxContainer);
+    b_;
 }
 
 p_implementation(InfixSyntax, Array<String>, DumpData){

@@ -9,12 +9,14 @@ using namespace HWLang;
 namespace Reni
 {
     class CodeItem;
+    class ContainerSyntax;
     class Context;
     class ResultFromSyntaxAndContext;
     class ResultCache;
     class TokenClass;
     class Type;
     class SyntaxArgVisitor;
+    class SyntaxContainer;
 
     class Syntax 
         : public WithId<DumpableObject, Syntax>
@@ -43,8 +45,10 @@ namespace Reni
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;
         virtual ResultData const GetResultData(Context const&context, Category category)const;
 
+        Ref<ContainerSyntax> const Defines(SourcePart const& part, Ref<Syntax> const&value)const;
         Ref<Syntax> const ReplaceArg(Ref<Syntax> const&arg)const;
-        virtual Ref<Syntax,true> Replace(SyntaxArgVisitor const&visitor)const;
+        virtual Ref<Syntax,true> const Replace(SyntaxArgVisitor const&visitor)const;
+        void AddTo(SyntaxContainer& syntaxContainer) const;
     };
 
     

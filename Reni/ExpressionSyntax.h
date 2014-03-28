@@ -19,6 +19,6 @@ namespace Reni
     private:
         p_function(Array<String>,DumpData) override;
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const override;
+        virtual Ref<Syntax, true> const Replace(SyntaxArgVisitor const&) const override;
     };
 }

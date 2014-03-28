@@ -9,12 +9,17 @@ namespace Reni{
     struct PrioTable{
         static HWLang::PrioTable const Main(){
             return
-                HWLang::PrioTable::CreateLeft({Any})
+                HWLang::PrioTable()
+                .Left({Any})
                 .Left({"<", ">", "<=", ">="})
                 .Left({"=", "<>"})
                 .Left({"*", "/"})
                 .Left({"+", "-"})
                 .ThenElseLevel({"then"}, {"else"})
+                .Left({"/\\", "/!\\", "/\\/\\", "/!\\/!\\"})
+                .Right({":"})
+                .Right({","})
+                .Right({";"})
                 .ParenthesisLevel({"(", "[", "{"}, {")", "]", "}"})
                 .ParenthesisLevel({Start}, {End})
                 ;

@@ -16,10 +16,8 @@ static bool Trace = true;
 class RootContext::internal final{
 public:
     internal()
-    : minus(new MinusFeatureProvider)
-    , symbol(new SymbolFeatureProvider) {};
+    : minus(new MinusFeatureProvider){};
     Ref<MinusFeatureProvider> const minus;
-    Ref<SymbolFeatureProvider> const symbol;
 };
 
 
@@ -30,7 +28,12 @@ RootContext::RootContext()
 }
 
 RootContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{ return _internal->minus->ref; }
-RootContext::operator Ref<ContextFeatureProvider<UserDefinedToken>, true>() const { return _internal->symbol->ref;}
+
+RootContext::operator Ref<ContextFeatureProvider<UserDefinedToken>, true>() const { 
+    md_;
+    b_;
+    return{};
+}
 
 p_implementation(RootContext, Array<String>, DumpData){
     return{};
