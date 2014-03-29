@@ -50,10 +50,11 @@ namespace HWLib
         String                  const Replace(String const& oldValue, String const&newValue)const;
         CtrlRef<Enumerable<String> > const Split(String const& delimiter)const;
 
-        static String const Convert (bool             value);
-        static String const Convert  (int              value);
-        static String const Convert   (unsigned __int32 value);
-        static String const Convert    (unsigned __int64 value);
+        static String const Convert(bool             value);
+        static String const Convert(int              value, int radix = 10);
+        static String const Convert(unsigned __int32 value, int radix = 10);
+        static String const Convert   (unsigned __int64 value, int radix = 10);
+        static String const Convert    (__int64         value, int radix = 10);
         static String const FilePosition(String const&  fileName, int line, int column, String const&flag);
         static String const Surround   (String const&  left, Array<String> const&list, String const&right, int maxCount = 100);
     };

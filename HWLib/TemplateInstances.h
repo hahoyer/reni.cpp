@@ -9,8 +9,8 @@
 
 using namespace HWLib;
 
-inline String const HWLib::Dump(int target) { return String::Convert(target); };
-inline String const HWLib::Dump(size_t target) { return String::Convert(target); };
+inline String const HWLib::Dump(int target, int radix) { return String::Convert(target, radix); };
+inline String const HWLib::Dump(size_t target, int radix) { return String::Convert(target, radix); };
 inline String const HWLib::Dump(bool target) { return String::Convert(target); };
 
 template <>
