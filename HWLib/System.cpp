@@ -9,20 +9,20 @@ static bool Trace = true;
 using namespace HWLib;
 
 
-String const System::FormatLastErrorMessage()
-{
+String const System::FormatLastErrorMessage(){
     DWORD rc = ::GetLastError();
     char Buffer[3000];
-    ::FormatMessage(
-        FORMAT_MESSAGE_FROM_SYSTEM,
-        NULL,
-        rc,
-        0,
-        Buffer, 3000,
-        NULL);
+    ::FormatMessage
+        (
+            FORMAT_MESSAGE_FROM_SYSTEM,
+                                      NULL,
+                                      rc,
+                                      0,
+                                      Buffer, 3000,
+                                      NULL
+        );
     return String::Convert(int(rc)) + ": " + Buffer;
 };
-
 
 String const System::EnvironmentVariable(String const&key){
     static const int bufferSize = 65535;
@@ -31,8 +31,18 @@ String const System::EnvironmentVariable(String const&key){
     return module;
 }
 
-
 void System::Sleep(int milliseconds){
     ::Sleep(milliseconds);
 }
 
+String const System::ModuleName(unsigned __int64 instructionPointer){
+    PVOID instructionAddress = reinterpret_cast<LPVOID>(instructionPointer);
+    MEMORY_BASIC_INFORMATION information;
+    int rc = ::VirtualQuery(instructionAddress, &information, sizeof(information));
+    assert(rc);
+    HMODULE hMod = reinterpret_cast<HMODULE>(information.AllocationBase);
+    char ModuleName[MAX_PATH];
+    if(GetModuleFileName(hMod, ModuleName, sizeof(ModuleName)))
+        return ModuleName;
+    return "";
+};
