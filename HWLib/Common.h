@@ -56,6 +56,5 @@ namespace HWLib
     align(8,3) --> 8
     align(9,3) --> 16
     */
-    template<class t> inline t align(t x, int AlignBits){ return (((x - 1) >> AlignBits) + 1) << AlignBits; };
-
+    template<class T> inline T align(T x, int AlignBits){ return (((x - 1) >> AlignBits) + 1) << AlignBits; };
 }
