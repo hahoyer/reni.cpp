@@ -8,7 +8,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="BeginEndIterator.h" />
+    <ClInclude Include="MemBox.h" />
     <ClInclude Include="RuntimeChain.h" />
+    <ClInclude Include="StackTrace.h" />
     <ClInclude Include="_EditorTemplates.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="RefCountContainer.instance.h" />
@@ -45,6 +47,7 @@
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="DumpableObject.cpp" />
+    <ClCompile Include="StackTrace.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="String.cpp" />

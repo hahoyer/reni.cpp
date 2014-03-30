@@ -23,6 +23,7 @@
 #include "../RefCountProvider.h"
 #include "../RuntimeChain.h"
 #include "../Stack.h"
+#include "../StackTrace.h"
 #include "../System.h"
 #include "../ValueCache.h"
 #include "../WeakPtr.h"

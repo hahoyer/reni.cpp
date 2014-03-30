@@ -6,16 +6,25 @@
 #include "../HWLib/System.h"
 #include "../HWAnalyse/TestMacros.h"
 #include "../HWAnalyse/TestFixture.h"
+#include "../HWLib/StackTrace.h"
 
 using namespace HWLang;
 using namespace HWLib;
 
 static bool Trace = true;
 
-test_(FileTest){
-    auto s = Source::FromFile(__FILE__);
-    auto t = s.Text;
-    a_is(t.Part(0, 8), == , "#include");
+namespace _HWLib{
+    test_(FileTest){
+        auto s = Source::FromFile(__FILE__);
+        auto t = s.Text;
+        a_is(t.Part(0, 8), == , "#include");
+    }
+
+    test_(StackTrace){
+        auto t = HWLib::Thread::FormatStackTraceOfCurrentThread(0);
+        dd(t);
+        b_;
+    }
 }
 
 namespace _Process

@@ -1,6 +1,9 @@
 #pragma once
 
-test_class(FileTest);
+namespace _HWLib{
+    test_class(FileTest);
+    test_class(StackTrace);
+}
 
 namespace _Process{
     test_class(Simple);
