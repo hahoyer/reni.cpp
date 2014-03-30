@@ -229,10 +229,13 @@ String const String::Convert(unsigned __int64 value, int radix){
     if(value == 0)
         return "0";
 
+    a_is(radix, >, 1);
+    a_is(radix, <, 36);
+
     String result;
     do{
         auto digit = value % radix;
-        result += digits[digit];
+        result = String(digits[digit]) + result;
         value /= radix;
     } while(value);
 
@@ -242,7 +245,7 @@ String const String::Convert(unsigned __int64 value, int radix){
 
 String const String::Convert(__int64 value, int radix){
     if(value < 0)
-        return "-" + (unsigned __int64)(-value);
+        return "-" + Convert((unsigned __int64)(-value), radix);
     return Convert((unsigned __int64)(value), radix);
 };
 

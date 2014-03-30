@@ -30,6 +30,7 @@ namespace HWLib
 
     template <>String const Dump(String const&target);
     template <>String const Dump(char const* target);
+    String const Dump(unsigned __int64 target, int radix = 10);
     String const Dump(int target, int radix = 10);
     String const Dump(size_t target, int radix = 10);
     String const Dump(bool target);
