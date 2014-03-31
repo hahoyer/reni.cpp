@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Parser.h"
 #include "Reni.h"
+#include "HWLib.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWAnalyse/TestFixture.h"
 

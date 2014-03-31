@@ -2,7 +2,7 @@
 #include "bigInt.h"
 
 #pragma warning(disable: 4996)
-
+#undef max
 // ==============================================================
 //
 //  Copyright (C) 1995  William A. Rossi
