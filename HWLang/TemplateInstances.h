@@ -9,11 +9,13 @@ ScannerInstance<Token, TokenFactory, Scanner>
     try{
         if (!startTokenReturned){
             startTokenReturned = true;
+            SetDumpString();
             return Token(TokenFactory::Start, position.Span(0));
         }
 
         static bool Trace = true;
         position += Scanner::WhiteSpace(position);
+        SetDumpString();
 
         auto count = position.End;
         if (count.IsValid){
@@ -49,6 +51,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
 ::Step(int count, TokenClass const& tokenClass){
     auto part = position.Span(count);
     position += count;
+    SetDumpString();
     return Token(tokenClass, part);
 };
 
