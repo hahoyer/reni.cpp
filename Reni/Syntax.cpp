@@ -51,7 +51,7 @@ Ref<Syntax,true> const Syntax::Replace(SyntaxArgVisitor const&visitor) const{
     mb;
 }
 
-Ref<ContainerSyntax> const Syntax::Defines(SourcePart const& part, Ref<Syntax> const&value) const{
+Ref<SyntaxContainer> const Syntax::Defines(SourcePart const& part, Ref<Syntax> const&value) const{
     md(part, value);
     mb;
 }

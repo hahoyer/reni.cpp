@@ -17,21 +17,26 @@ namespace Reni
     class ResultData;
     class RootContext;
     class Syntax;
+    class SyntaxContainer;
     class UserDefinedToken;
 
     class Context 
         : public WithId<DumpableObject, Context>
-        , public RefCountProvider
     {
         using baseType = WithId<DumpableObject, Context>;
         using thisType = Context;
+
+        class internal;
+        WeakRef<internal> _internal;
     public:
+        Context();
         ResultData const GetResultData(Category category, Syntax const&syntax)const;
         virtual_p(WeakRef<Global>, global) = 0;
         SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;
 
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;
         virtual operator Ref<ContextFeatureProvider<UserDefinedToken>, true>()const;
+        WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const {

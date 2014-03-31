@@ -101,9 +101,9 @@ private:
         return &feature.thisRef;
     }
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
-        auto result = new SyntaxContainer(part);
+        Ref<SyntaxContainer> result = new SyntaxContainer(part);
         result->Add(left, right);
-        return result;
+        return *result;
     }
 };
 
@@ -121,10 +121,10 @@ private:
     }
 
     Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
-        auto result = new SyntaxContainer(part);
+        Ref<SyntaxContainer> result = new SyntaxContainer(part);
         left->AddTo(*result);
         right->AddTo(*result);
-        return result;
+        return *result;
     };
 };
 

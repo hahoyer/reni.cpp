@@ -3,14 +3,16 @@
 
 #include "CodeVisitor.h"
 #include "MainTokenFactory.h"
+#include "PrioTable.h"
 #include "RootContext.h"
 #include "Scanner.h"
 #include "Syntax.h"
 #include "TokenClass.h"
-#include "../HWLib/ValueCache.h"
 #include "../HWLang/ScannerInstance.h"
 #include "../HWLang/PrioParser.h"
-#include "PrioTable.h"
+#include "../HWLib/ValueCache.h"
+#include "../Util/BitsConst.h"
+#include "../Util/CppCompilerScripting.h"
 
 using namespace HWLib;
 using namespace HWLang;
@@ -22,8 +24,9 @@ namespace Reni{
         using thisType = ScannerInstance;
     public:
         ScannerInstance(Source const& source)
-            :baseType(source)
-        {};
+            :baseType(source){
+            SetDumpString();
+        };
     };
 }
 
@@ -38,14 +41,13 @@ public:
     ValueCache<Ref<Syntax>> syntaxCache;
     ValueCache<String> cppCodeCache;
 private:
-    Ref<RootContext> rootContext;
+    RootContext rootContext;
 public:
     internal() = delete;
     internal(internal const&) = delete;
 
     internal(String const&fileName)
         : fileName  (fileName)
-        , rootContext(new RootContext)
         , syntaxCache([&]{return GetSyntax(); })
         , codeCache  ([&]{return GetCode(); })
         , cppCodeCache([&]{return GetCppCode(); })
@@ -73,7 +75,7 @@ private:
 
     Ref<CodeItem> const GetCode()const{
         auto syntax = syntaxCache.Value;
-        return syntax->Code(*rootContext);
+        return syntax->Code(rootContext);
     };
 
     class CodeVisitor : public Reni::CodeVisitor
@@ -91,3 +93,5 @@ private:
 };
 
 
+
+//Parse<Ref<Syntax>,Ref<Syntax,true>,TokenClass,Token<TokenClass>,ScannerInstance>(PrioTable prioTable, ScannerInstance scanner)
