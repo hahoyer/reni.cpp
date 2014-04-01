@@ -21,7 +21,7 @@ using namespace Reni;
 static bool Trace = true;
 
 struct Type::internal{
-    FunctionCache<int, WeakRef<ArrayType>> array;
+    FunctionCache<WeakRef<ArrayType>, int> array;
     ValueCache<WeakRef<NumberType>> number;
 
     explicit internal(Type const&parent)

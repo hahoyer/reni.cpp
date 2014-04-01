@@ -24,13 +24,14 @@ namespace Reni
         using baseType = WithId<DumpableObject, Syntax>;
         using thisType = Syntax;
     public:
-        using TokenClass = Reni::TokenClass;
+        using TokenClass = TokenClass;
 
     private:
         FunctionCache<Context const*, Ref<ResultFromSyntaxAndContext>> resultCache;
     protected:
         SourcePart const part;
         Syntax(SourcePart const& part);
+        Syntax(Syntax const& ) = delete;
     public:
         virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
             bool Trace = true;

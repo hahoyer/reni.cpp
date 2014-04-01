@@ -9,7 +9,7 @@
 
 namespace HWLib
 {
-    template <typename TKey, typename TValue>
+    template <typename TValue, typename TKey>
     class FunctionCacheBase{
         using thisType = FunctionCacheBase;
     private:
@@ -17,7 +17,7 @@ namespace HWLib
         mutable std::unordered_map<TKey, TValue> data;
         mutable std::unordered_set<TKey> busyKeys;
     protected:
-        FunctionCacheBase(FunctionCacheBase<TKey, TValue> const& x) = delete;
+        FunctionCacheBase(FunctionCacheBase<TValue, TKey> const& x) = delete;
         FunctionCacheBase(function<TValue(TKey)> createValue)
             : createValue(createValue){};
     public:

@@ -3,9 +3,9 @@
 
 namespace HWLib
 {
-    template <typename TKey, typename TValue>
-    class FunctionCache final : public FunctionCacheBase<TKey, TValue>{
-        using baseType = FunctionCacheBase<TKey, TValue>;
+    template <typename TValue, typename TKey>
+    class FunctionCache final : public FunctionCacheBase<TValue, TKey>{
+        using baseType = FunctionCacheBase<TValue, TKey>;
         using thisType = FunctionCache;
     public:
         FunctionCache(function<TValue(TKey)> createValue)

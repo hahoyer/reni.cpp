@@ -15,13 +15,16 @@ static bool Trace = true;
 
 class ContainerContext final : public Context, public RefCountProvider{
     Context const& context;
-    SyntaxContainer const&containerData;
+    Ref<SyntaxContainer> containerData;
     int const index;
 public:
     ContainerContext(Context const&context, SyntaxContainer const&containerData, int index)
         : context(context)
-        , containerData(containerData)
-        , index(index){};
+        , containerData(containerData.thisRef)
+        , index(index){
+        SetDumpString();
+    };
+    ContainerContext(ContainerContext const&) = delete;
 private:
     p_function(Array<String>, DumpData) override{ 
         return{
@@ -35,12 +38,12 @@ private:
 
 
 struct Context::internal final{
-    FunctionCache<SyntaxContainer const*, CtrlRef<FunctionCache<int, Ref<ContainerContext>>>> container;
+    FunctionCache<CtrlRef<FunctionCache<Ref<ContainerContext>, int>>, SyntaxContainer const*> container;
 
     internal(Context const&context)
         : container([&](SyntaxContainer const*containerData)
     {
-        return new FunctionCache<int, Ref<ContainerContext>>
+        return new FunctionCache<Ref<ContainerContext>, int>
             ([&](int index){return new ContainerContext(context, *containerData, index);});
     }){};
 };

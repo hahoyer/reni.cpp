@@ -10,9 +10,9 @@ namespace Reni
 
     class MainTokenFactory 
     {
-        FunctionCache<String , Ref<TokenClass >> tokenClasses;
+        FunctionCache<Ref<TokenClass>, String> tokenClasses;
         Map<String, Ref<TokenClass>> predefinedTokenClasses;
-        FunctionCache<String , Ref<TokenClass >> errorClasses;
+        FunctionCache<Ref<TokenClass>, String> errorClasses;
 
         MainTokenFactory();
     public:
