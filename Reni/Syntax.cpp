@@ -22,15 +22,15 @@ Reni::Syntax::Syntax(SourcePart const&part)
 };
 
 Ref<CodeItem> const Syntax::Code(Context const&context)const{
-    return resultCache[&context]->code;
+    return resultCache(&context)->code;
 }
 
 WeakRef<Type>const Syntax::Type(Context const&context)const{
-    return resultCache[&context]->type;
+    return resultCache(&context)->type;
 }
 
 Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const {
-    Ref<ResultFromSyntaxAndContext> r = resultCache[&context];
+    Ref<ResultFromSyntaxAndContext> r = resultCache(&context);
     return r;
 }
 

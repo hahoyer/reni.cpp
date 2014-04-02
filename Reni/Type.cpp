@@ -42,7 +42,7 @@ ResultData const Type::GetResultData(Category category, Ref<CodeItem> code)const
 };
 
 WeakRef<Type> const Type::array(int count)const{
-    return _internal->array[count]->thisRef;
+    return _internal->array(count)->thisRef;
 };
 
 p_implementation(Type, WeakRef<NumberType>, numberType){

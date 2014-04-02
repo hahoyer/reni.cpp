@@ -46,3 +46,9 @@ namespace _ValueCache{
     test_class(Context);
     test_class(Member);
 }
+
+namespace _FunctionCache{
+    test_class(Simple);
+    test_class(Context);
+    test_class(Multiple);
+}

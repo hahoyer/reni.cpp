@@ -27,7 +27,7 @@ namespace Reni
         using TokenClass = TokenClass;
 
     private:
-        FunctionCache<Context const*, Ref<ResultFromSyntaxAndContext>> resultCache;
+        FunctionCache<Ref<ResultFromSyntaxAndContext>, Context const*> resultCache;
     protected:
         SourcePart const part;
         Syntax(SourcePart const& part);
@@ -39,7 +39,7 @@ namespace Reni
             mb;
         };
 
-        AssumeConstObject;
+        ThisRef;
         Ref<CodeItem> const Code(Context const&context)const;
         WeakRef<Type>const Type(Context const&context)const;
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;

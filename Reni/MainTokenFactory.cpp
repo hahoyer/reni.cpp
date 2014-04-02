@@ -170,14 +170,14 @@ TokenClass const& MainTokenFactory::GetTokenClass(String const&name){
 }
 
 TokenClass const& MainTokenFactory::GetErrorClass(String const&name){
-    return *Instance.errorClasses[name];
+    return *Instance.errorClasses(name);
 }
 
 TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) const
 {
     auto result = predefinedTokenClasses.Find(name);
     if(result.IsEmpty)
-        return *tokenClasses[name];
+        return *tokenClasses(name);
     return *result;
 }
 

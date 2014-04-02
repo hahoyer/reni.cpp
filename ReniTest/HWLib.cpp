@@ -7,6 +7,7 @@
 #include "../HWAnalyse/TestMacros.h"
 #include "../HWAnalyse/TestFixture.h"
 #include "../HWLib/StackTrace.h"
+#include "../HWLib/FunctionCache.h"
 
 using namespace HWLang;
 using namespace HWLib;
@@ -23,7 +24,7 @@ namespace _HWLib{
     test_(StackTrace){
         auto t = HWLib::Thread::FormatStackTraceOfCurrentThread(0);
         dd(t);
-        b_;
+        //b_;
     }
 }
 
@@ -288,6 +289,42 @@ namespace _ValueCache
         a_if_(c.fixValueCache.IsValid);
         a_is(c.functionValueCache.Value, == , 34);
 
+    }
+
+}
+
+
+namespace _FunctionCache{
+    test_(Simple){
+        FunctionCache<int, int> c([](int x){return 12+x; });
+        a_if_(!c.IsValid(1));
+        c.IsValid(1, true);
+        a_if_(c.IsValid(1));
+        c.IsValid(1, false);
+        a_if_(!c.IsValid(1));
+        auto z = c(1);
+        auto zz = c(2);
+        a_if_(c(1) == 13);
+        a_if_(c.IsValid(2));
+    }
+
+    test(Context, Simple){
+        int value = 12;
+        FunctionCache<int, int> c([&](int x){return value + x; });
+        a_if_(c(1) == 13);
+        value = 1;
+        a_if_(c(1) == 13);
+        a_if_(c(2) == 3);
+        c.IsValid(1, false);
+        a_if_(c(1) == 2);
+    }
+
+    test(Multiple, Simple){
+        int value = 1;
+        FunctionCache<int, String, int> c([&](String x, int y){return value + x.Count + y;});
+        a_if_(c("ss",1) == 4);
+        value = 2;
+        a_if_(c("ss", 1) == 4);
     }
 
 }

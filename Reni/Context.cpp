@@ -14,6 +14,7 @@ static bool Trace = true;
 
 
 class ContainerContext final : public Context, public RefCountProvider{
+    typedef ContainerContext thisType;
     Context const& context;
     Ref<SyntaxContainer> containerData;
     int const index;
@@ -25,6 +26,7 @@ public:
         SetDumpString();
     };
     ContainerContext(ContainerContext const&) = delete;
+    ThisRef;
 private:
     p_function(Array<String>, DumpData) override{ 
         return{
@@ -38,13 +40,11 @@ private:
 
 
 struct Context::internal final{
-    FunctionCache<CtrlRef<FunctionCache<Ref<ContainerContext>, int>>, SyntaxContainer const*> container;
+    FunctionCache<Ref<ContainerContext>, SyntaxContainer const*, int> container;
 
     internal(Context const&context)
-        : container([&](SyntaxContainer const*containerData)
-    {
-        return new FunctionCache<Ref<ContainerContext>, int>
-            ([&](int index){return new ContainerContext(context, *containerData, index);});
+        : container([&](SyntaxContainer const*containerData, int index){
+        return new ContainerContext(context, *containerData, index);
     }){};
 };
 
@@ -77,7 +77,5 @@ Context::operator Ref<ContextFeatureProvider<UserDefinedToken>, true>() const {
 }
 
 WeakRef<Context> const Context::Container(SyntaxContainer const& syntax, int index) const{
-    auto s = _internal->container[&syntax];
-    Ref<ContainerContext> t = (*s)[index];
-    return *t;
+    return _internal->container(&syntax, index)->thisRef;
 }
