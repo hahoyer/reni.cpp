@@ -63,20 +63,18 @@ namespace HWLib
 }
 
 namespace std {
-
     template <>
     struct hash<String const>{
-        std::size_t operator()(String const& key) const{
+        size_t operator()(String const& key) const{
             return key.HashCode;
         }
     };
 
     template <>
     struct hash<String >{
-        std::size_t operator()(String const& key) const{
+        size_t operator()(String const& key) const{
             return key.HashCode;
         }
     };
-
 }
 //#pragma message(__FILE__ "(" STRING(__LINE__) "):")

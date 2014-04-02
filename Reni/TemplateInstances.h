@@ -17,7 +17,7 @@ class ArglessFunctionProvider<TTokenClass, TTargetTypeHandler> ::Feature final :
     targetType const& value;
 public:
     Feature(targetType const&value) : value(value){}
-    AssumeConstObject;
+    ThisRef;
 private:
     ResultData const FunctionResult(
         Context const&context,
@@ -43,7 +43,7 @@ class InfixFunctionProvider<TTokenClass, TTargetTypeHandler> ::Feature final : p
     targetType const& value;
 public:
     Feature(targetType const&value) : value(value){}
-    AssumeConstObject;
+    ThisRef;
 private:
     ResultData const FunctionResult(
         Context const&context,

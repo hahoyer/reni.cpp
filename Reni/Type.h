@@ -36,7 +36,7 @@ namespace Reni{
     protected:
         Type();
     public:
-        AssumeConstObject;
+        ThisRef;
         bool operator==(Type const&other)const{ return this == &other; }
 
         virtual_p(Size, size) = 0;

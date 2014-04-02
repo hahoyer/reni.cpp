@@ -21,7 +21,7 @@ namespace Reni{
             p_function(Array<String>,DumpData) override { return{}; }
         };
     public:
-        AssumeConstObject;
+        ThisRef;
     private:
         p_function(Ref<ContextFeature>,feature) override{ return new Feature(); }
         p_function(Array<String>,DumpData) override { return{}; }
@@ -45,7 +45,7 @@ namespace Reni{
             }
         };
     public:
-        AssumeConstObject;
+        ThisRef;
     private:
         p_function(Ref<ContextFeature>, feature) override {
             return new Feature();

@@ -17,7 +17,7 @@ namespace Reni{
         WeakRef<Global> _global;
     public:
         RootContext();
-        AssumeConstObject;
+        ThisRef;
         operator Ref<ContextFeatureProvider<MinusToken>, true>()const override;
         operator Ref<ContextFeatureProvider<UserDefinedToken>, true>()const override;
     private:

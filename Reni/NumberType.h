@@ -33,7 +33,7 @@ namespace Reni{
         ArrayType const& parent;
     public:
         NumberType(WeakRef<ArrayType> const parent);
-        AssumeConstObject;
+        ThisRef;
     private:
         p_function(Size, size) override;
         p_function(WeakRef<Global>, global) override;

@@ -14,7 +14,7 @@ namespace Reni{
             SetDumpString();
         }
 
-        AssumeConstObject;
+        ThisRef;
 
     private:
         p_function(Size,size) override { return 0; };

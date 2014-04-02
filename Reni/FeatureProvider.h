@@ -52,7 +52,7 @@ namespace Reni{
         Ref<Feature> feature;
     public:
         ArglessFunctionProvider(targetType const&value);
-        AssumeConstObject;
+        ThisRef;
     private:
         p_function(Array<String>, DumpData) override;
         p_function(Ref<Reni::Feature>, feature) override;
@@ -70,7 +70,7 @@ namespace Reni{
         Ref<Feature> feature;
     public:
         InfixFunctionProvider(targetType const&value);
-        AssumeConstObject;
+        ThisRef;
     private:
         p_function(Array<String>, DumpData) override;
         p_function(Ref<Reni::Feature>, feature) override;

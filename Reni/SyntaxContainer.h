@@ -17,7 +17,7 @@ namespace Reni{
         virtual ~SyntaxContainer(){
         };
 
-        AssumeConstObject;
+        ThisRef;
 
         void Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const&value);
     private:

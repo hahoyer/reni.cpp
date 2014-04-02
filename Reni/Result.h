@@ -61,7 +61,7 @@ namespace Reni
         mutable ResultData data;
         mutable Category pending;
     public:
-        AssumeConstObject;
+        ThisRef;
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);

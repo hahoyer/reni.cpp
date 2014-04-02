@@ -21,7 +21,7 @@ namespace Reni{
             SetDumpString();
         }
 
-        AssumeConstObject;
+        ThisRef;
     private:
         p_function(Size,size) override;
         p_function(WeakRef<Global>, global) override{ return elementType.global; };

@@ -11,7 +11,7 @@ namespace Reni{
         typedef Global thisType;
     public:
         Global();
-        AssumeConstObject;
+        ThisRef;
 
         BitType const bitType;
         VoidType const voidType;

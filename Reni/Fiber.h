@@ -52,7 +52,7 @@ namespace Reni{
         typedef DumpableObject baseType; 
         typedef FiberConnector thisType;
     public:
-        AssumeConstObject;
+        ThisRef;
         virtual_p(Size, leftSize) = 0;
         virtual_p(Size, rightSize) = 0;
         virtual_p(Size, size) = 0;

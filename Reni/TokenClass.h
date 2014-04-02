@@ -25,7 +25,7 @@ namespace Reni
         TokenClass() = default;
         TokenClass(TokenClass const&) = delete;
 
-        AssumeConstObject;
+        ThisRef;
 
         virtual_p(bool, AcceptsMatch){ return false; };
         Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const;
