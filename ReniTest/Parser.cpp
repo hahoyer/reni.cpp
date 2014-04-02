@@ -97,36 +97,34 @@ namespace _HWLang {
         Check(syntax, true, "+", true, false);
 
         auto rl = syntax->left;
-        Check(rl, true, "*", true, false);
+        Check(rl, true, "+", true, false);
 
         auto rll = rl->left;
-        Check(rll, false, "a", false, false);
+        Check(rll, true, "*", true, false);
+        
+        auto rlll = rll->left;
+        Check(rlll, false, "a", false, false);
+
+        auto rllr = rll->right;
+        Check(rllr, false, "b", false, false);
 
         auto rlr = rl->right;
-        Check(rlr, false, "b", false, false);
+        Check(rlr, true, "*", true, false);
+
+        auto rlrl = rlr->left;
+        Check(rlrl, false, "c", false, false);
+
+        auto rlrr = rlr->right;
+        Check(rlrr, false, "d", false, false);
 
         auto rr = syntax->right;
-        Check(rr, true, "+", true, false);
-
+        Check(rr, true, "*", true, false);
 
         auto rrl = rr->left;
-        Check(rrl, true, "*", true, false);
-
-        auto rrll = rrl->left;
-        Check(rrll, false, "c", false, false);
-
-        auto rrlr = rrl->right;
-        Check(rrlr, false, "d", false, false);
-
+        Check(rrl, false, "e", false, false);
 
         auto rrr = rr->right;
-        Check(rrr, true, "*", true, false);
-
-        auto rrrl = rrr->left;
-        Check(rrrl, false, "e", false, false);
-
-        auto rrrr = rrr->right;
-        Check(rrrr, false, "f", false, false);
+        Check(rrr, false, "f", false, false);
     }
 
     test(ThenElse, ParserBaseStructure) {
