@@ -6,6 +6,7 @@
 #include "DumpPrintToken.h"
 #include "Feature.h"
 #include "FeatureClass.h"
+#include "FunctionToken.h"
 #include "NumberToken.h"
 #include "Syntax.h"
 #include "Terminal.h"
@@ -151,6 +152,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new Colon);
     AddTokenClass(new DumpPrintToken);
     AddTokenClass(new ElseToken);
+    AddTokenClass(new FunctionToken);
     AddTokenClass(new LeftParenthesisToken(1));
     AddTokenClass(new LeftParenthesisToken(2));
     AddTokenClass(new LeftParenthesisToken(3));

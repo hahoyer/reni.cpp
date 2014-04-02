@@ -137,7 +137,7 @@ namespace _HWLang {
             .ParenthesisLevel({Start}, {End})
             ;
 
-        md(pt);
+        //md(pt);
 
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token<TokenClass>>(pt, sc);

@@ -30,6 +30,7 @@
     <ClCompile Include="ArgVisitor.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="ConditionalSyntax.cpp" />
+    <ClCompile Include="FunctionToken.cpp" />
     <ClCompile Include="SyntaxContainer.cpp" />
     <ClCompile Include="NumberType.cpp" />
     <ClCompile Include="MinusFeatureProvider.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="ArgVisitor.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ConditionalSyntax.h" />
+    <ClInclude Include="FunctionToken.h" />
     <ClInclude Include="SyntaxContainer.h" />
     <ClInclude Include="UserDefinedToken.h" />
     <ClInclude Include="NumberType.h" />
