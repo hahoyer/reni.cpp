@@ -10,8 +10,9 @@
 using namespace HWLib;
 using namespace Util;
 
-namespace Reni
-{
+namespace Reni{
+    class FunctionSyntax;
+    class FunctionType;
     class Global;
     class MinusToken;
     class ResultData;
@@ -20,9 +21,8 @@ namespace Reni
     class SyntaxContainer;
     class UserDefinedToken;
 
-    class Context 
-        : public WithId<DumpableObject, Context>
-    {
+    class Context
+        : public WithId<DumpableObject, Context>{
         using baseType = WithId<DumpableObject, Context>;
         using thisType = Context;
 
@@ -37,9 +37,10 @@ namespace Reni
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;
         virtual operator Ref<ContextFeatureProvider<UserDefinedToken>, true>()const;
         WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const;
+        WeakRef<Type> const FunctionType(FunctionSyntax const& body) const;
 
         template<class T>
-        SearchResult const GetGenericDefinition()const {
+        SearchResult const GetGenericDefinition()const{
             Ref<ContextFeatureProvider<T>> f = *this;
             Ref<ContextFeature> ff = f->feature;
             return *ff;
@@ -47,10 +48,10 @@ namespace Reni
     };
 }
 
-namespace std {
+namespace std{
     template <>
     struct hash<Reni::Context const&>{
-        inline std::size_t operator()(Reni::Context const& key) const{
+        inline size_t operator()(Reni::Context const& key) const{
             return key.ObjectId;
         }
     };

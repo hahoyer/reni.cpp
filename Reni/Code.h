@@ -5,6 +5,7 @@
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/Ref.h"
 #include "ArrayType.h"
+#include "../Util/BitsConst.h"
 
 using namespace HWLib;
 

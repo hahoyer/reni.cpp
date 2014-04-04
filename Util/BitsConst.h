@@ -18,7 +18,9 @@ namespace Util{
     private:
         BigInt::Rossi const value;
         BitsConst(String const&text) : value(text.RawData, 10){ SetDumpString(); }
+        BitsConst() : value(0){ SetDumpString(); }
     public:
+        static BitsConst const Empty();
         static BitsConst const Convert(String const&text);
         static int const MinusSize(int left, int right){ return max(left, right) + 1; }
         static int const PlusSize(int left, int right){ return max(left, right) + 1; }

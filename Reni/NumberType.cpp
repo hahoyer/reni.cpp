@@ -35,8 +35,10 @@ p_implementation(NumberType, String, DumpShort){
 };
 
 ResultData const NumberType::DumpPrintProvider::Result(Category category, NumberType const&type){
-    return type.global->voidType
-        .GetResultData(category, CodeItem::DumpPrint(type));
+    return type
+        .global
+        ->voidType
+        .GetResultData(CodeItem::DumpPrint(type));
 };
 
 ResultData const NumberType::MinusProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
@@ -45,7 +47,7 @@ ResultData const NumberType::MinusProvider::Result(Category category, NumberType
         auto thisSize = _thisType.size.value;
         auto argSize = argTypeAsNumber->size.value;
         thisType const& resultType = _thisType.Resize(BitsConst::MinusSize(thisSize, argSize));
-        return resultType.GetResultData(category, CodeItem::BinaryOperation("-", resultType, _thisType, *argTypeAsNumber));
+        return resultType.GetResultData(CodeItem::BinaryOperation("-", resultType, _thisType, *argTypeAsNumber));
     }
 
     fd(category, _thisType, argType);
@@ -75,7 +77,7 @@ ResultData const NumberType::TimesProvider::Result(Category category, NumberType
         auto thisSize = _thisType.size.value;
         auto argSize = argTypeAsNumber->size.value;
         thisType const& resultType = _thisType.Resize(BitsConst::TimesSize(thisSize, argSize));
-        return resultType.GetResultData(category, CodeItem::BinaryOperation("*", resultType,_thisType, *argTypeAsNumber));
+        return resultType.GetResultData(CodeItem::BinaryOperation("*", resultType,_thisType, *argTypeAsNumber));
     }
 
     fd(category, _thisType, argType);

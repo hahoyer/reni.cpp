@@ -39,13 +39,15 @@ namespace Reni{
         ThisRef;
         bool operator==(Type const&other)const{ return this == &other; }
 
+        p(bool, HasData){ return size != 0; };
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
         
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
         
-        ResultData const GetResultData(Category category, Ref<CodeItem> code)const;
+        ResultData const GetResultData(Ref<CodeItem> code)const;
+        ResultData const GetResultData()const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const{

@@ -2,6 +2,7 @@
 #include "Type.h"
 #include "FeatureProvider.h"
 #include "../HWLib/WeakRef.h"
+#include "../Util/Size.h"
 
 using namespace HWLib;
 using namespace Util;

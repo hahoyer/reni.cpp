@@ -37,6 +37,8 @@ Ref<CodeItem> const CodeItem::BinaryOperation(String name, NumberType const&resu
 };
 
 Ref<CodeItem> const CodeItem::Arg(Type const&value){
+    if(value.size == 0)
+        return Const(BitsConst::Empty());
     return new ArgCode(value);
 };
 

@@ -1,9 +1,9 @@
 #include "Import.h"
 #include "Result.h"
 
+#include "ArgVisitor.h"
 #include "Code.h"
 #include "Context.h"
-#include "ReplaceVisitor.h"
 #include "Syntax.h"
 #include "..\HWLib\LevelValue.h"
 #include "..\HWLib\DumpMacros.h"
@@ -13,6 +13,32 @@ static bool Trace = true;
 
 using namespace HWLib;
 using namespace Reni;
+
+
+class ResultDataDirect final : public ResultCache{
+    typedef ResultCache baseType;
+    typedef ResultFromSyntaxAndContext thisType;
+    WeakPtr<Type> const type;
+    Ref<CodeItem, true> const code;
+public:
+
+    ResultDataDirect(Ref<CodeItem, true> code, WeakPtr<Type> type) : type(type), code(code){
+        SetDumpString();
+        a_is(type->size, == , code->size);
+    }
+
+private:
+    p_function(Array<String>, DumpData) override{
+        return{
+            nd(code),
+            nd(type)
+        };
+    };
+
+    ResultData const GetResultData(Category)const override{
+        return ResultData(code->size, code, type);
+    }
+};
 
 
 void ResultCache::Ensure(Category category)const{
@@ -72,7 +98,7 @@ p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
     });
     return baseDump + thisDump;
 };
-                                                                      
+
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
     if(!complete.hasCode)
         return *this;
@@ -80,7 +106,7 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
     if(newCode.IsEmpty)
         return *this;
     return ResultData(size, newCode, type);
-}
+};
 
 p_implementation(ResultData, Array<String>, DumpData){
     return{

@@ -7,6 +7,10 @@ static bool Trace = true;
 
 using namespace Util;
 
+BitsConst const BitsConst::Empty(){
+    return BitsConst();
+}
+
 BitsConst const BitsConst::Convert(String const&text){
     return BitsConst(text);
 };

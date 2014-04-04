@@ -45,6 +45,7 @@ namespace Reni
         }
 
         ResultData const Replace(ReplaceVisitor const&arg) const;
+        ResultData const ReplaceArg(WeakRef<Type> type, Ref<CodeItem> arg) const;
 
     private:
         p_function(Array<String>,DumpData) override;
@@ -86,7 +87,7 @@ namespace Reni
         ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context);
     private:
         p_function(Array<String>,DumpData) override;
-        virtual ResultData const GetResultData(Category category)const override;
+        ResultData const GetResultData(Category category)const override;
     };
 
 }
