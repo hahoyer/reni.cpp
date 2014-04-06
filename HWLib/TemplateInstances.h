@@ -377,6 +377,20 @@ inline p_implementation(Enumerable<T>, bool, Any){
 }
 
 template<typename T>
+inline p_implementation(Enumerable<T>, T, First){
+    return ToIterator->Step();
+}
+
+template<typename T>
+inline p_implementation(Enumerable<T>, T, FirstOrEmpty){
+    auto iterator = ToIterator;
+    if(iterator->IsValid)
+        return iterator->Step();
+    return T();
+}
+
+
+template<typename T>
 CtrlPtr<T> const Enumerable<T>::Max() const{
     CtrlPtr<T> result;
     for (auto element : *this)

@@ -49,7 +49,8 @@ namespace HWLib
         p(int,      Count         );
         p(T,         First         );
         p(CtrlPtr<T>, FirstOrDefault);
-        p(T,         Last          );
+        p(T, FirstOrEmpty);
+        p(T, Last);
         p(CtrlPtr<T>, LastOrDefault);
         p(T,         Single         );
         p(CtrlPtr<T>, SingleOrDefault);
