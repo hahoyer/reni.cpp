@@ -4,9 +4,9 @@
 #include "../HWLang/SourcePart.h"
 #include "../HWLang/ScannerInstance.h"
 #include "../HWLang/Token.h"
-#include "../Reni/Scanner.h"
 #include "../HWLib/File.h"
 #include "../HWLib/RefCountProvider.h"
+#include "../Util/Scanner.h"
 
 using namespace HWLib;
 using namespace HWLang;
@@ -99,8 +99,8 @@ namespace _HWLang{
         static TokenClass const& GetTokenClass(String const&name);
         static TokenClass const& GetErrorClass(String const&name);
 
-        class ScannerInstance final : public HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Reni::Scanner>{
-            using baseType = HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Reni::Scanner>;
+        class ScannerInstance final : public HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Util::Scanner>{
+            using baseType = HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Util::Scanner>;
             using thisType = ScannerInstance;
         public:
 

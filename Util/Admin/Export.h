@@ -5,3 +5,4 @@
 #include "../bigInt.h"
 #include "../BitsConst.h"
 #include "../Size.h"
+#include "../Scanner.h"

@@ -44,7 +44,6 @@
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
-    <ClCompile Include="Scanner.cpp" />
     <ClInclude Include="ContextFeatureProvider.h" />
     <ClInclude Include="ArrayType.h" />
     <ClInclude Include="CodeItems.h" />
@@ -86,7 +85,6 @@
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="Admin\Export.Test.h" />
     <ClInclude Include="Code.h" />
-    <ClInclude Include="Scanner.h" />
     <ClInclude Include="MainTokenFactory.h" />
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="TokenClass.h" />

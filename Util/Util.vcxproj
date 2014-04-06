@@ -15,9 +15,11 @@
     <ClCompile Include="bigInt.cpp" />
     <ClCompile Include="BitsConst.cpp" />
     <ClCompile Include="CppCompilerScripting.cpp" />
+    <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Size.cpp" />
     <ClCompile Include="Category.cpp" />
     <ClInclude Include="CppCompilerScripting.h" />
+    <ClInclude Include="Scanner.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="bigInt.h" />
     <ClInclude Include="BitsConst.h" />

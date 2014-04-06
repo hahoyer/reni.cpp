@@ -7,7 +7,7 @@
 using namespace HWLib;
 using namespace HWLang;
 
-namespace Reni
+namespace Util
 {
     class Scanner final
     {

@@ -5,7 +5,6 @@
 #include "MainTokenFactory.h"
 #include "PrioTable.h"
 #include "RootContext.h"
-#include "Scanner.h"
 #include "Syntax.h"
 #include "TokenClass.h"
 #include "../HWLang/ScannerInstance.h"
@@ -13,6 +12,7 @@
 #include "../HWLib/ValueCache.h"
 #include "../Util/BitsConst.h"
 #include "../Util/CppCompilerScripting.h"
+#include "../Util/Scanner.h"
 
 using namespace HWLib;
 using namespace HWLang;

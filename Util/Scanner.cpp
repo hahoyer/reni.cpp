@@ -7,7 +7,7 @@
 
 static bool Trace = true;
 
-using namespace Reni;
+using namespace Util;
 using namespace HWLang;
 using namespace HWLib;
 
