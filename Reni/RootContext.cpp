@@ -29,7 +29,7 @@ RootContext::RootContext()
 
 RootContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{ return _internal->minus->thisRef; }
 
-RootContext::operator Ref<ContextFeatureProvider<UserDefinedToken>, true>() const { 
+RootContext::operator Ref<ContextFeatureProvider<DefineableToken>, true>() const {
     md_;
     b_;
     return{};

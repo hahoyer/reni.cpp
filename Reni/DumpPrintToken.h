@@ -13,9 +13,7 @@ namespace Reni{
         DumpPrintToken() : baseType("dump_print"){}
     private:
         GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>,featureClass) override{
-            return &feature.thisRef;
-        }
+        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 
     class MinusToken final : public DefineableToken{
@@ -25,9 +23,7 @@ namespace Reni{
         MinusToken() : baseType("-"){}
     private:
         GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>,featureClass) override{
-            return &feature.thisRef;
-        }
+        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 
     class PlusToken final : public DefineableToken{
@@ -37,9 +33,7 @@ namespace Reni{
         PlusToken() : baseType("+"){}
     private:
         GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>, featureClass) override{
-            return &feature.thisRef;
-        }
+        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 
     class StarToken final : public DefineableToken{
@@ -49,8 +43,6 @@ namespace Reni{
         StarToken() : baseType("*"){}
     private:
         GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>, featureClass) override{
-            return &feature.thisRef;
-        }
+        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 }

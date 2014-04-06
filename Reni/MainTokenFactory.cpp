@@ -29,8 +29,8 @@ class TextToken final : public TerminalTokenClass{
     using thisType = TextToken;
 private:
     GenericFeatureClass<thisType> feature;
-    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
-    
+    featureClasses_override;
+
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         md(part);
         mb;
@@ -55,7 +55,7 @@ private:
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);
     }
-    p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
+    featureClasses_override;
 };
 
 
@@ -72,7 +72,7 @@ private:
         auto const&conditional = dynamic_cast<IfThenSyntax const&>(*left);
         return conditional.AddElse(part, right);
     }
-    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.thisRef; }
+    featureClasses_override;
 };
 
 
@@ -87,7 +87,7 @@ private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         return new IfThenSyntax(left, part, right);
     }
-    p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.thisRef; }
+    featureClasses_override;
 };
 
 
@@ -98,9 +98,8 @@ public:
     p(String, name){return ":";}
 private:
     GenericFeatureClass<thisType> feature;
-    p_function(WeakRef<FeatureClass>, featureClass) override{
-        return &feature.thisRef;
-    }
+    featureClasses_override;
+
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         Ref<SyntaxContainer> result = new SyntaxContainer(part);
         result->Add(left, right);
@@ -110,16 +109,14 @@ private:
 
 
 class List final : public TokenClass{
-    typedef List baseType;
-    typedef TokenClass thisType;
+    typedef TokenClass baseType;
+    typedef List thisType;
 public:
     String const name;
     List(String const&name) : name(name){}
 private:
     GenericFeatureClass<thisType> feature;
-    p_function(WeakRef<FeatureClass>, featureClass) override{
-        return &feature.thisRef;
-    }
+    featureClasses_override;
 
     Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
         Ref<SyntaxContainer> result = new SyntaxContainer(part);

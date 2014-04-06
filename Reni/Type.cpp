@@ -60,7 +60,7 @@ WeakRef<NumberType> const Type::CreateNumberType() const{
     return new NumberType(a->thisRef);
 };
 
-Type::operator Ref<FeatureProvider<UserDefinedToken>, true>()const{
+Type::operator Ref<FeatureProvider<DefineableToken>, true>()const{
     md_;
     mb;
 };
@@ -77,6 +77,11 @@ Type::operator Ref<FeatureProvider<MinusToken>, true>()const {
 
 Type::operator Ref<FeatureProvider<PlusToken>, true>() const{
     md_;
+    mb;
+}
+
+SearchResult const Type::GetDefinition(DefineableToken const&token) const{
+    md(token);
     mb;
 }
 

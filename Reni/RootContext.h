@@ -19,7 +19,7 @@ namespace Reni{
         RootContext();
         ThisRef;
         operator Ref<ContextFeatureProvider<MinusToken>, true>()const override;
-        operator Ref<ContextFeatureProvider<UserDefinedToken>, true>()const override;
+        operator Ref<ContextFeatureProvider<DefineableToken>, true>()const override;
     private:
         p_function(WeakRef<Global>,global) override{return _global;};
         p_function(Array<String>,DumpData) override;

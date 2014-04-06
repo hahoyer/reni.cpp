@@ -17,7 +17,7 @@ namespace Reni
         p(String, name){ return "/\\"; }
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override;
-        p_function(WeakRef<FeatureClass>, featureClass) override{ return &feature.thisRef; }
+        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 }
 

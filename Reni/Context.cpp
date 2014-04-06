@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Context.h"
 
+#include "DefineableToken .h"
 #include "FeatureClass.h"
 #include "FunctionSyntax.h"
 #include "Result.h"
@@ -14,6 +15,30 @@ using namespace Reni;
 static bool Trace = true;
 
 namespace Reni{
+    class DefinableTokenFeatureProvider final : public ContextFeatureProvider<DefineableToken>{
+        typedef ContextFeatureProvider<DefineableToken> baseType;
+        typedef DefinableTokenFeatureProvider thisType;
+
+        class Feature final : public ContextFeature{
+            typedef ContextFeature baseType;
+            typedef Feature thisType;
+        private:
+            virtual ResultData const FunctionResult(
+                Context const&context,
+                Category category,
+                Ref<Syntax, true> const& right
+            )const override;
+            p_function(Array<String>, DumpData) override{return{};}
+        };
+
+    public:
+        ThisRef;
+
+    private:
+        p_function(Ref<ContextFeature>, feature) override{return new Feature();}
+        p_function(Array<String>, DumpData) override{return{};}
+    };
+
     class ContainerContext final : public Context, public RefCountProvider{
         typedef ContainerContext thisType;
         Context const& context;
@@ -23,6 +48,7 @@ namespace Reni{
 
         ContainerContext(Context const&context, SyntaxContainer const&containerData, int index)
             : context(context)
+              , token(new DefinableTokenFeatureProvider)
               , containerData(containerData.thisRef)
               , index(index){
             SetDumpString();
@@ -40,7 +66,9 @@ namespace Reni{
             };
         };
 
-        p_function(WeakRef<Global>, global) override{return context.global;};
+        p_function(WeakRef<Global>, global) override{return context.global;}
+        Ref<DefinableTokenFeatureProvider> const token;
+        operator Ref<ContextFeatureProvider<DefineableToken>, true>() const override{return token->thisRef;}
     };
 
 
@@ -51,9 +79,9 @@ namespace Reni{
         Ref<FunctionSyntax> body;
     public:
 
-        FunctionType(Context const& context, FunctionSyntax const& body) 
+        FunctionType(Context const& context, FunctionSyntax const& body)
             : context(context)
-            , body(body.thisRef){
+              , body(body.thisRef){
         }
 
         ThisRef;
@@ -65,10 +93,23 @@ namespace Reni{
                 nd(body)
             };
         };
-        p_function(Size, size) override{ return 0; }
-        p_function(WeakRef<Global>, global) override{ return context.global; };
+
+        p_function(Size, size) override{
+            return 0;
+        }
+
+        p_function(WeakRef<Global>, global) override{
+            return context.global;
+        };
     };
 };
+
+
+ResultData const DefinableTokenFeatureProvider::Feature::FunctionResult(Context const& context, Category category, Ref<Syntax, true> const& right) const{
+    md(context, category, right);
+    b_;
+    return{};
+}
 
 
 struct Context::internal final{
@@ -98,9 +139,17 @@ pure_p_implementation(Context, WeakRef<Global>, global) ;
 
 
 SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const{
-    if(left.IsEmpty)
-        return tokenClass.featureClass->GetDefinition(*this);
-    return tokenClass.featureClass->GetDefinition(*left->Type(*this));
+    auto featureClasses = tokenClass.featureClasses;
+    WeakPtr<Type> type;
+    if(!left.IsEmpty)
+        type = left->Type(*this)->thisRef;
+    auto results =
+        left.IsEmpty
+        ? featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){return fc->GetDefinition(*this); })
+        : featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){return fc->GetDefinition(*type); });
+    return results
+        ->Where([&](SearchResult const& result){return result.IsValid; })
+        ->FirstOrEmpty;
 }
 
 Context::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{
@@ -108,7 +157,7 @@ Context::operator Ref<ContextFeatureProvider<MinusToken>, true>() const{
     mb;
 }
 
-Context::operator Ref<ContextFeatureProvider<UserDefinedToken>, true>() const{
+Context::operator Ref<ContextFeatureProvider<DefineableToken>, true>() const{
     md_;
     mb;
 }
@@ -120,4 +169,9 @@ WeakRef<Context> const Context::Container(SyntaxContainer const& syntax, int ind
 
 WeakRef<Type> const Context::FunctionType(FunctionSyntax const& body) const{
     return _internal->functionType(&body)->thisRef;
+}
+
+SearchResult const Context::GetDefinition(DefineableToken const&token) const{
+    md(token);
+    mb;
 }

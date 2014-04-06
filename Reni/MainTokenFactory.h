@@ -1,7 +1,6 @@
 #pragma once
-#include "..\HWLib\FunctionCache.h"
-#include "..\HWLib\String.h"
 #include "../HWLib/Map.h"
+#include "../HWLib/FunctionCache.h"
 
 using namespace HWLib;
 namespace Reni

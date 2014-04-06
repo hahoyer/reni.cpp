@@ -28,13 +28,16 @@ p_implementation(ExpressionSyntax, Array<String>, DumpData)
 
 ResultData const ExpressionSyntax::GetResultData(Context const&context, Category category)const
 {
+    bool Trace = false;
+    md(context,category);
     auto searchResult = context.Search(left, tokenClass);
     a_if_(searchResult.IsValid);
+    d(searchResult);
     auto result = searchResult
         .feature
         ->FunctionResult(context, category, *this);
     a_is(category, <=, result.complete);
-    return result;
+    return_d(result);
 }
 
 Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const{

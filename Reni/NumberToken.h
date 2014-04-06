@@ -17,7 +17,7 @@ namespace Reni
         ResultData const GetResultData(Context const&context, Category category, SourcePart const&part)const;
     private:
         Ref<Syntax> const Create(SourcePart const&part) const override final;
-        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
+        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 }
 

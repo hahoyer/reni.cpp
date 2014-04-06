@@ -27,8 +27,8 @@ namespace Reni{
         p_function(Array<String>,DumpData) override { return{}; }
     };
 
-    class SymbolFeatureProvider final : public ContextFeatureProvider<UserDefinedToken> {
-        typedef FeatureProvider<UserDefinedToken> baseType;
+    class SymbolFeatureProvider final : public ContextFeatureProvider<DefineableToken> {
+        typedef FeatureProvider<DefineableToken> baseType;
         typedef SymbolFeatureProvider thisType;
 
         class Feature final : public ContextFeature {

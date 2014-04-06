@@ -7,7 +7,7 @@ namespace Reni{
     class Context;
     class SearchResult;
     class Type;
-
+    class DefineableToken;
 
     class FeatureClass
         : public WithId<DumpableObject, FeatureClass>
@@ -30,9 +30,24 @@ namespace Reni{
     class GenericFeatureClass final: public FeatureClass{
         using baseType = FeatureClass;
         using thisType = GenericFeatureClass;
-        virtual SearchResult const GetDefinition(Type const&type)const override;
-        virtual SearchResult const GetDefinition(Context const&context)const override;
+        SearchResult const GetDefinition(Type const&type)const override final;
+        SearchResult const GetDefinition(Context const&context)const override final;
     public:
         GenericFeatureClass(){ SetDumpString(); }
+    };
+
+
+    class DefinableFeatureClass final : public FeatureClass{
+        using baseType = FeatureClass;
+        using thisType = DefinableFeatureClass;
+
+        DefineableToken const&parent;
+    public:
+        DefinableFeatureClass(DefineableToken const&parent) : parent(parent){ }
+    private:
+        SearchResult const GetDefinition(Type const&type)const override final;
+        SearchResult const GetDefinition(Context const&context)const override final;
+
+        p_function(Array<String>, DumpData) override;
     };
 }

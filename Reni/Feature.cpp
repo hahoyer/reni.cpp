@@ -1,6 +1,8 @@
 #include "Import.h"
 #include "Feature.h"
 #include "ContextFeature.h"
+#include "DefineableToken .h"
+#include "FeatureClass.h"
 #include "ExpressionSyntax.h"
 #include "Result.h"
 #include "../HWLib/Ref.h"
@@ -39,4 +41,17 @@ ResultData const ContextFeature::FunctionResult(
     md(context, category, right);
     b_;
     return{};
+}
+
+
+p_implementation(DefinableFeatureClass, Array<String>, DumpData){
+    return{nd(parent)};
+}
+
+SearchResult const DefinableFeatureClass::GetDefinition(Type const&target)const{
+    return target.GetDefinition(parent);
+}
+
+SearchResult const DefinableFeatureClass::GetDefinition(Context const&target)const{
+    return target.GetDefinition(parent);
 }

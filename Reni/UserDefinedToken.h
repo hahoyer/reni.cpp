@@ -16,13 +16,5 @@ namespace Reni {
         UserDefinedToken(String const&name) : baseType(name) {
             SetDumpString();
         };
-    private:
-        GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>, featureClass) override {
-            return &feature.thisRef;
-        }
     };
-
-
 }
-

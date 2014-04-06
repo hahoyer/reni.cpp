@@ -110,13 +110,17 @@ inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Context
     return target.GetGenericDefinition<tokenClass>();\
 }
 
-TypeFeature(UserDefinedToken);
+TypeFeature(DefineableToken);
 TypeFeature(DumpPrintToken);
 TypeFeature(MinusToken);
 TypeFeature(PlusToken);
 TypeFeature(StarToken);
-ContextFeature(UserDefinedToken);
+ContextFeature(DefineableToken);
 ContextFeature(MinusToken);
+
+#undef TypeFeature
+#undef ContextFeature
+
 
 template <typename T>
 pure_p_implementation(FeatureProvider<T>, Ref<Feature>, feature) ;

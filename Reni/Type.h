@@ -22,13 +22,12 @@ namespace Reni{
     class PlusToken;
     class ResultData;
     class StarToken;
-    class UserDefinedToken;
+    class DefineableToken;
 
     template<typename T, typename ...> class FeatureProvider;
 
     class Type
-        : public WithId<DumpableObject, Type>
-    {
+        : public WithId<DumpableObject, Type>{
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
         struct internal;
@@ -55,7 +54,9 @@ namespace Reni{
             return f->feature;
         }
 
-        virtual operator Ref<FeatureProvider<UserDefinedToken>, true>()const;
+        SearchResult const GetDefinition(DefineableToken const&token)const;
+
+        virtual operator Ref<FeatureProvider<DefineableToken>, true>()const;
         virtual operator Ref<FeatureProvider<DumpPrintToken>, true>()const;
         virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
         virtual operator Ref<FeatureProvider<PlusToken>, true>()const;

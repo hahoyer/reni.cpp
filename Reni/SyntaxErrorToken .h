@@ -15,6 +15,6 @@ namespace Reni{
         };
 
         GenericFeatureClass<thisType> feature;
-        p_function(WeakRef<FeatureClass>,featureClass) override{ return &feature.thisRef; }
+        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 }

@@ -17,5 +17,5 @@ Ref<Syntax> const TokenClass::Mismatch(Ref<Syntax, true> const left, SourcePart 
     return Ref<Syntax, true>();
 }
 
-pure_p_implementation(TokenClass, WeakRef<FeatureClass>, featureClass);
+pure_p_implementation(TokenClass, Array<WeakRef<FeatureClass>>, featureClasses);
 pure_p_implementation(TokenClass, bool, AcceptsMatch);
