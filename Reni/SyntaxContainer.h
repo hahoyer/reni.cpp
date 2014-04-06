@@ -10,7 +10,7 @@ namespace Reni{
         typedef SyntaxContainer thisType;
     public:
         Array<Ref<Syntax>> statements;
-        Map<String, int> names;
+        Map<DefineableToken const*, int> names;
 
         SyntaxContainer(SourcePart const&part);
         SyntaxContainer(SyntaxContainer const&) = delete;

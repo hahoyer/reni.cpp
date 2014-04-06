@@ -19,9 +19,9 @@ p_implementation(SyntaxContainer, Array<String>, DumpData){
     return _({nd(statements)})  +
         names
             .keys
-            .Select<String>([&](String const& key)
+            .Select<String>([&](DefineableToken const*key)
         {
-            return key + ": " + HWLib::Dump(names[key]);
+            return key->name + ": " + HWLib::Dump(names[key]);
         })
             ->ToArray;
 }
@@ -37,7 +37,7 @@ void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const
     a_if_(e.left.IsEmpty);
     a_if_(e.right.IsEmpty);
     auto& d = dynamic_cast<DefineableToken const&>(e.tokenClass);
-    names.Assign(d.name, statements.Count);
+    names.Assign(&d, statements.Count);
     statements += value;
 }
 
