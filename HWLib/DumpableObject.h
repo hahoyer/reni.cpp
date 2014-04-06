@@ -30,8 +30,8 @@ namespace HWLib{
         virtual ~DumpableObject(){};
         virtual_p(Array<String>, DumpData) = 0;
         virtual_p(String, DumpHeader);
-        void SetDumpString();
     public:
+        void SetDumpString();
         p(String, Dump);
         virtual_p(String, DumpShort);
         p(bool, IsInDump){return isInDump;}
