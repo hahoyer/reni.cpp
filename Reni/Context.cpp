@@ -39,8 +39,27 @@ namespace Reni{
         p_function(Array<String>, DumpData) override{return{};}
     };
 
+    
+    class ContainerContext;
+
+
+    class AccessFeature final : public Feature{
+        typedef Feature baseType; 
+        typedef AccessFeature thisType;
+        ContainerContext const& containerContext;
+        int const tokenIndex;
+    public:
+        AccessFeature(ContainerContext const& containerContext, int tokenIndex);
+    private:
+        p_function(Array<String>, DumpData) override;
+    };
+
+
     class ContainerContext final : public Context, public RefCountProvider{
         typedef ContainerContext thisType;
+        typedef Context baseType;
+
+        FunctionCache<Ref<Feature>, int> accessFeature;
         Context const& context;
         Ref<SyntaxContainer> containerData;
         int const index;
@@ -50,6 +69,7 @@ namespace Reni{
             : context(context)
               , token(new DefinableTokenFeatureProvider)
               , containerData(containerData.thisRef)
+              , accessFeature([&](int tokenIndex){return new AccessFeature(*this, tokenIndex); })
               , index(index){
             SetDumpString();
         };
@@ -69,6 +89,14 @@ namespace Reni{
         p_function(WeakRef<Global>, global) override{return context.global;}
         Ref<DefinableTokenFeatureProvider> const token;
         operator Ref<ContextFeatureProvider<DefineableToken>, true>() const override{return token->thisRef;}
+
+        SearchResult const GetDefinition(DefineableToken const&token) const override{
+            if(containerData->names.ContainsKey(&token)){
+                auto tokenIndex = containerData->names[&token];
+                return accessFeature(tokenIndex);
+            }
+            return baseType::GetDefinition(token);
+        }
     };
 
 
@@ -175,3 +203,15 @@ SearchResult const Context::GetDefinition(DefineableToken const&token) const{
     md(token);
     mb;
 }
+
+
+AccessFeature::AccessFeature(ContainerContext const& containerContext, int tokenIndex)
+: containerContext(containerContext)
+, tokenIndex(tokenIndex){
+    SetDumpString();
+}
+
+
+p_implementation(AccessFeature, Array<String>, DumpData){
+    return{nd(containerContext), nd(tokenIndex)};
+};
