@@ -44,6 +44,8 @@ namespace Reni
             return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty);
         }
 
+        ResultData const With(CodeItem const& code) const{return ResultData(size, code.thisRef, type);}
+        
         ResultData const Replace(ReplaceVisitor const&arg) const;
         ResultData const ReplaceArg(WeakRef<Type> type, Ref<CodeItem> arg) const;
 

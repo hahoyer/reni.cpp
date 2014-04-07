@@ -6,6 +6,12 @@
 using namespace HWLib;
 
 namespace Reni{
+    class Functions final : public DumpableObject{
+        typedef DumpableObject baseType; typedef Functions thisType;
+    private:
+        p_function(Array<String>, DumpData) override;
+    };
+
     class Global: public DumpableObject{
         typedef DumpableObject baseType;
         typedef Global thisType;
@@ -15,6 +21,9 @@ namespace Reni{
 
         BitType const bitType;
         VoidType const voidType;
+
+        Functions functions;
+
     private:
         p_function(Array<String>, DumpData) override;
     };

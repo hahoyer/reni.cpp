@@ -1,6 +1,7 @@
 #pragma once
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/DumpableObject.h"
+#include "../Util/Category.h"
 
 using namespace HWLib;
 using namespace Util;

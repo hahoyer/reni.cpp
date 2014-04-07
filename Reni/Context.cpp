@@ -41,17 +41,23 @@ namespace Reni{
 
     
     class ContainerContext;
-
+    class CallContext;
 
     class AccessFeature final : public Feature{
         typedef Feature baseType; 
         typedef AccessFeature thisType;
-        ContainerContext const& containerContext;
+
+    public:
+        ContainerContext const& container;
+    private:
         int const tokenIndex;
+        FunctionCache<CtrlRef<CallContext>, Type const*> callContext;
     public:
         AccessFeature(ContainerContext const& containerContext, int tokenIndex);
     private:
         p_function(Array<String>, DumpData) override;
+        ResultData const FunctionResult(Context const& context, Category category, ExpressionSyntax const& expressionSyntax) const override;
+        Ref<CodeItem> const GetCallCode(CallContext const& callContext) const;
     };
 
 
@@ -61,7 +67,9 @@ namespace Reni{
 
         FunctionCache<Ref<Feature>, int> accessFeature;
         Context const& context;
+    public:
         Ref<SyntaxContainer> containerData;
+    private:
         int const index;
     public:
 
@@ -77,6 +85,7 @@ namespace Reni{
         ContainerContext(ContainerContext const&) = delete;
         ThisRef;
 
+        Ref<CodeItem> const  GetCallCode(int index, Type const& argsType) const;
     private:
         p_function(Array<String>, DumpData) override{
             return{
@@ -97,8 +106,8 @@ namespace Reni{
             }
             return baseType::GetDefinition(token);
         }
-    };
 
+    };
 
     class FunctionType final : public Type{
         typedef Type baseType;
@@ -128,6 +137,24 @@ namespace Reni{
 
         p_function(WeakRef<Global>, global) override{
             return context.global;
+        };
+    };
+
+    class CallContext final : public Context{
+        typedef Context baseType; typedef CallContext thisType;
+        ContainerContext const&parent;
+        Type const&argsType;
+    public:
+        CallContext(ContainerContext const&parent, Type const&argsType) : parent(parent), argsType(argsType) {}
+        Ref<CodeItem> const GetCallCode(int index)const {return parent.GetCallCode(index, argsType);};
+
+    private:
+        p_function(WeakRef<Global>, global) override {return parent.global;};
+        p_function(Array<String>, DumpData) override {
+            return{
+                nd(parent),
+                nd(argsType)
+            };
         };
     };
 };
@@ -160,6 +187,8 @@ Context::Context()
 }
 
 ResultData const Context::GetResultData(Category category, Syntax const&syntax)const{
+    if(category == Category::None)
+        return{};
     return syntax.GetResultData(*this, category);
 }
 
@@ -205,13 +234,34 @@ SearchResult const Context::GetDefinition(DefineableToken const&token) const{
 }
 
 
-AccessFeature::AccessFeature(ContainerContext const& containerContext, int tokenIndex)
-: containerContext(containerContext)
-, tokenIndex(tokenIndex){
+
+AccessFeature::AccessFeature(ContainerContext const& container, int tokenIndex)
+: container(container)
+, tokenIndex(tokenIndex)
+, callContext([&](Type const*argsType) { return new CallContext(container, *argsType); }) {
     SetDumpString();
 }
 
 
 p_implementation(AccessFeature, Array<String>, DumpData){
-    return{nd(containerContext), nd(tokenIndex)};
+    return{nd(container), nd(tokenIndex)};
+}
+
+
+ResultData const AccessFeature::FunctionResult(Context const& context, Category category, ExpressionSyntax const& expressionSyntax) const{
+    auto argsType = expressionSyntax.right->Type(context);
+    auto _callContext = callContext(&*argsType);
+
+    auto resultData = _callContext->GetResultData(category - Category::Code, *container.containerData->statements[tokenIndex]);
+    if(!category.hasCode)
+        return resultData;
+    return resultData.With(*_callContext->GetCallCode(tokenIndex));
 };
+
+
+#include "Global.h"
+
+Ref<CodeItem> const ContainerContext::GetCallCode(int index, Type const& argsType) const{
+    auto function = global->functions.Register(*this, index, argsType, true);
+    return function->CallGetterCode;
+}
