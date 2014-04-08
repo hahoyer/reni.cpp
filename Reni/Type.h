@@ -44,7 +44,8 @@ namespace Reni{
         
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
-        
+        virtual_p(WeakRef<Type>, asFunctionResult);
+
         ResultData const GetResultData(Ref<CodeItem> code)const;
         ResultData const GetResultData()const;
 

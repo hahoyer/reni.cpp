@@ -147,25 +147,35 @@ namespace Reni{
     };
 
 
+    class FunctionCallContext final : public Context{
+        typedef Context baseType; typedef FunctionCallContext thisType;
+    public:
+        ContainerContext const& container;
+        WeakPtr<Type const> const args;
+        FunctionCallContext(ContainerContext const& container,WeakPtr<Type const> const args)
+        : container(container), args(args){}
+    private:
+        p_function(WeakRef<Global>, global) override{return container.global;};
+        p_function(Array<String>, DumpData) override{return{nd(args), nd(container)};
+        }
+    };
+
     class FunctionCallResultCache final : public ResultCache{
         typedef ResultCache baseType;
         typedef FunctionCallResultCache thisType;
-        ContainerContext const& container;
-        Type const&argsType;
         Syntax const&body;
+        FunctionCallContext context;
     public:
-
-        FunctionCallResultCache(ContainerContext const& container, Type const&argsType, Syntax const&body)
-            : container(container)
-              , argsType(argsType)
-              , body(body){
+        FunctionCallResultCache(ContainerContext const& container, Type const*args, Syntax const&body)
+            : context(container, args)
+              , body(body.thisRef){
             SetDumpString();
         }
 
     private:
-        p_function(Array<String>, DumpData) override{
-            return{nd(argsType), nd(body), nd(container)};
-        }
+        p(WeakPtr<Type const>, args){ return context.args; }
+        p(ContainerContext const&, container){ return context.container; }
+        p_function(Array<String>, DumpData) override{return{nd(body), nd(context)};}
 
         ResultData const GetResultData(Category category)const override;
     };
@@ -276,12 +286,8 @@ ContainerContext::ContainerContext(Context const&context, SyntaxContainer const&
 : context(context)
 , token(new DefinableTokenFeatureProvider)
 , containerData(containerData.thisRef)
-, accessFeature([&](int tokenIndex){
-    return new AccessFeature(*this, tokenIndex);
-})
-, functionCallResultCache([&](Type const*args, Syntax const*body){
-    return new FunctionCallResultCache(*this, *args, *body);
-})
+, accessFeature([&](int tokenIndex){return new AccessFeature(*this, tokenIndex);})
+, functionCallResultCache([&](Type const*args, Syntax const*body){return new FunctionCallResultCache(*this, args, *body);})
 , index(index){
     SetDumpString();
 };
@@ -292,6 +298,16 @@ Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type con
 }
 
 ResultData const FunctionCallResultCache::GetResultData(Category category) const{
+    if(category == Category::Type){
+        a_if(!args.IsEmpty, "NotImpl: no arg "+Dump);
+        auto& fs = dynamic_cast<FunctionSyntax const&>(body);
+        a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
+        a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+        return *fs.getter->Type(context)->asFunctionResult;
+    }
+
+
+
     md(category);
     b_;
     return{};

@@ -36,6 +36,7 @@ Type::Type() : _internal(new internal(*this)){
 
 pure_p_implementation(Type, Size, size) ;
 pure_p_implementation(Type, WeakRef<Global>, global);
+pure_p_implementation(Type, WeakRef<Type>, asFunctionResult);
 
 ResultData const Type::GetResultData(Ref<CodeItem> code)const{
     return ResultData(size, code, &this->thisRef);
@@ -52,6 +53,12 @@ WeakRef<Type> const Type::array(int count)const{
 
 p_implementation(Type, WeakRef<NumberType>, numberType){
     return &_internal->number.Value->thisRef;
+};
+
+p_implementation(Type, WeakRef<Type>, asFunctionResult){
+    md_;
+    b_;
+    return_d(thisRef);
 };
 
 WeakRef<NumberType> const Type::CreateNumberType() const{

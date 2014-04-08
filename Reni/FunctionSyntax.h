@@ -10,13 +10,13 @@ namespace Reni{
     class FunctionSyntax final : public Syntax{
         typedef Syntax baseType;
         typedef FunctionSyntax thisType;
-        Ref<Syntax, true> const left;
-        Ref<Syntax, true> const right;
     public:
-        FunctionSyntax(Ref<Syntax, true> const left, HWLang::SourcePart const& part, Ref<Syntax, true> const right)
+        Ref<Syntax, true> const setter;
+        Ref<Syntax, true> const getter;
+        FunctionSyntax(Ref<Syntax, true> const setter, SourcePart const& part, Ref<Syntax, true> const getter)
             :baseType(part)
-            , left(left)
-            , right(right){
+            , setter(setter)
+            , getter(getter){
             SetDumpString();
         }
 
@@ -24,8 +24,8 @@ namespace Reni{
     private:
         p_function(Array<String>, DumpData)override {
             return{
-                nd(left),
-                nd(right)
+                nd(setter),
+                nd(getter)
             };
         }
 
