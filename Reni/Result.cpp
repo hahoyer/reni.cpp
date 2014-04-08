@@ -41,6 +41,11 @@ private:
 };
 
 
+ResultData const ResultCache::Get(Category category) const{
+    Ensure(category);
+    return data;
+}
+
 void ResultCache::Ensure(Category category)const{
     auto todo = category - complete;
     if(todo == Category::None)

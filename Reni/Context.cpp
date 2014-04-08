@@ -15,6 +15,7 @@ using namespace Reni;
 static bool Trace = true;
 
 namespace Reni{
+
     class DefinableTokenFeatureProvider final : public ContextFeatureProvider<DefineableToken>{
         typedef ContextFeatureProvider<DefineableToken> baseType;
         typedef DefinableTokenFeatureProvider thisType;
@@ -28,43 +29,49 @@ namespace Reni{
                 Category category,
                 Ref<Syntax, true> const& right
             )const override;
-            p_function(Array<String>, DumpData) override{return{};}
+            p_function(Array<String>, DumpData) override{
+                return{};
+            }
         };
 
     public:
         ThisRef;
 
     private:
-        p_function(Ref<ContextFeature>, feature) override{return new Feature();}
-        p_function(Array<String>, DumpData) override{return{};}
+        p_function(Ref<ContextFeature>, feature) override{
+            return new Feature();
+        }
+
+        p_function(Array<String>, DumpData) override{
+            return{};
+        }
     };
 
-    
+
     class ContainerContext;
-    class CallContext;
 
     class AccessFeature final : public Feature{
-        typedef Feature baseType; 
+        typedef Feature baseType;
         typedef AccessFeature thisType;
 
     public:
         ContainerContext const& container;
     private:
         int const tokenIndex;
-        FunctionCache<CtrlRef<CallContext>, Type const*> callContext;
     public:
         AccessFeature(ContainerContext const& containerContext, int tokenIndex);
     private:
         p_function(Array<String>, DumpData) override;
         ResultData const FunctionResult(Context const& context, Category category, ExpressionSyntax const& expressionSyntax) const override;
-        Ref<CodeItem> const GetCallCode(CallContext const& callContext) const;
     };
 
+    class FunctionCallResultCache;
 
     class ContainerContext final : public Context, public RefCountProvider{
         typedef ContainerContext thisType;
         typedef Context baseType;
 
+        FunctionCache<Ref<FunctionCallResultCache>, Type const*, Syntax const*> functionCallResultCache;
         FunctionCache<Ref<Feature>, int> accessFeature;
         Context const& context;
     public:
@@ -73,19 +80,12 @@ namespace Reni{
         int const index;
     public:
 
-        ContainerContext(Context const&context, SyntaxContainer const&containerData, int index)
-            : context(context)
-              , token(new DefinableTokenFeatureProvider)
-              , containerData(containerData.thisRef)
-              , accessFeature([&](int tokenIndex){return new AccessFeature(*this, tokenIndex); })
-              , index(index){
-            SetDumpString();
-        };
+        ContainerContext(Context const&context, SyntaxContainer const&containerData, int index);
 
         ContainerContext(ContainerContext const&) = delete;
         ThisRef;
 
-        Ref<CodeItem> const  GetCallCode(int index, Type const& argsType) const;
+        Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
     private:
         p_function(Array<String>, DumpData) override{
             return{
@@ -95,9 +95,15 @@ namespace Reni{
             };
         };
 
-        p_function(WeakRef<Global>, global) override{return context.global;}
+        p_function(WeakRef<Global>, global) override{
+            return context.global;
+        }
+
         Ref<DefinableTokenFeatureProvider> const token;
-        operator Ref<ContextFeatureProvider<DefineableToken>, true>() const override{return token->thisRef;}
+
+        operator Ref<ContextFeatureProvider<DefineableToken>, true>() const override{
+            return token->thisRef;
+        }
 
         SearchResult const GetDefinition(DefineableToken const&token) const override{
             if(containerData->names.ContainsKey(&token)){
@@ -140,23 +146,30 @@ namespace Reni{
         };
     };
 
-    class CallContext final : public Context{
-        typedef Context baseType; typedef CallContext thisType;
-        ContainerContext const&parent;
+
+    class FunctionCallResultCache final : public ResultCache{
+        typedef ResultCache baseType;
+        typedef FunctionCallResultCache thisType;
+        ContainerContext const& container;
         Type const&argsType;
+        Syntax const&body;
     public:
-        CallContext(ContainerContext const&parent, Type const&argsType) : parent(parent), argsType(argsType) {}
-        Ref<CodeItem> const GetCallCode(int index)const {return parent.GetCallCode(index, argsType);};
+
+        FunctionCallResultCache(ContainerContext const& container, Type const&argsType, Syntax const&body)
+            : container(container)
+              , argsType(argsType)
+              , body(body){
+            SetDumpString();
+        }
 
     private:
-        p_function(WeakRef<Global>, global) override {return parent.global;};
-        p_function(Array<String>, DumpData) override {
-            return{
-                nd(parent),
-                nd(argsType)
-            };
-        };
+        p_function(Array<String>, DumpData) override{
+            return{nd(argsType), nd(body), nd(container)};
+        }
+
+        ResultData const GetResultData(Category category)const override;
     };
+
 };
 
 
@@ -202,10 +215,16 @@ SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass cons
         type = left->Type(*this)->thisRef;
     auto results =
         left.IsEmpty
-        ? featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){return fc->GetDefinition(*this); })
-        : featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){return fc->GetDefinition(*type); });
+            ? featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){
+                return fc->GetDefinition(*this);
+            })
+            : featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){
+                return fc->GetDefinition(*type);
+            });
     return results
-        ->Where([&](SearchResult const& result){return result.IsValid; })
+        ->Where([&](SearchResult const& result){
+            return result.IsValid;
+        })
         ->FirstOrEmpty;
 }
 
@@ -234,11 +253,9 @@ SearchResult const Context::GetDefinition(DefineableToken const&token) const{
 }
 
 
-
 AccessFeature::AccessFeature(ContainerContext const& container, int tokenIndex)
-: container(container)
-, tokenIndex(tokenIndex)
-, callContext([&](Type const*argsType) { return new CallContext(container, *argsType); }) {
+    : container(container)
+      , tokenIndex(tokenIndex){
     SetDumpString();
 }
 
@@ -250,18 +267,32 @@ p_implementation(AccessFeature, Array<String>, DumpData){
 
 ResultData const AccessFeature::FunctionResult(Context const& context, Category category, ExpressionSyntax const& expressionSyntax) const{
     auto argsType = expressionSyntax.right->Type(context);
-    auto _callContext = callContext(&*argsType);
-
-    auto resultData = _callContext->GetResultData(category - Category::Code, *container.containerData->statements[tokenIndex]);
-    if(!category.hasCode)
-        return resultData;
-    return resultData.With(*_callContext->GetCallCode(tokenIndex));
+    auto result = container.FunctionCallResult(*argsType, tokenIndex);
+    return result->Get(category);
 };
 
 
-#include "Global.h"
+ContainerContext::ContainerContext(Context const&context, SyntaxContainer const&containerData, int index)
+: context(context)
+, token(new DefinableTokenFeatureProvider)
+, containerData(containerData.thisRef)
+, accessFeature([&](int tokenIndex){
+    return new AccessFeature(*this, tokenIndex);
+})
+, functionCallResultCache([&](Type const*args, Syntax const*body){
+    return new FunctionCallResultCache(*this, *args, *body);
+})
+, index(index){
+    SetDumpString();
+};
 
-Ref<CodeItem> const ContainerContext::GetCallCode(int index, Type const& argsType) const{
-    auto function = global->functions.Register(*this, index, argsType, true);
-    return function->CallGetterCode;
+
+Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type const& argsType, int const tokenIndex) const{
+    return functionCallResultCache(&argsType, &*containerData->statements[tokenIndex]);
+}
+
+ResultData const FunctionCallResultCache::GetResultData(Category category) const{
+    md(category);
+    b_;
+    return{};
 }

@@ -68,6 +68,8 @@ namespace Reni
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
+
+        ResultData const Get(Category category)const;
     private:
         void Ensure(Category category)const;
     protected:

@@ -9,7 +9,7 @@ namespace Reni{
     class Functions final : public DumpableObject{
         typedef DumpableObject baseType; typedef Functions thisType;
     private:
-        p_function(Array<String>, DumpData) override;
+        p_function(Array<String>, DumpData) override{ return{}; };
     };
 
     class Global: public DumpableObject{
