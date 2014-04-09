@@ -15,6 +15,34 @@ using namespace Reni;
 static bool Trace = true;
 
 
+class TypeOperatorSyntax final : public Syntax{
+    typedef Syntax baseType;
+    typedef TypeOperatorSyntax thisType;
+    Ref<Syntax> const target;
+public:
+    TypeOperatorSyntax(Ref<Syntax> const target, SourcePart const& part)
+        :baseType(part)
+         , target(target){
+        SetDumpString();
+    }
+
+    ThisRef;
+private:
+    p_function(Array<String>, DumpData) override{
+        return{
+                nd(target)
+            };
+    }
+
+    ResultData const GetResultData(Context const& context, Category category) const override;
+};
+
+ResultData const TypeOperatorSyntax::GetResultData(Context const& context, Category category) const{
+    md(context, category);
+    b_;
+    return_d(ResultData());
+}
+
 Reni::Syntax::Syntax(SourcePart const&part)
     : part(part)
       , resultCache([&](Context const*context){
@@ -63,9 +91,7 @@ void Syntax::AddTo(SyntaxContainer& syntaxContainer) const{
 }
 
 Ref<Syntax> const Syntax::TypeOperator(SourcePart const part) const{
-    md(part);
-    b_;
-    return thisRef;
+    return new TypeOperatorSyntax(thisRef, part);
 }
 
 p_implementation(InfixSyntax, Array<String>, DumpData){
