@@ -163,6 +163,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new DumpPrintToken);
     AddTokenClass(new ElseToken);
     AddTokenClass(new FunctionToken);
+    AddTokenClass(new InstanceToken);
     AddTokenClass(new LeftParenthesisToken(1));
     AddTokenClass(new LeftParenthesisToken(2));
     AddTokenClass(new LeftParenthesisToken(3));

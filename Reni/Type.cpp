@@ -70,6 +70,11 @@ p_implementation(Type, WeakRef<Type>, asFunctionResult) {
     return_d(thisRef);
 };
 
+Type::operator Ref<FeatureProvider<InstanceToken>, true>() const{
+    md_;
+    mb;
+}
+
 WeakRef<NumberType> const Type::CreateNumberType() const{
     auto a = dynamic_cast<ArrayType const*>(this);
     a_if(a && dynamic_cast<BitType const*>(&a->elementType), nd(*this) + " cannot be flagged as number type");

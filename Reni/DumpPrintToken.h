@@ -45,4 +45,14 @@ namespace Reni{
         GenericFeatureClass<thisType> feature;
         p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
+
+    class InstanceToken final : public DefineableToken {
+        typedef DefineableToken baseType; 
+        typedef InstanceToken  thisType;
+    public:
+        InstanceToken() : baseType("instance") {}
+    private:
+        GenericFeatureClass<thisType> feature;
+        featureClasses_override;
+    };
 }

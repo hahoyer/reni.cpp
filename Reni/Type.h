@@ -17,6 +17,7 @@ namespace Reni{
     class DefinitionPoint;
     class DumpPrintToken;
     class Global;
+    class InstanceToken;
     class MinusToken;
     class NumberType;
     class PlusToken;
@@ -64,6 +65,7 @@ namespace Reni{
         virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
         virtual operator Ref<FeatureProvider<PlusToken>, true>()const;
         virtual operator Ref<FeatureProvider<StarToken>, true>()const;
+        virtual operator Ref<FeatureProvider<InstanceToken>, true>()const;
 
         WeakRef<NumberType> const CreateNumberType()const;
 

@@ -112,6 +112,7 @@ inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Context
 
 TypeFeature(DefineableToken);
 TypeFeature(DumpPrintToken);
+TypeFeature(InstanceToken);
 TypeFeature(MinusToken);
 TypeFeature(PlusToken);
 TypeFeature(StarToken);
