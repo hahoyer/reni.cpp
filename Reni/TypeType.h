@@ -23,7 +23,9 @@ namespace Reni {
         }
         p_function(WeakRef<Global>, global) override {
             return value->global;
-        };
+        }
+
+        operator HWLib::Ref<Reni::FeatureProvider<InstanceToken>, true>() const override;;
     };
 
 }

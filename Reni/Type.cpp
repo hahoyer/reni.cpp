@@ -9,8 +9,9 @@
 #include "FeatureProvider.h"
 #include "NumberType.h"
 #include "Result.h"
-#include "UserDefinedToken.h"
+#include "TemplateInstances.h"
 #include "TypeType.h"
+#include "UserDefinedToken.h"
 
 #include "../HWLib/_EditorTemplates.h"
 #include "../HWLib/FunctionCache.h"
@@ -20,7 +21,6 @@
 
 using namespace Reni;
 static bool Trace = true;
-
 
 
 struct Type::internal{
@@ -103,10 +103,33 @@ Type::operator Ref<FeatureProvider<PlusToken>, true>() const{
 
 SearchResult const Type::GetDefinition(DefineableToken const&token) const{
     md(token);
-    mb;
+    return_d(SearchResult());
 }
 
 Type::operator Ref<FeatureProvider<StarToken>, true>() const{
     md_;
     mb;
 }
+
+struct InstanceProvider{
+    typedef class TypeType targetType;
+    static ResultData const Result(Category category, TypeType const&target, Type const&arg){
+        fd(category, target, arg);
+        b_;
+        return{};
+    }
+};
+
+
+inline TypeType::operator Ref<FeatureProvider<InstanceToken>, true>() const{
+    return new InfixFunctionProvider<InstanceToken, InstanceProvider>(*this);
+};
+
+/*
+InfixFunctionProvider<InstanceToken,InstanceProvider>
+::InfixFunctionProvider<InstanceToken,InstanceProvider>
+(TypeType const &) 
+
+TypeType::operator Ref<FeatureProvider<InstanceToken>,true>()const 
+
+*/
