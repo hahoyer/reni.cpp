@@ -9,6 +9,7 @@
 #include "SyntaxContainer.h"
 #include "SyntaxVisitor.h"
 #include "../HWLib/RefCountContainer.instance.h"
+#include "../HWLib/DumpMacros.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -59,6 +60,12 @@ Ref<SyntaxContainer> const Syntax::Defines(SourcePart const& part, Ref<Syntax> c
 void Syntax::AddTo(SyntaxContainer& syntaxContainer) const{
     md(syntaxContainer);
     b_;
+}
+
+Ref<Syntax> const Syntax::TypeOperator(SourcePart const part) const{
+    md(part);
+    b_;
+    return thisRef;
 }
 
 p_implementation(InfixSyntax, Array<String>, DumpData){

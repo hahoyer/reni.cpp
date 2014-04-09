@@ -127,6 +127,19 @@ private:
 };
 
 
+class TypeToken final : public SuffixTokenClass{
+    typedef SuffixTokenClass baseType; typedef TypeToken thisType;
+public:
+    p(String, name){ return "type"; }
+private:
+    GenericFeatureClass<thisType> feature;
+    featureClasses_override;
+    Ref<Syntax > const Create(Ref<Syntax >const left, SourcePart const&part)const  override final{
+        return left->TypeOperator(part);
+    };
+};
+
+
 MainTokenFactory const MainTokenFactory::Instance;
 
 TokenClass const& MainTokenFactory::Number = NumberToken();
@@ -162,6 +175,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new RightParenthesisToken(3));
     AddTokenClass(new StarToken);
     AddTokenClass(new ThenToken);
+    AddTokenClass(new TypeToken);
 }
 
 TokenClass const& MainTokenFactory::GetTokenClass(String const&name){
