@@ -39,6 +39,7 @@ namespace Reni
         };
 
         DefaultAssignmentOperator;
+        ResultData const operator+(ResultData const&other)const;
 
         p(Category, complete){
             return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty);

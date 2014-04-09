@@ -53,7 +53,7 @@ void ResultCache::Ensure(Category category)const{
     auto newTodo = todo - pending;
     a_if(newTodo != Category::None, nd(category) + nd(complete) + nd(pending));
     LevelValue<Category>(pending, pending + newTodo);
-    data = GetResultData(newTodo);
+    data = data + GetResultData(newTodo);
 }
 
 p_implementation(ResultCache, Category, complete){
@@ -103,6 +103,10 @@ p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
     });
     return baseDump + thisDump;
 };
+
+ResultData const ResultData::operator+(ResultData const& other) const{
+    return ResultData(size || other.size, code || other.code, type || other.type);
+}
 
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
     if(!complete.hasCode)
