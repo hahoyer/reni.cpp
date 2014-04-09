@@ -108,6 +108,15 @@ ResultData const ResultData::operator+(ResultData const& other) const{
     return ResultData(size || other.size, code || other.code, type || other.type);
 }
 
+ResultData const ResultData::operator&(Category const& other) const{
+    return ResultData(
+        other.hasSize ? size : Optional<Size>(), 
+        other.hasCode ? code : Ref<CodeItem, true>(),
+        other.hasType ? type : WeakPtr<Type>()
+    );
+
+}
+
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
     if(!complete.hasCode)
         return *this;

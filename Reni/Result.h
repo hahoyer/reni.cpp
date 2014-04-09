@@ -40,13 +40,16 @@ namespace Reni
 
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;
+        ResultData const operator&(Category const&other)const;
 
         p(Category, complete){
             return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty);
         }
 
         ResultData const With(CodeItem const& code) const{return ResultData(size, code.thisRef, type);}
-        
+        ResultData const With(Type const& type) const {return ResultData(size, code, type.thisRef);
+        }
+
         ResultData const Replace(ReplaceVisitor const&arg) const;
         ResultData const ReplaceArg(WeakRef<Type> type, Ref<CodeItem> arg) const;
 

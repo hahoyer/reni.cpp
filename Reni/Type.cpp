@@ -10,6 +10,7 @@
 #include "NumberType.h"
 #include "Result.h"
 #include "UserDefinedToken.h"
+#include "TypeType.h"
 
 #include "../HWLib/_EditorTemplates.h"
 #include "../HWLib/FunctionCache.h"
@@ -20,13 +21,17 @@
 using namespace Reni;
 static bool Trace = true;
 
+
+
 struct Type::internal{
     FunctionCache<WeakRef<ArrayType>, int> array;
     ValueCache<WeakRef<NumberType>> number;
+    ValueCache<WeakRef<TypeType>> type;
 
     explicit internal(Type const&parent)
-        : array([&](int count){return new ArrayType(parent, count);})
-          , number([&]{return parent.CreateNumberType();}){
+        : array([&](int count) {return new ArrayType(parent, count); })
+        , number([&] {return parent.CreateNumberType(); })
+        , type([&] {return new TypeType(parent.thisRef); }) {
     };
 };
 
@@ -55,7 +60,11 @@ p_implementation(Type, WeakRef<NumberType>, numberType){
     return &_internal->number.Value->thisRef;
 };
 
-p_implementation(Type, WeakRef<Type>, asFunctionResult){
+p_implementation(Type, WeakRef<TypeType>, typeType) {
+    return &_internal->type.Value->thisRef;
+};
+
+p_implementation(Type, WeakRef<Type>, asFunctionResult) {
     md_;
     b_;
     return_d(thisRef);

@@ -23,6 +23,7 @@ namespace Reni{
     class ResultData;
     class StarToken;
     class DefineableToken;
+    class TypeType;
 
     template<typename T, typename ...> class FeatureProvider;
 
@@ -44,6 +45,7 @@ namespace Reni{
         
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
+        p(WeakRef<TypeType>, typeType);
         virtual_p(WeakRef<Type>, asFunctionResult);
 
         ResultData const GetResultData(Ref<CodeItem> code)const;

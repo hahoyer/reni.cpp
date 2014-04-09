@@ -4,10 +4,12 @@
 #include "Code.h"
 #include "Context.h"
 #include "FeatureProvider.h"
+#include "Global.h"
 #include "Result.h"
 #include "TokenClass.h"
 #include "SyntaxContainer.h"
 #include "SyntaxVisitor.h"
+#include "TypeType.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/DumpMacros.h"
 
@@ -37,10 +39,12 @@ private:
     ResultData const GetResultData(Context const& context, Category category) const override;
 };
 
+
 ResultData const TypeOperatorSyntax::GetResultData(Context const& context, Category category) const{
-    md(context, category);
-    b_;
-    return_d(ResultData());
+    auto result = context.global->voidType.GetResultData() & category;
+    if(category.hasType)
+        result = result .With(*target->Type(context)->typeType);
+    return result;
 }
 
 Reni::Syntax::Syntax(SourcePart const&part)
