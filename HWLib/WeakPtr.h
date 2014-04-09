@@ -35,6 +35,20 @@ namespace HWLib
         T     & operator*()       { return *value; };
         T    * operator->()      { return  value; };
         p(bool, IsEmpty){ return !value; }
+
+        template <class TOther>
+        friend TOther operator||(thisType left, TOther right) {
+            if(left.IsEmpty)
+                return right;
+            return left;
+        }
+        template <class TOther>
+        friend TOther operator||(thisType left, std::function<TOther()> right) {
+            if(left.IsEmpty)
+                return right();
+            return left;
+        }
+
     };
 
     template<typename T>

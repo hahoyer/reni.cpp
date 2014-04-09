@@ -36,11 +36,17 @@ namespace HWLib
 
         operator T const ()const{ return Value; };
 
-        friend Optional<T> operator||(Optional<T> left, std::function<Optional<T>()> right){
-            if (left.IsValid)
-                return left;
-            return right();
+        friend Optional<T> operator||(Optional<T> left, Optional<T> right) {
+            if(!left.IsValid)
+                return right;
+            return left;
         }
+        friend Optional<T> operator||(Optional<T> left, function<Optional<T>()> right) {
+            if(!left.IsValid)
+                return right();
+            return left;
+        }
+
     };
 
     template<>
@@ -66,7 +72,7 @@ namespace HWLib
 
         operator bool const ()const{ return Value; };
 
-        friend Optional<bool> operator||(Optional<bool> left, std::function<Optional<bool>()> right){
+        friend Optional<bool> operator||(Optional<bool> left, function<Optional<bool>()> right){
             if(left.IsValid)
                 return left;
             return right();
