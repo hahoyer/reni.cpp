@@ -3,6 +3,7 @@
 
 #include "Source.h"
 #include "SourcePosition.h"
+#include "../HWLib/Optional.h"
 
 using namespace HWLib;
 using namespace HWLang;
