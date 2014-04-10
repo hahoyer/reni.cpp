@@ -102,6 +102,7 @@ Type::operator Ref<FeatureProvider<PlusToken>, true>() const{
 }
 
 SearchResult const Type::GetDefinition(DefineableToken const&token) const{
+    bool Trace = false;
     md(token);
     return_d(SearchResult());
 }

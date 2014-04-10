@@ -45,10 +45,8 @@ class ArgToken final : public TerminalTokenClass {
 public:
     p(String, name){ return "arg"; };
 
-    ResultData const GetResultData(Context const&context, Category category, SourcePart const&part)const{
-        md(context, category, part);
-        b_;
-        return{};
+    ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
+        return context.ArgReferenceResult(category);
     }
     Ref<Syntax, true> Replace(ReplaceSyntaxVisitor const&visitor) const { return visitor.arg; };
 private:

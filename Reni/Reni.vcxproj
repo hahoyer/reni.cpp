@@ -62,6 +62,7 @@
     <ClInclude Include="ConditionalSyntax.h" />
     <ClInclude Include="FunctionToken.h" />
     <ClInclude Include="FunctionSyntax.h" />
+    <ClInclude Include="ContextIncludes.h" />
     <ClInclude Include="TypeType.h" />
     <ClInclude Include="SyntaxContainer.h" />
     <ClInclude Include="UserDefinedToken.h" />

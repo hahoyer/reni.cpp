@@ -59,6 +59,13 @@ p_implementation(IfThenElseSyntax, Array<String>, DumpData)
 
 ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category category)const
 {
+    if(category == Category::Type){
+        auto thenType = thenClause->Type(context);
+        auto elseType = elseClause->Type(context);
+        md(thenType, elseType);
+        b_;
+    }
+
     md(context, category);
     b_;
     return{};

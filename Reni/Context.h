@@ -47,6 +47,7 @@ namespace Reni{
         };
 
         virtual SearchResult const GetDefinition(DefineableToken const&token)const;
+        ResultData ArgReferenceResult(Category category) const;
     };
 }
 
