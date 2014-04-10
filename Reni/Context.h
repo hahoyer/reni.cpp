@@ -20,6 +20,7 @@ namespace Reni{
     class Syntax;
     class SyntaxContainer;
     class DefineableToken;
+    class FunctionCallContext;
 
     class Context
         : public WithId<DumpableObject, Context>{
@@ -32,6 +33,7 @@ namespace Reni{
         Context();
         ResultData const GetResultData(Category category, Syntax const&syntax)const;
         virtual_p(WeakRef<Global>, global) = 0;
+        virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
         SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;
 
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;

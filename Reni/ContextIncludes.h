@@ -1,6 +1,6 @@
 #pragma once
-#include "ContextFeatureProvider.h"
-#include "Syntax.h"
+
+#include "FunctionContext.h"
 
 namespace Reni{
 
@@ -75,6 +75,8 @@ namespace Reni{
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
     private:
+        p_function(WeakRef<FunctionCallContext>, functionContext) override{ return context.functionContext; };
+        p_function(WeakRef<Global>, global) override{ return context.global; }
         p_function(Array<String>, DumpData) override{
             return{
                 nd(context),
@@ -83,9 +85,6 @@ namespace Reni{
             };
         };
 
-        p_function(WeakRef<Global>, global) override{
-            return context.global;
-        }
 
         Ref<DefinableTokenFeatureProvider> const token;
 
@@ -134,20 +133,6 @@ namespace Reni{
         };
     };
 
-
-    class FunctionCallContext final : public Context{
-        typedef Context baseType; typedef FunctionCallContext thisType;
-    public:
-        ContainerContext const& container;
-        WeakPtr<Type const> const args;
-        FunctionCallContext(ContainerContext const& container, WeakPtr<Type const> const args)
-            : container(container), args(args){}
-    private:
-        p_function(WeakRef<Global>, global) override{ return container.global; };
-        p_function(Array<String>, DumpData) override{
-            return{nd(args), nd(container)};
-        }
-    };
 
     class FunctionCallResultCache final : public ResultCache{
         typedef ResultCache baseType;

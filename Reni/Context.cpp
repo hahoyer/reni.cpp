@@ -25,7 +25,6 @@ ResultData const DefinableTokenFeatureProvider::Feature::FunctionResult(Context 
 struct Context::internal final{
     FunctionCache<Ref<ContainerContext>, SyntaxContainer const*, int> container;
     FunctionCache<WeakRef<Reni::FunctionType>, FunctionSyntax const*> functionType;
-
     internal(Context const&context)
         : container([&](SyntaxContainer const*containerData, int index){
               return new ContainerContext(context, *containerData, index);
@@ -47,7 +46,9 @@ ResultData const Context::GetResultData(Category category, Syntax const&syntax)c
     return syntax.GetResultData(*this, category);
 }
 
+
 pure_p_implementation(Context, WeakRef<Global>, global) ;
+pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext);
 
 
 SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const{
@@ -95,8 +96,9 @@ SearchResult const Context::GetDefinition(DefineableToken const&token) const{
 }
 
 ResultData Context::ArgReferenceResult(Category category) const{
-    return _internal->functionContext
-        .CreateArgReferenceResult(category);
+    WeakRef<FunctionCallContext> x = functionContext;
+    return x
+        ->CreateArgReferenceResult(category);
 }
 
 AccessFeature::AccessFeature(ContainerContext const& container, int tokenIndex)
@@ -148,3 +150,12 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     b_;
     return{};
 }
+
+
+p_implementation(FunctionCallContext, WeakRef<Global>, global) { return container.global; }
+
+ResultData const FunctionCallContext::CreateArgReferenceResult(Category category)const{
+    return args
+        ->ContextAccessResult(category.typed, thisRef, [&]{return args->size * -1; })
+        & category;
+};

@@ -7,6 +7,7 @@
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/WeakRef.h"
 #include "../Util/Category.h"
+#include "../Util/Size.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -25,6 +26,7 @@ namespace Reni{
     class StarToken;
     class DefineableToken;
     class TypeType;
+    class ContextReference;
 
     template<typename T, typename ...> class FeatureProvider;
 
@@ -50,7 +52,9 @@ namespace Reni{
         virtual_p(WeakRef<Type>, asFunctionResult);
 
         ResultData const GetResultData(Ref<CodeItem> code)const;
+        ResultData const GetResultData(Category category, std::function<Ref<CodeItem>()> getCode)const;
         ResultData const GetResultData()const;
+        ResultData const ContextAccessResult(Category category, ContextReference const&target, std::function<Size()> getOffset)const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const{

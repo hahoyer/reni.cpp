@@ -44,8 +44,16 @@ pure_p_implementation(Type, WeakRef<Global>, global);
 pure_p_implementation(Type, WeakRef<Type>, asFunctionResult);
 
 ResultData const Type::GetResultData(Ref<CodeItem> code)const{
-    return ResultData(size, code, &this->thisRef);
+    return ResultData(size, code, thisRef);
 };
+
+ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode) const{
+    return ResultData(
+        !category.hasSize ? Optional<Size>() : size ,
+        !category.hasCode ? Ref<CodeItem, true>() : getCode(),
+        !category.hasType ? WeakPtr<Type>() : thisRef
+        );
+}
 
 ResultData const Type::GetResultData() const{
     a_if(!HasData, Dump);
@@ -101,6 +109,16 @@ Type::operator Ref<FeatureProvider<PlusToken>, true>() const{
     mb;
 }
 
+ResultData const Type::ContextAccessResult(Category category, ContextReference const& target, function<Size()> getOffset)const{
+    if(!HasData)
+        return GetResultData() & category;
+
+    return GetResultData(category, [&]{
+        return CodeItem::ReferenceCode(target)
+            ->ReferencePlus(getOffset()); 
+    });
+}
+
 SearchResult const Type::GetDefinition(DefineableToken const&token) const{
     bool Trace = false;
     md(token);
@@ -111,6 +129,7 @@ Type::operator Ref<FeatureProvider<StarToken>, true>() const{
     md_;
     mb;
 }
+
 
 struct InstanceProvider{
     typedef class TypeType targetType;

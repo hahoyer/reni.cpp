@@ -44,6 +44,7 @@
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
+    <ClInclude Include="FunctionContext.h" />
     <ClInclude Include="ContextFeatureProvider.h" />
     <ClInclude Include="ArrayType.h" />
     <ClInclude Include="CodeItems.h" />

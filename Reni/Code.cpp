@@ -15,6 +15,10 @@ using namespace HWLib;
 static bool Trace = true;
 
 
+Ref<CodeItem> const CodeItem::ReferenceCode(ContextReference const&){
+    mb;
+}
+
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const{
     md(visitor);
     mb;
@@ -55,6 +59,11 @@ Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const{
     return *Reni::Fiber::Create(thisRef, items);
 }
 
+Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const{
+    md(offset);
+    b_;
+    return thisRef;
+}
 
 String const ConstCode::ToCpp(CodeVisitor const& visitor)const{
     return visitor.Const(size, value);

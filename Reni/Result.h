@@ -47,8 +47,7 @@ namespace Reni
         }
 
         ResultData const With(CodeItem const& code) const{return ResultData(size, code.thisRef, type);}
-        ResultData const With(Type const& type) const {return ResultData(size, code, type.thisRef);
-        }
+        ResultData const With(Type const& type) const {return ResultData(size, code, type.thisRef);}
 
         ResultData const Replace(ReplaceVisitor const&arg) const;
         ResultData const ReplaceArg(WeakRef<Type> type, Ref<CodeItem> arg) const;
