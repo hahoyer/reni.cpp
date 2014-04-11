@@ -29,14 +29,14 @@ Category::Category()
 }
 
 p_implementation(Category, Category, typed){
-    return *this + Type;
+    return *this | Type;
 }
 
-Category const Category::operator+(Category const other)const{
+Category const Category::operator|(Category const other)const{
     return Category(
-        hasSize && other.hasSize,
-        hasCode && other.hasCode,
-        hasType && other.hasType
+        hasSize || other.hasSize,
+        hasCode || other.hasCode,
+        hasType || other.hasType
     );
 }
 

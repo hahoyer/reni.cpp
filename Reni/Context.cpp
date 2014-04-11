@@ -154,6 +154,10 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
 
 p_implementation(FunctionCallContext, WeakRef<Global>, global) { return container.global; }
 
+SearchResult const FunctionCallContext::GetDefinition(DefineableToken const&token) const{
+    return container.GetDefinition(token);
+}
+
 ResultData const FunctionCallContext::CreateArgReferenceResult(Category category)const{
     return args
         ->ContextAccessResult(category.typed, thisRef, [&]{return args->size * -1; })

@@ -27,7 +27,7 @@ namespace Util{
 
     public:
         p(Category, typed);
-        Category const operator+(Category const other)const;
+        Category const operator|(Category const other)const;
         Category const operator-(Category const other)const;
         bool operator==(Category const other)const;
         bool operator<=(Category const other)const;

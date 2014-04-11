@@ -52,14 +52,14 @@ void ResultCache::Ensure(Category category)const{
         return;
     auto newTodo = todo - pending;
     a_if(newTodo != Category::None, nd(category) + nd(complete) + nd(pending));
-    LevelValue<Category>(pending, pending + newTodo);
+    LevelValue<Category>(pending, pending | newTodo);
     data = data + GetResultData(newTodo);
+    a_if(category <= complete, nd(category) + nd(complete) + nd(pending));
+    thisRef.SetDumpString();
 }
 
 p_implementation(ResultCache, Category, complete){
-    if(!data.code.IsEmpty)
-        return Category::Code;
-    return Category::None;
+    return data.complete;
 }
 
 p_implementation(ResultCache, Size, size){

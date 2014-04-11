@@ -74,6 +74,14 @@ namespace Reni{
         ThisRef;
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
+
+        SearchResult const GetDefinition(DefineableToken const&token) const override{
+            if(containerData->names.ContainsKey(&token)){
+                auto tokenIndex = containerData->names[&token];
+                return accessFeature(tokenIndex);
+            }
+            return baseType::GetDefinition(token);
+        }
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return context.functionContext; };
         p_function(WeakRef<Global>, global) override{ return context.global; }
@@ -85,21 +93,8 @@ namespace Reni{
             };
         };
 
-
         Ref<DefinableTokenFeatureProvider> const token;
-
-        operator Ref<ContextFeatureProvider<DefineableToken>, true>() const override{
-            return token->thisRef;
-        }
-
-        SearchResult const GetDefinition(DefineableToken const&token) const override{
-            if(containerData->names.ContainsKey(&token)){
-                auto tokenIndex = containerData->names[&token];
-                return accessFeature(tokenIndex);
-            }
-            return baseType::GetDefinition(token);
-        }
-
+        operator Ref<ContextFeatureProvider<DefineableToken>, true>() const override{return token->thisRef;}
     };
 
     class FunctionType final : public Type{
