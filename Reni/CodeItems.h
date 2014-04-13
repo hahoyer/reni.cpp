@@ -2,6 +2,7 @@
 
 #include "Code.h"
 #include "Fiber.h"
+#include "../HWLib/DumpToString.h"
 
 namespace Reni{
     class ConstCode final : public CodeItem{
@@ -37,6 +38,24 @@ namespace Reni{
         p_function(Size,size) override{ return 0; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const{ return {}; }
+    };
+
+
+    class ReferencePlusCode final : public FiberItem {
+        typedef FiberItem baseType;
+        typedef ReferencePlusCode  thisType;
+        Size const referenceSize;
+        Size const offset;
+    public:
+        ReferencePlusCode(Size const&referenceSize, Size const&offset)
+            : referenceSize(referenceSize), offset(offset) {
+            SetDumpString();
+        }
+    private:
+        p_function(Array<String>, DumpData) override{ return{nd(referenceSize), nd(offset)}; };
+        p_function(Size, argSize) override{ return referenceSize; };
+        p_function(Size, size) override{ return referenceSize; };
+        virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const{ return{}; }
     };
 
 
@@ -117,4 +136,18 @@ namespace Reni{
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         virtual Ref<CodeItem, true> const Replace(ReplaceVisitor const&arg) const override;
     };
+
+    class ReferenceCode final : public CodeItem{
+        typedef CodeItem baseType; 
+        typedef ReferenceCode thisType;
+        ContextReference const&value;
+    public:
+        ReferenceCode(ContextReference const&value) : value(value){ SetDumpString(); }
+    private:
+        p_function(Array<String>, DumpData) override{ return{DumpTypeName(value)}; };
+        p_function(Size, size) override{ return value.size; }
+
+        Ref<CodeItem> const ReferencePlus(Size offset) const override;
+    };
+
 }

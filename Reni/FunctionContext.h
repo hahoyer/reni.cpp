@@ -22,6 +22,7 @@ namespace Reni{
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return thisRef; };
         p_function(WeakRef<Global>, global) override;
         p_function(Array<String>, DumpData) override{ return{nd(args), nd(container)}; }
+        p_function(Size, size) override{ return Size::Reference; };
 
         SearchResult const GetDefinition(DefineableToken const&token) const override;
 

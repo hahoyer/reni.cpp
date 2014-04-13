@@ -15,8 +15,11 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-Ref<CodeItem> const CodeItem::ReferenceCode(ContextReference const&){
-    mb;
+pure_p_implementation(ContextReference, Size, size);
+
+
+Ref<CodeItem> const CodeItem::Reference(ContextReference const&value){
+    return new ReferenceCode(value);
 }
 
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const{
@@ -56,7 +59,7 @@ Ref<CodeItem, true> const CodeItem::Replace(ReplaceVisitor const&arg) const{
 };
 
 Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const{
-    return *Reni::Fiber::Create(thisRef, items);
+    return *Fiber::Create(thisRef, items);
 }
 
 Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const{
@@ -121,3 +124,8 @@ Ref<CodeItem, true> const PairCode::Replace(ReplaceVisitor const&visitor) const{
 };
 
 
+inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const{
+    if(offset == 0)
+        return thisRef;
+    return Fiber({new ReferencePlusCode(size, offset)});
+}

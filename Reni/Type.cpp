@@ -114,7 +114,7 @@ ResultData const Type::ContextAccessResult(Category category, ContextReference c
         return GetResultData() & category;
 
     return GetResultData(category, [&]{
-        return CodeItem::ReferenceCode(target)
+        return CodeItem::Reference(target)
             ->ReferencePlus(getOffset()); 
     });
 }
