@@ -5,6 +5,8 @@
 #include "LevelValue.h"
 #include "String.h"
 #include "CtrlRef.h"
+#include "SetDumpStringQueueEntry.h"
+#include <thread>
 
 using namespace HWLib;
 
@@ -12,13 +14,42 @@ DumpableObject::DumpableObject()
 : isInDump(false)
 , dumpString("missing call to SetDumpString()")
 , dumpShortString("missing call to SetDumpString()")
+, SetDumpStringToDo({})
 {};
 
-void DumpableObject::SetDumpString()
-{
-    if(!_console_ IsDebuggerPresent)
-        return;
+DumpableObject::DumpableObject(DumpableObject const&other)
+: isInDump(false)
+, dumpString(other.dumpString)
+, dumpShortString(other.dumpShortString)
+, SetDumpStringToDo({})
+{};
 
+
+DumpableObject::~DumpableObject(){
+    SetDumpStringQueueEntry::Remove(SetDumpStringToDo);
+}
+
+bool DumpableObject::EnableSetDumpString = false;
+bool DumpableObject::EnableSetDumpStringAsync = true;
+
+void DumpableObject::SetDumpString(){
+    if(!_console_.IsDebuggerPresent)
+        return;
+    
+    if(!EnableSetDumpString)
+        return;
+    
+    if(EnableSetDumpStringAsync)
+        SetDumpStringToDo = SetDumpStringQueueEntry::Insert(*this);
+    else
+        SetDumpStringWorker();
+}
+
+void DumpableObject::SetDumpStringQueueEntryWait(){
+    SetDumpStringQueueEntry::Wait();
+}
+
+void DumpableObject::SetDumpStringWorker(){
     dumpString = DumpLong.RawData;
     dumpShortString = DumpShort.RawData;
 }

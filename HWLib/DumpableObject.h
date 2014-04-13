@@ -2,6 +2,7 @@
 
 #include "Properties.h"
 #include <string>
+#include <thread>
 
 namespace HWLib{
     class String;
@@ -25,9 +26,14 @@ namespace HWLib{
         using thisType = DumpableObject;
         mutable std::string dumpString;
         mutable std::string dumpShortString;
+        mutable bool isInDump;
+
+        friend class SetDumpStringQueueEntry;
+        SetDumpStringQueueEntry* SetDumpStringToDo;
     protected:
         DumpableObject();                     
-        virtual ~DumpableObject(){};
+        DumpableObject(DumpableObject const&);
+        virtual ~DumpableObject();
         virtual_p(Array<String>, DumpData) = 0;
         virtual_p(String, DumpHeader);
     public:
@@ -36,11 +42,17 @@ namespace HWLib{
         virtual_p(String, DumpShort);
         p(bool, IsInDump){return isInDump;}
         p(String, DumpLong);
+        static bool EnableSetDumpString;
+        static bool EnableSetDumpStringAsync;
+        static void SetDumpStringQueueEntryWait();
     private:
-        mutable bool isInDump;
+        void SetDumpStringWorker();
     };
 };
 
 
 template<typename TBase, typename TRealm>
 int HWLib::WithId<TBase, TRealm>::NextObjectId = 0;
+
+#undef __asm_int3
+#define __asm_int3 {DumpableObject::SetDumpStringQueueEntryWait(); __asm{ int 3 }}
