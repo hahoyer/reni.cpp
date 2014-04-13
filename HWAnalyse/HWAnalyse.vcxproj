@@ -12,10 +12,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Profiler.include.h" />
+    <ClInclude Include="Profiler.util.h" />
+    <ClInclude Include="Profiler.h" />
     <ClInclude Include="TestMacros.h" />
     <ClInclude Include="TestFixture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="TestFixture.cpp" />
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
