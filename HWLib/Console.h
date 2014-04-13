@@ -22,7 +22,7 @@ namespace HWLib
     };
 }
 
-#define _console_ ::HWLib::Console::Instance.
+#define _console_ ::HWLib::Console::Instance
 
 using namespace HWLib;
 
