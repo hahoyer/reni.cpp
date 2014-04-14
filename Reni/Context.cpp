@@ -132,6 +132,10 @@ ContainerContext::ContainerContext(Context const&parent, SyntaxContainer const&c
 };
 
 
+p_implementation(ContainerContext, Size, dataSize){
+    return containerData->Size(parent);
+}
+
 Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type const& argsType, int const tokenIndex) const{
     return functionCallResultCache(&argsType, &*containerData->statements[tokenIndex]);
 }

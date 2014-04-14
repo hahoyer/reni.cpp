@@ -54,30 +54,34 @@ Reni::Syntax::Syntax(SourcePart const&part)
       }){
 };
 
+Size const Syntax::Size(Context const& context) const{
+    return resultCache(&context)->size;
+};
+
 Ref<CodeItem> const Syntax::Code(Context const&context)const{
     return resultCache(&context)->code;
-}
+};
 
 WeakRef<Type>const Syntax::Type(Context const&context)const{
     return resultCache(&context)->type;
-}
+};
 
 Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const {
     Ref<ResultFromSyntaxAndContext> r = resultCache(&context);
     return r;
-}
+};
 
 ResultData const Syntax::GetResultData(Context const&context, Category category)const{
     md(context, category);
     b_;
     return_d(ResultData());
-}
+};
 
 
 Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const{
     SyntaxArgVisitor visitor = arg;
     return Replace(visitor) || Ref<Syntax> (thisRef);
-}
+};
 
 Ref<Syntax,true> const Syntax::Replace(SyntaxArgVisitor const&visitor) const{
     md(visitor);

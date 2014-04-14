@@ -40,6 +40,7 @@ namespace Reni
         };
 
         ThisRef;
+        Size const Size(Context const&context)const;
         Ref<CodeItem> const Code(Context const&context)const;
         WeakRef<Type>const Type(Context const&context)const;
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;

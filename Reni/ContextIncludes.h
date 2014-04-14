@@ -76,6 +76,7 @@ namespace Reni{
         ThisRef;
 
         p(WeakRef<Type>, dataType){ return dataTypeCache.Value; };
+        p(Size, dataSize);
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
 
@@ -160,7 +161,7 @@ namespace Reni{
         }
     private:
         p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
-        p_function(Size, size) override;
+        p_function(Size, size) override{ return parent.dataSize; }
         p_function(WeakRef<Global>, global) override{ return parent.global; };
     };
 };
