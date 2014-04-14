@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FunctionContext.h"
+#include "../HWLib/ValueCache.h"
 
 namespace Reni{
 
@@ -61,17 +62,20 @@ namespace Reni{
 
         FunctionCache<Ref<FunctionCallResultCache>, Type const*, Syntax const*> functionCallResultCache;
         FunctionCache<Ref<Feature>, int> accessFeature;
-        Context const& context;
+        ValueCache<WeakRef<Type>> dataTypeCache;
+        Context const& parent;
     public:
         Ref<SyntaxContainer> containerData;
     private:
         int const index;
     public:
 
-        ContainerContext(Context const&context, SyntaxContainer const&containerData, int index);
+        ContainerContext(Context const&parent, SyntaxContainer const&containerData, int index);
 
         ContainerContext(ContainerContext const&) = delete;
         ThisRef;
+
+        p(WeakRef<Type>, dataType){ return dataTypeCache.Value; };
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
 
@@ -82,12 +86,13 @@ namespace Reni{
             }
             return baseType::GetDefinition(token);
         }
+
     private:
-        p_function(WeakRef<FunctionCallContext>, functionContext) override{ return context.functionContext; };
-        p_function(WeakRef<Global>, global) override{ return context.global; }
+        p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
+        p_function(WeakRef<Global>, global) override{ return parent.global; }
         p_function(Array<String>, DumpData) override{
             return{
-                nd(context),
+                nd(parent),
                 nd(containerData),
                 nd(index)
             };
@@ -119,13 +124,8 @@ namespace Reni{
             };
         };
 
-        p_function(Size, size) override{
-            return 0;
-        }
-
-        p_function(WeakRef<Global>, global) override{
-            return context.global;
-        };
+        p_function(Size, size) override{return 0;}
+        p_function(WeakRef<Global>, global) override{return context.global;};
     };
 
 
@@ -149,6 +149,20 @@ namespace Reni{
         ResultData const GetResultData(Category category)const override;
     };
 
+
+    class ContainerType final : public Type{
+        typedef Type baseType; 
+        typedef ContainerType thisType;
+        ContainerContext const&parent;
+    public:
+        ContainerType(ContainerContext const&parent) : parent(parent){
+            SetDumpString();
+        }
+    private:
+        p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
+        p_function(Size, size) override;
+        p_function(WeakRef<Global>, global) override{ return parent.global; };
+    };
 };
 
 

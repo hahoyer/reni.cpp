@@ -54,7 +54,7 @@ namespace Reni{
         ResultData const GetResultData(Ref<CodeItem> code)const;
         ResultData const GetResultData(Category category, std::function<Ref<CodeItem>()> getCode)const;
         ResultData const GetResultData()const;
-        ResultData const ContextAccessResult(Category category, ContextReference const&target, std::function<Size()> getOffset)const;
+        ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const{

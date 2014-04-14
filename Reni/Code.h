@@ -17,11 +17,6 @@ namespace Reni
     class NumberType;
     class ReplaceVisitor;
 
-    class ContextReference{
-    public:
-        virtual_p(Size, size) = 0;
-    };
-
     class CodeItem 
         : public WithId<DumpableObject>
         , public RefCountProvider
@@ -37,7 +32,7 @@ namespace Reni
         static Ref<CodeItem> const BinaryOperation(String name, NumberType const&result, NumberType const&left, NumberType const&right);
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
         static Ref<CodeItem> const This(Type const&value);
-        static Ref<CodeItem> const Reference(ContextReference const&target);
+        static Ref<CodeItem> const Reference(Type const&target);
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;

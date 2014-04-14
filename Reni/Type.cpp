@@ -109,7 +109,7 @@ Type::operator Ref<FeatureProvider<PlusToken>, true>() const{
     mb;
 }
 
-ResultData const Type::ContextAccessResult(Category category, ContextReference const& target, function<Size()> getOffset)const{
+ResultData const Type::ContextAccessResult(Category category, Type const& target, function<Size()> getOffset)const{
     if(!HasData)
         return GetResultData() & category;
 

@@ -120,12 +120,13 @@ ResultData const AccessFeature::FunctionResult(Context const& context, Category 
 };
 
 
-ContainerContext::ContainerContext(Context const&context, SyntaxContainer const&containerData, int index)
-: context(context)
+ContainerContext::ContainerContext(Context const&parent, SyntaxContainer const&containerData, int index)
+: parent(parent)
 , token(new DefinableTokenFeatureProvider)
 , containerData(containerData.thisRef)
 , accessFeature([&](int tokenIndex){return new AccessFeature(*this, tokenIndex);})
 , functionCallResultCache([&](Type const*args, Syntax const*body){return new FunctionCallResultCache(*this, args, *body);})
+, dataTypeCache([&]{return new ContainerType(*this); })
 , index(index){
     SetDumpString();
 };
@@ -153,6 +154,7 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
 
 
 p_implementation(FunctionCallContext, WeakRef<Global>, global) { return container.global; }
+p_implementation(FunctionCallContext, WeakRef<Type>, objectType) { return container.dataType; }
 
 SearchResult const FunctionCallContext::GetDefinition(DefineableToken const&token) const{
     return container.GetDefinition(token);
@@ -160,6 +162,6 @@ SearchResult const FunctionCallContext::GetDefinition(DefineableToken const&toke
 
 ResultData const FunctionCallContext::CreateArgReferenceResult(Category category)const{
     return args
-        ->ContextAccessResult(category.typed, thisRef, [&]{return args->size * -1; })
+        ->ContextAccessResult(category.typed, *objectType, [&]{return args->size * -1; })
         & category;
 };

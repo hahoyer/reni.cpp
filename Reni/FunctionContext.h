@@ -9,7 +9,7 @@ using namespace HWLib;
 namespace Reni{
     class ContainerContext;
 
-    class FunctionCallContext final : public Context, public ContextReference{
+    class FunctionCallContext final : public Context{
         typedef Context baseType; typedef FunctionCallContext thisType;
     public:
         ContainerContext const& container;
@@ -22,7 +22,7 @@ namespace Reni{
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return thisRef; };
         p_function(WeakRef<Global>, global) override;
         p_function(Array<String>, DumpData) override{ return{nd(args), nd(container)}; }
-        p_function(Size, size) override{ return Size::Reference; };
+        p(WeakRef<Type>, objectType);
 
         SearchResult const GetDefinition(DefineableToken const&token) const override;
 

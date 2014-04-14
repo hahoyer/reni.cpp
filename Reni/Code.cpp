@@ -15,10 +15,7 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-pure_p_implementation(ContextReference, Size, size);
-
-
-Ref<CodeItem> const CodeItem::Reference(ContextReference const&value){
+Ref<CodeItem> const CodeItem::Reference(Type const&value){
     return new ReferenceCode(value);
 }
 
