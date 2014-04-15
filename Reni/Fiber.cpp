@@ -52,7 +52,7 @@ Ref<Fiber> Fiber::Create(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&
     return new thisType(head, items);
 }
 
-Ref<CodeItem, true> const Fiber::Replace(ReplaceVisitor const&visitor) const {
+Ref<CodeItem, true> const Fiber::ReplaceImpl(ReplaceVisitor const&visitor) const {
     Ref<CodeItem, true> newHead = head->Replace(visitor);
     Array<Ref<FiberItem,true>> newItems = items
         .Select<Ref<FiberItem, true>>([&](Ref<FiberItem> item) {return item->Replace(visitor); })

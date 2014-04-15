@@ -51,8 +51,9 @@ Ref<CodeItem> const CodeItem::This(Type const&value){
 };
 
 Ref<CodeItem, true> const CodeItem::Replace(ReplaceVisitor const&arg) const{
-    md(arg);
-    mb;
+    auto result = ReplaceImpl(arg);
+    a_if(result.IsEmpty || result->size == size, Dump + "\n" + result->Dump);
+    return result;
 };
 
 Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const{
@@ -80,7 +81,7 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const{
     mb;
 }
 
-Ref<CodeItem, true> const ArgCode::Replace(ReplaceVisitor const&visitor) const{
+Ref<CodeItem, true> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const{
     return visitor.Arg(type);
 };
 
@@ -90,7 +91,7 @@ String const ThisCode::ToCpp(CodeVisitor const& visitor)const{
     mb;
 }
 
-Ref<CodeItem, true> const ThisCode::Replace(ReplaceVisitor const&visitor) const{
+Ref<CodeItem, true> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const{
     return visitor.This(type);
 };
 
@@ -112,7 +113,7 @@ String const PairCode::ToCpp(CodeVisitor const& visitor)const {
     return visitor.Pair(left, right, connector);
 }
 
-Ref<CodeItem, true> const PairCode::Replace(ReplaceVisitor const&visitor) const{
+Ref<CodeItem, true> const PairCode::ReplaceImpl(ReplaceVisitor const&visitor) const{
     auto newLeft = left->Replace(visitor);
     auto newRight = right->Replace(visitor);
     if(newLeft.IsEmpty && newRight.IsEmpty)
@@ -125,4 +126,9 @@ inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const{
     if(offset == 0)
         return thisRef;
     return Fiber({new ReferencePlusCode(size, offset)});
+}
+
+Ref<CodeItem, true> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) const{
+    md(arg);
+    mb;
 }

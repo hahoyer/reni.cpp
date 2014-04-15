@@ -38,7 +38,7 @@ namespace Reni{
     public:
         static Ref<Fiber> Create(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items);
     private:
-        virtual Ref<CodeItem,true> const Replace(ReplaceVisitor const&arg) const override;
+        virtual Ref<CodeItem,true> const ReplaceImpl(ReplaceVisitor const&arg) const override;
         p_function(Array<String>,DumpData) override{ return{nd(head), nd(items)}; };
         p_function(Size,size) override;
         Ref<Fiber, true> ReCreate(Ref<CodeItem, true> const& head, Array<Ref<FiberItem, true>> const& items)const;
