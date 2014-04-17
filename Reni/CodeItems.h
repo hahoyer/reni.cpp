@@ -138,6 +138,7 @@ namespace Reni{
         Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&arg) const override;
     };
 
+
     class ReferenceCode final : public CodeItem{
         typedef CodeItem baseType; 
         typedef ReferenceCode thisType;

@@ -13,7 +13,7 @@ namespace Reni{
     class Context;
 
     class Feature
-        : public DumpableObject
+        : public WithId<DumpableObject, Feature>
         , public RefCountProvider{
         typedef DumpableObject baseType;
         typedef Feature thisType;

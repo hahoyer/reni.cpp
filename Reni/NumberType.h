@@ -16,19 +16,19 @@ namespace Reni{
 
         struct DumpPrintProvider{
             typedef class NumberType targetType;
-            static ResultData const Result(Category, NumberType const&type);
+            static ResultData const Result(Category, Type const&type);
         };
         struct MinusProvider{
             typedef class NumberType targetType;
-            static ResultData const Result(Category, NumberType const&_thisType, Type const&argType);
+            static ResultData const Result(Category, Type const&_thisType, Type const&argType);
         };
         struct PlusProvider{
             typedef class NumberType targetType;
-            static ResultData const Result(Category, NumberType const&_thisType, Type const&argType);
+            static ResultData const Result(Category, Type const&_thisType, Type const&argType);
         };
         struct TimesProvider{
             typedef class NumberType targetType;
-            static ResultData const Result(Category, NumberType const&_thisType, Type const&argType);
+            static ResultData const Result(Category, Type const&_thisType, Type const&argType);
         };
 
         ArrayType const& parent;

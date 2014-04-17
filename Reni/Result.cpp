@@ -132,4 +132,17 @@ p_implementation(ResultData, Array<String>, DumpData){
         nd(type),
         nd(code)
     };
+}
+
+void ResultData::AssertValid()
+{
+    if(complete.hasSize)
+    {
+        if(complete.hasCode)
+            a_is(code->size, == , size);
+        if(complete.hasType)
+            a_is(type->size, == , size);
+    }
+    else if(complete.hasCode && complete.hasType)
+        a_is(code->size, == , type->size);
 };

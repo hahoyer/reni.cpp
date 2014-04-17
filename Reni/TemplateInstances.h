@@ -5,6 +5,8 @@
 #include "SearchResult.h"
 #include "ArgVisitor.h"
 #include "UserDefinedToken.h"
+#include "../HWLib/BreakHandling.h"
+#include "../HWLib/DumpMacros.h"
 
 using namespace Reni;
 using namespace HWLib;
@@ -23,7 +25,8 @@ private:
         Context const&context,
         Category category,
         ExpressionSyntax const& expressionSyntax
-    )const override{
+    )const override
+    {
         a_throw_(!expressionSyntax.left.IsEmpty);
         a_throw_(expressionSyntax.right.IsEmpty);
         ArgVisitor visitor;
@@ -42,22 +45,29 @@ class InfixFunctionProvider<TTokenClass, TTargetTypeHandler> ::Feature final : p
     typedef Feature thisType;
     targetType const& value;
 public:
-    Feature(targetType const&value) : value(value){}
+    Feature(targetType const&value) : value(value)
+    {
+        SetDumpString();
+    }
     ThisRef;
 private:
     ResultData const FunctionResult(
         Context const&context,
         Category category,
         ExpressionSyntax const& expressionSyntax
-        )const override{
+    )const override
+    {
+        bool Trace = ObjectId == 4;
         a_throw_(!expressionSyntax.right.IsEmpty);
         auto thisResult = expressionSyntax.left->GetResultCache(context);
         auto argResult = expressionSyntax.right->GetResultCache(context);
+        d(thisResult);
+        auto result = TTargetTypeHandler::Result(category, *thisResult->type, *argResult->type);
+        d(result);
         ArgVisitor visitor;
         visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
         visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
-        return TTargetTypeHandler::Result(category, value, *argResult->type)
-            .Replace(visitor);
+        return result.Replace(visitor);
     };
     p_function(Array<String>, DumpData) override{ return{nd(value)}; }
 };

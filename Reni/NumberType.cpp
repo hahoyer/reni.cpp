@@ -34,20 +34,27 @@ p_implementation(NumberType, String, DumpShort){
     return base_p_name(DumpShort) + " size=" + size.DumpShort;
 };
 
-ResultData const NumberType::DumpPrintProvider::Result(Category category, NumberType const&type){
+ResultData const NumberType::DumpPrintProvider::Result(Category category, Type const&type){
+    auto numberType = dynamic_cast<thisType const*>(&type);
+    if(numberType)
     return type
         .global
         ->voidType
-        .GetResultData(CodeItem::DumpPrint(type));
+        .GetResultData(CodeItem::DumpPrint(*numberType));
+
+    fd(category, type);
+    b_;
+    return{};
 };
 
-ResultData const NumberType::MinusProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
+ResultData const NumberType::MinusProvider::Result(Category category, Type const&_thisType, Type const&argType){
+    auto thisTypeAsNumber = dynamic_cast<thisType const*>(&_thisType);
     auto argTypeAsNumber = dynamic_cast<thisType const*>(&argType);
-    if(argTypeAsNumber){
-        auto thisSize = _thisType.size.value;
+    if(thisTypeAsNumber && argTypeAsNumber){
+        auto thisSize = thisTypeAsNumber->size.value;
         auto argSize = argTypeAsNumber->size.value;
-        thisType const& resultType = _thisType.Resize(BitsConst::MinusSize(thisSize, argSize));
-        return resultType.GetResultData(CodeItem::BinaryOperation("-", resultType, _thisType, *argTypeAsNumber));
+        thisType const& resultType = thisTypeAsNumber->Resize(BitsConst::MinusSize(thisSize, argSize));
+        return resultType.GetResultData(CodeItem::BinaryOperation("-", resultType, *thisTypeAsNumber, *argTypeAsNumber));
     }
 
     fd(category, _thisType, argType);
@@ -55,10 +62,11 @@ ResultData const NumberType::MinusProvider::Result(Category category, NumberType
     return{};
 };
 
-ResultData const NumberType::PlusProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
+ResultData const NumberType::PlusProvider::Result(Category category, Type const&_thisType, Type const&argType){
+    auto thisTypeAsNumber = dynamic_cast<thisType const*>(&_thisType);
     auto argTypeAsNumber = dynamic_cast<thisType const*>(&argType);
-    if(argTypeAsNumber){
-        Type const& resultType = _thisType.Resize(BitsConst::PlusSize(_thisType.size.value, argTypeAsNumber->size.value));
+    if(thisTypeAsNumber && argTypeAsNumber){
+        Type const& resultType = thisTypeAsNumber->Resize(BitsConst::PlusSize(_thisType.size.value, argTypeAsNumber->size.value));
         if(category == Category::Type)
             return resultType;
         fd(category, _thisType, argType, resultType);
@@ -71,13 +79,14 @@ ResultData const NumberType::PlusProvider::Result(Category category, NumberType 
     return{};
 };
 
-ResultData const NumberType::TimesProvider::Result(Category category, NumberType const&_thisType, Type const&argType){
+ResultData const NumberType::TimesProvider::Result(Category category, Type const&_thisType, Type const&argType){
+    auto thisTypeAsNumber = dynamic_cast<thisType const*>(&_thisType);
     auto argTypeAsNumber = dynamic_cast<thisType const*>(&argType);
-    if(argTypeAsNumber){
-        auto thisSize = _thisType.size.value;
+    if(thisTypeAsNumber && argTypeAsNumber){
+        auto thisSize = thisTypeAsNumber->size.value;
         auto argSize = argTypeAsNumber->size.value;
-        thisType const& resultType = _thisType.Resize(BitsConst::TimesSize(thisSize, argSize));
-        return resultType.GetResultData(CodeItem::BinaryOperation("*", resultType,_thisType, *argTypeAsNumber));
+        thisType const& resultType = thisTypeAsNumber->Resize(BitsConst::TimesSize(thisSize, argSize));
+        return resultType.GetResultData(CodeItem::BinaryOperation("*", resultType, *thisTypeAsNumber, *argTypeAsNumber));
     }
 
     fd(category, _thisType, argType);

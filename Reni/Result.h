@@ -25,17 +25,20 @@ namespace Reni
             : size(code->size)
             , code(code){
             SetDumpString();
+            AssertValid();
         };
         ResultData(Type const& type)
             : size(type.size)
             , type(type.thisRef){
             SetDumpString();
+            AssertValid();
         };
         ResultData(Optional<Size> const&size, Ref<CodeItem,true> code, WeakPtr<Type> type)
             : size(size)
             , code(code)
             , type(type){
             SetDumpString();
+            AssertValid();
         };
 
         DefaultAssignmentOperator;
@@ -47,7 +50,9 @@ namespace Reni
         ResultData const Replace(ReplaceVisitor const&arg) const;
     private:
         p_function(Array<String>,DumpData) override;
+        void AssertValid();
     };
+
 
 
     class ResultCache 
