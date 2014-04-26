@@ -18,6 +18,7 @@ namespace Reni{
     class DefinitionPoint;
     class DumpPrintToken;
     class Global;
+    class IndirectType;
     class InstanceToken;
     class MinusToken;
     class NumberType;
@@ -49,6 +50,7 @@ namespace Reni{
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
         p(WeakRef<TypeType>, typeType);
+        p(WeakRef<IndirectType>, indirectType);
         virtual_p(WeakRef<Type>, asFunctionResult);
 
         ResultData const GetResultData(Ref<CodeItem> code)const;

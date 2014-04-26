@@ -88,7 +88,6 @@ namespace Reni
     public:
         Syntax const& syntax;
         Context const&context;
-    public:
         ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context);
     private:
         p_function(Array<String>,DumpData) override;

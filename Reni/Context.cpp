@@ -40,12 +40,6 @@ Context::Context()
     :_internal(new internal(*this)){
 }
 
-ResultData const Context::GetResultData(Category category, Syntax const&syntax)const{
-    if(category == Category::None)
-        return{};
-    return syntax.GetResultData(*this, category);
-}
-
 
 pure_p_implementation(Context, WeakRef<Global>, global) ;
 pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext);
@@ -121,13 +115,23 @@ ResultData const AccessFeature::FunctionResult(Context const& context, Category 
 
 
 ContainerContext::ContainerContext(Context const&parent, SyntaxContainer const&containerData, int index)
-: parent(parent)
-, token(new DefinableTokenFeatureProvider)
-, containerData(containerData.thisRef)
-, accessFeature([&](int tokenIndex){return new AccessFeature(*this, tokenIndex);})
-, functionCallResultCache([&](Type const*args, Syntax const*body){return new FunctionCallResultCache(*this, args, *body);})
-, dataTypeCache([&]{return new ContainerType(*this); })
-, index(index){
+    : parent(parent)
+      , token(new DefinableTokenFeatureProvider)
+      , containerData(containerData.thisRef)
+      , accessFeature([&](int tokenIndex)
+          {
+              return new AccessFeature(*this, tokenIndex);
+          })
+      , functionCallResultCache([&](Type const*args, Syntax const*body)
+          {
+              return new FunctionCallResultCache(*this, args, *body);
+          })
+      , dataTypeCache([&]
+          {
+              return new ContainerType(*this);
+          })
+      , index(index)
+{
     SetDumpString();
 };
 

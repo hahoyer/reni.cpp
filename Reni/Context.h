@@ -31,7 +31,6 @@ namespace Reni{
         WeakRef<internal> _internal;
     public:
         Context();
-        ResultData const GetResultData(Category category, Syntax const&syntax)const;
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
         SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;

@@ -44,13 +44,15 @@ namespace Reni
         Ref<CodeItem> const Code(Context const&context)const;
         WeakRef<Type>const Type(Context const&context)const;
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;
-        virtual ResultData const GetResultData(Context const&context, Category category)const;
 
         Ref<SyntaxContainer> const Defines(SourcePart const& part, Ref<Syntax> const&value)const;
         Ref<Syntax> const ReplaceArg(Ref<Syntax> const&arg)const;
         virtual Ref<Syntax,true> const Replace(SyntaxArgVisitor const&visitor)const;
         virtual void AddTo(SyntaxContainer& syntaxContainer) const;
         Ref<Syntax> const TypeOperator(SourcePart const part) const;
+    protected:
+        virtual ResultData const GetResultData(Context const&context, Category category)const;
+        friend class ResultFromSyntaxAndContext;
     };
 
     

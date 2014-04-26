@@ -22,16 +22,48 @@
 using namespace Reni;
 static bool Trace = true;
 
+namespace Reni{
+    class IndirectType final : public Type
+    {
+        typedef Type baseType; 
+        typedef IndirectType thisType;
+        WeakRef<Type> value;
+    public:
+        IndirectType(WeakRef<Type> value) : value(value){}
+        ThisRef;
+    private:
+        p_function(Array<String>, DumpData) override{ return{nd(value)}; };
+        p_function(Size, size) override{ return Size::Reference; }
+        p_function(WeakRef<Global>, global) override{ return value->global; }
+    };
+}
 
-struct Type::internal{
+
+struct Type::internal
+{
     FunctionCache<WeakRef<ArrayType>, int> array;
     ValueCache<WeakRef<NumberType>> number;
     ValueCache<WeakRef<TypeType>> type;
+    ValueCache<WeakRef<IndirectType>> indirect;
 
     explicit internal(Type const&parent)
-        : array([&](int count) {return new ArrayType(parent, count); })
-        , number([&] {return parent.CreateNumberType(); })
-        , type([&] {return new TypeType(parent.thisRef); }) {
+        : array([&](int count)
+              {
+                  return new ArrayType(parent, count);
+              })
+          , number([&]
+              {
+                  return parent.CreateNumberType();
+              })
+                  , indirect([&]
+              {
+                  return new IndirectType(parent.thisRef);
+              })
+                  , type([&]
+              {
+                  return new TypeType(parent.thisRef);
+              })
+              {
     };
 };
 
@@ -70,6 +102,10 @@ p_implementation(Type, WeakRef<NumberType>, numberType){
 
 p_implementation(Type, WeakRef<TypeType>, typeType) {
     return &_internal->type.Value->thisRef;
+};
+
+p_implementation(Type, WeakRef<IndirectType>, indirectType) {
+    return &_internal->indirect.Value->thisRef;
 };
 
 p_implementation(Type, WeakRef<Type>, asFunctionResult) {
@@ -113,7 +149,7 @@ ResultData const Type::ContextAccessResult(Category category, Type const& target
     if(!HasData)
         return GetResultData() & category;
 
-    return GetResultData(category, [&]{
+    return indirectType->GetResultData(category, [&]{
         return CodeItem::Reference(target)
             ->ReferencePlus(getOffset()); 
     });

@@ -53,7 +53,9 @@ void ResultCache::Ensure(Category category)const{
     auto newTodo = todo - pending;
     a_if(newTodo != Category::None, nd(category) + nd(complete) + nd(pending));
     LevelValue<Category>(pending, pending | newTodo);
+    
     data = data + GetResultData(newTodo);
+    
     a_if(category <= complete, nd(category) + nd(complete) + nd(pending));
     thisRef.SetDumpString();
 }
@@ -92,7 +94,12 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 }
 
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const{
-    return context.GetResultData(category, syntax);
+    a_if_(category != Category::None);
+    bool Trace = syntax.ObjectId == 11;
+    md(category);
+    b_if_(Trace);
+    auto result = syntax.GetResultData(context,category);
+    return_d(result);
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){

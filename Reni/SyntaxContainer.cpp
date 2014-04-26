@@ -57,6 +57,8 @@ Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const{
     mb;
 };
 
-Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context, int index) const{
-    return context.Container(*this, index)->GetResultData(Category::Code, *statements[index]).code;
+Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context, int index) const
+{
+    auto container = context.Container(*this, index);
+    return statements[index]->Code(*container);
 };

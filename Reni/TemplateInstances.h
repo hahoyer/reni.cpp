@@ -40,7 +40,8 @@ private:
 
 
 template<class TTokenClass, class TTargetTypeHandler>
-class InfixFunctionProvider<TTokenClass, TTargetTypeHandler> ::Feature final : public Reni::Feature{
+class InfixFunctionProvider<TTokenClass, TTargetTypeHandler> ::Feature final : public Reni::Feature
+{
     typedef Reni::Feature baseType;
     typedef Feature thisType;
     targetType const& value;
@@ -49,7 +50,9 @@ public:
     {
         SetDumpString();
     }
+
     ThisRef;
+
 private:
     ResultData const FunctionResult(
         Context const&context,
@@ -69,7 +72,11 @@ private:
         visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
         return result.Replace(visitor);
     };
-    p_function(Array<String>, DumpData) override{ return{nd(value)}; }
+
+    p_function(Array<String>, DumpData) override
+    {
+        return{nd(value)};
+    }
 };
 
 

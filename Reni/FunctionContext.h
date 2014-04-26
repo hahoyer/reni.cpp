@@ -13,8 +13,8 @@ namespace Reni{
         typedef Context baseType; typedef FunctionCallContext thisType;
     public:
         ContainerContext const& container;
-        WeakPtr<Type const> const args;
-        FunctionCallContext(ContainerContext const& container, WeakPtr<Type const> const args)
+        WeakRef<Type const> const args;
+        FunctionCallContext(ContainerContext const& container, WeakRef<Type const> const args)
             : container(container), args(args){}
         ThisRef;
         ResultData const CreateArgReferenceResult(Category category)const;
