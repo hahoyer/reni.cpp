@@ -45,23 +45,27 @@ pure_p_implementation(Context, WeakRef<Global>, global) ;
 pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext);
 
 
-SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const{
+SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const
+{
     auto featureClasses = tokenClass.featureClasses;
     WeakPtr<Type> type;
     if(!left.IsEmpty)
         type = left->Type(*this)->thisRef;
     auto results =
         left.IsEmpty
-            ? featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){
-                return fc->GetDefinition(*this);
-            })
-            : featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc){
-                return fc->GetDefinition(*type);
-            });
+            ? featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc)
+                {
+                    return fc->GetDefinition(*this);
+                })
+            : featureClasses.Select<SearchResult>([&](WeakRef<FeatureClass> fc)
+                {
+                    return fc->GetDefinition(*type);
+                });
     return results
-        ->Where([&](SearchResult const& result){
-            return result.IsValid;
-        })
+        ->Where([&](SearchResult const& result)
+            {
+                return result.IsValid;
+            })
         ->FirstOrEmpty;
 }
 

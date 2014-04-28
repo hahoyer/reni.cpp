@@ -162,8 +162,7 @@ SearchResult const Type::GetDefinition(DefineableToken const&token) const{
 }
 
 Type::operator Ref<FeatureProvider<StarToken>, true>() const{
-    md_;
-    mb;
+    return {};
 }
 
 

@@ -31,7 +31,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     bool Trace = false;
     md(context,category);
     auto searchResult = context.Search(left, tokenClass);
-    a_if_(searchResult.IsValid);
+    a_if(searchResult.IsValid, Dump);
     d(searchResult);
     auto result = searchResult
         .feature

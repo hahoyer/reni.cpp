@@ -20,6 +20,6 @@ namespace Reni
         p_function(Array<String>, DumpData) override{return{ nd(value) };};
         p_function(Size, size) override{return 0;}
         p_function(WeakRef<Global>, global) override{return value->global;}
-        operator HWLib::Ref<Reni::FeatureProvider<InstanceToken>, true>() const override;;
+        operator Ref<FeatureProvider<InstanceToken>, true>() const override;;
     };
 }

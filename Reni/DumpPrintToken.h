@@ -18,7 +18,7 @@ namespace Reni
         }
 
     private:
-        GenericFeatureClass<thisType> feature;
+        GenericDefinableFeatureClass<thisType> feature;
         featureClasses_override;
     };
 
@@ -34,7 +34,7 @@ namespace Reni
         }
 
     private:
-        GenericFeatureClass<thisType> feature;
+        GenericDefinableFeatureClass<thisType> feature;
         featureClasses_override;
     };
 
@@ -50,7 +50,7 @@ namespace Reni
         }
 
     private:
-        GenericFeatureClass<thisType> feature;
+        GenericDefinableFeatureClass<thisType> feature;
         featureClasses_override;
     };
 
@@ -66,7 +66,7 @@ namespace Reni
         }
 
     private:
-        GenericFeatureClass<thisType> feature;
+        GenericDefinableFeatureClass<thisType> feature;
         featureClasses_override;
     };
 
@@ -82,7 +82,7 @@ namespace Reni
         }
 
     private:
-        GenericFeatureClass<thisType> feature;
+        GenericDefinableFeatureClass<thisType> feature;
         featureClasses_override;
     };
 }

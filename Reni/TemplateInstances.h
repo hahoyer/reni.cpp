@@ -103,23 +103,28 @@ p_implementation(InfixFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Re
 
 
 template <typename T>
-inline SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&type)const{
-    md(type);
+inline SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&target)const{
+    md(target);
     mb;
 };
 
 template <typename T>
-inline SearchResult const GenericFeatureClass<T>::GetDefinition(Context const&context)const{
-    md(context);
+inline SearchResult const GenericDefinableFeatureClass<T>::GetDefinition(Type const&target)const{
+    return target.GetGenericDefinition<T>();
+};
+
+template <typename T>
+inline SearchResult const GenericFeatureClass<T>::GetDefinition(Context const&target)const{
+    md(target);
     mb;
 };
 
+template <typename T>
+inline SearchResult const GenericDefinableFeatureClass<T>::GetDefinition(Context const&target)const{
+    md(target);
+    mb;
+};
 
-#define TypeFeature(tokenClass)\
-template <>\
-inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Type const&target)const {\
-    return target.GetGenericDefinition<tokenClass>();\
-}
 
 #define ContextFeature(tokenClass)\
 template <>\
@@ -127,12 +132,6 @@ inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Context
     return target.GetGenericDefinition<tokenClass>();\
 }
 
-TypeFeature(DefineableToken);
-TypeFeature(DumpPrintToken);
-TypeFeature(InstanceToken);
-TypeFeature(MinusToken);
-TypeFeature(PlusToken);
-TypeFeature(StarToken);
 ContextFeature(DefineableToken);
 ContextFeature(MinusToken);
 

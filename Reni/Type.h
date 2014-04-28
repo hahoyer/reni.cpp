@@ -28,6 +28,7 @@ namespace Reni{
     class DefineableToken;
     class TypeType;
     class ContextReference;
+    class FunctionToken;
 
     template<typename T, typename ...> class FeatureProvider;
 
@@ -60,12 +61,16 @@ namespace Reni{
 
         template<class T>
         SearchResult const GetGenericDefinition()const{
-            Ref<FeatureProvider<T>> f = *this;
-            return f->feature;
+            Ref<FeatureProvider<T>, true> provider = *this;
+            if(provider.IsEmpty)
+                return{};
+            return provider->feature;
         }
 
         SearchResult const GetDefinition(DefineableToken const&token)const;
+        WeakRef<NumberType> const CreateNumberType()const;
 
+    protected:
         virtual operator Ref<FeatureProvider<DefineableToken>, true>()const;
         virtual operator Ref<FeatureProvider<DumpPrintToken>, true>()const;
         virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
@@ -73,7 +78,8 @@ namespace Reni{
         virtual operator Ref<FeatureProvider<StarToken>, true>()const;
         virtual operator Ref<FeatureProvider<InstanceToken>, true>()const;
 
-        WeakRef<NumberType> const CreateNumberType()const;
+        template<class T>
+        operator Ref<FeatureProvider<T>, true>()const;
 
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
