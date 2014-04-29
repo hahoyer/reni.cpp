@@ -14,7 +14,7 @@ namespace Reni
         typedef TypeType thisType;
         WeakRef<Type> value;
     public:
-        TypeType(WeakRef<Type> value) : value(value){}
+        TypeType(WeakRef<Type> value) : value(value){ SetDumpString(); }
         ThisRef;
     private:
         p_function(Array<String>, DumpData) override{return{ nd(value) };};

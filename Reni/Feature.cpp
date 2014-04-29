@@ -55,3 +55,18 @@ SearchResult const DefinableFeatureClass::GetDefinition(Type const&target)const{
 SearchResult const DefinableFeatureClass::GetDefinition(Context const&target)const{
     return target.GetDefinition(parent);
 }
+
+SearchResult const FeatureClass::GetDefinition(WeakPtr<Type> type, Context const&context)const
+{
+    bool Trace = true;
+    if(type.IsEmpty)
+    {
+        md(context);
+        return_d(GetDefinition(context));
+    }
+    else
+    {
+        md(*type);
+        return_d(GetDefinition(*type));
+    }
+};

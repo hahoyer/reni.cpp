@@ -63,6 +63,7 @@ namespace Reni
 
         StarToken() : baseType("*")
         {
+            feature.SetDumpString();
         }
 
     private:

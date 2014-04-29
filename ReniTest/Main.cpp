@@ -8,6 +8,7 @@
 int main()
 {
     DumpableObject::EnableSetDumpString = true;
+    DumpableObject::EnableSetDumpStringAsync = false;
     test_item(_Reni::Negative).isLowPriority = true;
     test_item(_Reni::RecursiveFunction).WatchedRun();
     HWAnalyse::TestFixture::RunAll();

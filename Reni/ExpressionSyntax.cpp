@@ -28,8 +28,9 @@ p_implementation(ExpressionSyntax, Array<String>, DumpData)
 
 ResultData const ExpressionSyntax::GetResultData(Context const&context, Category category)const
 {
-    bool Trace = false;
+    bool Trace = ObjectId == 20;
     md(context,category);
+    b_if(Trace,);
     auto searchResult = context.Search(left, tokenClass);
     a_if(searchResult.IsValid, Dump);
     d(searchResult);

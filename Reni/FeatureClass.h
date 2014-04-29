@@ -19,6 +19,8 @@ namespace Reni
     public:
         ThisRef;
 
+        SearchResult const GetDefinition(WeakPtr<Type> type, Context const&context)const;
+    protected:
         virtual SearchResult const GetDefinition(Type const&type)const = 0;
         virtual SearchResult const GetDefinition(Context const&context)const = 0;
     private:
@@ -27,7 +29,6 @@ namespace Reni
             return{};
         }
     };
-
 
     template <typename T>
     class GenericFeatureClass final: public FeatureClass
@@ -54,7 +55,6 @@ namespace Reni
     public:
         GenericDefinableFeatureClass()
         {
-            SetDumpString();
         }
     };
 

@@ -29,7 +29,7 @@ namespace Reni{
         typedef IndirectType thisType;
         WeakRef<Type> value;
     public:
-        IndirectType(WeakRef<Type> value) : value(value){}
+        IndirectType(WeakRef<Type> value) : value(value){SetDumpString();}
         ThisRef;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(value)}; };
