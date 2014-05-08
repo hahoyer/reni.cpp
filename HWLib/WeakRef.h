@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DefaultAssignmentOperator.h"
+#include "WeakPtr.h"
 
 namespace HWLib
 {
