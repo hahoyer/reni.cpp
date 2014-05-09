@@ -58,15 +58,18 @@ SearchResult const DefinableFeatureClass::GetDefinition(Context const&target)con
 
 SearchResult const FeatureClass::GetDefinition(WeakPtr<Type> type, Context const&context)const
 {
-    bool Trace = true;
     if(type.IsEmpty)
     {
+        bool Trace = false;
         md(context);
         return_d(GetDefinition(context));
     }
     else
     {
+        bool Trace = type->ObjectId == 11;
         md(*type);
-        return_d(GetDefinition(*type));
+        b_if_(Trace);
+        auto result = GetDefinition(*type);
+        return_d(result);
     }
 };

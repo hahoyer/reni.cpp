@@ -3,6 +3,7 @@
 #include "../HWLib/Ref.h"
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/RefCountProvider.h"
+#include "../HWLib/WeakPtr.h"
 
 using namespace HWLang;
 using namespace HWLib;
@@ -36,7 +37,10 @@ namespace Reni
         p_function(Array<String>, DumpData) override{ return{}; };
     };
 
-#define featureClasses_override p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
+    #define featureClasses_override p_function(Array<WeakRef<FeatureClass>>, featureClasses) override\
+    {\
+        return Array<WeakRef<FeatureClass>>() + &feature.thisRef + base_p_name(featureClasses); \
+    }
 
 
     class TerminalTokenClass : public TokenClass{

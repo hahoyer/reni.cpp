@@ -47,25 +47,22 @@ Context::Context()
 {
 }
 
-
 pure_p_implementation(Context, WeakRef<Global>, global) ;
-
 pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
 
-
-SearchResult const Context::Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const
+SearchResult const Context::Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const
 {
-    bool Trace = true;
-    WeakPtr<Type> type;
+    bool Trace = false;
+    WeakPtr<Type> leftType;
     if(!left.IsEmpty)
-        type = left->Type(*this)->thisRef;
+        leftType = left->Type(*this)->thisRef;
 
-    md(left, tokenClass, type);
+    md(left, tokenClass, leftType);
 
     auto result = 
         tokenClass
         .featureClasses
-        .Select<SearchResult>([&](WeakRef<FeatureClass> fc){return fc->GetDefinition(type, *this);})
+        .Select<SearchResult>([&](WeakRef<FeatureClass> fc){return fc->GetDefinition(leftType, *this);})
         ->Where([&](SearchResult const& result){return result.IsValid;})
         ->FirstOrEmpty;
     return_d(result);

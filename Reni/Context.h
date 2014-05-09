@@ -33,7 +33,7 @@ namespace Reni{
         Context();
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
-        SearchResult const Search(Ref<Syntax, true> const&left, TokenClass const&tokenClass)const;
+        SearchResult const Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const;
 
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;
         virtual operator Ref<ContextFeatureProvider<DefineableToken>, true>()const;

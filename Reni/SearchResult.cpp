@@ -12,14 +12,23 @@ using namespace HWLib;
 using namespace Reni;
 
 
-SearchResult::SearchResult(Ref<Feature> feature) : feature(feature){
+SearchResult::SearchResult(Ref<Feature> feature) : feature(feature)
+{
+    SetDumpString();
 }
 
-p_implementation(SearchResult, bool, IsValid){
+SearchResult::SearchResult()
+{
+    SetDumpString();
+}
+
+p_implementation(SearchResult, bool, IsValid)
+{
     return !feature.IsEmpty;
 };
 
-p_implementation(SearchResult, Array<String>, DumpData){
+p_implementation(SearchResult, Array<String>, DumpData)
+{
     return{nd(feature)};
 }
 

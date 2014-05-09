@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "ExpressionSyntax.h"
 
+#include "DefineableToken .h"
 #include "Feature.h"
 #include "SyntaxContainer.h"
 
@@ -8,7 +9,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-ExpressionSyntax::ExpressionSyntax(TokenClass const& tokenClass, Ref<Syntax, true> const left, SourcePart const part, Ref<Syntax, true > const right)
+ExpressionSyntax::ExpressionSyntax(DefineableToken const& tokenClass, Ref<Syntax, true> const left, SourcePart const part, Ref<Syntax, true > const right)
     : baseType(part)
       , tokenClass(tokenClass)
       , left(left)

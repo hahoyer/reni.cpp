@@ -8,11 +8,17 @@ using namespace HWLib;
 namespace Reni{
     class Feature;
 
+    class FeatureProviderBase  
+        : public DumpableObject
+        , public RefCountProvider 
+    {
+        using baseType = DumpableObject; 
+        using thisType = FeatureProviderBase;
+    };
 
     template <typename T, typename... TTypes>
     class FeatureProvider
-        : public DumpableObject
-        , public RefCountProvider {
+        : public FeatureProviderBase {
         using thisType = FeatureProvider;
     public:
         virtual ~FeatureProvider(){};
@@ -21,8 +27,7 @@ namespace Reni{
 
     template <typename T, typename T0, typename... TTypes>
     class FeatureProvider<T, T0, TTypes...>
-        : public DumpableObject
-        , public RefCountProvider{
+        : public FeatureProviderBase{
         using thisType = FeatureProvider;
     public:
         virtual Ref<FeatureProvider<T, TTypes...>, true>const Convert(T0 const&top)const = 0;
@@ -32,8 +37,7 @@ namespace Reni{
 
     template <typename T>
     class FeatureProvider<T>
-        : public DumpableObject
-        , public RefCountProvider{
+        : public FeatureProviderBase{
         using thisType = FeatureProvider;
     public:
         virtual_p(Ref<Feature>, feature) = 0;

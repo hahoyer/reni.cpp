@@ -16,7 +16,7 @@ namespace Reni{
     public:
         Ref<Feature,true> const feature;
         SearchResult(Ref<Feature> feature);
-        SearchResult() = default;
+        SearchResult();
 
         p(bool, IsValid);
     private:
