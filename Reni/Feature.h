@@ -2,6 +2,7 @@
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/DumpableObject.h"
 #include "../Util/Category.h"
+#include "ArgVisitor.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -29,5 +30,20 @@ namespace Reni{
         }
     };
 
+
+    class InfixFunctionFeature : public Feature
+    {
+        typedef Feature baseType;
+        typedef InfixFunctionFeature thisType;
+
+        ResultData const FunctionResult(
+            Context const&context,
+            Category category,
+            ExpressionSyntax const& expressionSyntax
+            )const override;
+
+    protected: 
+        virtual ResultData const Result(Category category, Type const&target, Type const&arg) const = 0;
+    };
 }
                                                                     

@@ -10,7 +10,6 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class FeatureClass;
     class SearchResult;
     class Syntax;
     class Type;
@@ -32,16 +31,9 @@ namespace Reni
         virtual_p(bool, AcceptsMatch){ return false; };
         Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const;
         virtual Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const = 0;
-        virtual_p(Array<WeakRef<FeatureClass>>, featureClasses) { return{}; };
     private:
         p_function(Array<String>, DumpData) override{ return{}; };
     };
-
-    #define featureClasses_override p_function(Array<WeakRef<FeatureClass>>, featureClasses) override\
-    {\
-        return Array<WeakRef<FeatureClass>>() + &feature.thisRef + base_p_name(featureClasses); \
-    }
-
 
     class TerminalTokenClass : public TokenClass{
         typedef TokenClass baseType;

@@ -66,19 +66,24 @@ namespace Reni{
         Size const _size;
         Size const _leftSize;
         Size const _rightSize;
+        int leftDepth;
+        int rightDepth;
     public:
         String const name;
-        BinaryOperationCode(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)
+        BinaryOperationCode(String const& name, Size const&size, Size const&leftSize, int leftDepth, Size const&rightSize, int rightDepth)
             : name(name)
             , _size(size)
             , _leftSize(leftSize)
-            , _rightSize(rightSize) {
+            , _rightSize(rightSize) 
+            , leftDepth(leftDepth)
+            , rightDepth(rightDepth)
+        {
             SetDumpString();
         }
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(size), nd(leftSize), nd(name), nd(rightSize)}; };
-        p_function(Size, leftSize) override{ return _leftSize; };
-        p_function(Size, rightSize) override {return _rightSize;};
+        p_function(Array<String>, DumpData) override{ return{nd(size), nd(leftDepth), nd(leftSize), nd(name), nd(rightDepth), nd(rightSize)}; };
+        p_function(Size, leftSize) override{ return leftDepth? Size::Address : _leftSize; };
+        p_function(Size, rightSize) override { return rightDepth ? Size::Address : _rightSize; };
         p_function(Size, size) override {return _size;};
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const override{ return{}; }
@@ -113,7 +118,7 @@ namespace Reni{
         }
     private:
         p_function(Array<String>, DumpData) override{ return{nd(type)}; };
-        p_function(Size, size) override{ return type.size; };
+        p_function(Size, size) override{ return Size::Address; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&arg) const override;
     };
@@ -150,7 +155,7 @@ namespace Reni{
         }
     private:
         p_function(Array<String>, DumpData) override{ return{nd(value)}; };
-        p_function(Size, size) override{ return Size::Reference; }
+        p_function(Size, size) override{ return Size::Address; }
 
         Ref<CodeItem> const ReferencePlus(Size offset) const override;
         Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&arg) const override;

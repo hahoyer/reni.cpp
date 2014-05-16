@@ -54,7 +54,6 @@ namespace Reni
     };
 
 
-
     class ResultCache 
         : public DumpableObject
         , public RefCountProvider

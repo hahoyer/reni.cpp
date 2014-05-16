@@ -29,8 +29,8 @@ String const CodeVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& r
     return "";
 }
 
-String const CodeVisitor::BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const{
-    md(name, size, leftSize, rightSize);
+String const CodeVisitor::BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const{
+    md(name, size, leftDepth, leftSize, rightDepth, rightSize);
     b_;
     return "";
 };

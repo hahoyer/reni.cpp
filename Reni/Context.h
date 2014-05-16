@@ -47,7 +47,7 @@ namespace Reni{
             return *ff;
         };
 
-        virtual SearchResult const GetDefinition(DefineableToken const&token)const;
+        virtual SearchResult const Search(DefineableToken const&token)const;
         ResultData ArgReferenceResult(Category category) const;
     };
 }

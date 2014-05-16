@@ -1,8 +1,7 @@
 #include "Import.h"
 #include "Context.h"
 
-#include "DefineableToken .h"
-#include "FeatureClass.h"
+#include "DefineableToken.h"
 #include "FunctionSyntax.h"
 #include "Result.h"
 #include "SearchResult.h"
@@ -52,20 +51,13 @@ pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
 
 SearchResult const Context::Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const
 {
-    bool Trace = false;
-    WeakPtr<Type> leftType;
-    if(!left.IsEmpty)
-        leftType = left->Type(*this)->thisRef;
+    if(left.IsEmpty)
+        return Search(tokenClass);
 
-    md(left, tokenClass, leftType);
-
-    auto result = 
-        tokenClass
-        .featureClasses
-        .Select<SearchResult>([&](WeakRef<FeatureClass> fc){return fc->GetDefinition(leftType, *this);})
-        ->Where([&](SearchResult const& result){return result.IsValid;})
-        ->FirstOrEmpty;
-    return_d(result);
+    return left
+        ->Type(*this)
+        ->thisRef
+        .Search(tokenClass);
 }
 
 Context::operator Ref<ContextFeatureProvider<MinusToken>, true>() const
@@ -91,7 +83,7 @@ WeakRef<Type> const Context::FunctionType(FunctionSyntax const& body) const
     return _internal->functionType(&body)->thisRef;
 }
 
-SearchResult const Context::GetDefinition(DefineableToken const&token) const
+SearchResult const Context::Search(DefineableToken const&token) const
 {
     md(token);
     mb;
@@ -186,9 +178,9 @@ p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
     return container.dataType;
 }
 
-SearchResult const FunctionCallContext::GetDefinition(DefineableToken const&token) const
+SearchResult const FunctionCallContext::Search(DefineableToken const&token) const
 {
-    return container.GetDefinition(token);
+    return container.Search(token);
 }
 
 ResultData const FunctionCallContext::CreateArgReferenceResult(Category category)const

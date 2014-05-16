@@ -1,89 +1,50 @@
 #pragma once
-#include "DefineableToken .h"
-#include "FeatureClass.h"
+#include "DefineableToken.h"
 #include "../HWLib/WeakRef.h"
 
 using namespace HWLib;
 
 namespace Reni
 {
-    class DumpPrintToken final : public DefineableToken
+    class NumberType;
+
+#define tt(nameHeader,text) \
+    struct  nameHeader##Token final : public NamedDefinableToken<nameHeader##Token>\
+    {                                                      \
+    static String const Text(){ return #text; }\
+    }
+
+
+    struct  DumpPrintToken final : public NamedDefinableToken<DumpPrintToken>
     {
-        using baseType = DefineableToken;
-        using thisType = DumpPrintToken;
-    public:
-
-        DumpPrintToken() : baseType("dump_print")
-        {
-        }
-
-    private:
-        GenericDefinableFeatureClass<thisType> feature;
-        featureClasses_override;
+        static String const Text(){ return "dump_print"; }
     };
 
-
-    class MinusToken final : public DefineableToken
+    struct MinusToken final : public NamedDefinableToken<MinusToken>
     {
-        using baseType = DefineableToken;
-        using thisType = MinusToken;
-    public:
-
-        MinusToken() : baseType("-")
-        {
-        }
-
+        static String const Text(){ return "-"; }
     private:
-        GenericDefinableFeatureClass<thisType> feature;
-        featureClasses_override;
+        SearchResult const Search(NumberType const& target) const override;
     };
-
     
-    class PlusToken final : public DefineableToken
+    struct PlusToken final : public NamedDefinableToken<PlusToken>
     {
-        using baseType = DefineableToken;
-        using thisType = PlusToken;
-    public:
-
-        PlusToken() : baseType("+")
-        {
-        }
-
+        static String const Text(){ return "+"; }
     private:
-        GenericDefinableFeatureClass<thisType> feature;
-        featureClasses_override;
+        SearchResult const Search(NumberType const& target) const override;
     };
-
     
-    class StarToken final : public DefineableToken
+    struct StarToken final : public NamedDefinableToken<StarToken>
     {
-        using baseType = DefineableToken;
-        using thisType = StarToken;
-    public:
-
-        StarToken() : baseType("*")
-        {
-            feature.SetDumpString();
-        }
-
+        static String const Text(){ return "*"; }
     private:
-        GenericDefinableFeatureClass<thisType> feature;
-        featureClasses_override;
+        SearchResult const Search(NumberType const& target) const override;
     };
 
-
-    class InstanceToken final : public DefineableToken
+    struct InstanceToken final : public NamedDefinableToken<InstanceToken>
     {
-        typedef DefineableToken baseType;
-        typedef InstanceToken thisType;
-    public:
-
-        InstanceToken() : baseType("instance")
-        {
-        }
-
+        static String const Text(){ return "instance"; }
     private:
-        GenericDefinableFeatureClass<thisType> feature;
-        featureClasses_override;
+        SearchResult const Search(TypeType const& target) const override;
     };
 }

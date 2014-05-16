@@ -17,7 +17,7 @@ namespace Util{
         bool const operator<=(Size const&other)const{return value <= other.value;};
 
         p(String, format){return String::Convert(value);}
-        static thisType const Reference;
+        static thisType const Address;
     private:
         p_function(Array<String>,DumpData) override{return{ HWLib::Dump(value) };};
         p_function(String, DumpShort) override{return HWLib::Dump(value);};

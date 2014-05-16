@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "ArrayType.h"
 
-#include "FeatureClass.h"
 #include "FeatureProvider.h"
 #include "../HWLib/RefCountContainer.instance.h"
 

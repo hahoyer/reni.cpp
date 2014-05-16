@@ -80,12 +80,12 @@ namespace Reni{
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
 
-        SearchResult const GetDefinition(DefineableToken const&token) const override{
+        SearchResult const Search(DefineableToken const&token) const override{
             if(containerData->names.ContainsKey(&token)){
                 auto tokenIndex = containerData->names[&token];
                 return accessFeature(tokenIndex);
             }
-            return baseType::GetDefinition(token);
+            return baseType::Search(token);
         }
 
     private:

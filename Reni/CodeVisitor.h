@@ -17,7 +17,7 @@ namespace Reni
         virtual String const Const(Size const size, BitsConst const& value) const;
         virtual String const DumpPrintNumber(Size const size) const;
         virtual String const Pair(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector) const;
-        virtual String const BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const;
+        virtual String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const;
     };
 
 }

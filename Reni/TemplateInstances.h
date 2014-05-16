@@ -58,7 +58,7 @@ private:
         Context const&context,
         Category category,
         ExpressionSyntax const& expressionSyntax
-    )const override
+        )const override
     {
         bool Trace = ObjectId == 4;
         a_throw_(!expressionSyntax.right.IsEmpty);
@@ -102,45 +102,4 @@ template<class TTokenClass, class TTargetTypeHandler>
 p_implementation(InfixFunctionProvider<TTokenClass COMMA TTargetTypeHandler>, Ref<Reni::Feature>, feature){ return feature->thisRef; }
 
 
-template <typename T>
-inline SearchResult const GenericFeatureClass<T>::GetDefinition(Type const&target)const{
-    md(target);
-    mb;
-};
-
-template <typename T>
-inline SearchResult const GenericDefinableFeatureClass<T>::GetDefinition(Type const&target)const{
-    return target.GetGenericDefinition<T>();
-};
-
-template <typename T>
-inline SearchResult const GenericFeatureClass<T>::GetDefinition(Context const&target)const{
-    md(target);
-    mb;
-};
-
-template <typename T>
-inline SearchResult const GenericDefinableFeatureClass<T>::GetDefinition(Context const&target)const{
-    md(target);
-    mb;
-};
-
-
-#define ContextFeature(tokenClass)\
-template <>\
-inline SearchResult const GenericFeatureClass<tokenClass>::GetDefinition(Context const&target)const {\
-    return target.GetGenericDefinition<tokenClass>();\
-}
-
-ContextFeature(DefineableToken);
-ContextFeature(MinusToken);
-
 #undef TypeFeature
-#undef ContextFeature
-
-
-template <typename T>
-pure_p_implementation(FeatureProvider<T>, Ref<Feature>, feature) ;
-
-template <typename T>
-pure_p_implementation(ContextFeatureProvider<T>, Ref<ContextFeature>, feature) ;

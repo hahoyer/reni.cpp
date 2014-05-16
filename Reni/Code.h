@@ -29,7 +29,13 @@ namespace Reni
     public:
         static Ref<CodeItem> const Arg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
-        static Ref<CodeItem> const BinaryOperation(String name, NumberType const&result, NumberType const&left, NumberType const&right);
+        static Ref<CodeItem> const BinaryOperation
+            (
+            String name, 
+            NumberType const&result, 
+            NumberType const&left, int leftDepth,
+            NumberType const&right, int rightDepth
+            );
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
         static Ref<CodeItem> const This(Type const&value);
         static Ref<CodeItem> const Reference(Type const&target);

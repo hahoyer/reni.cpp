@@ -24,7 +24,7 @@ namespace Reni{
         p_function(Array<String>, DumpData) override{ return{nd(args), nd(container)}; }
         p(WeakRef<Type>, objectType);
 
-        SearchResult const GetDefinition(DefineableToken const&token) const override;
+        SearchResult const Search(DefineableToken const&token) const override;
 
     };
 

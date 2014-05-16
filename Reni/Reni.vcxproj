@@ -51,10 +51,9 @@
     <ClInclude Include="CodeVisitor.h" />
     <ClInclude Include="ExpressionSyntax.h" />
     <ClInclude Include="Feature.h" />
-    <ClInclude Include="FeatureClass.h" />
     <ClInclude Include="DefinitionPoint.h" />
     <ClInclude Include="DumpPrintToken.h" />
-    <ClInclude Include="DefineableToken .h" />
+    <ClInclude Include="DefineableToken.h" />
     <ClInclude Include="FeatureProvider.h" />
     <ClInclude Include="ContextFeature.h" />
     <ClInclude Include="Fiber.h" />
@@ -64,6 +63,7 @@
     <ClInclude Include="FunctionToken.h" />
     <ClInclude Include="FunctionSyntax.h" />
     <ClInclude Include="ContextIncludes.h" />
+    <ClInclude Include="AddressType.h" />
     <ClInclude Include="TypeType.h" />
     <ClInclude Include="SyntaxContainer.h" />
     <ClInclude Include="UserDefinedToken.h" />

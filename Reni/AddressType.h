@@ -1,0 +1,24 @@
+#pragma once
+#include "Type.h"
+
+namespace Reni
+{
+    class AddressType final : public Type
+    {
+        typedef Type baseType;
+        typedef AddressType thisType;
+    public:
+        WeakRef<Type> value;
+
+        AddressType(WeakRef<Type> value) : value(value){ SetDumpString(); }
+        ThisRef;
+    private:
+        p_function(Array<String>, DumpData) override{ return{nd(value)}; };
+        p_function(Size, size) override{ return Size::Address; }
+        p_function(WeakRef<Global>, global) override{ return value->global; }
+        p_function(int, addressLevel) override{ return value->addressLevel + 1; }
+        SearchResult const Search(DefineableToken const& token) const override;
+    };
+};
+
+

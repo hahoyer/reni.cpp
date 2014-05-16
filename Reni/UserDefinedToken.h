@@ -2,9 +2,8 @@
 
 #include "TokenClass.h"
 #include "Terminal.h"
-#include "FeatureClass.h"
 #include "../Util/Category.h"
-#include "DefineableToken .h"
+#include "DefineableToken.h"
 
 using namespace Util;
 

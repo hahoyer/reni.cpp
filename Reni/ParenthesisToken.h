@@ -1,6 +1,5 @@
 #pragma once
 #include "TokenClass.h"
-#include "FeatureClass.h"
 
 namespace Reni{
     class LeftParenthesisToken final : public PrefixTokenClass{
@@ -46,9 +45,6 @@ namespace Reni{
                 return{nd(level), nd(right)};
             }
         };
-    private:
-        GenericFeatureClass<thisType> feature;
-        featureClasses_override;
     };
 
 
@@ -73,9 +69,6 @@ namespace Reni{
         p_function(Array<String>,DumpData) override{
             return{nd(level)};
         };
-    private:
-        GenericFeatureClass<thisType> feature;
-        featureClasses_override;
     };
 
 }

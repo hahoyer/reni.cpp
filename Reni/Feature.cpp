@@ -1,10 +1,10 @@
 #include "Import.h"
 #include "Feature.h"
 #include "ContextFeature.h"
-#include "DefineableToken .h"
-#include "FeatureClass.h"
+#include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "Result.h"
+#include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/Ref.h"
 
 static bool Trace = true;
@@ -44,32 +44,24 @@ ResultData const ContextFeature::FunctionResult(
 }
 
 
-p_implementation(DefinableFeatureClass, Array<String>, DumpData){
-    return{nd(parent)};
-}
-
-SearchResult const DefinableFeatureClass::GetDefinition(Type const&target)const{
-    return target.GetDefinition(parent);
-}
-
-SearchResult const DefinableFeatureClass::GetDefinition(Context const&target)const{
-    return target.GetDefinition(parent);
-}
-
-SearchResult const FeatureClass::GetDefinition(WeakPtr<Type> type, Context const&context)const
+ResultData const InfixFunctionFeature::FunctionResult(
+    Context const&context,
+    Category category,
+    ExpressionSyntax const& expressionSyntax
+    )const 
 {
-    if(type.IsEmpty)
-    {
-        bool Trace = false;
-        md(context);
-        return_d(GetDefinition(context));
-    }
-    else
-    {
-        bool Trace = type->ObjectId == 11;
-        md(*type);
-        b_if_(Trace);
-        auto result = GetDefinition(*type);
-        return_d(result);
-    }
+    bool Trace = expressionSyntax.ObjectId == 13;
+    md(context, category, expressionSyntax);
+    a_throw_(!expressionSyntax.right.IsEmpty);
+    auto thisResult = expressionSyntax.left->GetResultCache(context);
+    auto argResult = expressionSyntax.right->GetResultCache(context);
+    d(thisResult);
+    b_if_(Trace);
+    auto result = Result(category, *thisResult->type, *argResult->type);
+    d(result);
+    ArgVisitor visitor;
+    visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
+    visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
+    return_d(result.Replace(visitor));
 };
+

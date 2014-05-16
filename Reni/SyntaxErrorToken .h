@@ -13,8 +13,5 @@ namespace Reni{
         p_function(Array<String>, DumpData) override{
             return{nd(text)};
         };
-
-        GenericFeatureClass<thisType> feature;
-        p_function(Array<WeakRef<FeatureClass>>, featureClasses) override{ return base_p_name(featureClasses) + &feature.thisRef; }
     };
 }

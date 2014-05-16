@@ -18,7 +18,7 @@ namespace Reni{
     class DefinitionPoint;
     class DumpPrintToken;
     class Global;
-    class IndirectType;
+    class AddressType;
     class InstanceToken;
     class MinusToken;
     class NumberType;
@@ -41,17 +41,19 @@ namespace Reni{
     protected:
         Type();
     public:
+        Type(Type const&) = delete;
         ThisRef;
         bool operator==(Type const&other)const{ return this == &other; }
 
         p(bool, HasData){ return size != 0; };
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
-        
+        virtual_p(int, addressLevel) { return 0; };
+
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
         p(WeakRef<TypeType>, typeType);
-        p(WeakRef<IndirectType>, indirectType);
+        p(WeakRef<AddressType>, indirectType);
         virtual_p(WeakRef<Type>, asFunctionResult);
 
         ResultData const GetResultData(Ref<CodeItem> code)const;
@@ -59,28 +61,8 @@ namespace Reni{
         ResultData const GetResultData()const;
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
 
-        template<class T>
-        SearchResult const GetGenericDefinition()const{
-            Ref<FeatureProvider<T>, true> provider = *this;
-            if(provider.IsEmpty)
-                return{};
-            return provider->feature;
-        }
-
-        SearchResult const GetDefinition(DefineableToken const&token)const;
+        virtual SearchResult const Search(DefineableToken const&token)const;
         WeakRef<NumberType> const CreateNumberType()const;
-
-    protected:
-        virtual operator Ref<FeatureProvider<DefineableToken>, true>()const;
-        virtual operator Ref<FeatureProvider<DumpPrintToken>, true>()const;
-        virtual operator Ref<FeatureProvider<MinusToken>,true>()const;
-        virtual operator Ref<FeatureProvider<PlusToken>, true>()const;
-        virtual operator Ref<FeatureProvider<StarToken>, true>()const;
-        virtual operator Ref<FeatureProvider<InstanceToken>, true>()const;
-
-        template<class T>
-        operator Ref<FeatureProvider<T>, true>()const;
-
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };

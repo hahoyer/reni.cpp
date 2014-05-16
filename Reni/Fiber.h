@@ -71,6 +71,6 @@ namespace Reni{
         String const Const(Size const size, BitsConst const& value) const override;
         String const DumpPrintNumber(Size const size) const override;
         String const Pair(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector) const override;
-        String const BinaryOperation(String const& name, Size const&size, Size const&leftSize, Size const&rightSize)const override;
+        String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
     };
 }

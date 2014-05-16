@@ -2,7 +2,7 @@
 #include "SyntaxContainer.h"
 
 #include "ExpressionSyntax.h"
-#include "DefineableToken .h"
+#include "DefineableToken.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLang/Admin/Export.h"
 

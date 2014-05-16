@@ -4,7 +4,6 @@
 using namespace HWLib;
 
 namespace Reni{
-    class FeatureClass;
     class SearchResult;
 
     class DefinitionPoint : public WithId<DumpableObject, DefinitionPoint>{

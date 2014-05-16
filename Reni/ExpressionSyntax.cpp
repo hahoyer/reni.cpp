@@ -1,7 +1,7 @@
 #include "Import.h"
 #include "ExpressionSyntax.h"
 
-#include "DefineableToken .h"
+#include "DefineableToken.h"
 #include "Feature.h"
 #include "SyntaxContainer.h"
 
@@ -29,15 +29,14 @@ p_implementation(ExpressionSyntax, Array<String>, DumpData)
 
 ResultData const ExpressionSyntax::GetResultData(Context const&context, Category category)const
 {
-    bool Trace = ObjectId == 20;
+    bool Trace = ObjectId == -26;
     md(context,category);
     b_if(Trace,);
     auto searchResult = context.Search(left, tokenClass);
     a_if(searchResult.IsValid, Dump);
     d(searchResult);
-    auto result = searchResult
-        .feature
-        ->FunctionResult(context, category, *this);
+    auto feature = searchResult.feature;
+    auto result = feature->FunctionResult(context, category, *this);
     a_is(category, <=, result.complete);
     return_d(result);
 }

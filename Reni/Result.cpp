@@ -95,7 +95,7 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const{
     a_if_(category != Category::None);
-    bool Trace = syntax.ObjectId == 11;
+    bool Trace = syntax.ObjectId == -11;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);

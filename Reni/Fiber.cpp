@@ -105,8 +105,22 @@ String const FiberVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& 
         .Replace("$(right)", rightCode);
 }
 
-String const FiberVisitor::BinaryOperation(String const& name, Size const&, Size const&, Size const&)const {
-    return "($(left)) " + name + " ($(right))";
+
+String UnrefCode(int depth, String const&target)
+{
+    if(depth == 0)
+        return "("+target+")";
+    if(depth == 1)
+        return "(*reinterpret_cast<int const*>" + target+ ")";
+    fd(depth, target);
+    b_;
+    return target;
+}
+
+
+String const FiberVisitor::BinaryOperation(String const& name, Size const&, int leftDepth, Size const&, int rightDepth, Size const&)const
+{
+    return UnrefCode(leftDepth, "$(left)") + " " + name + " " + UnrefCode(rightDepth, "$(right)");
 };
 
 

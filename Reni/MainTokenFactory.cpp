@@ -5,7 +5,6 @@
 #include "ExpressionSyntax.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
-#include "FeatureClass.h"
 #include "FunctionToken.h"
 #include "NumberToken.h"
 #include "Syntax.h"
@@ -27,9 +26,6 @@ using namespace HWLang;
 class TextToken final : public TerminalTokenClass{
     using baseType = TerminalTokenClass;
     using thisType = TextToken;
-private:
-    GenericFeatureClass<thisType> feature;
-    featureClasses_override;
 
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         md(part);
@@ -41,7 +37,6 @@ private:
 class ArgToken final : public TerminalTokenClass {
     using baseType = TerminalTokenClass;
     using thisType = ArgToken;
-    GenericFeatureClass<thisType> feature;
 public:
     p(String, name){ return "arg"; };
 
@@ -53,14 +48,12 @@ private:
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);
     }
-    featureClasses_override;
 };
 
 
 class ElseToken final : public InfixTokenClass {
     using baseType = InfixTokenClass;
     using thisType = ElseToken;
-    GenericFeatureClass<thisType> feature;
 public:
     p(String, name){ return "else"; };
 
@@ -70,14 +63,12 @@ private:
         auto const&conditional = dynamic_cast<IfThenSyntax const&>(*left);
         return conditional.AddElse(part, right);
     }
-    featureClasses_override;
 };
 
 
 class ThenToken final : public InfixTokenClass {
     using baseType = InfixTokenClass;
     using thisType = ThenToken;
-    GenericFeatureClass<thisType> feature;
 public:
     p(String, name){ return "then"; };
 
@@ -85,7 +76,6 @@ private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         return new IfThenSyntax(left, part, right);
     }
-    featureClasses_override;
 };
 
 
@@ -95,9 +85,6 @@ class Colon final : public InfixTokenClass{
 public:
     p(String, name){return ":";}
 private:
-    GenericFeatureClass<thisType> feature;
-    featureClasses_override;
-
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         Ref<SyntaxContainer> result = new SyntaxContainer(part);
         result->Add(left, right);
@@ -113,9 +100,6 @@ public:
     String const name;
     List(String const&name) : name(name){}
 private:
-    GenericFeatureClass<thisType> feature;
-    featureClasses_override;
-
     Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
         Ref<SyntaxContainer> result = new SyntaxContainer(part);
         left->AddTo(*result);
@@ -130,8 +114,6 @@ class TypeToken final : public SuffixTokenClass{
 public:
     p(String, name){ return "type"; }
 private:
-    GenericFeatureClass<thisType> feature;
-    featureClasses_override;
     Ref<Syntax > const Create(Ref<Syntax >const left, SourcePart const&part)const  override final{
         return left->TypeOperator(part);
     };
