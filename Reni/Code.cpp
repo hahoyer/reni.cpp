@@ -31,7 +31,7 @@ Ref<CodeItem> const CodeItem::Const(BitsConst const&value){
 };
 
 Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value){
-    return Arg(value)
+    return Arg(value,0)
         ->Fiber({new DumpPrintNumberCode(value.size)});
 };
 
@@ -43,26 +43,30 @@ Ref<CodeItem> const CodeItem::BinaryOperation(
     )
 {
     auto action = new BinaryOperationCode(name, result.size, left.size, leftDepth, right.size, rightDepth);
-    return new PairCode(This(left), Arg(right), action);
+    return new PairCode(This(left,leftDepth), Arg(right, rightDepth), action);
 };
 
-Ref<CodeItem> const CodeItem::Arg(Type const&value)
+Ref<CodeItem> const CodeItem::Arg(Type const&value, int depth)
 {
     if(value.size == 0)
         return Const(BitsConst::Empty());
-    return new ArgCode(value);
+    return new ArgCode(value,depth);
 };
 
-Ref<CodeItem> const CodeItem::This(Type const&value)
+Ref<CodeItem> const CodeItem::This(Type const&value, int depth)
 {
-    return new ThisCode(value);
+    if(value.size == 0)
+        return Const(BitsConst::Empty());
+    return new ThisCode(value, depth);
 };
 
 Ref<CodeItem, true> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
+    bool Trace = arg.Trace;
+    md_;
     auto result = ReplaceImpl(arg);
     a_if(result.IsEmpty || result->size == size, Dump + "\n" + result->Dump);
-    return result;
+    return_d(result);
 };
 
 Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
@@ -89,6 +93,14 @@ String const DumpPrintNumberCode::ToCpp(CodeVisitor const& visitor)const
 };
 
 
+p_implementation(TypedCode, Size, size)
+{
+    if(depth > 0)
+        return Size::Address;
+    return type.size;
+}
+
+
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
@@ -97,7 +109,7 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 
 Ref<CodeItem, true> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    return visitor.Arg(type);
+    return visitor.Arg(type, depth);
 };
 
 
@@ -109,7 +121,7 @@ String const ThisCode::ToCpp(CodeVisitor const& visitor)const
 
 Ref<CodeItem, true> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    return visitor.This(type);
+    return visitor.This(type, depth);
 };
 
 

@@ -90,35 +90,48 @@ namespace Reni{
     };
 
 
-    class ArgCode final : public CodeItem {
+    class TypedCode : public CodeItem {
         typedef CodeItem baseType;
-        typedef ArgCode thisType;
+        typedef TypedCode thisType;
     public:
         Type const& type;
-        ArgCode(Type const&type)
-            : type(type) {
+        int const depth;
+        TypedCode(Type const&type, int depth)
+            : type(type)
+            , depth(depth)
+        {
+        }
+    private:
+        p_function(Array<String>,DumpData) override{ return{nd(type),nd(depth)}; };
+        p_function(Size,size) override;
+    };
+
+
+    class ArgCode final : public TypedCode{
+        using baseType = TypedCode;
+        typedef ArgCode thisType;
+    public:
+        ArgCode(Type const&type, int depth)
+            : baseType(type,depth)
+        {
             SetDumpString();
         }
     private:
-        p_function(Array<String>,DumpData) override{ return{nd(type)}; };
-        p_function(Size,size) override{ return type.size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&) const;
     };
 
 
-    class ThisCode final : public CodeItem {
-        typedef CodeItem baseType;
+    class ThisCode final : public TypedCode{
+        using baseType = TypedCode;
         typedef ThisCode thisType;
     public:
-        Type const& type;
-        ThisCode(Type const&type)
-            : type(type) {
+        ThisCode(Type const&type, int depth)
+            : baseType(type, depth)
+        {
             SetDumpString();
         }
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(type)}; };
-        p_function(Size, size) override{ return Size::Address; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&arg) const override;
     };

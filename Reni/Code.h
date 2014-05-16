@@ -27,7 +27,7 @@ namespace Reni
         typedef ReniRuntime::Stack::dataType dataItemType;
         typedef ReniRuntime::Stack::sizeType dataItemSizeType;
     public:
-        static Ref<CodeItem> const Arg(Type const&value);
+        static Ref<CodeItem> const Arg(Type const&value, int depth);
         static Ref<CodeItem> const Const(BitsConst const&value);
         static Ref<CodeItem> const BinaryOperation
             (
@@ -37,7 +37,7 @@ namespace Reni
             NumberType const&right, int rightDepth
             );
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
-        static Ref<CodeItem> const This(Type const&value);
+        static Ref<CodeItem> const This(Type const&value, int depth);
         static Ref<CodeItem> const Reference(Type const&target);
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;

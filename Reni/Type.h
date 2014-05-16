@@ -63,6 +63,7 @@ namespace Reni{
 
         virtual SearchResult const Search(DefineableToken const&token)const;
         WeakRef<NumberType> const CreateNumberType()const;
+        WeakRef<Type> const IndirectType(int depth)const;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };

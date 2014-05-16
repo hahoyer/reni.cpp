@@ -50,16 +50,14 @@ ResultData const InfixFunctionFeature::FunctionResult(
     ExpressionSyntax const& expressionSyntax
     )const 
 {
-    bool Trace = expressionSyntax.ObjectId == 13;
+    bool Trace = expressionSyntax.ObjectId == -13;
     md(context, category, expressionSyntax);
     a_throw_(!expressionSyntax.right.IsEmpty);
     auto thisResult = expressionSyntax.left->GetResultCache(context);
     auto argResult = expressionSyntax.right->GetResultCache(context);
-    d(thisResult);
-    b_if_(Trace);
     auto result = Result(category, *thisResult->type, *argResult->type);
-    d(result);
     ArgVisitor visitor;
+    visitor.Trace = Trace;
     visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
     visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
     return_d(result.Replace(visitor));

@@ -106,6 +106,14 @@ p_implementation(Type, WeakRef<Type>, asFunctionResult)
     md_;
     b_;
     return_d(thisRef);
+}
+
+WeakRef<Type> const Type::IndirectType(int depth) const
+{
+    a_is(depth, >= , 0);
+    if(depth)
+        return IndirectType(depth - 1)->indirectType;
+    return thisRef;
 };
 
 WeakRef<NumberType> const Type::CreateNumberType() const

@@ -22,20 +22,21 @@ p_implementation(ArgVisitor, Array<String>, DumpData){
         ->ToArray;
 };
 
-Ref<CodeItem,true> const ArgVisitor::Arg(Type const&type) const{
+Ref<CodeItem, true> const ArgVisitor::Arg(Type const&type, int depth) const{
     auto result = results.Find(&Tag::expressionArg);
     if(result.IsEmpty)
         return {};
 
+    a_is(depth, == , 0);
     a_is(type, == , *result->type);
     return result->code;
 };
 
-Ref<CodeItem, true> const ArgVisitor::This(Type const&type) const{
+Ref<CodeItem, true> const ArgVisitor::This(Type const&type, int depth) const{
     auto result = results.Find(&Tag::expressionThis);
     if(result.IsEmpty)
         return{};
 
-    a_is(type, == , *result->type);
+    a_is(*type.IndirectType(depth), == , *result->type);
     return result->code;
 };

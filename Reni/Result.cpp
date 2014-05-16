@@ -127,10 +127,12 @@ ResultData const ResultData::operator&(Category const& other) const{
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
     if(!complete.hasCode)
         return *this;
+    bool Trace = arg.Trace;
+    md(arg);
     auto newCode = code->Replace(arg);
     if(newCode.IsEmpty)
-        return *this;
-    return ResultData(size, newCode, type);
+        return_d(*this);
+    return_d(ResultData(size, newCode, type));
 };
 
 p_implementation(ResultData, Array<String>, DumpData){

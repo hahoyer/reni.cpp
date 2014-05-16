@@ -15,8 +15,10 @@ namespace Reni
         typedef DumpableObject baseType;
         typedef ReplaceVisitor thisType;
     public:
-        virtual Ref<CodeItem, true> const Arg(Type const&type)const = 0;
-        virtual Ref<CodeItem, true> const This(Type const&type)const = 0;
+        bool Trace;
+
+        virtual Ref<CodeItem, true> const Arg(Type const&type, int depth)const = 0;
+        virtual Ref<CodeItem, true> const This(Type const&type, int depth)const = 0;
     private:
         p_function(Array<String>,DumpData) override{return {};};
     };
