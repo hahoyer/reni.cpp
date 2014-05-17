@@ -9,6 +9,7 @@
   <ItemGroup>
     <ClInclude Include="BeginEndIterator.h" />
     <ClInclude Include="Constraints.h" />
+    <ClInclude Include="Lambda.h" />
     <ClInclude Include="SetDumpStringQueueEntry.h" />
     <ClInclude Include="MemBox.h" />
     <ClInclude Include="RuntimeChain.h" />
