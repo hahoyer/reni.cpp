@@ -19,18 +19,21 @@ namespace Util{
         static Category const Instance(bool hasSize, bool hasCode, bool hasType);
 
         Category();
+        Category(Category const&other) : thisType(other.hasSize, other.hasCode, other.hasType){}
     private:
         Category(bool hasSize, bool hasCode, bool hasType);
 
     public:
         DefaultAssignmentOperator;
 
-    public:
         p(Category, typed);
+        p(Category, replenished);
         Category const operator|(Category const other)const;
         Category const operator-(Category const other)const;
         bool operator==(Category const other)const;
         bool operator<=(Category const other)const;
+
+        void operator|= (Category const other){ *this = *this | other; }
     private:
         p_function(String, DumpHeader) override{ return ""; }
         p_function(Array<String>, DumpData) override;

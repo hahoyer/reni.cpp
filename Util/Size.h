@@ -11,7 +11,7 @@ namespace Util{
         Size(int value) : value(value){ SetDumpString(); }
         DefaultAssignmentOperator;
         Size const operator+(Size const&other)const{return value + other.value;};
-        Size const operator*(int other)const{ return value *other; };
+        Size const operator*(int other)const{ return value * other; };
         bool const operator==(Size const&other)const{ return value == other.value; };
         bool const operator<(Size const&other)const{return value < other.value;};
         bool const operator<=(Size const&other)const{return value <= other.value;};

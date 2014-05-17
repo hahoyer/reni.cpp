@@ -26,10 +26,27 @@ Category::Category(bool hasSize, bool hasCode, bool hasType)
 
 Category::Category()
     : thisType(false, false, false){
+    SetDumpString();
 }
 
 p_implementation(Category, Category, typed){
     return *this | Type;
+}
+
+p_implementation(Category, Category, replenished){
+    auto result = *this;
+    if(result.hasCode)
+    {
+        result |= Size;
+        //result |= CodeArgs;
+    }
+
+    if(result.hasType)
+        result |= Size;
+
+    //if(result.HasSize)
+        //result |= IsDataLess;
+    return result;
 }
 
 Category const Category::operator|(Category const other)const{
