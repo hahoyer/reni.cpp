@@ -30,7 +30,7 @@ namespace HWLib
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>        const ConvertMany() const;
         CtrlPtr<T>                            const Max      ()const;
-        CtrlPtr<T>                             const Max      (function<bool(T)> selector)const;
+        CtrlPtr<T>                             const Max(function<bool(T)> selector)const;
         CtrlPtr<T>                              const Max      (function<bool(T,T)> isLess)const;
         CtrlRef<thisType>                        const operator+(thisType const& right)const;
         template<typename TOther>
@@ -42,8 +42,9 @@ namespace HWLib
         CtrlRef<thisType>                      const Skip       (int count) const;
         CtrlRef<Enumerable>                   const Sort       (function<bool(T,T)>isLeftSmaller) const;
         T                                    const Stringify  (T const&delimiter)const;
-        CtrlRef<thisType>                   const Take       (int count) const;
-        CtrlRef<thisType>                  const Where      (function<bool(T)> selector)const;
+        T                                   const Sum        ()const;
+        CtrlRef<thisType>                  const Take       (int count) const;
+        CtrlRef<thisType>                 const Where      (function<bool(T)> selector)const;
 
         p(bool,    Any           );
         p(int,      Count         );

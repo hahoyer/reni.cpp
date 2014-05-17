@@ -46,7 +46,7 @@ namespace HWLib{
         static bool EnableSetDumpStringAsync;
         static void SetDumpStringQueueEntryWait();
     private:
-        void SetDumpStringWorker();
+        String const SetDumpStringWorker();
     };
 };
 

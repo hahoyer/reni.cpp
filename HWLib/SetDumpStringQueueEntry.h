@@ -2,6 +2,7 @@
 #include "DumpableObject.h"
 
 #include <mutex>
+#include "System.h"
 
 namespace HWLib{
     class SetDumpStringQueueEntry{
@@ -21,7 +22,7 @@ namespace HWLib{
             , entry({})
             , previous(this)
             , next(this){
-            worker = std::thread(Run);
+           // worker = std::thread(Run);
 
         }
 
@@ -58,11 +59,11 @@ namespace HWLib{
             }
         };
 
-        void Apply()
+        String const Apply()
         {
             auto entry = const_cast<DumpableObject *>(this->entry);
             RemoveWorker(entry->SetDumpStringToDo);
-            entry->SetDumpStringWorker();
+            return entry->SetDumpStringWorker();
         }
 
     public:
@@ -82,20 +83,28 @@ namespace HWLib{
             if(entry.SetDumpStringToDo)
                 return entry.SetDumpStringToDo;
 
-            if(DumpableObject::EnableSetDumpString){
-                const_cast<DumpableObject &>(entry).SetDumpStringWorker();
-                return{};
-            }
-
             return new SetDumpStringQueueEntry(entry);
         };
 
         static void Wait(){
             auto i = 0;
             std::unique_lock<std::recursive_mutex> l(syncer);
+            auto tpms = System::TicksPerSecond() / 1000;
             for(; root->previous != root; i++)
-                root->previous->Apply();
-            //_console_.WriteLine(__FUNCTION__ " " + Dump(i));
+            {
+                auto start = System::Ticks();
+                auto result = root->previous->Apply();
+                auto duration = (System::Ticks() - start) / tpms;
+                if(false)_console_.WriteLine(
+                    __FUNCTION__ " " 
+                    + Dump(i) 
+                    + " " 
+                    + String::Convert(duration)
+                    + " "
+                    + String::Convert(result.Count)
+                    );
+
+            }
         }
     };
 }

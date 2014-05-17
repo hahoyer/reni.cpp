@@ -13,7 +13,7 @@ namespace HWLib
     class String final
     {
         using thisType = String;
-        std::string const _data;
+        std::string _data;
     public:
         String();
         String(char const data);
@@ -44,7 +44,7 @@ namespace HWLib
         char              const operator[](int           count)const;
         bool               const operator==(String const& other)const;
         bool                const operator< (String const& other)const;
-        void                       operator+=(String const& other){ *this = *this + other; };
+        void                       operator+=(String const& other);
         String                const Part    (int           start, int length)const;
         String                 const Part   (int           start)const;
         String                  const Replace(String const& oldValue, String const&newValue)const;
@@ -57,6 +57,7 @@ namespace HWLib
         static String const Convert    (__int64         value, int radix = 10);
         static String const FilePosition(String const&  fileName, int line, int column, String const&flag);
         static String const Surround   (String const&  left, Array<String> const&list, String const&right, int maxCount = 100);
+        static String const Stringify(Enumerable<String> const&list, String const&delimiter);
     };
 
     static String const operator+ (char const*left, String const& right){ return String(left) + right; };

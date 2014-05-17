@@ -356,11 +356,18 @@ inline T const Enumerable<T>::Stringify(T const&delimiter)const
     for (auto element : *this)
     {
         if (useDelimiter)
-            result = result + delimiter;
+            result += delimiter;
         useDelimiter = true;
-        result = result + element;
+        result += element;
     }
     return result;
+}
+
+
+template<>
+inline String const Enumerable<String>::Stringify(String const&delimiter)const
+{
+    return String::Stringify(*this, delimiter);
 }
 
 template<typename T>
@@ -396,6 +403,14 @@ CtrlPtr<T> const Enumerable<T>::Max() const{
     for (auto element : *this)
         if(result.IsEmpty || *result < element)
             result = new T(element);
+    return result;
+};
+
+template<typename T>
+T const Enumerable<T>::Sum() const{
+    T result = 0;
+    for(auto element : *this)
+        result += element;
     return result;
 };
 

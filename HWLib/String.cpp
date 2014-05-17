@@ -30,8 +30,8 @@ String::String(){}
 String const String::FilePosition(String const&fileName, int line, int column, String const&flag){
     return fileName
         + "("
-        + HWLib::Dump(line)
-        + (column ? String(",") + HWLib::Dump(column - 1) : "")
+        + Dump(line)
+        + (column ? String(",") + Dump(column - 1) : "")
         + "): "
         + flag
         + ": ";
@@ -99,8 +99,7 @@ bool const String::operator== (String const& other)const{return _data == (other.
 bool const String::operator< (String const& other)const{return _data < (other._data);}
 
 String const String::operator+ (String const& other)const{
-    auto result = _data + other._data;
-    return result;
+    return _data + other._data;
 }
 
 String const String::operator* (int count)const{
@@ -152,6 +151,38 @@ bool const String::Contains(char const &target, int start)const{
     return false;
 }
 
+String const String::Stringify(Enumerable<String> const& list, String const& delimiter)
+{
+    auto array = list.ToArray;
+
+    auto count = array.Count;
+    if(count == 0)
+        return "";
+    std::string result;
+
+    auto counts =
+        array
+        .Select<int>([](String const&element){return element.Count; })
+        ->ToArray;
+    auto length = counts.Sum();
+    result.reserve(length + (count - 1) * delimiter.Count);
+
+    auto useDelimiter = false;
+    for(auto element : array)
+    {
+        if(useDelimiter)
+            result += delimiter._data;
+        useDelimiter = true;
+        result += element._data;
+    }
+    return result;
+}
+
+void String::operator+=(String const& other)
+{
+    _data += other._data;
+}
+
 bool const String::BeginsWith(String const &target, int start)const{
     for (auto i = 0; i < target.Count; i++)
         if ((*this)[start + i] != target[i])
@@ -168,7 +199,8 @@ bool const String::EndsWith(String const &target)const{
     return Part(delta) == target;
 }
 
-String const String::Replace(String const &oldValue, String const&newValue)const{
+String const String::Replace(String const &oldValue, String const&newValue)const
+{
     auto split = Split(oldValue);
     return split->Stringify(newValue);
 }
@@ -255,14 +287,16 @@ String const String::Convert(bool value){
 };
 
 
-String const String::Surround(String const&left, Array<String> const&list, String const&right, int maxCount){
-    switch (list.Count){
+String const String::Surround(String const&left, Array<String> const&list, String const&right, int maxCount)
+{
+    switch(list.Count){
     case 0:
         return left + right;
     case 1:
-        if (!list[0].Contains('\n') && list[0].Count < maxCount)
-            return left + " " + list[0] +" " + right;
+        if(!list[0].Contains('\n') && list[0].Count < maxCount)
+            return left + " " + list[0] + " " + right;
     };
 
     return left + ("\n" + list.Stringify("\n")).Indent() + "\n" + right;
+
 };

@@ -49,9 +49,10 @@ void DumpableObject::SetDumpStringQueueEntryWait(){
     SetDumpStringQueueEntry::Wait();
 }
 
-void DumpableObject::SetDumpStringWorker(){
+String const DumpableObject::SetDumpStringWorker(){
     dumpString = DumpLong.RawData;
     dumpShortString = DumpShort.RawData;
+    return dumpString;
 }
 
 p_implementation(DumpableObject, String, Dump){
