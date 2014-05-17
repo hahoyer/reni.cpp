@@ -47,10 +47,10 @@ public:
         : FileName(fn), Line(l), Flag(fl), ticks(0), counter(0){
     };
 
-    void Suspend(){ ticks += ::Ticks() - lastTicks; };
-    void Resume(){ lastTicks = ::Ticks(); };
-    void Suspend(__int64 Correction){ ticks += ::Ticks() - lastTicks - Correction; };
-    void Resume(__int64 Correction){ lastTicks = ::Ticks() + Correction; };
+    void Suspend(){ ticks += System::Ticks() - lastTicks; };
+    void Resume(){ lastTicks = System::Ticks(); };
+    void Suspend(__int64 Correction){ ticks += System::Ticks() - lastTicks - Correction; };
+    void Resume(__int64 Correction){ lastTicks = System::Ticks() + Correction; };
     void CalibrationValues(__int64&suspend, __int64&resume)const;
 };
 

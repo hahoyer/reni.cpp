@@ -3,18 +3,9 @@
 #pragma warning (disable : 4201) // C4201 nonstandard extension used : nameless struct/union
 #include "windows.h"
 #pragma warning (default : 4201) // C4201 nonstandard extension used : nameless struct/union
+#include "../HWLib/System.h"
+using namespace  HWLib;
 
-__int64 Ticks(){
-    LARGE_INTEGER x;
-    BOOL rc = ::QueryPerformanceCounter(&x);
-    return x.QuadPart;
-};
-
-__int64 TicksPerSecond(){
-    LARGE_INTEGER x;
-    BOOL rc = ::QueryPerformanceFrequency(&x);
-    return x.QuadPart;
-};
 
 void dumpprint(const char*Text){
     ::OutputDebugString(Text);
@@ -45,7 +36,7 @@ void dumpprint(__int64 x, int Scale, const char*xText){
 
 
 void dumpprinttime(__int64 x, __int64 q){
-    double xx = double(x) / (double(TicksPerSecond())*double(q)*3600.0);
+    double xx = double(x) / (double(System::TicksPerSecond())*double(q)*3600.0);
     if(xx > 10.0){
         dumpprint(int(xx), 0, "h");
         return;

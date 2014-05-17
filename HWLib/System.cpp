@@ -9,7 +9,8 @@ static bool Trace = true;
 using namespace HWLib;
 
 
-String const System::FormatLastErrorMessage(){
+String const System::FormatLastErrorMessage()
+{
     DWORD rc = ::GetLastError();
     char Buffer[3000];
     ::FormatMessage
@@ -24,18 +25,21 @@ String const System::FormatLastErrorMessage(){
     return String::Convert(int(rc)) + ": " + Buffer;
 };
 
-String const System::EnvironmentVariable(String const&key){
+String const System::EnvironmentVariable(String const&key)
+{
     static const int bufferSize = 65535;
     char module[bufferSize];
     auto val = ::GetEnvironmentVariable(key.RawData, module, bufferSize);
     return module;
 }
 
-void System::Sleep(int milliseconds){
+void System::Sleep(int milliseconds)
+{
     ::Sleep(milliseconds);
 }
 
-String const System::ModuleName(unsigned __int64 instructionPointer){
+String const System::ModuleName(unsigned __int64 instructionPointer)
+{
     PVOID instructionAddress = reinterpret_cast<LPVOID>(instructionPointer);
     MEMORY_BASIC_INFORMATION information;
     int rc = ::VirtualQuery(instructionAddress, &information, sizeof(information));
@@ -45,4 +49,19 @@ String const System::ModuleName(unsigned __int64 instructionPointer){
     if(GetModuleFileName(hMod, ModuleName, sizeof(ModuleName)))
         return ModuleName;
     return "";
+};
+
+
+__int64 const System::Ticks()
+{
+    LARGE_INTEGER x;
+    BOOL rc = ::QueryPerformanceCounter(&x);
+    return x.QuadPart;
+};
+
+__int64 const System::TicksPerSecond()
+{
+    LARGE_INTEGER x;
+    BOOL rc = ::QueryPerformanceFrequency(&x);
+    return x.QuadPart;
 };
