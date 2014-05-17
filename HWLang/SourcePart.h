@@ -24,7 +24,6 @@ namespace HWLang{
             , _position(position)
             , _count(count)
         {
-            SetDumpString();
         };
 
         p(bool, IsStart);
