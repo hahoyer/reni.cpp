@@ -50,9 +50,15 @@ namespace Reni
         virtual Ref<Syntax,true> const Replace(SyntaxArgVisitor const&visitor)const;
         virtual void AddTo(SyntaxContainer& syntaxContainer) const;
         Ref<Syntax> const TypeOperator(SourcePart const part) const;
+
+        virtual_p(int, priority) = 0;
+        String const SmartDumpFrame(int priority)const;
     protected:
         virtual ResultData const GetResultData(Context const&context, Category category)const;
+        virtual_p(String, SmartDump) = 0;
         friend class ResultFromSyntaxAndContext;
+    private: 
+        p_function(Array<String>, DumpData) override final;
     };
 
     
@@ -75,7 +81,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(Array<String>,DumpData) override;
+        p_function(String,SmartDump) override;
     };
 
 
@@ -93,7 +99,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(Array<String>,DumpData) override;
+        p_function(String, SmartDump) override;
     };
 
     
@@ -111,7 +117,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(Array<String>,DumpData) override;
+        p_function(String, SmartDump) override;
     };
 
 

@@ -15,12 +15,12 @@ IfThenSyntax::IfThenSyntax(Ref<Syntax> const condition, SourcePart const part, R
     SetDumpString();
 };
 
-p_implementation(IfThenSyntax, Array<String>, DumpData)
+p_implementation(IfThenSyntax, String, SmartDump)
 {
-    return{
-        nd(condition),
-        nd(thenClause)
-    };
+    return
+        condition->SmartDumpFrame(priority)
+        + " then "
+        + thenClause->SmartDumpFrame(priority);
 };
 
 ResultData const IfThenSyntax::GetResultData(Context const&context, Category category)const
@@ -48,18 +48,28 @@ IfThenElseSyntax::IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> cons
     SetDumpString();
 };
 
-p_implementation(IfThenElseSyntax, Array<String>, DumpData)
+p_implementation(IfThenElseSyntax, String, SmartDump)
 {
-    return{
-        nd(condition),
-        nd(thenClause),
-        nd(elseClause)
-    };
+    return
+        condition->SmartDumpFrame(priority)
+        + " then "
+        + thenClause->SmartDumpFrame(priority)
+        + " else "
+        + elseClause->SmartDumpFrame(priority);
 };
 
 ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category category)const
 {
-    if(category == Category::Type){
+    if(category == Category::None)
+    {
+        auto thenType = thenClause->Type(context);
+        auto elseType = elseClause->Type(context);
+        md(thenType, elseType);
+        b_;
+    }
+
+    if(category == Category::Type)
+    {
         auto thenType = thenClause->Type(context);
         auto elseType = elseClause->Type(context);
         md(thenType, elseType);
@@ -71,7 +81,8 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
     return{};
 }
 
-Ref<Syntax, true> const IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+Ref<Syntax, true> const IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const
+{
     auto newLeft = condition->Replace(visitor);
     auto newRight = thenClause->Replace(visitor);
     auto newElse= elseClause->Replace(visitor);

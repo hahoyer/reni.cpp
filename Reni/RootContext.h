@@ -9,8 +9,8 @@ namespace Reni{
     class VoidType;
     class Global;
 
-    class RootContext : public Context{
-        typedef Context baseType;
+    class RootContext : public RegularContext{
+        typedef RegularContext baseType;
         typedef RootContext thisType;
         class internal;
         CtrlRef<internal> _internal;

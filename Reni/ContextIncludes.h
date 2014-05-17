@@ -56,9 +56,9 @@ namespace Reni{
 
     class FunctionCallResultCache;
 
-    class ContainerContext final : public Context, public RefCountProvider{
+    class ContainerContext final : public RegularContext, public RefCountProvider{
         typedef ContainerContext thisType;
-        typedef Context baseType;
+        typedef RegularContext baseType;
 
         FunctionCache<Ref<FunctionCallResultCache>, Type const*, Syntax const*> functionCallResultCache;
         FunctionCache<Ref<Feature>, int> accessFeature;

@@ -22,12 +22,16 @@ namespace Reni{
 
         ThisRef;
     private:
-        p_function(Array<String>, DumpData)override {
-            return{
-                nd(setter),
-                nd(getter)
-            };
+        p_function(String, SmartDump)override {
+            String result;
+            if(!setter.IsEmpty)
+                result += setter->SmartDumpFrame(priority);
+            result += " /\\ ";
+            if(!getter.IsEmpty)
+                result += getter->SmartDumpFrame(priority);
+            return result;
         }
+        p_function(int, priority) override{ return 0; }
 
         ResultData const GetResultData(Context const& context, Category category) const override{
             return context.FunctionType(*this)->GetResultData();

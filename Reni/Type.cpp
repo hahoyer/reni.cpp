@@ -29,6 +29,7 @@ struct Type::internal
     ValueCache<WeakRef<NumberType>> number;
     ValueCache<WeakRef<TypeType>> type;
     ValueCache<WeakRef<AddressType>> indirect;
+    ValueCache<WeakRef<EnableCutType>> enableCut;
 
     explicit internal(Type const&parent)
         : array([&](int count)
@@ -45,7 +46,11 @@ struct Type::internal
               })
           , type([&]
               {
-                  return new TypeType(parent.thisRef);
+                  return new TypeType(*parent.dereferencedType);
+              })
+          , enableCut([&]
+              {
+                  return new EnableCutType(parent.thisRef);
               })
     {
     };
@@ -60,6 +65,8 @@ pure_p_implementation(Type, Size, size) ;
 pure_p_implementation(Type, WeakRef<Global>, global) ;
 pure_p_implementation(Type, WeakRef<Type>, asFunctionResult) ;
 pure_p_implementation(Type, int, addressLevel);
+pure_p_implementation(Type, bool, isTypeTarget);
+pure_p_implementation(Type, WeakRef<Type>, dereferencedType);
 
 ResultData const Type::GetResultData(Ref<CodeItem> code)const
 {
@@ -101,11 +108,24 @@ p_implementation(Type, WeakRef<AddressType>, indirectType)
     return &_internal->indirect.Value->thisRef;
 };
 
+p_implementation(Type, WeakRef<EnableCutType>, enableCutType)
+{
+    return &_internal->enableCut.Value->thisRef;
+};
+
 p_implementation(Type, WeakRef<Type>, asFunctionResult)
 {
     md_;
     b_;
     return_d(thisRef);
+}
+
+ResultData const Type::Constructor(Category category, Type const& arg) const
+{
+    bool Trace = true;
+    md(category, arg);
+    b_;
+    return_d(ResultData());
 }
 
 WeakRef<Type> const Type::IndirectType(int depth) const
@@ -149,12 +169,24 @@ SearchResult const Type::Search(DefineableToken const&token) const
 
 SearchResult const AddressType::Search(DefineableToken const& token) const
 {
-    auto result = value->Search(token);
+    auto result = value.Search(token);
     if(result.IsValid)
         return result;
     return {};
 };
 
+
+WeakPtr<TypeType> const TypeType::Convert(Type const& target)
+{
+    return dynamic_cast<TypeType*>(&target.thisRef);
+}
+
+TypeType::TypeType(Type const& value) 
+    : value(value.thisRef)
+{
+    SetDumpString();
+    a_if_(value.isTypeTarget);
+}
 
 SearchResult const TypeType::Search(DefineableToken const& token) const
 {
@@ -176,10 +208,10 @@ public:
 private:
     ResultData const Result(Category category, Type const&target, Type const&arg)const override
     {
-        bool Trace = true;
-        md(category, target, arg);
-        b_;
-        return{};
+        auto targetType = TypeType::Convert(target)->value;
+        if(category <= Category::Type.replenished)
+            return targetType->thisRef;
+        return targetType->Constructor(category, arg);
     }
 
     p_function(Array<String>, DumpData) override{ return{nd(target)}; }

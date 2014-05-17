@@ -8,15 +8,22 @@ namespace Reni
         typedef Type baseType;
         typedef AddressType thisType;
     public:
-        WeakRef<Type> value;
+        Type const& value;
 
-        AddressType(WeakRef<Type> value) : value(value){ SetDumpString(); }
+        AddressType(Type const& value) : value(value)
+        {
+            SetDumpString();
+            a_if_(this->value.size.value);
+        }
         ThisRef;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(value)}; };
         p_function(Size, size) override{ return Size::Address; }
-        p_function(WeakRef<Global>, global) override{ return value->global; }
-        p_function(int, addressLevel) override{ return value->addressLevel + 1; }
+        p_function(WeakRef<Global>, global) override{ return value.global; }
+        p_function(int, addressLevel) override{ return value.addressLevel + 1; }
+        p_function(bool, isTypeTarget) override{ return false; };
+        p_function(WeakRef<Type>, dereferencedType)override{ return value.dereferencedType; };
+
         SearchResult const Search(DefineableToken const& token) const override;
     };
 };

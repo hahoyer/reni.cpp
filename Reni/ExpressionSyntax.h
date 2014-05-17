@@ -17,7 +17,8 @@ namespace Reni
         Ref<Syntax, true> const right;
         ExpressionSyntax(DefineableToken const& tokenClass, Ref<Syntax, true > const left, SourcePart const part, Ref<Syntax, true > const right);
     private:
-        p_function(Array<String>,DumpData) override;
+        p_function(String, SmartDump) override;
+        p_function(int, priority) override;
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
         virtual Ref<Syntax, true> const Replace(SyntaxArgVisitor const&) const override;
         void AddTo(SyntaxContainer&) const override;

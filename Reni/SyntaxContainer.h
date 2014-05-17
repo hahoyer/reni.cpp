@@ -21,7 +21,8 @@ namespace Reni{
 
         void Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const&value);
     private:
-        p_function(Array<String>, DumpData) override;
+        p_function(String, SmartDump) override;
+        p_function(int, priority) override{ return -12; }
         void AddTo(SyntaxContainer&) const override;
         ResultData const GetResultData(Context const& context, Category category) const override;
         Ref<CodeItem> const GetCode(Context const& context) const;

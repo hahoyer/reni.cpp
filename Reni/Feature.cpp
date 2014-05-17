@@ -63,3 +63,33 @@ ResultData const InfixFunctionFeature::FunctionResult(
     return_d(result.Replace(visitor));
 };
 
+
+ResultData const SuffixFunctionFeature::FunctionResult(
+    Context const&context,
+    Category category,
+    ExpressionSyntax const& expressionSyntax
+    )const
+{
+    bool Trace = expressionSyntax.ObjectId == -13;
+    md(context, category, expressionSyntax);
+    a_throw_(expressionSyntax.right.IsEmpty);
+    auto thisResult = expressionSyntax.left->GetResultCache(context);
+    auto result = Result(category, *thisResult->type);
+    ArgVisitor visitor;
+    visitor.Trace = Trace;
+    visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
+    return_d(result.Replace(visitor));
+};
+
+
+ResultData const EnableCutFeature::Result(Category category, Type const&target)const 
+{
+    return target
+        .enableCutType
+        ->GetResultData(CodeItem::This(target, 0));
+
+    bool Trace = true;
+    md(category, target);
+    b_;
+    return{};
+}

@@ -16,6 +16,7 @@
 #include "SyntaxVisitor.h"
 #include "SyntaxContainer.h"
 #include "../HWLib/RefCountContainer.instance.h"
+#include "UserDefinedToken.h"
 
 
 bool Trace = true;
@@ -141,6 +142,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new ArgToken);
     AddTokenClass(new Colon);
     AddTokenClass(new DumpPrintToken);
+    AddTokenClass(new EnableCutToken);
     AddTokenClass(new ElseToken);
     AddTokenClass(new FunctionToken);
     AddTokenClass(new InstanceToken);

@@ -22,6 +22,7 @@ namespace Reni
     public:
         virtual SearchResult const Search(TypeType const&) const{return{};}
         virtual SearchResult const Search(NumberType const&target) const;
+        virtual_p(int, priority) { return 0; };
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override
         {

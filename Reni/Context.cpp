@@ -14,6 +14,35 @@
 using namespace Reni;
 static bool Trace = true;
 
+
+namespace Reni
+{
+    class RecursionContext final : public Context
+    {
+        using baseType = Context; 
+        using thisType = RecursionContext;
+
+        RegularContext const&parent;
+    public:
+        RecursionContext(RegularContext const&parent) : parent(parent)
+        {
+            SetDumpString();
+        }
+        ThisRef;
+    private:
+        p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
+        p_function(WeakRef<Global>, global) override{ return parent.global; };
+        p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
+        p_function(bool, isRecursion) override{ return true; };
+
+        WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
+        WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const override;
+        SearchResult const Search(DefineableToken const& token) const override;
+    };
+
+}
+
+
 ResultData const DefinableTokenFeatureProvider::Feature::FunctionResult(Context const& context, Category category, Ref<Syntax, true> const& right) const
 {
     md(context, category, right);
@@ -22,12 +51,13 @@ ResultData const DefinableTokenFeatureProvider::Feature::FunctionResult(Context 
 }
 
 
-struct Context::internal final
+struct RegularContext::internal final
 {
     FunctionCache<Ref<ContainerContext>, SyntaxContainer const*, int> container;
     FunctionCache<WeakRef<Reni::FunctionType>, FunctionSyntax const*> functionType;
+    ValueCache<WeakRef<RecursionContext>> recursionContext;
 
-    internal(Context const&context)
+    internal(RegularContext const&context)
         : container([&](SyntaxContainer const*containerData, int index)
               {
                   return new ContainerContext(context, *containerData, index);
@@ -36,17 +66,19 @@ struct Context::internal final
               {
                   return new Reni::FunctionType(context, *body);
               })
+                  , recursionContext(l_(new RecursionContext(context)))
     {
     };
 };
 
 
-Context::Context()
+RegularContext::RegularContext()
     :_internal(new internal(*this))
 {
 }
 
-pure_p_implementation(Context, WeakRef<Global>, global) ;
+pure_p_implementation(Context, bool, isRecursion);
+pure_p_implementation(Context, WeakRef<Global>, global);
 pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
 
 SearchResult const Context::Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const
@@ -60,25 +92,30 @@ SearchResult const Context::Search(Ref<Syntax, true> const&left, DefineableToken
         .Search(tokenClass);
 }
 
-Context::operator Ref<ContextFeatureProvider<MinusToken>, true>() const
+p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
+{
+    return _internal->recursionContext.Value;
+}
+
+RegularContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const
 {
     md_;
     mb;
 }
 
-Context::operator Ref<ContextFeatureProvider<DefineableToken>, true>() const
+RegularContext::operator Ref<ContextFeatureProvider<DefineableToken>, true>() const
 {
     md_;
     mb;
 }
 
-WeakRef<Context> const Context::Container(SyntaxContainer const& syntax, int index) const
+WeakRef<Context> const RegularContext::Container(SyntaxContainer const& syntax, int index) const
 {
     return _internal->container(&syntax, index)->thisRef;
 }
 
 
-WeakRef<Type> const Context::FunctionType(FunctionSyntax const& body) const
+WeakRef<Type> const RegularContext::FunctionType(FunctionSyntax const& body) const
 {
     return _internal->functionType(&body)->thisRef;
 }
@@ -152,6 +189,16 @@ Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type con
 
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
+    if(category == Category::None)
+    {
+        a_if(pending == Category::Type, Dump);
+        a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
+        auto& fs = dynamic_cast<FunctionSyntax const&>(body);
+        a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
+        a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+        return *fs.getter->Type(*context.recursionContext)->asFunctionResult;
+    }                                   
+
     if(category == Category::Type)
     {
         a_if(!args.IsEmpty, "NotImpl: no arg "+Dump);
@@ -166,7 +213,6 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     b_;
     return{};
 }
-
 
 p_implementation(FunctionCallContext, WeakRef<Global>, global)
 {
@@ -193,3 +239,21 @@ ResultData const FunctionCallContext::CreateArgReferenceResult(Category category
         )
         & category;
 };
+
+
+WeakRef<Type> const RecursionContext::FunctionType(FunctionSyntax const& body) const
+{
+    md(body);
+    mb;
+}
+
+WeakRef<Context> const RecursionContext::Container(SyntaxContainer const& syntax, int index) const
+{
+    md(syntax, index);
+    mb;
+}
+
+SearchResult const RecursionContext::Search(DefineableToken const& token) const
+{
+    return parent.Search(token);
+}

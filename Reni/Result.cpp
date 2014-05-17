@@ -51,12 +51,18 @@ void ResultCache::Ensure(Category category)const{
     if(todo == Category::None)
         return;
     auto newTodo = todo - pending;
-    a_if(newTodo != Category::None, nd(category) + nd(complete) + nd(pending));
-    LevelValue<Category>(pending, pending | newTodo);
-    
+    LevelValue<Category> localPending(pending, pending | newTodo);
+
+    if(newTodo == Category::None)
+    {
+        a_if(todo == Category::Type, nd(category) + nd(complete) + nd(pending));
+        a_if(pending == Category::Type, nd(category) + nd(complete) + nd(pending));
+    }
+
     data = data + GetResultData(newTodo);
-    
-    a_if(category <= complete, nd(category) + nd(complete) + nd(pending));
+
+    if(!(category <= complete))
+        a_if(category <= complete, nd(category) + nd(complete) + nd(pending));
     thisRef.SetDumpString();
 }
 
@@ -94,7 +100,7 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 }
 
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const{
-    a_if_(category != Category::None);
+    a_if_(category != Category::None || context.isRecursion);
     bool Trace = syntax.ObjectId == -11;
     md(category);
     b_if_(Trace);

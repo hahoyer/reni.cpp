@@ -41,9 +41,10 @@ namespace Reni{
                     return baseType::ParenthesisMatch(level, part);
                 return right;
             };
-            p_function(Array<String>,DumpData) override{
-                return{nd(level), nd(right)};
+            p_function(String, SmartDump) override{
+                return nd(right);
             }
+            p_function(int, priority) override{ return 0; }
         };
     };
 

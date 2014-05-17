@@ -29,6 +29,7 @@ namespace Reni{
     class TypeType;
     class ContextReference;
     class FunctionToken;
+    class EnableCutType;
 
     template<typename T, typename ...> class FeatureProvider;
 
@@ -49,17 +50,21 @@ namespace Reni{
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(int, addressLevel) { return 0; };
+        virtual_p(bool, isTypeTarget) { return true; };
+        virtual_p(WeakRef<Type>, dereferencedType) { return thisRef; };
 
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
         p(WeakRef<TypeType>, typeType);
         p(WeakRef<AddressType>, indirectType);
+        p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
 
         ResultData const GetResultData(Ref<CodeItem> code)const;
         ResultData const GetResultData(Category category, std::function<Ref<CodeItem>()> getCode)const;
         ResultData const GetResultData()const;
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
+        ResultData const Constructor(Category category, Type const&arg)const;
 
         virtual SearchResult const Search(DefineableToken const&token)const;
         WeakRef<NumberType> const CreateNumberType()const;
@@ -67,4 +72,20 @@ namespace Reni{
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };
+
+
+    class EnableCutType final : public Type
+    {
+        typedef Type baseType;
+        typedef EnableCutType thisType;
+    public:
+        WeakRef<Type> value;
+        EnableCutType(WeakRef<Type> value) : value(value){ SetDumpString(); }
+        ThisRef;
+    private:
+        p_function(Array<String>, DumpData) override{ return{nd(*value)}; };
+        p_function(Size, size) override{ return value->size; }
+        p_function(WeakRef<Global>, global) override{ return value->global; }
+    };
+
 }

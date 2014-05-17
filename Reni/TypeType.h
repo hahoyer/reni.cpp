@@ -16,15 +16,16 @@ namespace Reni
     {
         typedef Type baseType;
         typedef TypeType thisType;
-        WeakRef<Type> value;
     public:
-        TypeType(WeakRef<Type> value) : value(value){ SetDumpString(); }
+        WeakRef<Type> value;
+        TypeType(Type const& value);
         ThisRef;
 
         template<class TTokenClass>
         SearchResult const Search() const;
+        static WeakPtr<TypeType> const Convert(Type const&target);
     private:
-        p_function(Array<String>, DumpData) override{return{ nd(value) };};
+        p_function(Array<String>, DumpData) override{return{ nd(*value) };};
         p_function(Size, size) override{return 0;}
         p_function(WeakRef<Global>, global) override{return value->global;}
         SearchResult const Search(DefineableToken const& token) const override;

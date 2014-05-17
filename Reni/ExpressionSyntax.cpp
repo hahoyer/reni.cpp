@@ -18,14 +18,15 @@ ExpressionSyntax::ExpressionSyntax(DefineableToken const& tokenClass, Ref<Syntax
     SetDumpString();
 };
 
-p_implementation(ExpressionSyntax, Array<String>, DumpData)
+p_implementation(ExpressionSyntax, String, SmartDump)
 {
-    return{
-        nd(left),
-        nd(tokenClass),
-        nd(right)
-    };
+    return
+        (left.IsEmpty? "" : (left->SmartDumpFrame(priority)+ " "))
+        + tokenClass.name
+        + (right.IsEmpty?"":(" "+ right->SmartDumpFrame(priority)));
 };
+
+p_implementation(ExpressionSyntax, int, priority) { return tokenClass.priority; };
 
 ResultData const ExpressionSyntax::GetResultData(Context const&context, Category category)const
 {

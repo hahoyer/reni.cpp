@@ -9,8 +9,9 @@ using namespace HWLib;
 namespace Reni{
     class ContainerContext;
 
-    class FunctionCallContext final : public Context{
-        typedef Context baseType; typedef FunctionCallContext thisType;
+    class FunctionCallContext final : public RegularContext{
+        typedef RegularContext baseType; 
+        typedef FunctionCallContext thisType;
     public:
         ContainerContext const& container;
         WeakRef<Type const> const args;
@@ -25,7 +26,6 @@ namespace Reni{
         p(WeakRef<Type>, objectType);
 
         SearchResult const Search(DefineableToken const&token) const override;
-
     };
 
 };

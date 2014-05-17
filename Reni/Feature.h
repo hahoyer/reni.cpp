@@ -45,5 +45,28 @@ namespace Reni{
     protected: 
         virtual ResultData const Result(Category category, Type const&target, Type const&arg) const = 0;
     };
+
+
+    class SuffixFunctionFeature : public Feature
+    {
+        using baseType = Feature;
+        using thisType = SuffixFunctionFeature;
+
+        ResultData const FunctionResult(
+            Context const&context,
+            Category category,
+            ExpressionSyntax const& expressionSyntax
+            )const override;
+
+    protected:
+        virtual ResultData const Result(Category category, Type const&target) const = 0;
+    };
+
+    class EnableCutFeature final : public SuffixFunctionFeature
+    {
+        using baseType = InfixFunctionFeature;
+        using thisType = EnableCutFeature;
+        ResultData const Result(Category category, Type const&target)const override;
+    };
 }
                                                                     

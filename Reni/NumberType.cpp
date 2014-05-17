@@ -32,13 +32,13 @@ p_implementation(NumberType, Array<String>, DumpData){
     return{nd(parent)};
 };
 
-NumberType const* NumberType::Convert(Type const& target)
+WeakPtr<NumberType> const NumberType::Convert(Type const& target)
 {
     auto addressType = dynamic_cast<AddressType const*>(&target);
     if(addressType)
-        return Convert(*addressType->value);
+        return Convert(addressType->value);
     
-    return dynamic_cast<NumberType const*>(&target);
+    return dynamic_cast<NumberType *>(&target.thisRef);
 }
 
 p_implementation(NumberType, String, DumpShort){

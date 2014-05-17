@@ -15,15 +15,15 @@ SyntaxContainer::SyntaxContainer(SourcePart const&part) : baseType(part){
     SetDumpString();
 }
 
-p_implementation(SyntaxContainer, Array<String>, DumpData){
-    return _({nd(statements)})  +
+p_implementation(SyntaxContainer, String, SmartDump){
+    return( _({nd(statements)})  +
         names
             .keys
             .Select<String>([&](DefineableToken const*key)
         {
             return key->name + ": " + HWLib::Dump(names[key]);
-        })
-            ->ToArray;
+    })
+        ->ToArray).Stringify(";");
 }
 
 void SyntaxContainer::AddTo(SyntaxContainer&main) const{

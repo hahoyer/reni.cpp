@@ -21,24 +21,42 @@ namespace Reni{
     class SyntaxContainer;
     class DefineableToken;
     class FunctionCallContext;
+    class RecursionContext;
 
     class Context
         : public WithId<DumpableObject, Context>{
         using baseType = WithId<DumpableObject, Context>;
         using thisType = Context;
 
+    public:
+        virtual_p(bool, isRecursion) { return false; };
+        virtual_p(WeakRef<Global>, global) = 0;
+        virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
+
+        SearchResult const Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const;
+        virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
+        ResultData ArgReferenceResult(Category category) const;
+        virtual SearchResult const Search(DefineableToken const&token)const;
+        virtual WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const = 0;
+    };
+
+    class RegularContext: public Context
+    {
+        using baseType = Context;
+        using thisType = RegularContext;
+
         class internal;
         WeakRef<internal> _internal;
     public:
-        Context();
-        virtual_p(WeakRef<Global>, global) = 0;
-        virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
-        SearchResult const Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const;
+        RegularContext();
+
+        p(WeakRef<RecursionContext>, recursionContext);
+
+        WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const override;
+        WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
 
         virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;
         virtual operator Ref<ContextFeatureProvider<DefineableToken>, true>()const;
-        WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const;
-        WeakRef<Type> const FunctionType(FunctionSyntax const& body) const;
 
         template<class T>
         SearchResult const GetGenericDefinition()const{
@@ -47,8 +65,6 @@ namespace Reni{
             return *ff;
         };
 
-        virtual SearchResult const Search(DefineableToken const&token)const;
-        ResultData ArgReferenceResult(Category category) const;
     };
 }
 
