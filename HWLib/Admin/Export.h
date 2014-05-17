@@ -16,6 +16,7 @@
 #include "../String.h"
 #include "../FunctionCache.h"
 #include "../initializer_list.h"
+#include "../Lambda.h"
 #include "../LevelValue.h"
 #include "../Map.h"
 #include "../Optional.h"
