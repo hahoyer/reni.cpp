@@ -3,7 +3,6 @@
 
 #include "BitType.h"
 #include "Result.h"
-#include "FeatureProvider.h"
 #include "TokenClass.h"
 #include "../HWLib/RefCountContainer.instance.h"
 

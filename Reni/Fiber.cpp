@@ -3,7 +3,6 @@
 
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../Util/BitsConst.h"
-#include "FeatureProvider.h"
 #include "Result.h"
 #include "ReplaceVisitor.h"
 

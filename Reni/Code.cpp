@@ -3,7 +3,6 @@
 
 #include "CodeItems.h"
 #include "CodeVisitor.h"
-#include "FeatureProvider.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
 #include "Result.h"

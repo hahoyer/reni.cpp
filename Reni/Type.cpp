@@ -7,7 +7,6 @@
 #include "Code.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
-#include "FeatureProvider.h"
 #include "NumberType.h"
 #include "Result.h"
 #include "TemplateInstances.h"
@@ -115,9 +114,22 @@ p_implementation(Type, WeakRef<EnableCutType>, enableCutType)
 
 p_implementation(Type, WeakRef<Type>, asFunctionResult)
 {
-    md_;
-    b_;
-    return_d(thisRef);
+    return(thisRef);
+}
+
+bool const Type::isConvertableTo(Type const& other) const
+{
+    return Search(other).IsValid;
+}
+
+WeakRef<Type> const Type::Common(Type const& other) const
+{
+    if(other.isConvertableTo(*this))
+        return thisRef;
+    if(isConvertableTo(other))
+        return other.thisRef;
+    md(other);
+    mb;
 }
 
 ResultData const Type::Constructor(Category category, Type const& arg) const
@@ -158,10 +170,18 @@ ResultData const Type::ContextAccessResult(Category category, Type const& target
          });
 };
 
-SearchResult const Type::Search(DefineableToken const&token) const
+SearchResult const Type::Search(Type const& target) const
 {
     bool Trace = true;
-    md(token);
+    md(target);
+    b_;
+    return_d(SearchResult());
+}
+
+SearchResult const Type::Search(DefineableToken const&target) const
+{
+    bool Trace = true;
+    md(target);
     b_;
     return_d(SearchResult());
 };

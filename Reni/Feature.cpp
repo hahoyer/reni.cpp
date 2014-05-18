@@ -55,7 +55,7 @@ ResultData const InfixFunctionFeature::FunctionResult(
     a_throw_(!expressionSyntax.right.IsEmpty);
     auto thisResult = expressionSyntax.left->GetResultCache(context);
     auto argResult = expressionSyntax.right->GetResultCache(context);
-    auto result = Result(category, *thisResult->type, *argResult->type);
+    auto result = Result(category, *thisResult->type, *argResult->type) & category;
     ArgVisitor visitor;
     visitor.Trace = Trace;
     visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
@@ -74,7 +74,7 @@ ResultData const SuffixFunctionFeature::FunctionResult(
     md(context, category, expressionSyntax);
     a_throw_(expressionSyntax.right.IsEmpty);
     auto thisResult = expressionSyntax.left->GetResultCache(context);
-    auto result = Result(category, *thisResult->type);
+    auto result = Result(category, *thisResult->type) & category;
     ArgVisitor visitor;
     visitor.Trace = Trace;
     visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);

@@ -31,8 +31,6 @@ namespace Reni{
     class FunctionToken;
     class EnableCutType;
 
-    template<typename T, typename ...> class FeatureProvider;
-
     class Type
         : public WithId<DumpableObject, Type>{
         using baseType = WithId<DumpableObject, Type>;
@@ -66,11 +64,15 @@ namespace Reni{
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
         ResultData const Constructor(Category category, Type const&arg)const;
 
-        virtual SearchResult const Search(DefineableToken const&token)const;
+        virtual SearchResult const Search(DefineableToken const&target)const;
+        virtual SearchResult const Search(Type const& target)const;
         WeakRef<NumberType> const CreateNumberType()const;
         WeakRef<Type> const IndirectType(int depth)const;
+        WeakRef<Type> const Common(Type const&other)const;
+        bool const isConvertableTo(Type const&other)const;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
+
     };
 
 

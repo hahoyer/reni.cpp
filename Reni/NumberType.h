@@ -4,7 +4,6 @@
 
 #include "DumpPrintToken.h"
 #include "Feature.h"
-#include "FeatureProvider.h"
 #include "Result.h"
 #include "Type.h"
 #include <complex>
@@ -22,7 +21,7 @@ namespace Reni
         typedef NumberType thisType;
         ArrayType const& parent;
     public:
-        NumberType(WeakRef<ArrayType> const parent);
+        explicit NumberType(WeakRef<ArrayType> const parent);
         NumberType(NumberType const&) = delete;
         ThisRef;
 

@@ -47,9 +47,12 @@ namespace Reni{
 
         class internal;
         WeakRef<internal> _internal;
-    public:
+
+        RegularContext(RegularContext const&) = delete;
+    protected:
         RegularContext();
 
+    public:
         p(WeakRef<RecursionContext>, recursionContext);
 
         WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const override;
@@ -65,6 +68,27 @@ namespace Reni{
             return *ff;
         };
 
+    };
+
+    class ChildContext : public RegularContext
+    {
+        using baseType = RegularContext;
+        using thisType = ChildContext;
+
+        explicit ChildContext(ChildContext const&) = delete;
+    protected:
+        RegularContext const&parent;
+
+        ChildContext(RegularContext const& parent)
+            : parent(parent)
+        {
+        }
+
+        p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
+        SearchResult const Search(DefineableToken const& token) const override{ return parent.Search(token); };
+    private:
+        p_function(WeakRef<Global>, global) override{ return parent.global; };
+        p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
     };
 }
 

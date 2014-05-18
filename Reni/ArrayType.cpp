@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "ArrayType.h"
 
-#include "FeatureProvider.h"
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;

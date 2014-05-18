@@ -4,6 +4,7 @@
 #include "ArgVisitor.h"
 #include "Code.h"
 #include "Context.h"
+#include "RecursionContext.h"
 #include "Syntax.h"
 #include "..\HWLib\LevelValue.h"
 #include "..\HWLib\DumpMacros.h"
@@ -61,31 +62,42 @@ void ResultCache::Ensure(Category category)const{
 
     data = data + GetResultData(newTodo);
 
-    if(!(category <= complete))
-        a_if(category <= complete, nd(category) + nd(complete) + nd(pending));
+    a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
     thisRef.SetDumpString();
 }
 
-p_implementation(ResultCache, Category, complete){
+pure_p_implementation(ResultCache, bool, isRecursion);
+
+p_implementation(ResultCache, Category, complete)
+{
     return data.complete;
 }
 
-p_implementation(ResultCache, Size, size){
+p_implementation(ResultCache, Size, size)
+{
     Ensure(Category::Size);
     return data.size;
 }
 
-p_implementation(ResultCache, Ref<CodeItem>, code){
+p_implementation(ResultCache, Ref<CodeItem>, code)
+{
     Ensure(Category::Code);
     return data.code;
 }
 
-p_implementation(ResultCache, WeakRef<Type>, type){
+p_implementation(ResultCache, WeakRef<Type>, type)
+{
     Ensure(Category::Type);
     return data.type;
 }
 
-p_implementation(ResultCache, Array<String>, DumpData){
+p_implementation(ResultCache, WeakPtr<Type>, cachedType)
+{
+    return data.type;
+}
+
+p_implementation(ResultCache, Array<String>, DumpData)
+{
     return{
         nd(pending),
         nd(data)
@@ -116,6 +128,11 @@ p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
     });
     return baseDump + thisDump;
 };
+
+p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
+{
+    return !!dynamic_cast<RecursionContext const*>(&context);
+}
 
 ResultData const ResultData::operator+(ResultData const& other) const{
     return ResultData(size || other.size, code || other.code, type || other.type);

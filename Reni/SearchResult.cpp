@@ -4,7 +4,6 @@
 #include "Context.h"
 #include "ExpressionSyntax.h"
 #include "Feature.h"
-#include "FeatureProvider.h"
 
 static bool Trace = true;
 

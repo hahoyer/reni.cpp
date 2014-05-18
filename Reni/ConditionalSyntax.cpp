@@ -2,6 +2,7 @@
 #include "ConditionalSyntax.h"
 
 #include "Feature.h"
+#include "RecursionContext.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -60,20 +61,24 @@ p_implementation(IfThenElseSyntax, String, SmartDump)
 
 ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category category)const
 {
-    if(category == Category::None)
+    auto recursionContext = dynamic_cast<RecursionContext const*>(&context);
+    if(recursionContext)
     {
-        auto thenType = thenClause->Type(context);
-        auto elseType = elseClause->Type(context);
-        md(thenType, elseType);
+        a_is(category, ==, Category::Type);
+        auto thenType = recursionContext->CachedType(*thenClause);
+        auto elseType = recursionContext->CachedType(*elseClause);
+        if(thenType.IsEmpty != elseType.IsEmpty)
+            return *(thenType || elseType);
+        md(context, category);
         b_;
+        return{};
     }
 
     if(category == Category::Type)
     {
         auto thenType = thenClause->Type(context);
         auto elseType = elseClause->Type(context);
-        md(thenType, elseType);
-        b_;
+        return *thenType->Common(*elseType);
     }
 
     md(context, category);

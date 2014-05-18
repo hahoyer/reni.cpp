@@ -10,12 +10,13 @@ namespace Reni
 {
     class CodeItem;
     class Context;
-    class ResultFromSyntaxAndContext;
+    class RegularContext;
     class ResultCache;
-    class TokenClass;
-    class Type;
+    class ResultFromSyntaxAndContext;
     class SyntaxArgVisitor;
     class SyntaxContainer;
+    class TokenClass;
+    class Type;
 
     class Syntax 
         : public WithId<DumpableObject, Syntax>
@@ -40,6 +41,8 @@ namespace Reni
         };
 
         ThisRef;
+        WeakPtr<Type> const CachedType(RegularContext const& context) const;
+
         Size const Size(Context const&context)const;
         Ref<CodeItem> const Code(Context const&context)const;
         WeakRef<Type>const Type(Context const&context)const;

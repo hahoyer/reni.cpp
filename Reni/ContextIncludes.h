@@ -56,21 +56,20 @@ namespace Reni{
 
     class FunctionCallResultCache;
 
-    class ContainerContext final : public RegularContext, public RefCountProvider{
+    class ContainerContext final : public ChildContext
+    {
         typedef ContainerContext thisType;
-        typedef RegularContext baseType;
+        typedef ChildContext baseType;
 
         FunctionCache<Ref<FunctionCallResultCache>, Type const*, Syntax const*> functionCallResultCache;
         FunctionCache<Ref<Feature>, int> accessFeature;
         ValueCache<WeakRef<Type>> dataTypeCache;
-        Context const& parent;
     public:
         Ref<SyntaxContainer> containerData;
     private:
         int const index;
     public:
-
-        ContainerContext(Context const&parent, SyntaxContainer const&containerData, int index);
+        ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int index);
 
         ContainerContext(ContainerContext const&) = delete;
         ThisRef;
@@ -89,14 +88,12 @@ namespace Reni{
         }
 
     private:
-        p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
-        p_function(WeakRef<Global>, global) override{ return parent.global; }
         p_function(Array<String>, DumpData) override{
-            return{
-                nd(parent),
+            return base_p_name(DumpData) +
+            _({
                 nd(containerData),
                 nd(index)
-            };
+            });
         };
 
         Ref<DefinableTokenFeatureProvider> const token;

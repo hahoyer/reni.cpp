@@ -8,7 +8,6 @@
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "Feature.h"
-#include "FeatureProvider.h"
 #include "Context.h"
 #include "Global.h"
 #include "Result.h"

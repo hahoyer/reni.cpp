@@ -18,8 +18,6 @@ namespace Reni{
     public:
         RootContext();
         ThisRef;
-        operator Ref<ContextFeatureProvider<MinusToken>, true>()const override;
-        operator Ref<ContextFeatureProvider<DefineableToken>, true>()const override;
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ mb; };
         p_function(WeakRef<Global>, global) override{ return _global; };

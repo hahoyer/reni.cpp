@@ -3,7 +3,6 @@
 
 #include "Code.h"
 #include "Context.h"
-#include "FeatureProvider.h"
 #include "Global.h"
 #include "Result.h"
 #include "TokenClass.h"
@@ -86,6 +85,11 @@ String const Syntax::SmartDumpFrame(int priority) const
 Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const {
     Ref<ResultFromSyntaxAndContext> r = resultCache(&context);
     return r;
+}
+
+WeakPtr<Type> const Syntax::CachedType(RegularContext const& context) const
+{
+    return resultCache(&context)->cachedType;
 };
 
 ResultData const Syntax::GetResultData(Context const&context, Category category)const{

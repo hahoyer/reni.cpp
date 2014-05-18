@@ -68,12 +68,14 @@ namespace Reni
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
+        p(WeakPtr<Type>, cachedType);
 
         ResultData const Get(Category category)const;
     private:
         void Ensure(Category category)const;
     protected:
         p_function(Array<String>,DumpData) override;
+        virtual_p(bool, isRecursion) { return false; };
         virtual ResultData const GetResultData(Category category)const = 0;
     private:
         p(Category, complete);
@@ -88,8 +90,10 @@ namespace Reni
         Syntax const& syntax;
         Context const&context;
         ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context);
+
     private:
         p_function(Array<String>,DumpData) override;
+        p_function(bool, isRecursion) override;
         ResultData const GetResultData(Category category)const override;
     };
 
