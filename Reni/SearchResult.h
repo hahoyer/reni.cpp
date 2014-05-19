@@ -9,6 +9,8 @@ namespace Reni{
     class ResultData;
     class Context;
     class Feature;
+    class NumberType;
+    class TypeType;
 
     class SearchResult : public DumpableObject{
         using baseType = DumpableObject;
@@ -21,5 +23,13 @@ namespace Reni{
         p(bool, IsValid);
     private:
         p_function(Array<String>,DumpData) override;
+    };
+
+
+    struct SearchTarget
+    {
+        virtual SearchResult const Search(NumberType const&) const = 0;
+        virtual SearchResult const Search(TypeType const&) const = 0;
+        virtual ~SearchTarget(){};
     };
 }

@@ -6,6 +6,7 @@
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
 #include "Result.h"
+#include "Result.h"
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;

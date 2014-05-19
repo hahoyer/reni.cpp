@@ -4,7 +4,9 @@
 #include "Context.h"
 #include "DefineableToken.h"
 #include "DumpPrintToken.h"
+#include "ExpressionSyntax.h"
 #include "NumberType.h"
+#include "NumberTypeIncludes.h"
 #include "Syntax.h"
 #include "TypeType.h"
 #include "..\HWLang\SourcePart.h"
@@ -22,6 +24,7 @@ Ref<Syntax> const TokenClass::Mismatch(Ref<Syntax, true> const left, SourcePart 
 
 pure_p_implementation(TokenClass, bool, AcceptsMatch);
 
+SearchResult const DefineableToken::Search(TypeType const&) const{ return{}; }
 
 SearchResult const DefineableToken::Search(NumberType const& target) const
 {
@@ -29,6 +32,11 @@ SearchResult const DefineableToken::Search(NumberType const& target) const
     md(target);
     b_;
     return_d(SearchResult());
+}
+
+Ref<Syntax> const DefineableToken::CreateSyntax(Ref<Syntax, true> const left, SourcePart const& part, Ref<Syntax, true> const right) const
+{
+    return new ExpressionSyntax(*this, left, part, right);
 };
 
 pure_p_implementation(DefineableToken, int, priority);

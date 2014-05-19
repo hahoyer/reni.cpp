@@ -44,10 +44,18 @@ p_implementation(NumberType, String, DumpShort){
     return base_p_name(DumpShort) + " size=" + size.DumpShort;
 }
 
-SearchResult const NumberType::Search(DefineableToken const& token) const
+SearchResult const NumberType::Search(SearchTarget const& target) const
 {
-    return token.Search(*this);
+    return target.Search(*this);
 };
+
+SearchResult const NumberType::Search(NumberType const& provider) const
+{
+    if(size < provider.size)
+        return{};
+    md(provider);
+    mb;
+}
 
 WeakRef<NumberType> const NumberType::Resize(int newSize)const{
     return parent
@@ -56,5 +64,3 @@ WeakRef<NumberType> const NumberType::Resize(int newSize)const{
         ->numberType
         ->thisRef;
 }
-
-

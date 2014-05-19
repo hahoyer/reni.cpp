@@ -1,13 +1,18 @@
 #pragma once
 #include "TokenClass.h"
-#include "ExpressionSyntax.h"
 #include "../HWLib/String.h"
+#include "SearchResult.h"
 
 using namespace HWLib;
 
 namespace Reni
 {
-    class DefineableToken : public TokenClass
+    class NumberType;
+    class TypeType;
+
+    class DefineableToken 
+        : public TokenClass
+        , public SearchTarget
     {
         typedef TokenClass baseType;
         typedef DefineableToken thisType;
@@ -20,14 +25,12 @@ namespace Reni
         };
 
     public:
-        virtual SearchResult const Search(TypeType const&) const{return{};}
-        virtual SearchResult const Search(NumberType const&target) const;
+
+        SearchResult const Search(NumberType const&) const override;
+        SearchResult const Search(TypeType const&) const override;
         virtual_p(int, priority) { return 0; };
     private:
-        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override
-        {
-            return new ExpressionSyntax(*this, left, part, right);
-        };
+        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override;;
 
         p_function(Array<String>, DumpData) override
         {

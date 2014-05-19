@@ -1,7 +1,9 @@
 #include "Import.h"
 #include "Context.h"
 
+#include "ContextIncludes.h"
 #include "DefineableToken.h"
+#include "ExpressionSyntax.h"
 #include "FunctionSyntax.h"
 #include "RecursionContext.h"
 #include "Result.h"
@@ -9,8 +11,8 @@
 #include "Syntax.h"
 #include "SyntaxContainer.h"
 #include "Type.h"
+
 #include "../HWLib/RefCountContainer.instance.h"
-#include "ContextIncludes.h"
 
 using namespace Reni;
 static bool Trace = true;

@@ -70,6 +70,18 @@ pure_p_implementation(Type, WeakRef<Type>, dereferencedType);
 ResultData const Type::GetResultData(Ref<CodeItem> code)const
 {
     return ResultData(size, code, thisRef);
+}
+
+SearchResult const Type::Search(TypeType const&provider) const
+{
+    md(provider);
+    mb;
+}
+
+SearchResult const Type::Search(NumberType const& provider) const
+{
+    md(provider);
+    mb;
 };
 
 ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode) const
@@ -170,7 +182,7 @@ ResultData const Type::ContextAccessResult(Category category, Type const& target
          });
 };
 
-SearchResult const Type::Search(Type const& target) const
+SearchResult const Type::Search(SearchTarget const& target) const
 {
     bool Trace = true;
     md(target);
@@ -178,18 +190,9 @@ SearchResult const Type::Search(Type const& target) const
     return_d(SearchResult());
 }
 
-SearchResult const Type::Search(DefineableToken const&target) const
+SearchResult const AddressType::Search(SearchTarget const& target) const
 {
-    bool Trace = true;
-    md(target);
-    b_;
-    return_d(SearchResult());
-};
-
-
-SearchResult const AddressType::Search(DefineableToken const& token) const
-{
-    auto result = value.Search(token);
+    auto result = value.Search(target);
     if(result.IsValid)
         return result;
     return {};
@@ -208,12 +211,12 @@ TypeType::TypeType(Type const& value)
     a_if_(value.isTypeTarget);
 }
 
-SearchResult const TypeType::Search(DefineableToken const& token) const
+SearchResult const TypeType::Search(SearchTarget const& target) const
 {
-    SearchResult const result = token.Search(*this);
+    SearchResult const result = target.Search(*this);
     if(result.IsValid)
         return result;
-    return baseType::Search(token);
+    return baseType::Search(target);
 }
 
 

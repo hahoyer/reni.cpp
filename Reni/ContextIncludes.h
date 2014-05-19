@@ -1,7 +1,10 @@
 #pragma once
 
 #include "FunctionContext.h"
+#include "FunctionSyntax.h"
+#include "SyntaxContainer.h"
 #include "../HWLib/ValueCache.h"
+#include "../HWLib/FunctionCache.h"
 
 namespace Reni{
 
@@ -79,8 +82,10 @@ namespace Reni{
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
 
-        SearchResult const Search(DefineableToken const&token) const override{
-            if(containerData->names.ContainsKey(&token)){
+        SearchResult const Search(DefineableToken const&token) const override
+        {
+            if(containerData->names.ContainsKey(&token))
+            {
                 auto tokenIndex = containerData->names[&token];
                 return accessFeature(tokenIndex);
             }

@@ -13,26 +13,27 @@ using namespace HWLib;
 using namespace Util;
 
 namespace Reni{
+    class AddressType;
     class ArrayType;
     class CodeItem;
+    class ContextReference;
+    class DefineableToken;
     class DefinitionPoint;
     class DumpPrintToken;
+    class EnableCutType;
+    class FunctionToken;
     class Global;
-    class AddressType;
     class InstanceToken;
-    class MinusToken;
     class NumberType;
     class PlusToken;
     class ResultData;
     class StarToken;
-    class DefineableToken;
     class TypeType;
-    class ContextReference;
-    class FunctionToken;
-    class EnableCutType;
 
     class Type
-        : public WithId<DumpableObject, Type>{
+        : public WithId<DumpableObject, Type>
+        , public SearchTarget
+    {
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
         struct internal;
@@ -64,12 +65,14 @@ namespace Reni{
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
         ResultData const Constructor(Category category, Type const&arg)const;
 
-        virtual SearchResult const Search(DefineableToken const&target)const;
-        virtual SearchResult const Search(Type const& target)const;
+        virtual SearchResult const Search(SearchTarget const&target)const;
         WeakRef<NumberType> const CreateNumberType()const;
         WeakRef<Type> const IndirectType(int depth)const;
         WeakRef<Type> const Common(Type const&other)const;
         bool const isConvertableTo(Type const&other)const;
+        
+        SearchResult const Search(NumberType const&provider) const override;
+        SearchResult const Search(TypeType const&) const override;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
 

@@ -62,11 +62,13 @@ namespace Reni{
         virtual ResultData const Result(Category category, Type const&target) const = 0;
     };
 
+
     class EnableCutFeature final : public SuffixFunctionFeature
     {
         using baseType = InfixFunctionFeature;
         using thisType = EnableCutFeature;
         ResultData const Result(Category category, Type const&target)const override;
     };
+
 }
                                                                     
