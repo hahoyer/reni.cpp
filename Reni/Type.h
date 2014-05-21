@@ -32,7 +32,7 @@ namespace Reni{
 
     class Type
         : public WithId<DumpableObject, Type>
-        , public SearchTarget
+        , public SearchTarget<Feature>
     {
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
@@ -65,14 +65,14 @@ namespace Reni{
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
         ResultData const Constructor(Category category, Type const&arg)const;
 
-        virtual SearchResult const Search(SearchTarget const&target)const;
+        virtual SearchResult<Feature> const Search(SearchTarget const&target)const;
         WeakRef<NumberType> const CreateNumberType()const;
         WeakRef<Type> const IndirectType(int depth)const;
         WeakRef<Type> const Common(Type const&other)const;
         bool const isConvertableTo(Type const&other)const;
         
-        SearchResult const Search(NumberType const&provider) const override;
-        SearchResult const Search(TypeType const&) const override;
+        SearchResult<Feature> const Search(NumberType const&provider) const override;
+        SearchResult<Feature> const Search(TypeType const&) const override;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
 

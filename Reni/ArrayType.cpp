@@ -1,8 +1,6 @@
 #include "Import.h"
 #include "ArrayType.h"
 
-#include "../HWLib/RefCountContainer.instance.h"
-
 using namespace Reni;
 static bool Trace = true;
 

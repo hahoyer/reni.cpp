@@ -72,13 +72,13 @@ ResultData const Type::GetResultData(Ref<CodeItem> code)const
     return ResultData(size, code, thisRef);
 }
 
-SearchResult const Type::Search(TypeType const&provider) const
+SearchResult<Feature> const Type::Search(TypeType const&provider) const
 {
     md(provider);
     mb;
 }
 
-SearchResult const Type::Search(NumberType const& provider) const
+SearchResult<Feature> const Type::Search(NumberType const& provider) const
 {
     md(provider);
     mb;
@@ -182,15 +182,15 @@ ResultData const Type::ContextAccessResult(Category category, Type const& target
          });
 };
 
-SearchResult const Type::Search(SearchTarget const& target) const
+SearchResult<Feature> const Type::Search(SearchTarget const& target) const
 {
     bool Trace = true;
     md(target);
     b_;
-    return_d(SearchResult());
+    return_d(SearchResult<Feature>());
 }
 
-SearchResult const AddressType::Search(SearchTarget const& target) const
+SearchResult<Feature> const AddressType::Search(SearchTarget const& target) const
 {
     auto result = value.Search(target);
     if(result.IsValid)
@@ -211,9 +211,9 @@ TypeType::TypeType(Type const& value)
     a_if_(value.isTypeTarget);
 }
 
-SearchResult const TypeType::Search(SearchTarget const& target) const
+SearchResult<Feature> const TypeType::Search(SearchTarget const& target) const
 {
-    SearchResult const result = target.Search(*this);
+    auto result = target.Search(*this);
     if(result.IsValid)
         return result;
     return baseType::Search(target);
@@ -221,14 +221,11 @@ SearchResult const TypeType::Search(SearchTarget const& target) const
 
 
 
-class InstanceFunctionFeature final : public InfixFunctionFeature
+class InstanceFunctionFeature final : public Feature::Extended
 {
-    using baseType = InfixFunctionFeature;
+    using baseType = Extended;
     using thisType = InstanceFunctionFeature;
-    Type const& target;
-public:
-    InstanceFunctionFeature(Type const& target) : target(target) {}
-private:
+
     ResultData const Result(Category category, Type const&target, Type const&arg)const override
     {
         auto targetType = TypeType::Convert(target)->value;
@@ -236,14 +233,12 @@ private:
             return targetType->thisRef;
         return targetType->Constructor(category, arg);
     }
-
-    p_function(Array<String>, DumpData) override{ return{nd(target)}; }
 };
 
 
 template<>
-SearchResult const TypeType::Search<InstanceToken>() const
+SearchResult<Feature> const TypeType::Search<InstanceToken>() const
 {
-    return new InstanceFunctionFeature(*value);
+    return Feature::From<InstanceFunctionFeature>();
 }
 

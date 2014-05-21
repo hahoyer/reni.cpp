@@ -16,6 +16,23 @@
 #include "../HWLib/RefCountContainer.instance.h"
 
 
+namespace Reni
+{
+    class NumberConversionProvider final : public Feature::Simple
+    {
+        using baseType = Simple;
+        using thisType = NumberConversionProvider;
+        ResultData const Result(Category category, Type const& target) const override
+        {
+            bool Trace = true;
+            md(category, target);
+            b_;
+            return{};
+        }
+    };
+}
+
+
 using namespace Reni;
 static bool Trace = true;
 
@@ -44,17 +61,16 @@ p_implementation(NumberType, String, DumpShort){
     return base_p_name(DumpShort) + " size=" + size.DumpShort;
 }
 
-SearchResult const NumberType::Search(SearchTarget const& target) const
+SearchResult<Feature> const NumberType::Search(SearchTarget const& target) const
 {
     return target.Search(*this);
 };
 
-SearchResult const NumberType::Search(NumberType const& provider) const
+SearchResult<Feature> const NumberType::Search(NumberType const& provider) const
 {
     if(size < provider.size)
         return{};
-    md(provider);
-    mb;
+    return Feature::From<NumberConversionProvider>();
 }
 
 WeakRef<NumberType> const NumberType::Resize(int newSize)const{

@@ -30,16 +30,24 @@ p_implementation(ExpressionSyntax, int, priority) { return tokenClass.priority; 
 
 ResultData const ExpressionSyntax::GetResultData(Context const&context, Category category)const
 {
-    bool Trace = ObjectId == -26;
-    md(context,category);
-    b_if(Trace,);
-    auto searchResult = context.Search(left, tokenClass);
-    a_if(searchResult.IsValid, Dump);
-    d(searchResult);
-    auto feature = searchResult.feature;
-    auto result = feature->FunctionResult(context, category, *this);
+    if(left.IsEmpty)
+    {
+        auto result = context
+            .Search(tokenClass)
+            .feature
+            .FunctionResult(context, category, right);
+        a_is(category, <= , result.complete);
+        return(result);
+    }
+
+    auto result = left
+        ->Type(context)
+        ->thisRef
+        .Search(tokenClass)
+        .feature
+        .FunctionResult(context, category, *this);
     a_is(category, <=, result.complete);
-    return_d(result);
+    return(result);
 }
 
 Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const{

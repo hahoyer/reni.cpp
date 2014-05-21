@@ -24,7 +24,7 @@ namespace Reni
         p_function(bool, isTypeTarget) override{ return false; };
         p_function(WeakRef<Type>, dereferencedType)override{ return value.dereferencedType; };
 
-        SearchResult const Search(SearchTarget const& token) const override;
+        SearchResult<Feature> const Search(SearchTarget const& token) const override;
     };
 };
 

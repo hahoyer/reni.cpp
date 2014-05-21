@@ -3,29 +3,49 @@
 
 using namespace HWLib;
 
-namespace Reni{
+namespace Reni
+{
     class Syntax;
     class TokenClass;
 
-    class ContextFeature
-        : public Feature{
-        typedef Feature baseType;
+    class ContextFeature final
+        : public WithId<DumpableObject, Feature>
+    {
+        typedef DumpableObject baseType;
         typedef ContextFeature thisType;
-    protected:
-        virtual ResultData const FunctionResult(
+    public:
+
+        class Simple : public RefCountProvider
+        {
+            using baseType = DumpableObject;
+            using thisType = Simple;
+        public:
+            ThisRef;
+            virtual ResultData const Result(Context const&target, Category category) const = 0;
+        };
+
+        class Extended : public RefCountProvider
+        {
+            using baseType = DumpableObject;
+            using thisType = Extended;
+        public:
+            ThisRef;
+            virtual ResultData const Result(Context const&target, Category category, Type const&arg) const = 0;
+        };
+
+        Ref<Simple, true> const simple;
+        Ref<Extended, true> const extended;
+
+        ContextFeature(Simple const& simple, Extended const& extended)
+            : simple(simple.thisRef), extended(extended.thisRef) {}
+
+        ResultData const FunctionResult(
             Context const&context,
             Category category,
             Ref<Syntax, true> const& right
-            )const;
+        )const;
+        p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
     private:
-        virtual ResultData const FunctionResult(
-            Context const&context,
-            Category category,
-            ExpressionSyntax const& expressionSyntax
-            )const override final;
-        p_function(Array<String>,DumpData) override {
-            return{};
-        }
+        p_function(Array<String>,DumpData) override{return{nd(simple)+nd(extended)};}
     };
-
 }

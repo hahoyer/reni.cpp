@@ -34,7 +34,6 @@
     <ClCompile Include="SyntaxContainer.cpp" />
     <ClCompile Include="NumberType.cpp" />
     <ClCompile Include="Type.cpp" />
-    <ClCompile Include="SearchResult.cpp" />
     <ClCompile Include="RootContext.cpp" />
     <ClCompile Include="NumberToken.cpp" />
     <ClCompile Include="Result.cpp" />

@@ -4,7 +4,6 @@
 using namespace HWLib;
 
 namespace Reni{
-    class SearchResult;
 
     class DefinitionPoint : public WithId<DumpableObject, DefinitionPoint>{
         using baseType = WithId<DumpableObject, DefinitionPoint>;

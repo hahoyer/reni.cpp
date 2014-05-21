@@ -24,14 +24,14 @@ Ref<Syntax> const TokenClass::Mismatch(Ref<Syntax, true> const left, SourcePart 
 
 pure_p_implementation(TokenClass, bool, AcceptsMatch);
 
-SearchResult const DefineableToken::Search(TypeType const&) const{ return{}; }
+SearchResult<Feature>  const DefineableToken::Search(TypeType const&) const{ return{}; }
 
-SearchResult const DefineableToken::Search(NumberType const& target) const
+SearchResult <Feature> const DefineableToken::Search(NumberType const& target) const
 {
     bool Trace = true;
     md(target);
     b_;
-    return_d(SearchResult());
+    return_d(SearchResult<Feature>());
 }
 
 Ref<Syntax> const DefineableToken::CreateSyntax(Ref<Syntax, true> const left, SourcePart const& part, Ref<Syntax, true> const right) const
@@ -42,6 +42,7 @@ Ref<Syntax> const DefineableToken::CreateSyntax(Ref<Syntax, true> const left, So
 pure_p_implementation(DefineableToken, int, priority);
 
 tc_Search_implementation(InstanceToken, TypeType);
+tc_Search_implementation(DumpPrintToken, NumberType);
 tc_Search_implementation(PlusToken, NumberType);
 tc_Search_implementation(MinusToken, NumberType);
 tc_Search_implementation(StarToken, NumberType);

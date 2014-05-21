@@ -10,6 +10,7 @@ using namespace HWLib;
 
 namespace Reni
 {
+    template <class TFeature>
     class SearchResult;
     class Syntax;
     class Type;

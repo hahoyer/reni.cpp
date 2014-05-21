@@ -18,11 +18,17 @@ using namespace Reni;
 static bool Trace = true;
 
 
-ResultData const DefinableTokenFeatureProvider::Feature::FunctionResult(Context const& context, Category category, Ref<Syntax, true> const& right) const
+ResultData const SimpleFeature::Result(Context const& context, Category category) const
 {
-    md(context, category, right);
+    md(context, category);
     b_;
     return{};
+}
+
+ResultData const ExtendedFeature::Result(Context const&, Category category, Type const& right) const
+{
+    auto result = parent.FunctionCallResult(right, tokenIndex);
+    return result->Get(category);
 }
 
 
@@ -53,19 +59,10 @@ RegularContext::RegularContext()
 }
 
 pure_p_implementation(Context, bool, isRecursion) ;
+
 pure_p_implementation(Context, WeakRef<Global>, global) ;
+
 pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
-
-SearchResult const Context::Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const
-{
-    if(left.IsEmpty)
-        return Search(tokenClass);
-
-    return left
-        ->Type(*this)
-        ->thisRef
-        .Search(tokenClass);
-}
 
 p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
 {
@@ -95,7 +92,7 @@ WeakRef<Type> const RegularContext::FunctionType(FunctionSyntax const& body) con
     return _internal->functionType(&body)->thisRef;
 }
 
-SearchResult const Context::Search(DefineableToken const&token) const
+SearchResult<ContextFeature> const Context::Search(DefineableToken const&token) const
 {
     md(token);
     mb;
@@ -108,35 +105,13 @@ ResultData Context::ArgReferenceResult(Category category) const
         ->CreateArgReferenceResult(category);
 }
 
-AccessFeature::AccessFeature(ContainerContext const& container, int tokenIndex)
-    : container(container)
-      , tokenIndex(tokenIndex)
-{
-    SetDumpString();
-}
-
-
-p_implementation(AccessFeature, Array<String>, DumpData)
-{
-    return{nd(container), nd(tokenIndex)};
-}
-
-
-ResultData const AccessFeature::FunctionResult(Context const& context, Category category, ExpressionSyntax const& expressionSyntax) const
-{
-    auto argsType = expressionSyntax.right->Type(context);
-    auto result = container.FunctionCallResult(*argsType, tokenIndex);
-    return result->Get(category);
-};
-
 
 ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int index)
     : baseType(parent)
-      , token(new DefinableTokenFeatureProvider)
       , containerData(containerData.thisRef)
       , accessFeature([&](int tokenIndex)
           {
-              return new AccessFeature(*this, tokenIndex);
+              return ContextFeature(*new SimpleFeature(*this, tokenIndex), *new ExtendedFeature(*this, tokenIndex));
           })
       , functionCallResultCache([&](Type const*args, Syntax const*body)
           {
@@ -235,7 +210,7 @@ WeakRef<Context> const RecursionContext::Container(SyntaxContainer const& syntax
     mb;
 }
 
-SearchResult const RecursionContext::Search(DefineableToken const& token) const
+SearchResult<ContextFeature> const RecursionContext::Search(DefineableToken const& token) const
 {
     return parent.Search(token);
 }

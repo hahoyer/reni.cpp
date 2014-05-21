@@ -6,9 +6,9 @@
 using namespace Reni;
 
 template<class TTokenClass>
-class NumberType::OperationFeature final : public InfixFunctionFeature
+class NumberType::OperationFeature final : public Feature::Extended
 {
-    using baseType = InfixFunctionFeature;
+    using baseType = Extended;
     using thisType = OperationFeature;
 
     ResultData const Result(Category category, Type const&target, Type const&arg)const override
@@ -43,16 +43,21 @@ class NumberType::OperationFeature final : public InfixFunctionFeature
 #include "DumpPrintToken.h"
 
 template<>
-SearchResult const NumberType::Search<EnableCutToken>() const
+SearchResult<Feature> const NumberType::Search<EnableCutToken>() const
 {
-    return new EnableCutFeature;
+    return Feature::From<EnableCutFeature>();
 };
 
+template<>
+SearchResult<Feature> const NumberType::Search<DumpPrintToken>() const
+{
+    return Feature::From<DumpPrintFeature>();
+};
 
 template<class TTokenClass>
-SearchResult const NumberType::Search() const
+SearchResult<Feature> const NumberType::Search() const
 {
-    return new OperationFeature<TTokenClass>;
+    return Feature::From<OperationFeature<TTokenClass>>();
 };
 
 template<>

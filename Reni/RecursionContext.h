@@ -25,7 +25,7 @@ namespace Reni
 
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
         WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const override;
-        SearchResult const Search(DefineableToken const& token) const override;
+        SearchResult<ContextFeature> const Search(DefineableToken const& token) const override;
     };
 
 }

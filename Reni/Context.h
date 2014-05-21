@@ -33,10 +33,9 @@ namespace Reni{
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
 
-        SearchResult const Search(Ref<Syntax, true> const&left, DefineableToken const&tokenClass)const;
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
         ResultData ArgReferenceResult(Category category) const;
-        virtual SearchResult const Search(DefineableToken const&token)const;
+        virtual SearchResult<ContextFeature>  const Search(DefineableToken const&token)const;
         virtual WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const = 0;
     };
 
@@ -62,7 +61,7 @@ namespace Reni{
         virtual operator Ref<ContextFeatureProvider<DefineableToken>, true>()const;
 
         template<class T>
-        SearchResult const GetGenericDefinition()const{
+        SearchResult<ContextFeature>  const GetGenericDefinition()const{
             Ref<ContextFeatureProvider<T>> f = *this;
             Ref<ContextFeature> ff = f->feature;
             return *ff;
@@ -85,7 +84,7 @@ namespace Reni{
         }
 
         p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
-        SearchResult const Search(DefineableToken const& token) const override{ return parent.Search(token); };
+        SearchResult<ContextFeature>  const Search(DefineableToken const& token) const override{ return parent.Search(token); };
     private:
         p_function(WeakRef<Global>, global) override{ return parent.global; };
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };

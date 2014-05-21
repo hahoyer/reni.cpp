@@ -12,7 +12,7 @@ namespace Reni
 
     class DefineableToken 
         : public TokenClass
-        , public SearchTarget
+        , public SearchTarget<Feature>
     {
         typedef TokenClass baseType;
         typedef DefineableToken thisType;
@@ -26,8 +26,8 @@ namespace Reni
 
     public:
 
-        SearchResult const Search(NumberType const&) const override;
-        SearchResult const Search(TypeType const&) const override;
+        SearchResult<Feature> const Search(NumberType const&) const override;
+        SearchResult<Feature> const Search(TypeType const&) const override;
         virtual_p(int, priority) { return 0; };
     private:
         Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override;;

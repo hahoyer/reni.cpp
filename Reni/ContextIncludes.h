@@ -6,56 +6,47 @@
 #include "../HWLib/ValueCache.h"
 #include "../HWLib/FunctionCache.h"
 
-namespace Reni{
-
-    class DefinableTokenFeatureProvider final : public ContextFeatureProvider<DefineableToken>{
-        typedef ContextFeatureProvider<DefineableToken> baseType;
-        typedef DefinableTokenFeatureProvider thisType;
-
-        class Feature final : public ContextFeature{
-            typedef ContextFeature baseType;
-            typedef Feature thisType;
-        private:
-            virtual ResultData const FunctionResult(
-                Context const&context,
-                Category category,
-                Ref<Syntax, true> const& right
-                )const override;
-            p_function(Array<String>, DumpData) override{
-                return{};
-            }
-        };
-
-    public:
-        ThisRef;
-
-    private:
-        p_function(Ref<ContextFeature>, feature) override{
-            return new Feature();
-        }
-
-        p_function(Array<String>, DumpData) override{
-            return{};
-        }
-    };
-
-
+namespace Reni
+{
     class ContainerContext;
 
-    class AccessFeature final : public Feature{
-        typedef Feature baseType;
-        typedef AccessFeature thisType;
+    class SimpleFeature final : public ContextFeature::Simple
+    {
+        typedef Simple baseType;
+        typedef SimpleFeature thisType;
+
+        ContainerContext const&parent;
+        int const tokenIndex;
 
     public:
-        ContainerContext const& container;
+        SimpleFeature(ContainerContext const& parent, int const tokenIndex)
+            : parent(parent), tokenIndex(tokenIndex) {}
     private:
-        int const tokenIndex;
-    public:
-        AccessFeature(ContainerContext const& containerContext, int tokenIndex);
-    private:
-        p_function(Array<String>, DumpData) override;
-        ResultData const FunctionResult(Context const& context, Category category, ExpressionSyntax const& expressionSyntax) const override;
+        ResultData const Result(
+            Context const&context,
+            Category category
+        )const override;
     };
+
+    class ExtendedFeature final : public ContextFeature::Extended
+    {
+        typedef Extended baseType;
+        typedef ExtendedFeature thisType;
+
+        ContainerContext const&parent;
+        int const tokenIndex;
+
+    public:
+        ExtendedFeature(ContainerContext const& parent, int const tokenIndex)
+            : parent(parent), tokenIndex(tokenIndex) {}
+    private:
+        ResultData const Result(
+            Context const&context,
+            Category category,
+            Type const& right
+        )const override;
+    };
+
 
     class FunctionCallResultCache;
 
@@ -65,7 +56,7 @@ namespace Reni{
         typedef ChildContext baseType;
 
         FunctionCache<Ref<FunctionCallResultCache>, Type const*, Syntax const*> functionCallResultCache;
-        FunctionCache<Ref<Feature>, int> accessFeature;
+        FunctionCache<ContextFeature, int> accessFeature;
         ValueCache<WeakRef<Type>> dataTypeCache;
     public:
         Ref<SyntaxContainer> containerData;
@@ -77,12 +68,16 @@ namespace Reni{
         ContainerContext(ContainerContext const&) = delete;
         ThisRef;
 
-        p(WeakRef<Type>, dataType){ return dataTypeCache.Value; };
+        p(WeakRef<Type>, dataType)
+        {
+            return dataTypeCache.Value;
+        };
+
         p(Size, dataSize);
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
 
-        SearchResult const Search(DefineableToken const&token) const override
+        SearchResult<ContextFeature> const Search(DefineableToken const&token) const override
         {
             if(containerData->names.ContainsKey(&token))
             {
@@ -93,19 +88,19 @@ namespace Reni{
         }
 
     private:
-        p_function(Array<String>, DumpData) override{
+        p_function(Array<String>, DumpData) override
+        {
             return base_p_name(DumpData) +
-            _({
-                nd(containerData),
-                nd(index)
-            });
+                _({
+                    nd(containerData),
+                    nd(index)
+                });
         };
 
-        Ref<DefinableTokenFeatureProvider> const token;
-        operator Ref<ContextFeatureProvider<DefineableToken>, true>() const override{return token->thisRef;}
     };
 
-    class FunctionType final : public Type{
+    class FunctionType final : public Type
+    {
         typedef Type baseType;
         typedef FunctionType thisType;
         Context const& context;
@@ -114,25 +109,35 @@ namespace Reni{
 
         FunctionType(Context const& context, FunctionSyntax const& body)
             : context(context)
-            , body(body.thisRef){
+              , body(body.thisRef)
+        {
         }
 
         ThisRef;
 
     private:
-        p_function(Array<String>, DumpData) override{
+        p_function(Array<String>, DumpData) override
+        {
             return{
                 nd(context),
                 nd(body)
             };
         };
 
-        p_function(Size, size) override{return 0;}
-        p_function(WeakRef<Global>, global) override{return context.global;};
+        p_function(Size, size) override
+        {
+            return 0;
+        }
+
+        p_function(WeakRef<Global>, global) override
+        {
+            return context.global;
+        };
     };
 
 
-    class FunctionCallResultCache final : public ResultCache{
+    class FunctionCallResultCache final : public ResultCache
+    {
         typedef ResultCache baseType;
         typedef FunctionCallResultCache thisType;
         Syntax const&body;
@@ -140,32 +145,56 @@ namespace Reni{
     public:
         FunctionCallResultCache(ContainerContext const& container, Type const*args, Syntax const&body)
             : context(container, args)
-            , body(body.thisRef){
+              , body(body.thisRef)
+        {
             SetDumpString();
         }
 
     private:
-        p(WeakPtr<Type const>, args){ return context.args; }
-        p(ContainerContext const&, container){ return context.container; }
-        p_function(Array<String>, DumpData) override{ return{nd(body), nd(context)}; }
+        p(WeakPtr<Type const>, args)
+        {
+            return context.args;
+        }
+
+        p(ContainerContext const&, container)
+        {
+            return context.container;
+        }
+
+        p_function(Array<String>, DumpData) override
+        {
+            return{nd(body), nd(context)};
+        }
 
         ResultData const GetResultData(Category category)const override;
     };
 
 
-    class ContainerType final : public Type{
-        typedef Type baseType; 
+    class ContainerType final : public Type
+    {
+        typedef Type baseType;
         typedef ContainerType thisType;
         ContainerContext const&parent;
     public:
-        ContainerType(ContainerContext const&parent) : parent(parent){
+        ContainerType(ContainerContext const&parent) : parent(parent)
+        {
             SetDumpString();
         }
+
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
-        p_function(Size, size) override{ return parent.dataSize; }
-        p_function(WeakRef<Global>, global) override{ return parent.global; };
+        p_function(Array<String>, DumpData) override
+        {
+            return{nd(parent)};
+        }
+
+        p_function(Size, size) override
+        {
+            return parent.dataSize;
+        }
+
+        p_function(WeakRef<Global>, global) override
+        {
+            return parent.global;
+        };
     };
 };
-
-
