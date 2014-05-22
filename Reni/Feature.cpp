@@ -23,6 +23,8 @@ ResultData const Feature::FunctionResult(
     ExpressionSyntax const& expressionSyntax
 )const
 {
+    bool Trace = expressionSyntax.ObjectId == 32 || expressionSyntax.ObjectId == 33;
+    md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
     auto thisResult = expressionSyntax.left->GetResultCache(context);
     ArgVisitor visitor;
     visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
@@ -34,8 +36,9 @@ ResultData const Feature::FunctionResult(
         visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
     }
 
+    b_if_(Trace);
     auto result = (Result(category, *thisResult->type, argResult) & category).Replace(visitor);
-    return(result);
+    return_d(result);
 }
 
 ResultData const Feature::Result(Category category, Type const& target, Ref<ResultFromSyntaxAndContext, true> argResult) const
