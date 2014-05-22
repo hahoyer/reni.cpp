@@ -30,7 +30,7 @@ Ref<CodeItem> const CodeItem::Const(BitsConst const&value){
 };
 
 Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value){
-    return Arg(value,0)
+    return This(value,0)
         ->Fiber({new DumpPrintNumberCode(value.size)});
 };
 
