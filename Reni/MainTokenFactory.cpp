@@ -101,11 +101,12 @@ public:
     String const name;
     List(String const&name) : name(name){}
 private:
-    Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
+    Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final
+    {
         Ref<SyntaxContainer> result = new SyntaxContainer(part);
-        left->AddTo(*result);
-        right->AddTo(*result);
-        return *result;
+        result->Add(left);
+        result->Add(right);
+        return(*result);
     };
 };
 

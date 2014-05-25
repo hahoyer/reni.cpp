@@ -11,28 +11,48 @@ using namespace Reni;
 static bool Trace = true;
 
 
-SyntaxContainer::SyntaxContainer(SourcePart const&part) : baseType(part){
+class EmtySyntax final : public Syntax
+{
+    using baseType = Syntax; 
+    using thisType = EmtySyntax;
+public:
+    explicit EmtySyntax(SourcePart const& part)
+        : Syntax(part) {}
+private:
+    p_function(String, SmartDump) override{ return ""; };
+    p_function(int, priority) override{ return 0; }
+    void AddTo(SyntaxContainer& main) const override{main.statements += thisRef;}
+};
+
+
+SyntaxContainer::SyntaxContainer(SourcePart const&part) 
+    : baseType(part)
+    , emptySyntax(new EmtySyntax(part))
+{
     SetDumpString();
 }
 
-p_implementation(SyntaxContainer, String, SmartDump){
-    return( _({nd(statements)})  +
+p_implementation(SyntaxContainer, String, SmartDump)
+{
+    return( _({nd(statements)}) +
         names
-            .keys
-            .Select<String>([&](DefineableToken const*key)
-        {
-            return key->name + ": " + HWLib::Dump(names[key]);
-    })
+        .keys
+        .Select<String>([&](DefineableToken const*key)
+            {
+                return key->name + ": " + HWLib::Dump(names[key]);
+            })
         ->ToArray).Stringify(";");
 }
 
-void SyntaxContainer::AddTo(SyntaxContainer&main) const{
+void SyntaxContainer::AddTo(SyntaxContainer&main) const
+{
     for(auto key: names.keys)
         main.names.Assign(key, names[key] + main.statements.Count);
     main.statements += statements;
 }
 
-void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const& value){
+void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const& value)
+{
     auto& e = dynamic_cast<ExpressionSyntax const&>(*definitionTarget);
     a_if_(e.left.IsEmpty);
     a_if_(e.right.IsEmpty);
@@ -41,18 +61,33 @@ void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const
     statements += value;
 }
 
-ResultData const SyntaxContainer::GetResultData(Context const& context, Category category) const{
-    if(category == Category::Code){
+ResultData const SyntaxContainer::GetResultData(Context const& context, Category category) const
+{
+    if(category == Category::Code)
         return GetCode(context);
-    }
 
     md(context, category);
     b_;
     return{};
 }
 
-Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const{
-    Array<Ref<CodeItem>> result(statements.Count, [&](int index){return GetCode(context, index); });
+void SyntaxContainer::Add(Ref<Syntax, true> const& value)
+{
+    Ref<Syntax> const effectiveValue = value || emptySyntax; 
+    effectiveValue->AddTo(*this);
+}
+
+Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const
+{
+    Array<Ref<CodeItem>> result
+        (
+            statements.Count,
+            [&]
+            (int index)
+            {
+                return GetCode(context, index);
+            }
+        );
     md(context, result);
     mb;
 };

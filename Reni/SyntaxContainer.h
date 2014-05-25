@@ -4,22 +4,26 @@
 
 using namespace HWLib;
 
-namespace Reni{
-    class SyntaxContainer final: public Syntax{
+namespace Reni
+{
+    class SyntaxContainer final: public Syntax
+    {
         typedef Syntax baseType;
         typedef SyntaxContainer thisType;
+
+        Ref<Syntax> const emptySyntax;
     public:
         Array<Ref<Syntax>> statements;
         Map<DefineableToken const*, int> names;
 
-        SyntaxContainer(SourcePart const&part);
+        explicit SyntaxContainer(SourcePart const&part);
         SyntaxContainer(SyntaxContainer const&) = delete;
-        virtual ~SyntaxContainer(){
-        };
+        virtual ~SyntaxContainer(){};
 
         ThisRef;
 
         void Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const&value);
+        void Add(Ref<Syntax,true> const& value);
     private:
         p_function(String, SmartDump) override;
         p_function(int, priority) override{ return -12; }
