@@ -140,38 +140,61 @@ Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type con
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
     if(category == Category::None)
-    {
-        a_if(pending == Category::Type, Dump);
-        a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
-        auto& fs = dynamic_cast<FunctionSyntax const&>(body);
-        a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
-        a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-        return *fs.getter->Type(*context.recursionContext)->asFunctionResult;
-    }
+        return *typeInRecursion ;
 
+    return ResultData::Get(category,l_(code),l_(type));
+    
     if(category == Category::Type)
-    {
-        a_if(!args.IsEmpty, "NotImpl: no arg "+Dump);
-        auto& fs = dynamic_cast<FunctionSyntax const&>(body);
-        a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
-        a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-        return *fs.getter->Type(context)->asFunctionResult;
-    }
-
+        return *type;
+    
 
     md(category);
     b_;
     return{};
 }
 
+p_implementation(FunctionCallResultCache, Ref<CodeItem>, code)
+{
+    md_;
+    mb;
+}
+
+p_implementation(FunctionCallResultCache, WeakRef<Type>, type)
+{
+    a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
+    auto& fs = dynamic_cast<FunctionSyntax const&>(body);
+    a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
+    a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+    return fs.getter->Type(context)->asFunctionResult;
+}
+
+p_implementation(FunctionCallResultCache, WeakRef<Type>, typeInRecursion)
+{
+    a_if(pending == Category::Type, Dump);
+    a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
+    auto& fs = dynamic_cast<FunctionSyntax const&>(body);
+    a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
+    a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+    return fs.getter->Type(*context.recursionContext)->asFunctionResult;
+}
+
+
+int FunctionCallContext::nextIndex = 0;
+
 FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef<Type const> const args)
     : baseType(static_cast<RegularContext const&>(parent))
       , container(parent)
       , args(args)
+      , index(nextIndex++)
 {
     SetDumpString();
 }
 
+Ref<CodeItem> const FunctionCallContext::CallGetterCode(Type const& resultType) const
+{
+    md(resultType);
+    mb;
+}
 
 p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
 {
@@ -181,14 +204,7 @@ p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
 ResultData const FunctionCallContext::CreateArgReferenceResult(Category category)const
 {
     return args
-        ->ContextAccessResult
-        (
-            category.typed,
-            *objectType, [&]
-            {
-                return args->size * -1;
-            }
-        )
+        ->ContextAccessResult(category.typed, *objectType, l_(args->size * -1))
         & category;
 };
 

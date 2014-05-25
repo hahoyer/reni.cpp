@@ -23,7 +23,7 @@ ResultData const Feature::FunctionResult(
     ExpressionSyntax const& expressionSyntax
 )const
 {
-    bool Trace = expressionSyntax.ObjectId == 32 || expressionSyntax.ObjectId == 33;
+    bool Trace = expressionSyntax.ObjectId == -32 || expressionSyntax.ObjectId == -33;
     md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
     auto thisResult = expressionSyntax.left->GetResultCache(context);
     ArgVisitor visitor;

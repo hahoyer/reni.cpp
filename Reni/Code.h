@@ -39,6 +39,7 @@ namespace Reni
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
         static Ref<CodeItem> const This(Type const&value, int depth);
         static Ref<CodeItem> const Reference(Type const&target);
+        Ref<CodeItem> const CallGetter(Size const size, int const index) const;
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;

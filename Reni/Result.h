@@ -11,6 +11,7 @@ namespace Reni
     class Context;
     class Syntax;
 
+
     class ResultData final : public DumpableObject
     {
         using baseType = DumpableObject;
@@ -40,6 +41,8 @@ namespace Reni
             SetDumpString();
             AssertValid();
         };
+
+        static ResultData Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType);
 
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;

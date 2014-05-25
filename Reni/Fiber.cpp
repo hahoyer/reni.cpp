@@ -5,6 +5,7 @@
 #include "../Util/BitsConst.h"
 #include "Result.h"
 #include "ReplaceVisitor.h"
+#include "../HWLib/DumpToString.h"
 
 using namespace Reni;
 using namespace HWLib;
@@ -83,27 +84,50 @@ String const Fiber::ToCpp(CodeVisitor const&visitor) const{
 }
 
 
-pure_p_implementation(FiberConnector, Size, leftSize);
-pure_p_implementation(FiberConnector, Size, rightSize);
-pure_p_implementation(FiberConnector, Size, size);
+int FiberConnectorItem::nextObjectId = 0;
 
-String const FiberVisitor::Const(Size const size, BitsConst const& value) const {
+pure_p_implementation(FiberConnectorItem, int, inCount);
+pure_p_implementation(FiberConnectorItem, Size, size);
+
+String const FiberConnectorItem::InName(int index) const
+{
+    return
+        "$("
+        + DumpTypeName(*this)
+        + "."
+        + String::Convert(objectId)
+        + "."
+        + String::Convert(index)
+        + ")";
+
+}
+
+String const FiberVisitor::Const(Size const size, BitsConst const& value) const
+{
     return value.format;
 }
 
-String const FiberVisitor::DumpPrintNumber(Size const size) const{
+String const FiberVisitor::DumpPrintNumber(Size const size) const
+{
     return "DumpPrint($(arg))";
 }
 
-String const FiberVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right, Ref<FiberConnector> const&connector) const {
-    auto leftCode = left->ToCpp(*this);
-    auto rightCode = right->ToCpp(*this);
-    auto connectorCodeRaw = connector->ToCpp(*this);
-    return connectorCodeRaw
-        .Replace("$(left)", leftCode)
-        .Replace("$(right)", rightCode);
-}
 
+String const FiberVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const
+{
+    auto connectorCodeRaw = connector->ToCpp(*this);
+    auto index = 0;
+    return items
+        .Aggregate<String>
+        (
+            connectorCodeRaw,
+            [&]
+            (String const &current, Ref<CodeItem> const &item)
+            {
+                return current.Replace(connector->InName(index++), item->ToCpp(*this));
+            }
+        );
+}
 
 String UnrefCode(int depth, String const&target)
 {

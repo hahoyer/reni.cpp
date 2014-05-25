@@ -42,7 +42,7 @@ Ref<CodeItem> const CodeItem::BinaryOperation(
     )
 {
     auto action = new BinaryOperationCode(name, result.size, left.size, leftDepth, right.size, rightDepth);
-    return new PairCode(This(left,leftDepth), Arg(right, rightDepth), action);
+    return new FiberConnector({This(left, leftDepth), Arg(right, rightDepth)}, action);
 };
 
 Ref<CodeItem> const CodeItem::Arg(Type const&value, int depth)
@@ -130,34 +130,58 @@ String const BinaryOperationCode::ToCpp(CodeVisitor const& visitor)const
 }
 
 
-PairCode::PairCode(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector)
-: left(left)
-, right(right)
-, connector(connector) {
+FiberConnector::FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector)
+    : items(items)
+      , connector(connector)
+{
     SetDumpString();
     a_if(IsValid, Dump);
 }
 
-String const PairCode::ToCpp(CodeVisitor const& visitor)const {
-    return visitor.Pair(left, right, connector);
+String const FiberConnector::ToCpp(CodeVisitor const& visitor)const
+{
+    return visitor.FiberConnection(items, connector);
 }
 
-Ref<CodeItem, true> const PairCode::ReplaceImpl(ReplaceVisitor const&visitor) const{
-    auto newLeft = left->Replace(visitor);
-    auto newRight = right->Replace(visitor);
-    if(newLeft.IsEmpty && newRight.IsEmpty)
+
+Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visitor) const
+{
+    auto codeItems = items
+        .Select<Ref<CodeItem,true>>([&](Ref<CodeItem> item)
+            {
+                return item->Replace(visitor);
+            })
+        ->ToArray;
+
+    if(!codeItems.Where([](Ref<CodeItem, true> item)
+        {
+            return !item.IsEmpty;
+        })->Any)
         return{};
-    return new PairCode(*(newLeft || left),*(newRight|| right), connector);
+
+
+        auto index = 0;
+        auto newItems = items
+            .Select<Ref<CodeItem>>([&](Ref<CodeItem,true> item)
+        {
+            return item || items[index++];
+        })
+            ->ToArray;
+
+
+        return new FiberConnector(newItems, connector);
 };
 
 
-inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const{
+inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
+{
     if(offset == 0)
         return thisRef;
     return Fiber({new ReferencePlusCode(size, offset)});
 }
 
-Ref<CodeItem, true> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) const{
+Ref<CodeItem, true> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) const
+{
     md(arg);
     mb;
 }

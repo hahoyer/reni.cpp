@@ -23,8 +23,8 @@ String const CodeVisitor::DumpPrintNumber(Size const size) const{
     return "";
 }
 
-String const CodeVisitor::Pair(Ref<CodeItem> const& left, Ref<CodeItem> const& right, Ref<FiberConnector> const&connector) const {
-    md(left, right, connector);
+String const CodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const {
+    md(items, connector);
     b_;
     return "";
 }

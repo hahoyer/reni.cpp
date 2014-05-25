@@ -1,3 +1,4 @@
 #pragma once
 
-#define l_(result)[&]{return (result);}
+#define return_(result){return result;}
+#define l_(result)[&] return_(result)

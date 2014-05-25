@@ -42,8 +42,12 @@ Ref<Syntax> const DefineableToken::CreateSyntax(Ref<Syntax, true> const left, So
 pure_p_implementation(DefineableToken, int, priority);
 
 tc_Search_implementation(InstanceToken, TypeType);
-tc_Search_implementation(DumpPrintToken, NumberType);
 tc_Search_implementation(PlusToken, NumberType);
 tc_Search_implementation(MinusToken, NumberType);
 tc_Search_implementation(StarToken, NumberType);
 tc_Search_implementation(EnableCutToken, NumberType);
+
+SearchResult<Feature> const DumpPrintToken::Search(NumberType const& target) const
+{
+    return target.Search<DumpPrintToken>();
+};

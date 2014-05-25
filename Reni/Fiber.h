@@ -46,16 +46,24 @@ namespace Reni{
         p(bool, IsValid);
     };
 
-    class FiberConnector 
+    class FiberConnectorItem 
         : public DumpableObject
         , public RefCountProvider {
         typedef DumpableObject baseType; 
-        typedef FiberConnector thisType;
+        typedef FiberConnectorItem thisType;
+        static int nextObjectId;
+        int const objectId;
+
+    protected:
+        explicit FiberConnectorItem()
+            : objectId(nextObjectId++) {}
+
     public:
         ThisRef;
-        virtual_p(Size, leftSize) = 0;
-        virtual_p(Size, rightSize) = 0;
+        virtual_p(int, inCount) = 0;
         virtual_p(Size, size) = 0;
+        virtual Size const InSize(int index)const = 0;
+        virtual String const InName(int index)const;
         virtual String const ToCpp(CodeVisitor const& visitor)const = 0;
         virtual Ref<FiberItem, true> const Replace(ReplaceVisitor const&arg) const = 0;
     };
@@ -70,7 +78,7 @@ namespace Reni{
         p_function(Array<String>,DumpData) override {return{ nd(parent) };};
         String const Const(Size const size, BitsConst const& value) const override;
         String const DumpPrintNumber(Size const size) const override;
-        String const Pair(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector) const override;
+        String const FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;
         String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
     };
 }

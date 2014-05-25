@@ -151,22 +151,14 @@ namespace Reni
         }
 
     private:
-        p(WeakPtr<Type const>, args)
-        {
-            return context.args;
-        }
-
-        p(ContainerContext const&, container)
-        {
-            return context.container;
-        }
-
-        p_function(Array<String>, DumpData) override
-        {
-            return{nd(body), nd(context)};
-        }
+        p(WeakPtr<Type const>, args){return context.args;}
+        p(ContainerContext const&, container){return context.container;}
+        p_function(Array<String>, DumpData) override{return{nd(body), nd(context)};}
 
         ResultData const GetResultData(Category category)const override;
+        p(Ref<CodeItem>, code);
+        p(WeakRef<Type>, type);
+        p(WeakRef<Type>, typeInRecursion);
     };
 
 

@@ -6,7 +6,7 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class FiberConnector;
+    class FiberConnectorItem;
 
     class CodeVisitor: public DumpableObject
     {
@@ -16,7 +16,7 @@ namespace Reni
     public:
         virtual String const Const(Size const size, BitsConst const& value) const;
         virtual String const DumpPrintNumber(Size const size) const;
-        virtual String const Pair(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector) const;
+        virtual String const FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const;
         virtual String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const;
     };
 

@@ -60,33 +60,51 @@ namespace Reni{
     };
 
 
-    class BinaryOperationCode final : public FiberConnector {
-        typedef FiberConnector baseType;
+    class BinaryOperationCode final : public FiberConnectorItem {
+        typedef FiberConnectorItem baseType;
         typedef BinaryOperationCode thisType;
         Size const _size;
-        Size const _leftSize;
-        Size const _rightSize;
-        int leftDepth;
-        int rightDepth;
+        Size const leftSize;
+        Size const rightSize;
+        int const leftDepth;
+        int const rightDepth;
     public:
         String const name;
         BinaryOperationCode(String const& name, Size const&size, Size const&leftSize, int leftDepth, Size const&rightSize, int rightDepth)
             : name(name)
             , _size(size)
-            , _leftSize(leftSize)
-            , _rightSize(rightSize) 
+            , leftSize(leftSize)
+            , rightSize(rightSize) 
             , leftDepth(leftDepth)
             , rightDepth(rightDepth)
         {
             SetDumpString();
         }
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(size), nd(leftDepth), nd(leftSize), nd(name), nd(rightDepth), nd(rightSize)}; };
-        p_function(Size, leftSize) override{ return leftDepth? Size::Address : _leftSize; };
-        p_function(Size, rightSize) override { return rightDepth ? Size::Address : _rightSize; };
-        p_function(Size, size) override {return _size;};
+        p_function(Array<String>, DumpData) override
+        {
+            return
+            {
+                nd(size),
+                nd(leftDepth), 
+                nd(leftSize), 
+                nd(name), 
+                nd(rightDepth), 
+                nd(rightSize)
+            };
+        };
+        p_function(int, inCount) override{ return 2; };
+        p_function(Size, size) override { return _size; };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Ref<FiberItem, true> const Replace(ReplaceVisitor const&) const override{ return{}; }
+
+        Size const InSize(int index) const override
+        {
+            if(index == 0)
+                return leftDepth ? Size::Address : leftSize;
+            return rightDepth ? Size::Address : rightSize;
+        }
+
     };
 
 
@@ -137,20 +155,23 @@ namespace Reni{
     };
 
 
-    class PairCode final : public CodeItem {
+    class FiberConnector final : public CodeItem {
         typedef CodeItem baseType;
-        typedef PairCode thisType;
+        typedef FiberConnector thisType;
     public:
-        Ref<CodeItem> const left;
-        Ref<CodeItem> const right;
-        Ref<FiberConnector> const connector;
-        PairCode(Ref<CodeItem> const&left, Ref<CodeItem> const&right, Ref<FiberConnector> const&connector);
+        Array<Ref<CodeItem>> const items;
+        Ref<FiberConnectorItem> const connector;
+        FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector);
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(left),nd(right),nd(connector)}; };
+        p_function(Array<String>, DumpData) override{ return{nd(items),nd(connector)}; };
         p_function(Size, size) override{ return connector->size; };
         p(bool, IsValid) {
-            return left->size == connector->leftSize 
-                && right->size == connector->rightSize;
+            if(items.Count != connector->inCount)
+                return false;
+            for(auto i = 0; i < items.Count; i++)
+                if(items[i]->size != connector->InSize(i))
+                    return false;
+            return true;
         };
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&arg) const override;

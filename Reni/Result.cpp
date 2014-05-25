@@ -156,7 +156,7 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const{
     if(newCode.IsEmpty)
         return_d(*this);
     return_d(ResultData(size, newCode, type));
-};
+}
 
 p_implementation(ResultData, Array<String>, DumpData){
     return{
@@ -164,6 +164,23 @@ p_implementation(ResultData, Array<String>, DumpData){
         nd(type),
         nd(code)
     };
+}
+
+ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
+{
+    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
+    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    Optional<Size> size; 
+    if(category.hasSize)
+    {
+        if(category.hasCode)
+            size = code->size;
+        else if(category.hasType)
+            size = type->size;
+        else
+            a_fail(category.Dump);
+    }
+    return ResultData(size, code, type);
 }
 
 void ResultData::AssertValid()
