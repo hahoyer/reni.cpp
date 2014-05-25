@@ -11,15 +11,16 @@ using namespace Util;
 using namespace Reni;
 using namespace ReniTest;
 
-namespace _Reni{
-    test_(ParseSimple){
+namespace _Reni
+{
+    test_(ParseSimple) 
+    {
         CompilerTest ct = "4711";
         auto s = ct.compiler.syntax;
         a_if(Dump(s).BeginsWith("Ref{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), nd(s));
-
     }
 
-    test(CodeSimple, ParseSimple)
+    test(CodeSimple, ParseSimple) 
     {
         CompilerTest ct = "4711";
         auto s = ct.compiler.code;
@@ -30,20 +31,19 @@ namespace _Reni{
         a_is(sc->value, == , c4711);
     }
 
-    test(CompileSimple, CodeSimple)
+    test(CompileSimple, CodeSimple) 
     {
         CompilerTest ct = "4711";
         auto result = ct.compiler.Execute();
         a_is(result.result, == , 4711);
     }
 
-    test(Simple, CompileSimple)
+    test(Simple, CompileSimple) 
     {
         CompilerTest::Check("3 dump_print", "3");
-
     }
 
-    test(Negative, Simple)
+    test(Negative, Simple) 
     {
         CompilerTest::Check("(-1)dump_print", "-1");
         CompilerTest::Check("(-12)dump_print", "-12");
@@ -57,7 +57,14 @@ namespace _Reni{
         CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
     }
 
-    test(RecursiveFunction, Simple, _HWLang::ThenElse, _HWLang::TrainWreck)
+    test(Function, Simple)
+    {
+        CompilerTest::Check(R"(
+            f: /\arg + 1; f(2) dump_print;
+        )", "3");
+    }
+
+    test(RecursiveFunction, Function, _HWLang::ThenElse, _HWLang::TrainWreck)
     {
         CompilerTest::Check(R"(
 f: /\
@@ -80,6 +87,5 @@ f: /\
 f(4)dump_print
         
         )", "3");
-
     }
 }
