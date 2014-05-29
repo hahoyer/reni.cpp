@@ -99,15 +99,15 @@ namespace Reni
 
     };
 
-    class FunctionType final : public Type
+    class FunctionBodyType final : public Type
     {
         typedef Type baseType;
-        typedef FunctionType thisType;
+        typedef FunctionBodyType thisType;
         Context const& context;
         Ref<FunctionSyntax> body;
     public:
 
-        FunctionType(Context const& context, FunctionSyntax const& body)
+        FunctionBodyType(Context const& context, FunctionSyntax const& body)
             : context(context)
               , body(body.thisRef)
         {
@@ -124,15 +124,8 @@ namespace Reni
             };
         };
 
-        p_function(Size, size) override
-        {
-            return 0;
-        }
-
-        p_function(WeakRef<Global>, global) override
-        {
-            return context.global;
-        };
+        p_function(Size, size) override{return 0;}
+        p_function(WeakRef<Global>, global) override{return context.global;};
     };
 
 

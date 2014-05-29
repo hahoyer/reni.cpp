@@ -50,7 +50,8 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     return(result);
 }
 
-Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const
+{
     Ref<Syntax, true> newLeft;
     if(!left.IsEmpty)
         newLeft = left->Replace(visitor);
@@ -64,6 +65,7 @@ Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor
     return new ExpressionSyntax(tokenClass, newLeft || left, part, newRight || right);
 }
 
-void ExpressionSyntax::AddTo(SyntaxContainer&main) const{
+void ExpressionSyntax::AddTo(SyntaxContainer&main) const
+{
     main.statements += thisRef;
 }

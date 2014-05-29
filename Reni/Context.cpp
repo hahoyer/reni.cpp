@@ -35,7 +35,7 @@ ResultData const ExtendedFeature::Result(Context const&, Category category, Type
 struct RegularContext::internal final
 {
     FunctionCache<WeakRef<ContainerContext>, SyntaxContainer const*, int> container;
-    FunctionCache<WeakRef<Reni::FunctionType>, FunctionSyntax const*> functionType;
+    FunctionCache<WeakRef<Reni::FunctionBodyType>, FunctionSyntax const*> functionType;
     ValueCache<WeakRef<RecursionContext>> recursionContext;
 
     explicit internal(RegularContext const&context)
@@ -45,7 +45,7 @@ struct RegularContext::internal final
               })
           , functionType([&](FunctionSyntax const*body)
               {
-                  return new Reni::FunctionType(context, *body);
+                  return new Reni::FunctionBodyType(context, *body);
               })
           , recursionContext(l_(new RecursionContext(context)))
     {
@@ -155,8 +155,7 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
 
 p_implementation(FunctionCallResultCache, Ref<CodeItem>, code)
 {
-    md_;
-    mb;
+    return context.GetterCode(*baseType::type);
 }
 
 p_implementation(FunctionCallResultCache, WeakRef<Type>, type)
@@ -190,7 +189,7 @@ FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef
     SetDumpString();
 }
 
-Ref<CodeItem> const FunctionCallContext::CallGetterCode(Type const& resultType) const
+Ref<CodeItem> const FunctionCallContext::GetterCode(Type const& resultType) const
 {
     md(resultType);
     mb;

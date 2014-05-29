@@ -13,16 +13,20 @@ namespace Reni{
     public:
         Ref<Syntax, true> const setter;
         Ref<Syntax, true> const getter;
+
         FunctionSyntax(Ref<Syntax, true> const setter, SourcePart const& part, Ref<Syntax, true> const getter)
             :baseType(part)
-            , setter(setter)
-            , getter(getter){
+             , setter(setter)
+             , getter(getter)
+        {
             SetDumpString();
         }
 
         ThisRef;
+
     private:
-        p_function(String, SmartDump)override {
+        p_function(String, SmartDump) override
+        {
             String result;
             if(!setter.IsEmpty)
                 result += setter->SmartDumpFrame(priority);
@@ -31,9 +35,11 @@ namespace Reni{
                 result += getter->SmartDumpFrame(priority);
             return result;
         }
+
         p_function(int, priority) override{ return 0; }
 
-        ResultData const GetResultData(Context const& context, Category category) const override{
+        ResultData const GetResultData(Context const& context, Category category) const override
+        {
             return context.FunctionType(*this)->GetResultData();
         }
 

@@ -12,7 +12,7 @@ using namespace Util;
 
 namespace Reni{
     class FunctionSyntax;
-    class FunctionType;
+    class FunctionBodyType;
     class Global;
     class MinusToken;
     class ResultData;

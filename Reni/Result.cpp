@@ -107,20 +107,23 @@ p_implementation(ResultCache, Array<String>, DumpData)
 
 ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context)
     : syntax(syntax)
-      , context(context){
+      , context(context)
+{
     SetDumpString();
 }
 
-ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const{
+ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
+{
     a_if_(category != Category::None || context.isRecursion);
     bool Trace = syntax.ObjectId == -11;
-    md(category);
+    md(category)  ;
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
     return_d(result);
 }
 
-p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData){
+p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)
+{
     auto baseDump = base_p_name(DumpData);
     auto thisDump = Array<String>({
         nd(context),
