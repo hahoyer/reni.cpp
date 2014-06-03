@@ -25,6 +25,18 @@ namespace HWLib
         DefaultAssignmentOperator;
 
         p(bool, IsEmpty){ return baseType::IsEmpty; }
+
+        friend thisType const operator||(thisType left, std::function<thisType()> right){
+            if(left.IsEmpty)
+                return right();
+            return left;
+        }
+
+        friend thisType const operator||(thisType left, thisType right){
+            if(left.IsEmpty)
+                return right;
+            return left;
+        }
     };
 }
 
