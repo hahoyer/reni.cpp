@@ -2,6 +2,7 @@
 #include "ArgVisitor.h"
 
 #include "Result.h"
+#include "Type.h"
 
 using namespace Reni;
 using namespace HWLib;

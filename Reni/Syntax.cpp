@@ -4,6 +4,7 @@
 #include "Code.h"
 #include "Context.h"
 #include "Global.h"
+#include "Link.h"
 #include "Result.h"
 #include "TokenClass.h"
 #include "SyntaxContainer.h"
@@ -81,6 +82,11 @@ String const Syntax::SmartDumpFrame(int priority) const
         return result;
     return "(" + result + ")";
 };
+
+Array<Ref<Link>> const Syntax::Links(Context const& context) const
+{
+    return resultCache(&context)->links;
+}
 
 Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const {
     Ref<ResultFromSyntaxAndContext> r = resultCache(&context);

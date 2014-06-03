@@ -2,10 +2,12 @@
 #include "Feature.h"
 
 #include "ArgVisitor.h"
+#include "CodeItems.h"
 #include "ContextFeature.h"
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "Global.h"
+#include "Link.h"
 #include "NumberType.h"
 #include "Result.h"
 #include "../HWLib/RefCountContainer.instance.h"

@@ -10,6 +10,7 @@
 #include "Feature.h"
 #include "Context.h"
 #include "Global.h"
+#include "Link.h"
 #include "Result.h"
 #include "VoidType.h"
 #include "TemplateInstances.h"

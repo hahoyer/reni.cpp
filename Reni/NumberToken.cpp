@@ -2,6 +2,7 @@
 #include "NumberToken.h"
 
 #include "BitType.h"
+#include "CodeItems.h"
 #include "Context.h"
 #include "Global.h"
 #include "NumberType.h"

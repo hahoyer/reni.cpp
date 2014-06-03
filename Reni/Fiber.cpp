@@ -2,10 +2,11 @@
 #include "Fiber.h"
 
 #include "../HWLib/RefCountContainer.instance.h"
+#include "../HWLib/DumpToString.h"
 #include "../Util/BitsConst.h"
+#include "Link.h"
 #include "Result.h"
 #include "ReplaceVisitor.h"
-#include "../HWLib/DumpToString.h"
 
 using namespace Reni;
 using namespace HWLib;

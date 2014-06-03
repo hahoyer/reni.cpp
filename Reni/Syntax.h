@@ -3,6 +3,7 @@
 #include "Result.h"
 #include "..\HWLang\SourcePart.h"
 #include "..\HWLib\FunctionCache.h"
+#include "Context.h"
 using namespace HWLib;
 using namespace HWLang;
 
@@ -10,6 +11,7 @@ namespace Reni
 {
     class CodeItem;
     class Context;
+    class Link;
     class RegularContext;
     class ResultCache;
     class ResultFromSyntaxAndContext;
@@ -45,7 +47,9 @@ namespace Reni
 
         Size const Size(Context const&context)const;
         Ref<CodeItem> const Code(Context const&context)const;
-        WeakRef<Type>const Type(Context const&context)const;
+        WeakRef<Type> const Type(Context const&context)const;
+        Array<Ref<Link>> const Links(Context const&context) const;
+
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;
 
         Ref<SyntaxContainer> const Defines(SourcePart const& part, Ref<Syntax> const&value)const;

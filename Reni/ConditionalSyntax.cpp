@@ -3,6 +3,7 @@
 
 #include "Feature.h"
 #include "RecursionContext.h"
+#include "Type.h"
 
 using namespace Reni;
 static bool Trace = true;

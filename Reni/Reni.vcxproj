@@ -31,6 +31,7 @@
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="ConditionalSyntax.cpp" />
     <ClCompile Include="FunctionToken.cpp" />
+    <ClCompile Include="FunctionSyntax.cpp" />
     <ClCompile Include="SyntaxContainer.cpp" />
     <ClCompile Include="NumberType.cpp" />
     <ClCompile Include="Type.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="FunctionSyntax.h" />
     <ClInclude Include="ContextIncludes.h" />
     <ClInclude Include="AddressType.h" />
+    <ClInclude Include="Link.h" />
     <ClInclude Include="NumberTypeIncludes.h" />
     <ClInclude Include="RecursionContext.h" />
     <ClInclude Include="TypeType.h" />

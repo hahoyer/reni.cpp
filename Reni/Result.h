@@ -2,15 +2,25 @@
 
 #include "../HWLib/WeakRef.h"
 #include "../HWLib/WeakPtr.h"
-#include "Type.h"
-#include "Code.h"
+#include "../HWLib/Optional.h"
+#include "../Util/Size.h"
+#include "../HWLib/Ref.h"
+#include "../Util/Category.h"
+#include "../HWLib/RefCountProvider.h"
+#include "../HWLib/CtrlRef.h"
+
+using namespace HWLib;
+using namespace Util;
+
 
 namespace Reni
 {
     class CodeItem;
     class Context;
+    class Link;
+    class ReplaceVisitor;
     class Syntax;
-
+    class Type;
 
     class ResultData final : public DumpableObject
     {
@@ -20,20 +30,13 @@ namespace Reni
         Optional<Size> const size;
         WeakPtr<Type> const type;
         Ref<CodeItem, true> const code;
+        CtrlPtr<Array<Ref<Link>>> const links;
 
-        ResultData(){ SetDumpString(); };
-        ResultData(Ref<CodeItem> code)
-            : size(code->size)
-            , code(code){
-            SetDumpString();
-            AssertValid();
-        };
-        ResultData(Type const& type)
-            : size(type.size)
-            , type(type.thisRef){
-            SetDumpString();
-            AssertValid();
-        };
+        ResultData() { SetDumpString(); };
+        ResultData(Ref<CodeItem> code);
+        ResultData(Type const& type);
+        ResultData(Array<Ref<Link>> links);
+
         ResultData(Optional<Size> const&size, Ref<CodeItem,true> code, WeakPtr<Type> type)
             : size(size)
             , code(code)
@@ -42,14 +45,15 @@ namespace Reni
             AssertValid();
         };
 
-        static ResultData Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType);
+        static ResultData Get(Category category, std::function<Ref<CodeItem>()> getCode, std::function<WeakRef<Type>()> getType);
 
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;
         ResultData const operator&(Category const&other)const;
-        p(Category, complete){return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty);}
-        ResultData const With(CodeItem const& code) const{return ResultData(size, code.thisRef, type);}
-        ResultData const With(Type const& type) const {return ResultData(size, code, type.thisRef);}
+        p(Category, complete){return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, !links.IsEmpty);}
+
+        ResultData const With(CodeItem const& code) const;
+        ResultData const With(Type const& type) const;
         ResultData const Replace(ReplaceVisitor const&arg) const;
     private:
         p_function(Array<String>,DumpData) override;
@@ -71,6 +75,7 @@ namespace Reni
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
+        p(Array<Ref<Link>>, links);
         p(WeakPtr<Type>, cachedType);
 
         ResultData const Get(Category category)const;

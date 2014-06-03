@@ -4,6 +4,7 @@
 #include "DefineableToken.h"
 #include "Feature.h"
 #include "SyntaxContainer.h"
+#include "Type.h"
 
 using namespace Reni;
 static bool Trace = true;

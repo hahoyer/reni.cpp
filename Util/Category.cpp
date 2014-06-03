@@ -7,25 +7,28 @@ static bool Trace = true;
 using namespace HWLib;
 using namespace Util;
 
-Category const Category::None(false, false, false);
-Category const Category::Size(true, false, false);
-Category const Category::Code(false, true, false);
-Category const Category::Type(false, false, true);
+Category const Category::None(false, false, false,false);
+Category const Category::Size(true, false, false, false);
+Category const Category::Code(false, true, false, false);
+Category const Category::Type(false, false, true, false);
+Category const Category::Links(false, false, false, true);
 
-Category const Category::Instance(bool hasSize, bool hasCode, bool hasType){
-    return Category(hasSize, hasCode, hasType);
+Category const Category::Instance(bool hasSize, bool hasCode, bool hasType, bool hasLinks){
+    return Category(hasSize, hasCode, hasType, hasLinks);
 };
 
 
-Category::Category(bool hasSize, bool hasCode, bool hasType)
+Category::Category(bool hasSize, bool hasCode, bool hasType, bool hasLinks)
     : hasSize(hasSize)
       , hasCode(hasCode)
-      , hasType(hasType){
+      , hasType(hasType)
+      , hasLinks(hasLinks)
+{
     SetDumpString();
 }
 
 Category::Category()
-    : thisType(false, false, false){
+    : thisType(false, false, false, false){
     SetDumpString();
 }
 
@@ -38,7 +41,7 @@ p_implementation(Category, Category, replenished){
     if(result.hasCode)
     {
         result |= Size;
-        //result |= CodeArgs;
+        result |= Links;
     }
 
     if(result.hasType)
@@ -53,7 +56,8 @@ Category const Category::operator|(Category const other)const{
     return Category(
         hasSize || other.hasSize,
         hasCode || other.hasCode,
-        hasType || other.hasType
+        hasType || other.hasType,
+        hasLinks|| other.hasLinks
     );
 }
 
@@ -61,7 +65,8 @@ Category const Category::operator-(Category const other)const{
     return Category(
         hasSize && !other.hasSize,
         hasCode && !other.hasCode,
-        hasType && !other.hasType
+        hasType && !other.hasType,
+        hasLinks &&!other.hasLinks
     );
 }
 
@@ -69,6 +74,7 @@ bool Category::operator==(Category const other)const{
     return hasSize == other.hasSize
         && hasCode == other.hasCode
         && hasType == other.hasType
+        && hasLinks == other.hasLinks
         ;
 }
 
@@ -80,6 +86,8 @@ bool Category::operator<=(Category const other)const{
         return false;
     if (hasType && !other.hasType)
         return false;
+    if(hasLinks && !other.hasLinks)
+        return false;
     return true;
 }
 
@@ -88,7 +96,8 @@ p_implementation(Category, Array<String>, DumpData){
         _({
             hasSize ? String("Size") : "",
             hasCode ? String("Code") : "",
-            hasType ? String("Type") : ""
+            hasType ? String("Type") : "",
+            hasLinks ? String("Links") : ""
         });
 
 

@@ -1,9 +1,11 @@
 #include "Import.h"
 #include "RootContext.h"
 
+#include "CodeItems.h"
 #include "ContextFeature.h"
 #include "ContextFeatureProvider.h"
 #include "Global.h"
+#include "Link.h"
 #include "Result.h"
 #include "Syntax.h"
 #include "../HWLib/RefCountContainer.instance.h"

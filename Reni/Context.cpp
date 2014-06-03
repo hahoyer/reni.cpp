@@ -1,10 +1,12 @@
 #include "Import.h"
 #include "Context.h"
 
+#include "CodeItems.h"
 #include "ContextIncludes.h"
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "FunctionSyntax.h"
+#include "Link.h"
 #include "RecursionContext.h"
 #include "Result.h"
 #include "SearchResult.h"
@@ -35,7 +37,7 @@ ResultData const ExtendedFeature::Result(Context const&, Category category, Type
 struct RegularContext::internal final
 {
     FunctionCache<WeakRef<ContainerContext>, SyntaxContainer const*, int> container;
-    FunctionCache<WeakRef<Reni::FunctionBodyType>, FunctionSyntax const*> functionType;
+    FunctionCache<WeakRef<FunctionBodyType>, FunctionSyntax const*> functionType;
     ValueCache<WeakRef<RecursionContext>> recursionContext;
 
     explicit internal(RegularContext const&context)
@@ -45,7 +47,7 @@ struct RegularContext::internal final
               })
           , functionType([&](FunctionSyntax const*body)
               {
-                  return new Reni::FunctionBodyType(context, *body);
+                  return new FunctionBodyType(context, *body);
               })
           , recursionContext(l_(new RecursionContext(context)))
     {
@@ -113,7 +115,7 @@ ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer 
           {
               return ContextFeature(*new SimpleFeature(*this, tokenIndex), *new ExtendedFeature(*this, tokenIndex));
           })
-      , functionCallResultCache([&](Type const*args, Syntax const*body)
+      , functionCallResultCache([&](Type const*args, FunctionSyntax const*body)
           {
               return new FunctionCallResultCache(*this, args, *body);
           })
@@ -134,15 +136,16 @@ p_implementation(ContainerContext, Size, dataSize)
 
 Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type const& argsType, int const tokenIndex) const
 {
-    return functionCallResultCache(&argsType, &*containerData->statements[tokenIndex]);
+    auto  statement = containerData->statements[tokenIndex];
+    return functionCallResultCache(&argsType, &dynamic_cast<FunctionSyntax const&>(*statement));
 }
 
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
     if(category == Category::None)
-        return *typeInRecursion ;
+        return *valueTypeInRecursion;
 
-    return ResultData::Get(category,l_(code),l_(type));
+    return ResultData::Get(category,l_(codeGet),l_(valueType));
     
     if(category == Category::Type)
         return *type;
@@ -153,28 +156,30 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     return{};
 }
 
-p_implementation(FunctionCallResultCache, Ref<CodeItem>, code)
-{
-    return context.GetterCode(*baseType::type);
-}
-
-p_implementation(FunctionCallResultCache, WeakRef<Type>, type)
+p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
-    auto& fs = dynamic_cast<FunctionSyntax const&>(body);
-    a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
-    a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    return fs.getter->Type(context)->asFunctionResult;
+    a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+    auto links = body.getter->Links(context);
+    md(links);
+    mb;
 }
 
-p_implementation(FunctionCallResultCache, WeakRef<Type>, typeInRecursion)
+p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
+{
+    a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
+    a_if(body.setter.IsEmpty, "NotImpl: function setter " + Dump);
+    a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+    return body.getter->Type(context)->asFunctionResult;
+}
+
+p_implementation(FunctionCallResultCache, WeakRef<Type>, valueTypeInRecursion)
 {
     a_if(pending == Category::Type, Dump);
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
-    auto& fs = dynamic_cast<FunctionSyntax const&>(body);
-    a_if(fs.setter.IsEmpty, "NotImpl: function setter " + Dump);
-    a_if(!fs.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    return fs.getter->Type(*context.recursionContext)->asFunctionResult;
+    a_if(body.setter.IsEmpty, "NotImpl: function setter " + Dump);
+    a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+    return body.getter->Type(*context.recursionContext)->asFunctionResult;
 }
 
 
@@ -187,12 +192,6 @@ FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef
       , index(nextIndex++)
 {
     SetDumpString();
-}
-
-Ref<CodeItem> const FunctionCallContext::GetterCode(Type const& resultType) const
-{
-    md(resultType);
-    mb;
 }
 
 p_implementation(FunctionCallContext, WeakRef<Type>, objectType)

@@ -3,6 +3,7 @@
 #include "FunctionContext.h"
 #include "FunctionSyntax.h"
 #include "SyntaxContainer.h"
+#include "Type.h"
 #include "../HWLib/ValueCache.h"
 #include "../HWLib/FunctionCache.h"
 
@@ -55,7 +56,7 @@ namespace Reni
         typedef ContainerContext thisType;
         typedef ChildContext baseType;
 
-        FunctionCache<Ref<FunctionCallResultCache>, Type const*, Syntax const*> functionCallResultCache;
+        FunctionCache<Ref<FunctionCallResultCache>, Type const*, FunctionSyntax const*> functionCallResultCache;
         FunctionCache<ContextFeature, int> accessFeature;
         ValueCache<WeakRef<Type>> dataTypeCache;
     public:
@@ -133,10 +134,10 @@ namespace Reni
     {
         typedef ResultCache baseType;
         typedef FunctionCallResultCache thisType;
-        Syntax const&body;
+        FunctionSyntax const&body;
         FunctionCallContext context;
     public:
-        FunctionCallResultCache(ContainerContext const& container, Type const*args, Syntax const&body)
+        FunctionCallResultCache(ContainerContext const& container, Type const*args, FunctionSyntax const&body)
             : context(container, args)
               , body(body.thisRef)
         {
@@ -149,9 +150,12 @@ namespace Reni
         p_function(Array<String>, DumpData) override{return{nd(body), nd(context)};}
 
         ResultData const GetResultData(Category category)const override;
-        p(Ref<CodeItem>, code);
-        p(WeakRef<Type>, type);
-        p(WeakRef<Type>, typeInRecursion);
+        p(Ref<CodeItem>, codeGet);
+        p(Ref<CodeItem>, CodeSet);
+        p(WeakRef<Type>, valueType);
+        p(WeakRef<Type>, valueTypeInRecursion);
+        p(Ref<CodeItem>, codeGetter);
+        p(Ref<CodeItem>, CodeSetter);
     };
 
 

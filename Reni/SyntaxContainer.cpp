@@ -2,6 +2,8 @@
 #include "SyntaxContainer.h"
 
 #include "ExpressionSyntax.h"
+#include "CodeItems.h"
+#include "Link.h"
 #include "DefineableToken.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLang/Admin/Export.h"

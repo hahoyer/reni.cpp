@@ -24,7 +24,6 @@ namespace Reni
 
         ThisRef;
         ResultData const CreateArgReferenceResult(Category category)const;
-        Ref<CodeItem> const GetterCode(Type const& resultType) const;
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return thisRef; };
         p_function(Array<String>, DumpData) override{ return{nd(args), nd(container), nd(index)}; }

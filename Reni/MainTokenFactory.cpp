@@ -1,11 +1,13 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
 
+#include "CodeItems.h"
 #include "ConditionalSyntax.h"
 #include "ExpressionSyntax.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
 #include "FunctionToken.h"
+#include "Link.h"
 #include "NumberToken.h"
 #include "Syntax.h"
 #include "Terminal.h"
