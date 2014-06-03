@@ -17,7 +17,7 @@ namespace Reni
 {
     class CodeItem;
     class Context;
-    class Link;
+    class External;
     class ReplaceVisitor;
     class Syntax;
     class Type;
@@ -30,12 +30,12 @@ namespace Reni
         Optional<Size> const size;
         WeakPtr<Type> const type;
         Ref<CodeItem, true> const code;
-        CtrlPtr<Array<Ref<Link>>> const links;
+        CtrlPtr<Array<Ref<External>>> const externals;
 
         ResultData() { SetDumpString(); };
         ResultData(Ref<CodeItem> code);
         ResultData(Type const& type);
-        ResultData(Array<Ref<Link>> links);
+        ResultData(Array<Ref<External>> externals);
 
         ResultData(Optional<Size> const&size, Ref<CodeItem,true> code, WeakPtr<Type> type)
             : size(size)
@@ -50,7 +50,7 @@ namespace Reni
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;
         ResultData const operator&(Category const&other)const;
-        p(Category, complete){return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, !links.IsEmpty);}
+        p(Category, complete){return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, !externals.IsEmpty);}
 
         ResultData const With(CodeItem const& code) const;
         ResultData const With(Type const& type) const;
@@ -75,7 +75,7 @@ namespace Reni
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
-        p(Array<Ref<Link>>, links);
+        p(Array<Ref<External>>, externals);
         p(WeakPtr<Type>, cachedType);
 
         ResultData const Get(Category category)const;

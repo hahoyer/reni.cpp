@@ -2,7 +2,7 @@
 #include "Compiler.h"
 
 #include "BitType.h"
-#include "Link.h"
+#include "External.h"
 #include "Result.h"
 #include "TokenClass.h"
 #include "../HWLib/RefCountContainer.instance.h"

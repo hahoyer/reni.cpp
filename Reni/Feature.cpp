@@ -7,7 +7,7 @@
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "Global.h"
-#include "Link.h"
+#include "External.h"
 #include "NumberType.h"
 #include "Result.h"
 #include "../HWLib/RefCountContainer.instance.h"

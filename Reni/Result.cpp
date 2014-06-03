@@ -97,10 +97,10 @@ p_implementation(ResultCache, WeakRef<Type>, type)
     return data.type;
 }
 
-p_implementation(ResultCache, Array<Ref<Link>>, links)
+p_implementation(ResultCache, Array<Ref<External>>, externals)
 {
-    Ensure(Category::Links);
-    return *data.links;
+    Ensure(Category::Externals);
+    return *data.externals;
 }
 
 p_implementation(ResultCache, WeakPtr<Type>, cachedType)

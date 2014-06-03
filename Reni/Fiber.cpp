@@ -4,7 +4,7 @@
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/DumpToString.h"
 #include "../Util/BitsConst.h"
-#include "Link.h"
+#include "External.h"
 #include "Result.h"
 #include "ReplaceVisitor.h"
 

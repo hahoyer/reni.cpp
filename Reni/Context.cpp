@@ -6,7 +6,7 @@
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "FunctionSyntax.h"
-#include "Link.h"
+#include "External.h"
 #include "RecursionContext.h"
 #include "Result.h"
 #include "SearchResult.h"
@@ -160,8 +160,8 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    auto links = body.getter->Links(context);
-    md(links);
+    auto externals = body.getter->Externals(context);
+    md(externals);
     mb;
 }
 

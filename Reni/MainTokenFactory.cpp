@@ -7,7 +7,7 @@
 #include "DumpPrintToken.h"
 #include "Feature.h"
 #include "FunctionToken.h"
-#include "Link.h"
+#include "External.h"
 #include "NumberToken.h"
 #include "Syntax.h"
 #include "Terminal.h"

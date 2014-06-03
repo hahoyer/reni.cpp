@@ -62,7 +62,7 @@
     <ClInclude Include="FunctionSyntax.h" />
     <ClInclude Include="ContextIncludes.h" />
     <ClInclude Include="AddressType.h" />
-    <ClInclude Include="Link.h" />
+    <ClInclude Include="External.h" />
     <ClInclude Include="NumberTypeIncludes.h" />
     <ClInclude Include="RecursionContext.h" />
     <ClInclude Include="TypeType.h" />

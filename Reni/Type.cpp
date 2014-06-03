@@ -7,7 +7,7 @@
 #include "Code.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
-#include "Link.h"
+#include "External.h"
 #include "NumberType.h"
 #include "Result.h"
 #include "TemplateInstances.h"

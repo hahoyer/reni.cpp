@@ -7,12 +7,12 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class Link final 
+    class External final 
         : public DumpableObject
         , public RefCountProvider
     {
         using baseType = DumpableObject; 
-        using thisType = Link;
+        using thisType = External;
 
     };
 }

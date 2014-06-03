@@ -11,19 +11,19 @@ namespace Util{
         bool const hasSize;
         bool const hasCode;
         bool const hasType;
-        bool const hasLinks;
+        bool const hasExternals;
 
         static Category const None;
         static Category const Size;
         static Category const Code;
         static Category const Type;
-        static Category const Links;
-        static Category const Instance(bool hasSize, bool hasCode, bool hasType, bool hasLinks);
+        static Category const Externals;
+        static Category const Instance(bool hasSize, bool hasCode, bool hasType, bool hasExternals);
 
         Category();
-        Category(Category const&other) : thisType(other.hasSize, other.hasCode, other.hasType, other.hasLinks){}
+        Category(Category const&other) : thisType(other.hasSize, other.hasCode, other.hasType, other.hasExternals){}
     private:
-        Category(bool hasSize, bool hasCode, bool hasType, bool hasLinks);
+        Category(bool hasSize, bool hasCode, bool hasType, bool hasExternals);
 
     public:
         DefaultAssignmentOperator;

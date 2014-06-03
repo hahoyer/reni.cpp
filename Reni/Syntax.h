@@ -11,7 +11,7 @@ namespace Reni
 {
     class CodeItem;
     class Context;
-    class Link;
+    class External;
     class RegularContext;
     class ResultCache;
     class ResultFromSyntaxAndContext;
@@ -48,7 +48,7 @@ namespace Reni
         Size const Size(Context const&context)const;
         Ref<CodeItem> const Code(Context const&context)const;
         WeakRef<Type> const Type(Context const&context)const;
-        Array<Ref<Link>> const Links(Context const&context) const;
+        Array<Ref<External>> const Externals(Context const&context) const;
 
         Ref<ResultFromSyntaxAndContext> const GetResultCache(Context const&context)const;
 
