@@ -42,7 +42,7 @@ private:
 
 
 ResultData const TypeOperatorSyntax::GetResultData(Context const& context, Category category) const{
-    auto result = context.global->voidType.GetResultData() & category;
+    auto result = context.global->voidType.GetResultData(category);
     if(category.hasType)
         result = result .With(*target->Type(context)->typeType);
     return result;

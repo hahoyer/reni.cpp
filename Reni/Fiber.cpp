@@ -39,6 +39,12 @@ p_implementation(Fiber, Size, size){
     return items.Last->size;
 };
 
+p_implementation(Fiber, Array<Ref<External>>, externals){
+    md_;
+    mb;
+};
+
+
 p_implementation(Fiber, bool, IsValid) {
     Size size = head->size;
     for(auto item: items){

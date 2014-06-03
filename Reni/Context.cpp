@@ -145,7 +145,7 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     if(category == Category::None)
         return *valueTypeInRecursion;
 
-    return ResultData::Get(category,l_(codeGet),l_(valueType));
+    return ResultData::Get(category,*codeGet,*valueType);
     
     if(category == Category::Type)
         return *type;

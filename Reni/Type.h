@@ -59,9 +59,9 @@ namespace Reni{
         p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
 
-        ResultData const GetResultData(Ref<CodeItem> code)const;
-        ResultData const GetResultData(Category category, std::function<Ref<CodeItem>()> getCode)const;
-        ResultData const GetResultData()const;
+        ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode)const;
+        ResultData const GetResultData(Category category, CodeItem const&code)const;
+        ResultData const GetResultData(Category category)const;
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
         ResultData const Constructor(Category category, Type const&arg)const;
 

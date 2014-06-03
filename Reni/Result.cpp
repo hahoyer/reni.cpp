@@ -39,9 +39,9 @@ private:
         };
     };
 
-    ResultData const GetResultData(Category)const override
+    ResultData const GetResultData(Category category)const override
     {
-        return ResultData(code->size, code, type);
+        return ResultData::Get(category, *code, *type);
     }
 };
 
@@ -100,7 +100,7 @@ p_implementation(ResultCache, WeakRef<Type>, type)
 p_implementation(ResultCache, Array<Ref<External>>, externals)
 {
     Ensure(Category::Externals);
-    return *data.externals;
+    return data.externals;
 }
 
 p_implementation(ResultCache, WeakPtr<Type>, cachedType)
@@ -151,7 +151,12 @@ p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
 
 ResultData const ResultData::operator+(ResultData const& other) const
 {
-    return ResultData(size || other.size, code || other.code, type || other.type);
+    return ResultData(
+        size || other.size, 
+        code || other.code, 
+        type || other.type,
+        externals || other.externals
+        );
 }
 
 ResultData const ResultData::operator&(Category const& other) const
@@ -159,8 +164,9 @@ ResultData const ResultData::operator&(Category const& other) const
     return ResultData(
         other.hasSize ? size : Optional<Size>(),
         other.hasCode ? code : Ref<CodeItem, true>(),
-        other.hasType ? type : WeakPtr<Type>()
-    );
+        other.hasType ? type : WeakPtr<Type>(),
+        other.hasExternals ? externals : Optional<Array<Ref<External>>>()
+        );
 }
 
 ResultData::ResultData(Ref<CodeItem> code)
@@ -171,8 +177,79 @@ ResultData::ResultData(Ref<CodeItem> code)
     AssertValid();
 }
 
+ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
+{
+    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
+    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    Optional<Size> size;
+    if(category.hasSize)
+    {
+        if(category.hasCode)
+            size = code->size;
+        else if(category.hasType)
+            size = type->size;
+        else
+            a_fail(category.Dump);
+    }
+    Optional<Array<Ref<External>>> externals;
+    if(category.hasExternals)
+    {
+        if(category.hasCode)
+            externals = code->externals;
+        else
+            a_fail(category.Dump);
+    }
+
+    return ResultData(size, code, type, externals);
+}
+
+ResultData ResultData::Get(Category category, CodeItem const& code, Type const& type)
+{
+    Optional<Size> size;
+    if(category.hasSize)
+        size = code.size;
+    Optional<Array<Ref<External>>> externals;
+    if(category.hasExternals)
+        externals = code.externals;
+
+    return ResultData(size, &code.thisRef, &type.thisRef, externals);
+}
+
+ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, Type const& type)
+{
+    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
+    Optional<Size> size;
+    if(category.hasSize)
+            size = type.size;
+
+    Optional<Array<Ref<External>>> externals;
+
+    if(category.hasExternals)
+    {
+        if(category.hasCode)
+            externals = code->externals;
+        else
+            a_fail(category.Dump);
+    }
+
+    return ResultData(size, code, &type.thisRef, externals);
+}
+
+ResultData ResultData::Get(Category category, CodeItem const& code, function<WeakRef<Type>()> getType)
+{
+    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    Optional<Size> size;
+    if(category.hasSize)
+        size = code.size;
+    Optional<Array<Ref<External>>> externals;
+    if(category.hasExternals)
+        externals = code.externals;
+
+    return ResultData(size, &code.thisRef, type, externals);
+}
+
 ResultData const ResultData::With(Type const& type) const
-{return ResultData(size, code, type.thisRef);}
+{return ResultData(size, code, type.thisRef, {});}
 
 ResultData::ResultData(Type const& type)
     : size(type.size)
@@ -190,12 +267,14 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
     md(arg)  ;
     auto newCode = code->Replace(arg);
     if(newCode.IsEmpty)
-    return_d(*this);
-    return_d(ResultData(size, newCode, type));
+        return_d(*this);
+    return_d(Get(complete, *newCode, *type));
 }
 
 ResultData const ResultData::With(CodeItem const& code) const
-{return ResultData(size, code.thisRef, type);}
+{
+    return Get(complete | Category::Code, code, *type);
+}
 
 p_implementation(ResultData, Array<String>, DumpData)
 {
@@ -204,23 +283,6 @@ p_implementation(ResultData, Array<String>, DumpData)
         nd(type),
         nd(code)
     };
-}
-
-ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
-{
-    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
-    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    Optional<Size> size;
-    if(category.hasSize)
-    {
-        if(category.hasCode)
-            size = code->size;
-        else if(category.hasType)
-            size = type->size;
-        else
-        a_fail(category.Dump);
-    }
-    return ResultData(size, code, type);
 }
 
 void ResultData::AssertValid()

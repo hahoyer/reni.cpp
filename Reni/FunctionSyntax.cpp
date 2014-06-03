@@ -20,5 +20,5 @@ p_implementation(FunctionSyntax, String, SmartDump)
 
 ResultData const FunctionSyntax::GetResultData(Context const& context, Category category) const
 {
-    return context.FunctionType(*this)->GetResultData();
+    return context.FunctionType(*this)->GetResultData(category);
 }

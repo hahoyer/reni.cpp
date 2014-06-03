@@ -8,9 +8,11 @@
 #include "../Util/Category.h"
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/CtrlRef.h"
+#include "External.h"
 
 using namespace HWLib;
 using namespace Util;
+using namespace std;
 
 
 namespace Reni
@@ -30,27 +32,52 @@ namespace Reni
         Optional<Size> const size;
         WeakPtr<Type> const type;
         Ref<CodeItem, true> const code;
-        CtrlPtr<Array<Ref<External>>> const externals;
+        Optional<Array<Ref<External>>>  const externals;
 
         ResultData() { SetDumpString(); };
         ResultData(Ref<CodeItem> code);
         ResultData(Type const& type);
         ResultData(Array<Ref<External>> externals);
 
-        ResultData(Optional<Size> const&size, Ref<CodeItem,true> code, WeakPtr<Type> type)
+    private:
+        ResultData(Optional<Size> const&size, Ref<CodeItem, true> code, WeakPtr<Type> type, Optional<Array<Ref<External>>> const&externals)
             : size(size)
             , code(code)
-            , type(type){
+            , type(type)
+            , externals(externals)
+        {
             SetDumpString();
             AssertValid();
         };
 
-        static ResultData Get(Category category, std::function<Ref<CodeItem>()> getCode, std::function<WeakRef<Type>()> getType);
+    public:
+        static ResultData Get(
+            Category category, 
+            function<Ref<CodeItem>()> getCode, 
+            function<WeakRef<Type>()> getType
+            );
+        static ResultData Get(
+            Category category,
+            CodeItem const& code,
+            function<WeakRef<Type>()> getType
+            );
+        static ResultData Get(
+            Category category,
+            function<Ref<CodeItem>()> getCode,
+            Type const& type
+            );
+        static ResultData Get(
+            Category category,
+            CodeItem const& code,
+            Type const& type
+            );
+
+
 
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;
         ResultData const operator&(Category const&other)const;
-        p(Category, complete){return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, !externals.IsEmpty);}
+        p(Category, complete){return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, externals.IsValid);}
 
         ResultData const With(CodeItem const& code) const;
         ResultData const With(Type const& type) const;

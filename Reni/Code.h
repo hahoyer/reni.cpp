@@ -12,10 +12,11 @@ using namespace HWLib;
 namespace Reni
 {
     class CodeVisitor;
-    class Result;
+    class External;
     class FiberItem;
     class NumberType;
     class ReplaceVisitor;
+    class Result;
 
     class CodeItem 
         : public WithId<DumpableObject>
@@ -43,6 +44,7 @@ namespace Reni
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
+        virtual_p(Array<Ref<External>>, externals) = 0;
         ThisRef;
         Ref<CodeItem,true> const Replace(ReplaceVisitor const&arg) const;
         virtual Ref<CodeItem> const Fiber(Array<Ref<FiberItem>> const&items)const;

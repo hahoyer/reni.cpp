@@ -68,11 +68,6 @@ pure_p_implementation(Type, int, addressLevel);
 pure_p_implementation(Type, bool, isTypeTarget);
 pure_p_implementation(Type, WeakRef<Type>, dereferencedType);
 
-ResultData const Type::GetResultData(Ref<CodeItem> code)const
-{
-    return ResultData(size, code, thisRef);
-}
-
 SearchResult<Feature> const Type::Search(TypeType const&provider) const
 {
     md(provider);
@@ -87,17 +82,18 @@ SearchResult<Feature> const Type::Search(NumberType const& provider) const
 
 ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode) const
 {
-    return ResultData(
-        !category.hasSize ? Optional<Size>() : size ,
-        !category.hasCode ? Ref<CodeItem, true>() : getCode(),
-        !category.hasType ? WeakPtr<Type>() : thisRef
-    );
+    return ResultData::Get(category,getCode,*this);
 }
 
-ResultData const Type::GetResultData() const
+ResultData const Type::GetResultData(Category category, CodeItem const& code) const
+{
+    return ResultData::Get(category, code, *this);
+}
+
+ResultData const Type::GetResultData(Category category) const
 {
     a_if(!HasData, Dump);
-    return ResultData(size, CodeItem::Const(BitsConst::Empty()), &this->thisRef);
+    return ResultData::Get(category, l_(CodeItem::Const(BitsConst::Empty())), *this);
 }
 
 WeakRef<Type> const Type::array(int count)const
@@ -171,7 +167,7 @@ WeakRef<NumberType> const Type::CreateNumberType() const
 ResultData const Type::ContextAccessResult(Category category, Type const& target, function<Size()> getOffset)const
 {
     if(!HasData)
-        return GetResultData() & category;
+        return GetResultData(category);
 
     return indirectType
         ->GetResultData

@@ -4,6 +4,7 @@
 #include "../HWLib/RefCountContainer.instance.h"
 
 #include "CodeItems.h"
+#include "External.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
 
@@ -24,6 +25,7 @@ String const CodeItem::ToCpp(CodeVisitor const& visitor)const{
 };
 
 pure_p_implementation(CodeItem, Size, size) ;
+pure_p_implementation(CodeItem, Array<Ref<External>>, externals);
 
 Ref<CodeItem> const CodeItem::Const(BitsConst const&value){
     return new ConstCode(value.size, value);
@@ -100,6 +102,12 @@ p_implementation(TypedCode, Size, size)
 }
 
 
+p_implementation(ArgCode, Array<Ref<External>>, externals)
+{
+    md_;
+    mb;
+}
+
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
@@ -111,6 +119,12 @@ Ref<CodeItem, true> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) con
     return visitor.Arg(type, depth);
 };
 
+
+p_implementation(ThisCode, Array<Ref<External>>, externals)
+{
+    md_;
+    mb;
+}
 
 String const ThisCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -136,6 +150,12 @@ FiberConnector::FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnec
 {
     SetDumpString();
     a_if(IsValid, Dump);
+}
+
+p_implementation(FiberConnector, Array<Ref<External>>, externals)
+{
+    md_;
+    mb;
 }
 
 String const FiberConnector::ToCpp(CodeVisitor const& visitor)const
@@ -172,6 +192,12 @@ Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visit
         return new FiberConnector(newItems, connector);
 };
 
+
+p_implementation(ReferenceCode, Array<Ref<External>>, externals)
+{
+    md_;
+    mb;
+}
 
 inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
 {

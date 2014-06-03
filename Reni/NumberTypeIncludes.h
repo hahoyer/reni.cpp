@@ -27,7 +27,7 @@ class NumberType::OperationFeature final : public Feature::Extended
                 *thisTypeAsNumber, target.addressLevel,
                 *argTypeAsNumber, arg.addressLevel
                 );
-            return resultType->GetResultData(code);
+            return resultType->GetResultData(category, *code);
         }
 
         md(category, target, arg);

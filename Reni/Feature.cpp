@@ -25,7 +25,7 @@ ResultData const Feature::FunctionResult(
     ExpressionSyntax const& expressionSyntax
 )const
 {
-    bool Trace = expressionSyntax.ObjectId == -32 || expressionSyntax.ObjectId == -33;
+    bool Trace = expressionSyntax.ObjectId == 3 && category.hasExternals;
     md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
     auto thisResult = expressionSyntax.left->GetResultCache(context);
     ArgVisitor visitor;
@@ -39,7 +39,9 @@ ResultData const Feature::FunctionResult(
     }
 
     b_if_(Trace);
-    auto result = (Result(category, *thisResult->type, argResult) & category).Replace(visitor);
+    auto rawResult = Result(category, *thisResult->type, argResult) & category;
+    a_is(category, == , rawResult.complete);
+    auto result = rawResult.Replace(visitor);
     return_d(result);
 }
 
@@ -67,7 +69,7 @@ ResultData const EnableCutFeature::Result(Category category, Type const&target)c
 {
     return target
         .enableCutType
-        ->GetResultData(CodeItem::This(target, 0));
+        ->GetResultData(category,l_(CodeItem::This(target, 0)));
 }
 
 
@@ -76,5 +78,5 @@ ResultData const DumpPrintFeature::Result(Category category, Type const&target)c
     return target
         .global
         ->voidType
-        .GetResultData(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target)));
+        .GetResultData(category, l_(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target))));
 }
