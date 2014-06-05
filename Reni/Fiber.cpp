@@ -94,6 +94,7 @@ int FiberConnectorItem::nextObjectId = 0;
 
 pure_p_implementation(FiberConnectorItem, int, inCount);
 pure_p_implementation(FiberConnectorItem, Size, size);
+pure_p_implementation(FiberConnectorItem, Externals, externals);
 
 String const FiberConnectorItem::InName(int index) const
 {

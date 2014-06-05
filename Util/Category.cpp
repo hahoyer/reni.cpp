@@ -101,11 +101,8 @@ p_implementation(Category, Array<String>, DumpData){
         });
 
 
-    auto r2 = result.Where([](String element){
-            return element != "";
-        })
-        ->ToArray;
-    if (r2.Count)
-        return r2;
-    return{ "<none>" };
+    auto r2 = result.Where([](String element){return element != "";})->Stringify(",");
+    if (r2=="")
+        return{ "<none>" };
+    return{r2};
 };

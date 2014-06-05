@@ -16,33 +16,38 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-Ref<CodeItem> const CodeItem::Reference(Type const&value){
+Ref<CodeItem> const CodeItem::Reference(Type const&value)
+{
     return new ReferenceCode(value);
 }
 
-String const CodeItem::ToCpp(CodeVisitor const& visitor)const{
+String const CodeItem::ToCpp(CodeVisitor const& visitor)const
+{
     md(visitor);
     mb;
 };
 
 pure_p_implementation(CodeItem, Size, size) ;
-pure_p_implementation(CodeItem, Externals, externals);
 
-Ref<CodeItem> const CodeItem::Const(BitsConst const&value){
+pure_p_implementation(CodeItem, Externals, externals) ;
+
+Ref<CodeItem> const CodeItem::Const(BitsConst const&value)
+{
     return new ConstCode(value.size, value);
 };
 
-Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value){
+Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value)
+{
     return This(value,0)
         ->Fiber({new DumpPrintNumberCode(value.size)});
 };
 
 Ref<CodeItem> const CodeItem::BinaryOperation(
-    String name, 
-    NumberType const&result, 
+    String name,
+    NumberType const&result,
     NumberType const&left, int leftDepth,
     NumberType const&right, int rightDepth
-    )
+)
 {
     auto action = new BinaryOperationCode(name, result.size, left.size, leftDepth, right.size, rightDepth);
     return new FiberConnector({This(left, leftDepth), Arg(right, rightDepth)}, action);
@@ -153,14 +158,15 @@ FiberConnector::FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnec
 
 p_implementation(FiberConnector, Externals, externals)
 {
-    auto itemsExternals = items.Aggregate<Externals>(
-        [&](Externals result, Ref<CodeItem> item)
-    {
-        return result + item->externals;
-    });
-    md(itemsExternals);
-    mb;
-
+    return items
+        .Aggregate<Externals>
+        (
+            [&](Externals result, Ref<CodeItem> item)
+            {
+                return result + item->externals;
+            }
+        )
+        + connector->externals;
 }
 
 String const FiberConnector::ToCpp(CodeVisitor const& visitor)const
@@ -185,16 +191,16 @@ Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visit
         return{};
 
 
-        auto index = 0;
-        auto newItems = items
-            .Select<Ref<CodeItem>>([&](Ref<CodeItem,true> item)
-        {
-            return item || items[index++];
-        })
-            ->ToArray;
+    auto index = 0;
+    auto newItems = items
+        .Select<Ref<CodeItem>>([&](Ref<CodeItem,true> item)
+            {
+                return item || items[index++];
+            })
+        ->ToArray;
 
 
-        return new FiberConnector(newItems, connector);
+    return new FiberConnector(newItems, connector);
 };
 
 
@@ -246,4 +252,3 @@ p_implementation(BinaryOperationCode, Externals, externals)
 {
     return{};
 }
-

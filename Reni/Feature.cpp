@@ -38,7 +38,7 @@ ResultData const Feature::FunctionResult(
     }
 
     b_if_(Trace);
-    auto rawResult = Result(category, *thisResult->type, argResult) & category;
+    auto rawResult = Result(category, *thisResult->type, argResult);
     a_is(category, == , rawResult.complete);
     auto result = rawResult.Replace(visitor);
     return_d(result);

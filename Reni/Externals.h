@@ -47,7 +47,7 @@ namespace HWLib
         Optional() : _isValid(false){}
         Optional(decltype(null)) : _isValid(false){}
         Optional(targetType const& value)
-            :_isValid(false)
+            :_isValid(true)
             , value(value)
         {
         }

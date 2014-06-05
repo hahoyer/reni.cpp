@@ -49,6 +49,16 @@ namespace Reni
             AssertValid();
         };
 
+        static ResultData Get(
+            Category category, 
+            Optional<Size> const&size, 
+            Ref<CodeItem, true> code, 
+            WeakPtr<Type> type, 
+            Optional<Externals> const&externals
+            )
+        {
+            return ResultData(size, code, type, externals) & category;
+        };
     public:
         static ResultData Get(
             Category category, 

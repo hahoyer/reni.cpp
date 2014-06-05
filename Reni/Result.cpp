@@ -200,7 +200,7 @@ ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode,
             a_fail(category.Dump);
     }
 
-    return ResultData(size, code, type, externals);
+    return Get(category, size, code, type, externals);
 }
 
 ResultData ResultData::Get(Category category, CodeItem const& code, Type const& type)
@@ -212,7 +212,7 @@ ResultData ResultData::Get(Category category, CodeItem const& code, Type const& 
     if(category.hasExternals)
         externals = code.externals;
 
-    return ResultData(size, &code.thisRef, &type.thisRef, externals);
+    return Get(category, size, &code.thisRef, &type.thisRef, externals) ;
 }
 
 ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, Type const& type)
@@ -232,7 +232,7 @@ ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode,
             a_fail(category.Dump);
     }
 
-    return ResultData(size, code, &type.thisRef, externals);
+    return Get(category, size, code, &type.thisRef, externals) ;
 }
 
 ResultData ResultData::Get(Category category, CodeItem const& code, function<WeakRef<Type>()> getType)
@@ -245,7 +245,7 @@ ResultData ResultData::Get(Category category, CodeItem const& code, function<Wea
     if(category.hasExternals)
         externals = code.externals;
 
-    return ResultData(size, &code.thisRef, type, externals);
+    return Get(category, size, &code.thisRef, type, externals) ;
 }
 
 ResultData const ResultData::With(Type const& type) const
