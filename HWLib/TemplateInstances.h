@@ -200,16 +200,22 @@ public:
         : parent(parent)
         , selector(selector)
     {
+        Align();
     }
 
     void Align()
     {
-        while(parent->IsValid && !selector(*parent.current))
-            parent->Step();
+        while(parent.IsValid && !selector(*parent.current))
+            parent.Step();
     }
 protected:
     p_function(bool,IsValid) override{ return parent.IsValid; }
-    T const Step()override{return parent.Step();}
+    T const Step()override
+    {
+        auto result = parent.Step();
+        Align();
+        return result;
+    }
 };
 
 
