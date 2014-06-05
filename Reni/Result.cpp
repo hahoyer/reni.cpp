@@ -97,7 +97,7 @@ p_implementation(ResultCache, WeakRef<Type>, type)
     return data.type;
 }
 
-p_implementation(ResultCache, Array<Ref<External>>, externals)
+p_implementation(ResultCache, Externals, externals)
 {
     Ensure(Category::Externals);
     return data.externals;
@@ -165,7 +165,7 @@ ResultData const ResultData::operator&(Category const& other) const
         other.hasSize ? size : Optional<Size>(),
         other.hasCode ? code : Ref<CodeItem, true>(),
         other.hasType ? type : WeakPtr<Type>(),
-        other.hasExternals ? externals : Optional<Array<Ref<External>>>()
+        other.hasExternals ? externals : Optional<Externals>()
         );
 }
 
@@ -191,7 +191,7 @@ ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode,
         else
             a_fail(category.Dump);
     }
-    Optional<Array<Ref<External>>> externals;
+    Optional<Externals> externals;
     if(category.hasExternals)
     {
         if(category.hasCode)
@@ -208,7 +208,7 @@ ResultData ResultData::Get(Category category, CodeItem const& code, Type const& 
     Optional<Size> size;
     if(category.hasSize)
         size = code.size;
-    Optional<Array<Ref<External>>> externals;
+    Optional<Externals> externals;
     if(category.hasExternals)
         externals = code.externals;
 
@@ -222,7 +222,7 @@ ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode,
     if(category.hasSize)
             size = type.size;
 
-    Optional<Array<Ref<External>>> externals;
+    Optional<Externals> externals;
 
     if(category.hasExternals)
     {
@@ -241,7 +241,7 @@ ResultData ResultData::Get(Category category, CodeItem const& code, function<Wea
     Optional<Size> size;
     if(category.hasSize)
         size = code.size;
-    Optional<Array<Ref<External>>> externals;
+    Optional<Externals> externals;
     if(category.hasExternals)
         externals = code.externals;
 

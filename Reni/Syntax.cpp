@@ -4,7 +4,6 @@
 #include "Code.h"
 #include "Context.h"
 #include "Global.h"
-#include "External.h"
 #include "Result.h"
 #include "TokenClass.h"
 #include "SyntaxContainer.h"
@@ -83,7 +82,7 @@ String const Syntax::SmartDumpFrame(int priority) const
     return "(" + result + ")";
 };
 
-Array<Ref<External>> const Syntax::Externals(Context const& context) const
+Externals const Syntax::Externals(Context const& context) const
 {
     return resultCache(&context)->externals;
 }

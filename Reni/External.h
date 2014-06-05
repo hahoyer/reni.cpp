@@ -2,6 +2,7 @@
 
 #include "../HWLib/_EditorTemplates.h"
 #include "../HWLib/DumpableObject.h"
+#include "../HWLib/RefCountProvider.h"
 
 using namespace HWLib;
 using namespace std;
@@ -9,55 +10,20 @@ using namespace std;
 namespace Reni
 {
     class External final
-        : public DumpableObject
-        , public RefCountProvider
+        : public WithId<DumpableObject, External>
     {
         using baseType = DumpableObject;
         using thisType = External;
 
-    };
-
-}
-
-namespace HWLib
-{
-    template<>
-    class Optional<Array<Ref<Reni::External>>> final
-    {
-        using thisType = Optional;
-        using targetType = Array<Ref<Reni::External>>;
-
-        targetType const value;
-        bool const _isValid;
     public:
-        Optional() : _isValid(false){}
-        Optional(decltype(null)) : _isValid(false){}
-        Optional(targetType const& value)
-            :_isValid(false)
-            , value(value)
-        {
-        }
+        static External const Arg;
+        static External const This;
 
-        p(bool, IsValid){return _isValid;}
-
-        DefaultAssignmentOperator;
-
-        p(targetType, Value){
-            a_if_(IsValid);
-            return value;
-        };
-
-        operator targetType const ()const{ return Value; };
-
-        friend thisType const operator||(thisType left, function<thisType()> right){
-            if(left.IsValid)
-                return left;
-            return right();
-        }
-        friend thisType const operator||(thisType left, thisType right){
-            if(left.IsValid)
-                return left;
-            return right;
-        }
+        ThisRef;
+        bool const operator < (External const& other)const;
+    private:
+        p_function(Array<String>, DumpData) override{ return{}; };
+        p_function(String, DumpHeader) override;
     };
+
 }

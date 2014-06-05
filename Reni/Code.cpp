@@ -5,6 +5,7 @@
 
 #include "CodeItems.h"
 #include "External.h"
+#include "Externals.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
 
@@ -25,7 +26,7 @@ String const CodeItem::ToCpp(CodeVisitor const& visitor)const{
 };
 
 pure_p_implementation(CodeItem, Size, size) ;
-pure_p_implementation(CodeItem, Array<Ref<External>>, externals);
+pure_p_implementation(CodeItem, Externals, externals);
 
 Ref<CodeItem> const CodeItem::Const(BitsConst const&value){
     return new ConstCode(value.size, value);
@@ -102,10 +103,9 @@ p_implementation(TypedCode, Size, size)
 }
 
 
-p_implementation(ArgCode, Array<Ref<External>>, externals)
+p_implementation(ArgCode, Externals, externals)
 {
-    md_;
-    mb;
+    return External::Arg;
 }
 
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const
@@ -120,10 +120,9 @@ Ref<CodeItem, true> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) con
 };
 
 
-p_implementation(ThisCode, Array<Ref<External>>, externals)
+p_implementation(ThisCode, Externals, externals)
 {
-    md_;
-    mb;
+    return External::This;
 }
 
 String const ThisCode::ToCpp(CodeVisitor const& visitor)const
@@ -152,10 +151,16 @@ FiberConnector::FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnec
     a_if(IsValid, Dump);
 }
 
-p_implementation(FiberConnector, Array<Ref<External>>, externals)
+p_implementation(FiberConnector, Externals, externals)
 {
-    md_;
+    auto itemsExternals = items.Aggregate<Externals>(
+        [&](Externals result, Ref<CodeItem> item)
+    {
+        return result + item->externals;
+    });
+    md(itemsExternals);
     mb;
+
 }
 
 String const FiberConnector::ToCpp(CodeVisitor const& visitor)const
@@ -193,7 +198,7 @@ Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visit
 };
 
 
-p_implementation(ReferenceCode, Array<Ref<External>>, externals)
+p_implementation(ReferenceCode, Externals, externals)
 {
     md_;
     mb;
@@ -211,3 +216,34 @@ Ref<CodeItem, true> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) c
     md(arg);
     mb;
 }
+
+p_implementation(FiberItem, Externals, externals)
+{
+    return{};
+}
+
+p_implementation(FiberConnectorItem, Externals, externals)
+{
+    return{};
+}
+
+p_implementation(ConstCode, Externals, externals)
+{
+    return{};
+}
+
+p_implementation(DumpPrintNumberCode, Externals, externals)
+{
+    return{};
+}
+
+p_implementation(ReferencePlusCode, Externals, externals)
+{
+    return{};
+}
+
+p_implementation(BinaryOperationCode, Externals, externals)
+{
+    return{};
+}
+

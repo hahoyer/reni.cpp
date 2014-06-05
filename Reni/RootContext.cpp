@@ -5,7 +5,6 @@
 #include "ContextFeature.h"
 #include "ContextFeatureProvider.h"
 #include "Global.h"
-#include "External.h"
 #include "Result.h"
 #include "Syntax.h"
 #include "../HWLib/RefCountContainer.instance.h"

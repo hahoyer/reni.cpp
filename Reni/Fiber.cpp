@@ -4,7 +4,6 @@
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/DumpToString.h"
 #include "../Util/BitsConst.h"
-#include "External.h"
 #include "Result.h"
 #include "ReplaceVisitor.h"
 
@@ -39,7 +38,7 @@ p_implementation(Fiber, Size, size){
     return items.Last->size;
 };
 
-p_implementation(Fiber, Array<Ref<External>>, externals){
+p_implementation(Fiber, Externals, externals){
     md_;
     mb;
 };

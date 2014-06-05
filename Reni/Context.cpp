@@ -6,7 +6,6 @@
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "FunctionSyntax.h"
-#include "External.h"
 #include "RecursionContext.h"
 #include "Result.h"
 #include "SearchResult.h"

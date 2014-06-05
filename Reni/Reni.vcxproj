@@ -32,6 +32,7 @@
     <ClCompile Include="ConditionalSyntax.cpp" />
     <ClCompile Include="FunctionToken.cpp" />
     <ClCompile Include="FunctionSyntax.cpp" />
+    <ClCompile Include="Externals.cpp" />
     <ClCompile Include="SyntaxContainer.cpp" />
     <ClCompile Include="NumberType.cpp" />
     <ClCompile Include="Type.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
+    <ClInclude Include="Externals.h" />
     <ClInclude Include="FunctionContext.h" />
     <ClInclude Include="ContextFeatureProvider.h" />
     <ClInclude Include="ArrayType.h" />

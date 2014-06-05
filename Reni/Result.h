@@ -8,7 +8,7 @@
 #include "../Util/Category.h"
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/CtrlRef.h"
-#include "External.h"
+#include "Externals.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -19,7 +19,6 @@ namespace Reni
 {
     class CodeItem;
     class Context;
-    class External;
     class ReplaceVisitor;
     class Syntax;
     class Type;
@@ -32,15 +31,15 @@ namespace Reni
         Optional<Size> const size;
         WeakPtr<Type> const type;
         Ref<CodeItem, true> const code;
-        Optional<Array<Ref<External>>>  const externals;
+        Optional<Externals>  const externals;
 
         ResultData() { SetDumpString(); };
         ResultData(Ref<CodeItem> code);
         ResultData(Type const& type);
-        ResultData(Array<Ref<External>> externals);
+        ResultData(Externals externals);
 
     private:
-        ResultData(Optional<Size> const&size, Ref<CodeItem, true> code, WeakPtr<Type> type, Optional<Array<Ref<External>>> const&externals)
+        ResultData(Optional<Size> const&size, Ref<CodeItem, true> code, WeakPtr<Type> type, Optional<Externals> const&externals)
             : size(size)
             , code(code)
             , type(type)
@@ -102,7 +101,7 @@ namespace Reni
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
-        p(Array<Ref<External>>, externals);
+        p(Externals, externals);
         p(WeakPtr<Type>, cachedType);
 
         ResultData const Get(Category category)const;
