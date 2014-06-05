@@ -27,6 +27,7 @@ namespace HWLib
     template <typename T>String const DumpShort(T const*target);
     template <typename T>String const DumpShort(T *target);
     template <typename T>String const Dump(Array<T> const&target);
+    template <typename T>Array<String> const DumpData(Array<T> const&target);
 
     template <>String const Dump(String const&target);
     template <>String const Dump(char const* target);

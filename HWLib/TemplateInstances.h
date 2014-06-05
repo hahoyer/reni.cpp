@@ -56,6 +56,38 @@ inline String const HWLib::DumpShort(T*target){
     return target ? HWLib::DumpShort(*target) : "null";
 };
 
+
+template<typename T>
+class LookAheadIterator final : public Enumerable<T>::Iterator
+{
+    CtrlRef<typename Enumerable<T>::Iterator> parent;
+    CtrlPtr<T> _current;
+public:
+    LookAheadIterator(Enumerable<T> const& parent)
+        : parent(parent.ToIterator)
+    {
+        Align();
+    }
+
+    p(CtrlRef<T>, current){ return _current; }
+
+    p_function(bool, IsValid) override{ return !_current.IsEmpty; }
+    T const Step()override{
+        auto result = _current;
+        Align();
+        return *result;
+    }
+private:
+    void Align()
+    {
+        if(parent->IsValid)
+            _current = new T(parent->Step());
+        else
+            _current = {};
+    }
+};
+
+
 template<typename T>
 class SkipIterator final : public Enumerable<T>::Iterator
 {
@@ -130,36 +162,54 @@ private:
 
 
 template<typename T>
+class MergeIterator final : public Enumerable<T>::Iterator
+{
+    LookAheadIterator<T> _left;
+    LookAheadIterator<T> _right;
+    function<bool(T, T)> isLess;
+public:
+    MergeIterator(Enumerable<T> const& left, Enumerable<T> const& right, function<bool(T, T)> isLess)
+        : _left(left)
+        , _right(right)
+        , isLess(isLess)
+    {
+    }
+private:
+    p_function(bool, IsValid) override{return _left.IsValid || _right.IsValid;}
+
+    T const Step()override
+    {
+        if(!_left.IsValid)
+            return _right.Step();
+        if(!_right.IsValid)
+            return _left.Step();
+        if(isLess(*_left.current,*_right.current))
+            return _left.Step();
+        return _right.Step();
+    }
+};
+
+
+template<typename T>
 class WhereIterator final : public Enumerable<T>::Iterator
 {
-    CtrlRef<typename Enumerable<T>::Iterator> parent;
-
-    CtrlPtr<T> current;
+    LookAheadIterator<T> parent;
     function<bool(T)> selector;
 public:
     WhereIterator(Enumerable<T> const& parent, function<bool(T)> selector)
-        : parent(parent.ToIterator)
+        : parent(parent)
         , selector(selector)
     {
-        Align();
     }
 
     void Align()
     {
-        while (parent->IsValid){
-            current = new T(parent->Step());
-            if (selector(*current))
-                return;
-        }
-        current= {};
+        while(parent->IsValid && !selector(*parent.current))
+            parent->Step();
     }
 protected:
-    p_function(bool,IsValid) override{ return !current.IsEmpty; }
-    T const Step()override{ 
-        auto result = current;
-        Align();
-        return *result; 
-    }
+    p_function(bool,IsValid) override{ return parent.IsValid; }
+    T const Step()override{return parent.Step();}
 };
 
 
@@ -323,6 +373,12 @@ template<typename T>
 CtrlRef<Enumerable<T>> const Enumerable<T>::operator+(thisType const& right)const
 {
     return new Container(new PlusIterator<T>(*this, right));
+}
+
+template<typename T>
+CtrlRef<Enumerable<T>> const Enumerable<T>::Merge(thisType const& right, function<bool(T, T)> isLess)const
+{
+    return new Container(new MergeIterator<T>(*this, right, isLess));
 }
 
 template<typename T>
@@ -534,15 +590,19 @@ inline String const HWLib::Dump(WeakPtr<T> const&target){
 template <typename T>
 inline String const HWLib::Dump(Array<T> const&target){
     auto result = "Array["+ HWLib::Dump(target.Count)+ "]";
-    auto index = 0;
-    auto dataResult = target
-        .Select<String>([&](T const&element){
-            return "[" + HWLib::Dump(index++) + "] " + HWLib::Dump(element);
-        })
-        ->ToArray;
-
+    auto dataResult = DumpData(target);
     return result
         + String::Surround("{", dataResult,"}");
+}
+
+template <typename T>
+inline Array<String> const HWLib::DumpData(Array<T> const&target){
+    auto index = 0;
+    return target
+        .Select<String>([&](T const&element){
+        return "[" + HWLib::Dump(index++) + "] " + HWLib::Dump(element);
+    })
+        ->ToArray;
 }
 
 template <typename T1, typename T2>

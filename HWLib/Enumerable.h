@@ -22,16 +22,17 @@ namespace HWLib
         using AggregateFunction = function<TResult const(TResult, T)>;
 
         template<typename TResult>
-        TResult                          const Aggregate  (TResult start, AggregateFunction<TResult> selector)const;
+        TResult                         const Aggregate  (TResult start, AggregateFunction<TResult> selector)const;
         template<typename TResult>
-        TResult                           const Aggregate  (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
+        TResult                          const Aggregate  (AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); }
         template<typename TResult>
-        CtrlRef<Enumerable<TResult>>       const Convert    () const;
+        CtrlRef<Enumerable<TResult>>      const Convert    () const;
         template<typename TResult>
-        CtrlRef<Enumerable<TResult>>        const ConvertMany() const;
-        CtrlPtr<T>                            const Max      ()const;
-        CtrlPtr<T>                             const Max(function<bool(T)> selector)const;
-        CtrlPtr<T>                              const Max      (function<bool(T,T)> isLess)const;
+        CtrlRef<Enumerable<TResult>>       const ConvertMany() const;
+        CtrlPtr<T>                           const Max      ()const;
+        CtrlPtr<T>                            const Max(function<bool(T)> selector)const;
+        CtrlPtr<T>                             const Max      (function<bool(T,T)> isLess)const;
+        CtrlRef<thisType>                       const Merge(thisType const& right, function<bool(T, T)> isLess)const;
         CtrlRef<thisType>                        const operator+(thisType const& right)const;
         template<typename TOther>
         CtrlRef<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
@@ -129,6 +130,8 @@ namespace HWLib
         }
 
     };
+
+
 
 }
 
