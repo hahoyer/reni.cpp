@@ -4,6 +4,7 @@
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/WeakPtr.h"
 #include "../HWLib/CtrlRef.h"
+#include "../HWLib/DumpToString.h"
 
 using namespace HWLib;
 using namespace std;
@@ -28,6 +29,7 @@ namespace Reni
         DefaultAssignmentOperator;
 
         Externals const operator+(Externals const&other)const;
+        bool const operator==(Externals const&other)const;
     private:
         p_function(Array<String>, DumpData) override;
     };
@@ -74,4 +76,12 @@ namespace HWLib
             return right;
         }
     };
+
+    template <>inline  String const Dump(Optional<Reni::Externals > const&target)
+    {
+        if(target.IsValid)
+            return Dump(target.Value);
+        return DumpTypeName(target);
+    };
+
 }

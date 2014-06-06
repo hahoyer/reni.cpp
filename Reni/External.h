@@ -20,7 +20,7 @@ namespace Reni
         static External const This;
 
         ThisRef;
-        bool const operator < (External const& other)const;
+        bool const operator < (thisType const& other)const;
     private:
         p_function(Array<String>, DumpData) override{ return{}; };
         p_function(String, DumpHeader) override;

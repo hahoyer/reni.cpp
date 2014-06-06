@@ -37,6 +37,11 @@ Externals::Externals(Array<WeakRef<External>> const& other)
     SetDumpString();
 }
 
+bool const Externals::operator==(Externals const& other) const
+{
+    return data.Compare(other.data);
+}
+
 p_implementation(Externals, Array<String>, DumpData)
 {
     return HWLib::DumpData(data);
