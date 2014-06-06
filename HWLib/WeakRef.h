@@ -25,6 +25,7 @@ namespace HWLib
         WeakRef(WeakRef<TOther> const&other) : _value(other.value){ };
         DefaultAssignmentOperator;
 
+        bool const operator==(thisType const&other)const{ return _value == other._value; }
         T const& operator*()const { return *_value; };
         T const* operator->()const { return _value; };
         T & operator*(){ return *_value; };
