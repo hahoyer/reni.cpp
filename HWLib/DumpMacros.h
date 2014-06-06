@@ -24,7 +24,9 @@
     return x; }
 
 #define return_db(x) {if(Trace) \
-    {b(HWLib::String("\1-return ") + nd(x) + "\n"); }; \
+        {_console_. IndentLevel--; \
+    _console_. Write(HWLib::String("return ") + nd(x) + "\n");}; \
+    b_;\
     return x; }
 
 #define HWLib_ARGDUMP(r, data, i, xx) nd_arg(i,xx)
