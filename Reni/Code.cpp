@@ -179,31 +179,25 @@ Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visit
 {
     bool Trace = visitor.Trace && ObjectId == 6;
     md(visitor);
-    auto codeItems = items
+    auto replacedItems = items
         .Select<Ref<CodeItem,true>>
         (
-            [&](Ref<CodeItem> item)
-            {
-                return item->Replace(visitor);
-            }
+            [&](Ref<CodeItem> item){return item->Replace(visitor);}
         )
         ->ToArray;
 
-    d(codeItems);
+    d(replacedItems);
 
     if(
-        !codeItems.Where
+        !replacedItems.Where
         (
-            [](Ref<CodeItem, true> item)
-            {
-                return !item.IsEmpty;
-            }
+            [](Ref<CodeItem, true> item){return !item.IsEmpty;}
         )->Any
     )
         return_db(Ref<CodeItem COMMA true> {});
 
     auto index = 0;
-    auto newItems = codeItems
+    auto newItems = replacedItems
         .Select<Ref<CodeItem>>
         (
             [&](Ref<CodeItem,true> item)
