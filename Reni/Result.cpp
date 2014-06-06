@@ -281,7 +281,8 @@ p_implementation(ResultData, Array<String>, DumpData)
     return{
         nd(size),
         nd(type),
-        nd(code)
+        nd(code),
+        nd(externals)
     };
 }
 
@@ -295,5 +296,7 @@ void ResultData::AssertValid()
         a_is(type->size, == , size);
     }
     else if(complete.hasCode && complete.hasType)
-    a_is(code->size, == , type->size);
+        a_is(code->size, == , type->size);
+    if(complete.hasCode && complete.hasExternals)
+        a_is(code->externals, == , externals);
 };

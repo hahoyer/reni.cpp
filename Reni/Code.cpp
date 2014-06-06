@@ -177,30 +177,43 @@ String const FiberConnector::ToCpp(CodeVisitor const& visitor)const
 
 Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
+    bool Trace = visitor.Trace && ObjectId == 6;
+    md(visitor);
     auto codeItems = items
-        .Select<Ref<CodeItem,true>>([&](Ref<CodeItem> item)
+        .Select<Ref<CodeItem,true>>
+        (
+            [&](Ref<CodeItem> item)
             {
                 return item->Replace(visitor);
-            })
+            }
+        )
         ->ToArray;
 
-    if(!codeItems.Where([](Ref<CodeItem, true> item)
-        {
-            return !item.IsEmpty;
-        })->Any)
-        return{};
+    d(codeItems);
 
+    if(
+        !codeItems.Where
+        (
+            [](Ref<CodeItem, true> item)
+            {
+                return !item.IsEmpty;
+            }
+        )->Any
+    )
+        return_db(Ref<CodeItem COMMA true> {});
 
     auto index = 0;
     auto newItems = items
-        .Select<Ref<CodeItem>>([&](Ref<CodeItem,true> item)
+        .Select<Ref<CodeItem>>
+        (
+            [&](Ref<CodeItem,true> item)
             {
                 return item || items[index++];
-            })
+            }
+        )
         ->ToArray;
 
-
-    return new FiberConnector(newItems, connector);
+    return_db(new FiberConnector(newItems COMMA connector));
 };
 
 
