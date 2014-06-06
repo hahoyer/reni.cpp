@@ -203,7 +203,7 @@ Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visit
         return_db(Ref<CodeItem COMMA true> {});
 
     auto index = 0;
-    auto newItems = items
+    auto newItems = codeItems
         .Select<Ref<CodeItem>>
         (
             [&](Ref<CodeItem,true> item)
