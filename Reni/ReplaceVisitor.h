@@ -19,9 +19,16 @@ namespace Reni
 
         virtual Ref<CodeItem, true> const Arg(Type const&type, int depth)const = 0;
         virtual Ref<CodeItem, true> const This(Type const&type, int depth)const = 0;
+        
+        virtual_p(bool, hasArg) { return false; };
+        virtual_p(bool, hasThis) { return true; };
     private:
         p_function(Array<String>,DumpData) override{return {};};
     };
 
+    inline pure_p_implementation(ReplaceVisitor, bool, hasArg);
+    inline pure_p_implementation(ReplaceVisitor, bool, hasThis);
 }
+
+
 

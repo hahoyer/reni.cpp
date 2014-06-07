@@ -25,8 +25,6 @@ ResultData const Feature::FunctionResult(
 )const
 {
     bool Trace = expressionSyntax.ObjectId == 3 && category.hasExternals;
-    if(Trace)
-        category |= Category::Code;
     md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
     auto thisResult = expressionSyntax.left->GetResultCache(context);
     ArgVisitor visitor;

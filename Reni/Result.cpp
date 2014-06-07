@@ -4,6 +4,7 @@
 #include "ArgVisitor.h"
 #include "Code.h"
 #include "Context.h"
+#include "Externals.h"
 #include "RecursionContext.h"
 #include "Syntax.h"
 #include "..\HWLib\LevelValue.h"
@@ -181,6 +182,29 @@ ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode,
 {
     auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    Optional<Externals> externals;
+    if(category.hasExternals)
+    {
+        if(category.hasCode)
+            externals = code->externals;
+        else
+            a_fail(category.Dump);
+    }
+    Optional<Size> size = ReplenishSize(category, code, type);
+    return Get(category, size, code, type, externals);
+}
+
+ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType, function<Externals()> getExternals)
+{
+    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
+    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    auto externals = category.hasExternals ? Optional<Externals>(getExternals()) : Optional<Externals>();
+    Optional<Size> size = ReplenishSize(category, code, type);
+    return Get(category, size, code, type, externals);
+}
+
+Optional<Size> const ResultData::ReplenishSize(Category const& category, Ref<CodeItem, true> code, WeakPtr<Type> type)
+{
     Optional<Size> size;
     if(category.hasSize)
     {
@@ -191,23 +215,12 @@ ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode,
         else
             a_fail(category.Dump);
     }
-    Optional<Externals> externals;
-    if(category.hasExternals)
-    {
-        if(category.hasCode)
-            externals = code->externals;
-        else
-            a_fail(category.Dump);
-    }
-
-    return Get(category, size, code, type, externals);
+    return size;
 }
 
 ResultData ResultData::Get(Category category, CodeItem const& code, Type const& type)
 {
-    Optional<Size> size;
-    if(category.hasSize)
-        size = code.size;
+    Optional<Size> size = ReplenishSize(category, code.thisRef, type.thisRef);
     Optional<Externals> externals;
     if(category.hasExternals)
         externals = code.externals;
@@ -218,12 +231,9 @@ ResultData ResultData::Get(Category category, CodeItem const& code, Type const& 
 ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, Type const& type)
 {
     auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
-    Optional<Size> size;
-    if(category.hasSize)
-            size = type.size;
+    Optional<Size> size = ReplenishSize(category, code, type.thisRef);
 
     Optional<Externals> externals;
-
     if(category.hasExternals)
     {
         if(category.hasCode)
@@ -238,9 +248,7 @@ ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode,
 ResultData ResultData::Get(Category category, CodeItem const& code, function<WeakRef<Type>()> getType)
 {
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    Optional<Size> size;
-    if(category.hasSize)
-        size = code.size;
+    Optional<Size> size = ReplenishSize(category, code.thisRef, type);
     Optional<Externals> externals;
     if(category.hasExternals)
         externals = code.externals;
@@ -261,14 +269,19 @@ ResultData::ResultData(Type const& type)
 
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 {
-    if(!complete.hasCode)
+    if(!complete.hasCode && !complete.hasExternals)
         return *this;
-    bool Trace = arg.Trace;
+    bool Trace = arg.Trace || complete.hasExternals;
     md(arg)  ;
-    auto newCode = code->Replace(arg);
-    if(newCode.IsEmpty)
-        return_d(*this);
-    return_d(Get(complete, *newCode, *type));
+    b_if_(Trace);
+
+    Ref<CodeItem, true> newCode;
+    Optional<Externals> newExternals;
+    if(complete.hasCode)
+        newCode = code->Replace(arg) || code;
+    if(complete.hasExternals)
+        newExternals = externals.Value.Replace(arg) || externals;
+    return_d(Get(complete, l_(newCode), l_(type), l_(newExternals.Value)));
 }
 
 ResultData const ResultData::With(CodeItem const& code) const

@@ -2,24 +2,35 @@
 #include "Externals.h"
 
 #include "External.h"
+#include "ReplaceVisitor.h"
 #include "../HWLib/DumpToString.h"
 
 
 using namespace Reni;
 static bool Trace = true;
 
-External const External::This;
-External const External::Arg;
+External::This const External::This::Instance;
+External::Arg const External::Arg::Instance;
 
 bool const External::operator<(External const& other) const
 {
     return ObjectId < other.ObjectId;
 }
 
+bool const External::This::IsProvided(ReplaceVisitor const& arg) const
+{
+    return arg.hasThis;
+}
+
+bool const External::Arg::IsProvided(ReplaceVisitor const& arg) const
+{
+    return arg.hasArg;
+}
+
 p_implementation(External, String, DumpHeader){
-    if(this == &This)
+    if(this == &This::Instance)
         return "This";
-    if(this == &Arg)
+    if(this == &Arg::Instance)
         return "Arg";
     return "?";
 };
@@ -29,6 +40,13 @@ Externals::Externals(External const& item)
     : data({&item.thisRef})
 {
     SetDumpString();
+}
+
+Optional<Externals> const Externals::Replace(ReplaceVisitor const& arg) const
+{
+    return data
+        .Where([&](WeakRef<External> const&item){return !item->IsProvided(arg); })
+        ->ToArray;
 }
 
 Externals::Externals(Array<WeakRef<External>> const& other)

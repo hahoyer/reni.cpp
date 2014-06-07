@@ -80,6 +80,12 @@ namespace Reni
             CodeItem const& code,
             Type const& type
             );
+        static ResultData Get(
+            Category category,
+            function<Ref<CodeItem>()> getCode,
+            function<WeakRef<Type>()> getType,
+            function<Externals()> getExternals
+            );
 
 
 
@@ -94,6 +100,7 @@ namespace Reni
     private:
         p_function(Array<String>,DumpData) override;
         void AssertValid();
+        static Optional<Size>const ReplenishSize(Category const&category, Ref<CodeItem, true> code, WeakPtr<Type> type);
     };
 
 

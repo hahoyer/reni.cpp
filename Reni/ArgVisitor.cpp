@@ -23,6 +23,9 @@ p_implementation(ArgVisitor, Array<String>, DumpData){
         ->ToArray;
 };
 
+p_implementation(ArgVisitor, bool, hasArg){return !results.Find(&Tag::expressionArg).IsEmpty;};
+p_implementation(ArgVisitor, bool, hasThis){ return !results.Find(&Tag::expressionThis).IsEmpty; };
+
 Ref<CodeItem, true> const ArgVisitor::Arg(Type const&type, int depth) const{
     auto result = results.Find(&Tag::expressionArg);
     if(result.IsEmpty)

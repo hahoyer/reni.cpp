@@ -11,7 +11,9 @@ using namespace std;
 
 namespace Reni
 {
+    class CodeItem;
     class External; 
+    class ReplaceVisitor;
 
     class Externals final : public DumpableObject
     {
@@ -30,6 +32,8 @@ namespace Reni
 
         Externals const operator+(Externals const&other)const;
         bool const operator==(Externals const&other)const;
+
+        Optional<thisType> const Replace(ReplaceVisitor const&arg) const;
     private:
         p_function(Array<String>, DumpData) override;
     };
