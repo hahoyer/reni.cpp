@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DefaultAssignmentOperator.h"
+using namespace std;
 
 namespace HWLib
 {
