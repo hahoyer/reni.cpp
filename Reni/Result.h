@@ -49,45 +49,39 @@ namespace Reni
             AssertValid();
         };
 
-        static ResultData Get(
-            Category category, 
-            Optional<Size> const&size, 
-            Ref<CodeItem, true> code, 
-            WeakPtr<Type> type, 
+        static ResultData const Get(
+            Category category,
+            Ref<CodeItem, true> code,
+            WeakPtr<Type> type,
             Optional<Externals> const&externals
             )
         {
+            Optional<Size> const size = ReplenishSize(category, code, type);
+            AssertValid(category, size, code, type, externals) ;
             return ResultData(size, code, type, externals) & category;
         };
     public:
-        static ResultData Get(
-            Category category, 
-            function<Ref<CodeItem>()> getCode, 
-            function<WeakRef<Type>()> getType
-            );
-        static ResultData Get(
+        static ResultData const Get(
             Category category,
             CodeItem const& code,
             function<WeakRef<Type>()> getType
             );
-        static ResultData Get(
+        static ResultData const Get(
             Category category,
             function<Ref<CodeItem>()> getCode,
             Type const& type
             );
-        static ResultData Get(
+        static ResultData const Get(
             Category category,
             CodeItem const& code,
             Type const& type
             );
-        static ResultData Get(
+        static ResultData const Get(
             Category category,
             function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType,
             function<Externals()> getExternals
             );
-
-
 
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;
@@ -101,6 +95,14 @@ namespace Reni
         p_function(Array<String>,DumpData) override;
         void AssertValid();
         static Optional<Size>const ReplenishSize(Category const&category, Ref<CodeItem, true> code, WeakPtr<Type> type);
+        static Optional<Externals> const ReplenishExternals(Category const&category, Ref<CodeItem, true> code);
+        static void AssertValid(
+            Category category,
+            Optional<Size> const size,
+            Ref<CodeItem, true> code,
+            WeakPtr<Type> type,
+            Optional<Externals> const&externals
+            );
     };
 
 

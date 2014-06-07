@@ -178,31 +178,6 @@ ResultData::ResultData(Ref<CodeItem> code)
     AssertValid();
 }
 
-ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
-{
-    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
-    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    Optional<Externals> externals;
-    if(category.hasExternals)
-    {
-        if(category.hasCode)
-            externals = code->externals;
-        else
-            a_fail(category.Dump);
-    }
-    Optional<Size> size = ReplenishSize(category, code, type);
-    return Get(category, size, code, type, externals);
-}
-
-ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType, function<Externals()> getExternals)
-{
-    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
-    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    auto externals = category.hasExternals ? Optional<Externals>(getExternals()) : Optional<Externals>();
-    Optional<Size> size = ReplenishSize(category, code, type);
-    return Get(category, size, code, type, externals);
-}
-
 Optional<Size> const ResultData::ReplenishSize(Category const& category, Ref<CodeItem, true> code, WeakPtr<Type> type)
 {
     Optional<Size> size;
@@ -218,42 +193,44 @@ Optional<Size> const ResultData::ReplenishSize(Category const& category, Ref<Cod
     return size;
 }
 
-ResultData ResultData::Get(Category category, CodeItem const& code, Type const& type)
+Optional<Externals> const ResultData::ReplenishExternals(Category const& category, Ref<CodeItem, true> code)
 {
-    Optional<Size> size = ReplenishSize(category, code.thisRef, type.thisRef);
-    Optional<Externals> externals;
-    if(category.hasExternals)
-        externals = code.externals;
-
-    return Get(category, size, &code.thisRef, &type.thisRef, externals) ;
-}
-
-ResultData ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, Type const& type)
-{
-    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
-    Optional<Size> size = ReplenishSize(category, code, type.thisRef);
-
-    Optional<Externals> externals;
     if(category.hasExternals)
     {
-        if(category.hasCode)
-            externals = code->externals;
+        if(code.IsEmpty)
+            a_fail(nd(category) + nd(code))
         else
-            a_fail(category.Dump);
+            return code->externals;
     }
-
-    return Get(category, size, code, &type.thisRef, externals) ;
+    return {};
 }
 
-ResultData ResultData::Get(Category category, CodeItem const& code, function<WeakRef<Type>()> getType)
+ResultData const ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType, function<Externals()> getExternals)
+{
+    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
+    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    auto externals = category.hasExternals ? Optional<Externals>(getExternals()) : Optional<Externals>();
+    return Get(category, code, type, externals);
+}
+
+ResultData const ResultData::Get(Category category, CodeItem const& code, Type const& type)
+{
+    Optional<Externals> externals = ReplenishExternals(category, code.thisRef);
+    return Get(category, code.thisRef, type.thisRef, externals) ;
+}
+
+ResultData const ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, Type const& type)
+{
+    auto code = category.hasCode ? Ref<CodeItem, true>(getCode()) : Ref<CodeItem, true>();
+    Optional<Externals> externals = ReplenishExternals(category, code);
+    return Get(category, code, type.thisRef, externals) ;
+}
+
+ResultData const ResultData::Get(Category category, CodeItem const& code, function<WeakRef<Type>()> getType)
 {
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    Optional<Size> size = ReplenishSize(category, code.thisRef, type);
-    Optional<Externals> externals;
-    if(category.hasExternals)
-        externals = code.externals;
-
-    return Get(category, size, &code.thisRef, type, externals) ;
+    Optional<Externals> externals = ReplenishExternals(category, code.thisRef);
+    return Get(category, code.thisRef, type, externals);
 }
 
 ResultData const ResultData::With(Type const& type) const
@@ -313,3 +290,16 @@ void ResultData::AssertValid()
     if(complete.hasCode && complete.hasExternals)
         a_is(code->externals, == , externals);
 };
+
+void ResultData::AssertValid(Category category, Optional<Size> const size, Ref<CodeItem, true> code, WeakPtr<Type> type, Optional<Externals> const& externals)
+{
+    if(category.hasSize)
+        a_if(size.IsValid, nd(category) + nd(size));
+    if(category.hasCode)
+        a_if(!code.IsEmpty, nd(category) + nd(code));
+    if(category.hasType)
+        a_if(!type.IsEmpty, nd(category) + nd(type));
+    if(category.hasExternals)
+        a_if(externals.IsValid, nd(category) + nd(externals));
+}
+
