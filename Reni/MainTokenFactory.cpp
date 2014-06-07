@@ -4,6 +4,7 @@
 #include "CodeItems.h"
 #include "ConditionalSyntax.h"
 #include "ExpressionSyntax.h"
+#include "External.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
 #include "FunctionToken.h"
@@ -43,12 +44,27 @@ public:
     p(String, name){ return "arg"; };
 
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
-        return context.ArgReferenceResult(category);
+        return context.ReferenceResult(category, External::Function::Arg::Instance);
     }
     Ref<Syntax, true> Replace(ReplaceSyntaxVisitor const&visitor) const { return visitor.arg; };
 private:
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);
+    }
+};
+
+
+class NewValueToken final : public TerminalTokenClass {
+    using baseType = TerminalTokenClass;
+    using thisType = NewValueToken;
+public:
+    p(String, name){ return "new_value"; };
+    ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
+        return context.ReferenceResult(category, External::Function::NewValue::Instance);
+    }
+private:
+    Ref<Syntax> const Create(SourcePart const&part)const override final{
+        return new TerminalSyntax<NewValueToken >(*this, part);
     }
 };
 
@@ -154,6 +170,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new List(","));
     AddTokenClass(new List(";"));
     AddTokenClass(new MinusToken);
+    AddTokenClass(new NewValueToken);
     AddTokenClass(new PlusToken);
     AddTokenClass(new RightParenthesisToken(1));
     AddTokenClass(new RightParenthesisToken(2));

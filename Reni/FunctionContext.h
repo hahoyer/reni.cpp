@@ -23,7 +23,7 @@ namespace Reni
         FunctionCallContext(ContainerContext const& container, WeakRef<Type const> const args);
 
         ThisRef;
-        ResultData const CreateArgReferenceResult(Category category)const;
+        ResultData const ReferenceResult(Category category, External::Function const& external) const override;
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return thisRef; };
         p_function(Array<String>, DumpData) override{ return{nd(args), nd(container), nd(index)}; }

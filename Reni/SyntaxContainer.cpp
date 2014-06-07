@@ -12,12 +12,12 @@ using namespace Reni;
 static bool Trace = true;
 
 
-class EmtySyntax final : public Syntax
+class EmptySyntax final : public Syntax
 {
     using baseType = Syntax; 
-    using thisType = EmtySyntax;
+    using thisType = EmptySyntax;
 public:
-    explicit EmtySyntax(SourcePart const& part)
+    explicit EmptySyntax(SourcePart const& part)
         : Syntax(part) {}
 private:
     p_function(String, SmartDump) override{ return ""; };
@@ -28,7 +28,7 @@ private:
 
 SyntaxContainer::SyntaxContainer(SourcePart const&part) 
     : baseType(part)
-    , emptySyntax(new EmtySyntax(part))
+    , emptySyntax(new EmptySyntax(part))
 {
     SetDumpString();
 }

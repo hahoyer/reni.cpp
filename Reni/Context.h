@@ -6,6 +6,7 @@
 
 #include "../HWLib/RefCountProvider.h"
 #include "../Util/Category.h"
+#include "External.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -34,8 +35,8 @@ namespace Reni{
         virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
 
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
-        ResultData ArgReferenceResult(Category category) const;
-        virtual SearchResult<ContextFeature>  const Search(DefineableToken const&token)const;
+        virtual ResultData const ReferenceResult(Category category, External::Function const& external) const;
+        virtual SearchResult<ContextFeature> const Search(DefineableToken const&token)const;
         virtual WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const = 0;
     };
 

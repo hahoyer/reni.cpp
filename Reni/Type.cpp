@@ -170,12 +170,7 @@ ResultData const Type::ContextAccessResult(Category category, Type const& target
 
     return indirectType
         ->GetResultData
-        (category,
-         [&]
-         {
-             return CodeItem::Reference(target)
-                 ->ReferencePlus(getOffset());
-         });
+        (category,l_(CodeItem::Reference(target)->ReferencePlus(getOffset())));
 };
 
 SearchResult<Feature> const Type::Search(SearchTarget const& target) const

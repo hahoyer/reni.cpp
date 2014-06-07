@@ -99,11 +99,9 @@ SearchResult<ContextFeature> const Context::Search(DefineableToken const&token) 
     mb;
 }
 
-ResultData Context::ArgReferenceResult(Category category) const
+ResultData const Context::ReferenceResult(Category category, External::Function const& external) const
 {
-    WeakRef<FunctionCallContext> x = functionContext;
-    return x
-        ->CreateArgReferenceResult(category);
+    return functionContext->ReferenceResult(category, external);
 }
 
 
@@ -159,8 +157,9 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+    auto code = body.getter->Code(context);
     auto externals = body.getter->Externals(context);
-    md(externals);
+    md(code, externals);
     mb;
 }
 
@@ -193,17 +192,18 @@ FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef
     SetDumpString();
 }
 
+ResultData const FunctionCallContext::ReferenceResult(Category category, External::Function const& external) const
+{
+
+    md(category, external);
+    mb;
+    return{};
+}
+
 p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
 {
     return container.dataType;
 }
-
-ResultData const FunctionCallContext::CreateArgReferenceResult(Category category)const
-{
-    return args
-        ->ContextAccessResult(category.typed, *objectType, l_(args->size * -1))
-        & category;
-};
 
 
 WeakRef<Type> const RecursionContext::FunctionType(FunctionSyntax const& body) const

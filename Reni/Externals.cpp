@@ -11,6 +11,8 @@ static bool Trace = true;
 
 External::This const External::This::Instance;
 External::Arg const External::Arg::Instance;
+External::Function::Arg const External::Function::Arg::Instance;
+External::Function::NewValue const External::Function::NewValue::Instance;
 
 bool const External::operator<(External const& other) const
 {
@@ -26,14 +28,6 @@ bool const External::Arg::IsProvided(ReplaceVisitor const& arg) const
 {
     return arg.hasArg;
 }
-
-p_implementation(External, String, DumpHeader){
-    if(this == &This::Instance)
-        return "This";
-    if(this == &Arg::Instance)
-        return "Arg";
-    return "?";
-};
 
 
 Externals::Externals(External const& item)
