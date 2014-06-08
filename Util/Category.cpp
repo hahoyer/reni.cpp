@@ -61,6 +61,16 @@ Category const Category::operator|(Category const other)const{
     );
 }
 
+Category const Category::operator&(Category const other) const
+{
+    return Category(
+        hasSize && other.hasSize,
+        hasCode && other.hasCode,
+        hasType && other.hasType,
+        hasExternals && other.hasExternals
+        );
+}
+
 Category const Category::operator-(Category const other)const{
     return Category(
         hasSize && !other.hasSize,

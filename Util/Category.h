@@ -31,6 +31,7 @@ namespace Util{
         p(Category, typed);
         p(Category, replenished);
         Category const operator|(Category const other)const;
+        Category const operator&(Category const other)const;
         Category const operator-(Category const other)const;
         bool operator==(Category const other)const;
         bool operator<=(Category const other)const;

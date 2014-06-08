@@ -152,6 +152,9 @@ p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
 
 ResultData const ResultData::operator+(ResultData const& other) const
 {
+    a_if((*this & other.complete) == (other & complete), 
+        DumpList({nd((complete & other.complete)), nd(*this), nd(other)}));
+
     return ResultData(
         size || other.size, 
         code || other.code, 
@@ -176,6 +179,14 @@ ResultData::ResultData(Ref<CodeItem> code)
 {
     SetDumpString();
     AssertValid();
+}
+
+bool const ResultData::operator==(ResultData const& other) const
+{
+    return size == other.size
+        && type == other.type
+        && code == other.code
+        && externals == other.externals;
 }
 
 Optional<Size> const ResultData::ReplenishSize(Category const& category, Ref<CodeItem, true> code, WeakPtr<Type> type)
@@ -248,7 +259,7 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 {
     if(!complete.hasCode && !complete.hasExternals)
         return *this;
-    bool Trace = arg.Trace || complete.hasExternals;
+    bool Trace = arg.Trace;
     md(arg)  ;
     b_if_(Trace);
 
