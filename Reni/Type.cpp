@@ -4,7 +4,7 @@
 #include "AddressType.h"
 #include "ArrayType.h"
 #include "BitType.h"
-#include "Code.h"
+#include "CodeItem.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
 #include "NumberType.h"
@@ -110,7 +110,7 @@ p_implementation(Type, WeakRef<TypeType>, typeType)
     return &_internal->type.Value->thisRef;
 };
 
-p_implementation(Type, WeakRef<AddressType>, indirectType)
+p_implementation(Type, WeakRef<Type>, indirectType)
 {
     return &_internal->indirect.Value->thisRef;
 };

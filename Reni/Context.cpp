@@ -137,6 +137,17 @@ Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type con
     return functionCallResultCache(&argsType, &dynamic_cast<FunctionSyntax const&>(*statement));
 }
 
+SearchResult<ContextFeature> const ContainerContext::Search(DefineableToken const&token) const 
+{
+    if(containerData->names.ContainsKey(&token))
+    {
+        auto tokenIndex = containerData->names[&token];
+        return accessFeature(tokenIndex);
+    }
+    return baseType::Search(token);
+}
+
+
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
     if(category == Category::None)
@@ -178,31 +189,6 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueTypeInRecursion)
     a_if(body.setter.IsEmpty, "NotImpl: function setter " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
     return body.getter->Type(*context.recursionContext)->asFunctionResult;
-}
-
-
-int FunctionCallContext::nextIndex = 0;
-
-FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef<Type const> const args)
-    : baseType(static_cast<RegularContext const&>(parent))
-      , container(parent)
-      , args(args)
-      , index(nextIndex++)
-{
-    SetDumpString();
-}
-
-ResultData const FunctionCallContext::ReferenceResult(Category category, External::Function const& external) const
-{
-
-    md(category, external);
-    mb;
-    return{};
-}
-
-p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
-{
-    return container.dataType;
 }
 
 

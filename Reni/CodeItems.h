@@ -1,10 +1,13 @@
 #pragma once
 
-#include "Code.h"
+#include "CodeItem.h"
 #include "Fiber.h"
 #include "../HWLib/DumpToString.h"
+#include "External.h"
 
 namespace Reni{
+    class FunctionCallContext;
+
     class ConstCode final : public CodeItem{
         typedef CodeItem baseType;
         typedef ConstCode thisType;
@@ -187,7 +190,7 @@ namespace Reni{
 
 
     class ReferenceCode final : public CodeItem{
-        typedef CodeItem baseType; 
+        typedef CodeItem baseType;
         typedef ReferenceCode thisType;
         Type const&value;
     public:
@@ -203,5 +206,6 @@ namespace Reni{
         Ref<CodeItem> const ReferencePlus(Size offset) const override;
         Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&arg) const override;
     };
+
 
 }

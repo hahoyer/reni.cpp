@@ -21,6 +21,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="FunctionCallContext.cpp" />
     <ClCompile Include="ArrayType.cpp" />
     <ClCompile Include="BitType.cpp" />
     <ClCompile Include="CodeVisitor.cpp" />
@@ -40,12 +41,13 @@
     <ClCompile Include="NumberToken.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="Code.cpp" />
+    <ClCompile Include="CodeItem.cpp" />
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
+    <ClInclude Include="ContainerContext.h" />
     <ClInclude Include="Externals.h" />
-    <ClInclude Include="FunctionContext.h" />
+    <ClInclude Include="FunctionCallContext.h" />
     <ClInclude Include="ContextFeatureProvider.h" />
     <ClInclude Include="ArrayType.h" />
     <ClInclude Include="CodeItems.h" />
@@ -89,7 +91,7 @@
     <ClCompile Include="Compiler.cpp" />
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="Admin\Export.Test.h" />
-    <ClInclude Include="Code.h" />
+    <ClInclude Include="CodeItem.h" />
     <ClInclude Include="MainTokenFactory.h" />
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="TokenClass.h" />

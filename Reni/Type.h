@@ -55,7 +55,7 @@ namespace Reni{
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
         p(WeakRef<TypeType>, typeType);
-        p(WeakRef<AddressType>, indirectType);
+        p(WeakRef<Type>, indirectType);
         p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
 

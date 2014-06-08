@@ -1,6 +1,6 @@
 #pragma once
 #include "..\HWLib\DumpableObject.h"
-#include "Code.h"
+#include "CodeItem.h"
 
 using namespace HWLib;
 

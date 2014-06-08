@@ -1,6 +1,7 @@
 #pragma once
 
-#include "FunctionContext.h"
+#include "ContainerContext.h"
+#include "FunctionCallContext.h"
 #include "FunctionSyntax.h"
 #include "SyntaxContainer.h"
 #include "Type.h"
@@ -50,55 +51,6 @@ namespace Reni
 
 
     class FunctionCallResultCache;
-
-    class ContainerContext final : public ChildContext
-    {
-        typedef ContainerContext thisType;
-        typedef ChildContext baseType;
-
-        FunctionCache<Ref<FunctionCallResultCache>, Type const*, FunctionSyntax const*> functionCallResultCache;
-        FunctionCache<ContextFeature, int> accessFeature;
-        ValueCache<WeakRef<Type>> dataTypeCache;
-    public:
-        Ref<SyntaxContainer> containerData;
-    private:
-        int const index;
-    public:
-        ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int index);
-
-        ContainerContext(ContainerContext const&) = delete;
-        ThisRef;
-
-        p(WeakRef<Type>, dataType)
-        {
-            return dataTypeCache.Value;
-        };
-
-        p(Size, dataSize);
-
-        Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
-
-        SearchResult<ContextFeature> const Search(DefineableToken const&token) const override
-        {
-            if(containerData->names.ContainsKey(&token))
-            {
-                auto tokenIndex = containerData->names[&token];
-                return accessFeature(tokenIndex);
-            }
-            return baseType::Search(token);
-        }
-
-    private:
-        p_function(Array<String>, DumpData) override
-        {
-            return base_p_name(DumpData) +
-                _({
-                    nd(containerData),
-                    nd(index)
-                });
-        };
-
-    };
 
     class FunctionBodyType final : public Type
     {

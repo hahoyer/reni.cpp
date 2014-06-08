@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Export.h"
-#include "../Code.h"
+#include "../CodeItem.h"
 #include "../CodeItems.h"
 #include "../MainTokenFactory.h"
 #include "../Scanner.h"
