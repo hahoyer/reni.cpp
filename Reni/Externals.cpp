@@ -56,7 +56,16 @@ bool const Externals::operator==(Externals const& other) const
 
 p_implementation(Externals, Array<String>, DumpData)
 {
-    return HWLib::DumpData(data);
+    return data
+        .Select<String>
+        (
+            [&]
+            (WeakRef<External> item)
+            {
+                return item->DumpShort;
+            }
+        )
+        ->ToArray;
 }
 
 

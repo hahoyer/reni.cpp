@@ -35,6 +35,7 @@ namespace Reni
 
         Optional<thisType> const Replace(ReplaceVisitor const&arg) const;
     private:
+        p_function(String, DumpHeader) override { return ""; };
         p_function(Array<String>, DumpData) override;
     };
 }

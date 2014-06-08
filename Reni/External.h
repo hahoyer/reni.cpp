@@ -25,6 +25,7 @@ namespace Reni
         ThisRef;
         bool const operator < (thisType const& other)const;
         virtual bool const IsProvided(ReplaceVisitor const&) const { return false; };
+        p_function(String, DumpShort) override{ return{internalDump()}; };
     private:
         p_function(Array<String>, DumpData) override{ return{internalDump()}; };
         p_function(String, DumpHeader) override{ return ""; };
