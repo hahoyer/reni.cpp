@@ -8,6 +8,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 
 using namespace HWLib;
+using namespace std;
 
 inline String const HWLib::Dump(unsigned __int64 target, int radix) { return String::Convert(target, radix); };
 inline String const HWLib::Dump(int target, int radix) { return String::Convert(target, radix); };
@@ -594,11 +595,15 @@ inline String const HWLib::Dump(WeakPtr<T> const&target){
 }
 
 template <typename T>
-inline String const HWLib::Dump(Array<T> const&target){
-    auto result = "Array["+ HWLib::Dump(target.Count)+ "]";
-    auto dataResult = DumpData(target);
-    return result
-        + String::Surround("{", dataResult,"}");
+inline String const HWLib::Dump(Array<T> const&target)
+{
+    return "Array["+ HWLib::Dump(target.Count)+ "]"
+        + DumpList(DumpData(target));
+}
+
+inline String const HWLib::DumpList(Array<String> const&target)
+{
+    return String::Surround("{", target, "}");
 }
 
 template <typename T>
@@ -606,13 +611,13 @@ inline Array<String> const HWLib::DumpData(Array<T> const&target){
     auto index = 0;
     return target
         .Select<String>([&](T const&element){
-        return "[" + HWLib::Dump(index++) + "] " + HWLib::Dump(element);
+        return "[" + Dump(index++) + "] " + HWLib::Dump(element);
     })
         ->ToArray;
 }
 
 template <typename T1, typename T2>
-inline String const HWLib::Dump(std::pair<T1, T2> const&target){
+inline String const HWLib::Dump(pair<T1, T2> const&target){
     auto dataResult = _({
         "first = " + HWLib::Dump(target.first),
         "second = " + HWLib::Dump(target.second),

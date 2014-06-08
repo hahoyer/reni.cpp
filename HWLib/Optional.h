@@ -81,3 +81,17 @@ namespace HWLib
     };
 }
 
+
+namespace HWLib
+{
+    class String; 
+    
+    template <typename T>
+    String const Dump(Optional<T> const&target)
+    {
+        if(target.IsValid)
+            return "Optional{ " + HWLib::Dump(target.Value) + " }";
+        return "Optional{}";
+    }
+}
+
