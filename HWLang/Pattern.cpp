@@ -79,7 +79,7 @@ private:
         for (auto count = 0;; count++)
         {
             auto result = current - position;
-            if (_maxCount.IsValid && count == _maxCount)
+            if (_maxCount.IsValid && count == _maxCount.Value)
                 return result;
 
             auto length = _data->Match(current);
