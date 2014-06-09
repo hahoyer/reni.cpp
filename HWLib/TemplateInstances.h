@@ -542,56 +542,56 @@ inline p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
 template <typename T>
 inline String const HWLib::Dump(CtrlPtr<T> const&target){
     if(target.IsEmpty)
-        return "CtrlPtr{}";
-    return "CtrlPtr{ " + HWLib::Dump(*target) + " }";
+        return "?{}";
+    return "?{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::DumpShort(CtrlPtr<T> const&target){
     if(target.IsEmpty)
-        return "CtrlPtr{}";
-    return "CtrlPtr{ " + HWLib::DumpShort(*target) + " }";
+        return "?{}";
+    return "?{ " + HWLib::DumpShort(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::DumpShort(Ref<T, true> const&target){
     if(target.IsEmpty)
-        return "Ref{}";
-    return "Ref{ " + HWLib::DumpShort(*target) + " }";
+        return "?{}";
+    return "?{ " + HWLib::DumpShort(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::DumpShort(Ref<T,false> const&target){
-    return "Ref{ " + HWLib::DumpShort(*target) + " }";
+    return "*{ " + HWLib::DumpShort(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::Dump(CtrlRef<T> const&target){
-    return "CtrlRef{ " + HWLib::Dump(*target) + " }";
+    return "*{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::Dump(WeakRef<T> const&target){
-    return "WeekRef{ " + HWLib::Dump(*target) + " }";
+    return "*{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::Dump(Ref<T, true> const&target){
     if(target.IsEmpty)
-        return "Ref{}";
-    return "Ref{ " + HWLib::Dump(*target) + " }";
+        return "?{}";
+    return "?{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::Dump(Ref<T,false> const&target){
-    return "Ref{ " + HWLib::Dump(*target) + " }";
+    return "*{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>
 inline String const HWLib::Dump(WeakPtr<T> const&target){
     if(target.IsEmpty)
-        return "WeakPtr{}";
-    return "WeakPtr{ " + HWLib::Dump(*target) + " }";
+        return "?{}";
+    return "?{ " + HWLib::Dump(*target) + " }";
 }
 
 template <typename T>

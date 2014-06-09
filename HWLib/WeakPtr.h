@@ -36,6 +36,13 @@ namespace HWLib
         T    * operator->()      { return  value; };
         p(bool, IsEmpty){ return !value; }
 
+        bool const operator==(thisType const&other)const
+        {
+            if(IsEmpty)
+                return other.IsEmpty;
+            return *value == *other.value;
+        };
+
         template <class TOther>
         friend TOther operator||(thisType left, TOther right) {
             if(left.IsEmpty)
