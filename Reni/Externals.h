@@ -81,12 +81,4 @@ namespace HWLib
             return right;
         }
     };
-
-    template <>inline  String const Dump(Optional<Reni::Externals > const&target)
-    {
-        if(target.IsValid)
-            return Dump(target.Value);
-        return DumpTypeName(target);
-    };
-
-}
+ }

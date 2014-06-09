@@ -86,7 +86,7 @@ namespace Reni
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;
         ResultData const operator&(Category const&other)const;
-        bool const operator==(ResultData const&other)const;
+        bool const operator==(thisType const&other)const;
         p(Category, complete){ return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, externals.IsValid); }
 
         ResultData const With(CodeItem const& code) const;
@@ -101,7 +101,7 @@ namespace Reni
             Category category,
             Optional<Size> const size,
             Ref<CodeItem, true> code,
-            WeakPtr<Type> type,
+            WeakPtr<Type> type,                            
             Optional<Externals> const&externals
             );
     };

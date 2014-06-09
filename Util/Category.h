@@ -21,7 +21,6 @@ namespace Util{
         static Category const Instance(bool hasSize, bool hasCode, bool hasType, bool hasExternals);
 
         Category();
-        Category(Category const&other) : thisType(other.hasSize, other.hasCode, other.hasType, other.hasExternals){}
     private:
         Category(bool hasSize, bool hasCode, bool hasType, bool hasExternals);
 

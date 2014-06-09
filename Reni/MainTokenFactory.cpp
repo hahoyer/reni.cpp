@@ -43,9 +43,8 @@ class ArgToken final : public TerminalTokenClass {
 public:
     p(String, name){ return "arg"; };
 
-    ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
-        return context.ReferenceResult(category, External::Function::Arg::Instance);
-    }
+    ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const;
+
     Ref<Syntax, true> Replace(ReplaceSyntaxVisitor const&visitor) const { return visitor.arg; };
 private:
     Ref<Syntax> const Create(SourcePart const&part)const override final{
@@ -201,3 +200,13 @@ Ref<Syntax> const SyntaxErrorToken::Create(SourcePart const&part)const{
     md(part);
     mb;
 }
+
+
+ResultData const ArgToken::GetResultData(Context const& context, Category category, SourcePart const&) const
+{
+    bool Trace = category.hasExternals;
+    md(context, category);
+    auto result = context.ReferenceResult(category, External::Function::Arg::Instance);
+    return_db(result);
+}
+
