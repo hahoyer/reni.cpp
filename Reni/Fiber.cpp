@@ -22,7 +22,7 @@ virtual_p_implementation(FiberItem, Size, size){
 }
 
 
-Ref<FiberItem,true> const FiberItem::Replace(ReplaceVisitor const&visitor) const {
+Optional<Ref<FiberItem>> const FiberItem::Replace(ReplaceVisitor const&visitor) const {
     md(visitor);
     mb;
 };
@@ -58,16 +58,23 @@ Ref<Fiber> Fiber::Create(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&
     return new thisType(head, items);
 }
 
-Ref<CodeItem, true> const Fiber::ReplaceImpl(ReplaceVisitor const&visitor) const {
-    Ref<CodeItem, true> newHead = head->Replace(visitor);
-    Array<Ref<FiberItem,true>> newItems = items
-        .Select<Ref<FiberItem, true>>([&](Ref<FiberItem> item) {return item->Replace(visitor); })
+Optional<Ref<CodeItem>> const Fiber::ReplaceImpl(ReplaceVisitor const&visitor) const
+{
+    auto newHead = head->Replace(visitor);
+    Array<Optional<Ref<FiberItem>>> newItems = items
+        .Select<Optional<Ref<FiberItem>>>([&](Ref<FiberItem> item)
+            {
+                return item->Replace(visitor);
+            })
         ->ToArray;
-    return *ReCreate(newHead, newItems);
+    auto result = ReCreate(newHead, newItems);
+    if(result.IsValid )
+        return Ref<CodeItem>(result.Value->thisRef);
+    return{};
 };
 
-Ref<Fiber, true> Fiber::ReCreate(Ref<CodeItem, true> const&head, Array<Ref<FiberItem, true>> const& items)const{
-    if(!head.IsEmpty&& !items.Where([](Ref<FiberItem, true> const&item){return item.IsEmpty; })->Any)
+Optional<Ref<Fiber>> Fiber::ReCreate(Optional<Ref<CodeItem>> const&head, Array<Optional<Ref<FiberItem>>> const& items)const{
+    if(!head.IsEmpty&& !items.Where([](Optional<Ref<FiberItem>> const&item){return item.IsEmpty; })->Any)
         return{};
     Ref<CodeItem>  newHead = this->head;
     if(!head.IsEmpty)

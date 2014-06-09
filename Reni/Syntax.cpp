@@ -109,7 +109,7 @@ Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const{
     return Replace(visitor) || Ref<Syntax> (thisRef);
 };
 
-Ref<Syntax,true> const Syntax::Replace(SyntaxArgVisitor const&visitor) const{
+Optional<Ref<Syntax>> const Syntax::Replace(SyntaxArgVisitor const&visitor) const{
     md(visitor);
     mb;
 }

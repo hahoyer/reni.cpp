@@ -29,7 +29,7 @@ private:
                 return (current - position) + result;
 
             if (current.IsEnd)
-                return null;
+                return {};
         }
     }
 };
@@ -132,11 +132,11 @@ private:
     {
         auto leftResult = _left->Match(position);
         if (!leftResult.IsValid)
-            return null;
+            return {};
 
         auto rightResult = _right->Match(position + leftResult.Value);
         if (!rightResult.IsValid)
-            return null;
+            return{};
 
         return leftResult.Value + rightResult.Value;
     }

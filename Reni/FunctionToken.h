@@ -14,7 +14,7 @@ namespace Reni
     public:
         p(String, name){ return "/\\"; }
     private:
-        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override;
+        Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;
     };
 }
 

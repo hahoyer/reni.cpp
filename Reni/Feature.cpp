@@ -26,16 +26,16 @@ ResultData const Feature::FunctionResult(
 {
     bool Trace = expressionSyntax.ObjectId == -3 && category.hasExternals;
     md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
-    auto thisResult = expressionSyntax.left->GetResultCache(context);
+    auto thisResult = expressionSyntax.left.Value->GetResultCache(context);
     ArgVisitor visitor;
     visitor.Trace = Trace;
     visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
 
-    Ref<ResultFromSyntaxAndContext, true> argResult;
+    Optional<Ref<ResultFromSyntaxAndContext>> argResult;
     if(!expressionSyntax.right.IsEmpty)
     {
-        argResult = expressionSyntax.right->GetResultCache(context);
-        visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult);
+        argResult = expressionSyntax.right.Value->GetResultCache(context);
+        visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult.Value);
     }
 
     b_if_(Trace);
@@ -46,23 +46,23 @@ ResultData const Feature::FunctionResult(
     return_d(result);
 }
 
-ResultData const Feature::Result(Category category, Type const& target, Ref<ResultFromSyntaxAndContext, true> argResult) const
+ResultData const Feature::Result(Category category, Type const& target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const
 {
     if(argResult.IsEmpty)
-        return simple->Result(category, target);
-    return extended->Result(category, target, *argResult->type);
+        return simple.Value->Result(category, target);
+    return extended.Value->Result(category, target, *argResult.Value->type);
 };
 
 
 ResultData const ContextFeature::FunctionResult(
     Context const&context,
     Category category,
-    Ref<Syntax, true> const& right
+    Optional<Ref<Syntax>> const& right
 )const
 {
     if(right.IsEmpty)
-        return simple->Result(context, category);
-    return extended->Result(context, category, *right->Type(context));
+        return simple.Value->Result(context, category);
+    return extended.Value->Result(context, category, *right.Value->Type(context));
 }
 
 

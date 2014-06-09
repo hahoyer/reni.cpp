@@ -10,7 +10,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-ExpressionSyntax::ExpressionSyntax(DefineableToken const& tokenClass, Ref<Syntax, true> const left, SourcePart const part, Ref<Syntax, true > const right)
+ExpressionSyntax::ExpressionSyntax(DefineableToken const& tokenClass, Optional<Ref<Syntax>> const left, SourcePart const part, Optional<Ref<Syntax>> const right)
     : baseType(part)
       , tokenClass(tokenClass)
       , left(left)
@@ -22,9 +22,9 @@ ExpressionSyntax::ExpressionSyntax(DefineableToken const& tokenClass, Ref<Syntax
 p_implementation(ExpressionSyntax, String, SmartDump)
 {
     return
-        (left.IsEmpty? "" : (left->SmartDumpFrame(priority)+ " "))
+        (left.IsEmpty? "" : (left.Value->SmartDumpFrame(priority)+ " "))
         + tokenClass.name
-        + (right.IsEmpty?"":(" "+ right->SmartDumpFrame(priority)));
+        + (right.IsEmpty ? "" : (" " + right.Value->SmartDumpFrame(priority)));
 };
 
 p_implementation(ExpressionSyntax, int, priority) { return tokenClass.priority; };
@@ -42,6 +42,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     }
 
     auto result = left
+        .Value
         ->Type(context)
         ->thisRef
         .Search(tokenClass)
@@ -51,14 +52,14 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     return(result);
 }
 
-Ref<Syntax, true> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const
+Optional<Ref<Syntax>> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const
 {
-    Ref<Syntax, true> newLeft;
+    Optional<Ref<Syntax>> newLeft;
     if(!left.IsEmpty)
-        newLeft = left->Replace(visitor);
-    Ref<Syntax, true> newRight;
+        newLeft = left.Value->Replace(visitor);
+    Optional<Ref<Syntax>> newRight;
     if(!right.IsEmpty)
-        newRight = right->Replace(visitor);
+        newRight = right.Value->Replace(visitor);
 
     if(newLeft.IsEmpty && newRight.IsEmpty)
         return{};

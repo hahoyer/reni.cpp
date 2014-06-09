@@ -72,12 +72,12 @@ Ref<CodeItem> const CodeItem::This(Type const&value, int depth)
     return new ThisCode(value, depth);
 };
 
-Ref<CodeItem, true> const CodeItem::Replace(ReplaceVisitor const&arg) const
+Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
     bool Trace = arg.Trace;
     md_;
     auto result = ReplaceImpl(arg);
-    a_if(result.IsEmpty || result->size == size, Dump + "\n" + result->Dump);
+    a_if(result.IsEmpty || result.Value->size == size, Dump + "\n" + result.Value->Dump);
     return_d(result);
 };
 
@@ -124,7 +124,7 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const
     mb;
 }
 
-Ref<CodeItem, true> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const
+Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
     return visitor.Arg(type, depth);
 };
@@ -141,7 +141,7 @@ String const ThisCode::ToCpp(CodeVisitor const& visitor)const
     mb;
 }
 
-Ref<CodeItem, true> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
+Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
     return visitor.This(type, depth);
 };
@@ -180,12 +180,12 @@ String const FiberConnector::ToCpp(CodeVisitor const& visitor)const
 }
 
 
-Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visitor) const
+Optional<Ref<CodeItem>> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
     bool Trace = visitor.Trace && ObjectId == 6;
     md(visitor);
     auto replacedItems = items
-        .Select<Ref<CodeItem,true>>
+        .Select<Optional<Ref<CodeItem>>>
         (
             [&](Ref<CodeItem> item){return item->Replace(visitor);}
         )
@@ -196,16 +196,16 @@ Ref<CodeItem, true> const FiberConnector::ReplaceImpl(ReplaceVisitor const&visit
     if(
         !replacedItems.Where
         (
-            [](Ref<CodeItem, true> item){return !item.IsEmpty;}
+            [](Optional<Ref<CodeItem>> item){return !item.IsEmpty;}
         )->Any
     )
-        return_db(Ref<CodeItem COMMA true> {});
+    return_db(Optional<Ref<CodeItem>> {});
 
     auto index = 0;
     auto newItems = replacedItems
         .Select<Ref<CodeItem>>
         (
-            [&](Ref<CodeItem,true> item)
+            [&](Optional<Ref<CodeItem>> item)
             {
                 return item || items[index++];
             }
@@ -229,7 +229,7 @@ inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
     return Fiber({new ReferencePlusCode(size, offset)});
 }
 
-Ref<CodeItem, true> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) const
+Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) const
 {
     md(arg);
     mb;

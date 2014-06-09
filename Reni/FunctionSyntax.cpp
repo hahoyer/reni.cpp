@@ -10,10 +10,10 @@ p_implementation(FunctionSyntax, String, SmartDump)
 {
     String result;
     if(!setter.IsEmpty)
-        result += setter->SmartDumpFrame(priority);
+        result += setter.Value->SmartDumpFrame(priority);
     result += " /\\ ";
     if(!getter.IsEmpty)
-        result += getter->SmartDumpFrame(priority);
+        result += getter.Value->SmartDumpFrame(priority);
     return result;
 }
 

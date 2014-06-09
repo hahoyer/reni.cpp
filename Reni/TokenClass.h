@@ -30,8 +30,8 @@ namespace Reni
         ThisRef;
 
         virtual_p(bool, AcceptsMatch){ return false; };
-        Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const;
-        virtual Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const = 0;
+        Ref<Syntax> const Mismatch(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const;
+        virtual Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const = 0;
     private:
         p_function(Array<String>, DumpData) override{ return{}; };
     };
@@ -41,9 +41,9 @@ namespace Reni
         typedef TerminalTokenClass thisType;
     public:
         virtual Ref<Syntax> const Create(SourcePart const&part)const = 0;
-        Ref<Syntax, true> Replace(SyntaxArgVisitor const&) const { return {}; };
+        Optional<Ref<Syntax>> Replace(SyntaxArgVisitor const&) const { return {}; };
     private:
-        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
+        Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
             a_if(left.IsEmpty, nd(left) + "\n" + nd(*this) + "\n" + nd(part) + "\n" + nd(right));
             a_if(right.IsEmpty, nd(left) + "\n" + nd(*this) + "\n" + nd(part) + "\n" + nd(right));
             return Create(part);
@@ -57,7 +57,7 @@ namespace Reni
     public:
         virtual Ref<Syntax> const Create(SourcePart const&part, Ref<Syntax>const right)const = 0;
     private:
-        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
+        Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
             a_if_(left.IsEmpty);
             a_if_(!right.IsEmpty);
             return Create(part, right);
@@ -71,7 +71,7 @@ namespace Reni
     public:
         virtual Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part)const = 0;
     private:
-        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
+        Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
             a_if_(!left.IsEmpty);
             a_if_(right.IsEmpty);
             return Create(left, part);
@@ -85,7 +85,7 @@ namespace Reni
     public:
         virtual Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const = 0;
     private:
-        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final{
+        Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
             a_if_(!left.IsEmpty);
             a_if_(!right.IsEmpty);
             return Create(left, part, right);

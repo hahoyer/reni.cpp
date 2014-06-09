@@ -20,7 +20,7 @@ namespace Reni
         p_function(String, SmartDump) override;
         p_function(int, priority) override{ return -10; }
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Ref<Syntax, true> const Replace(SyntaxArgVisitor const&) const override;
+        virtual Optional<Ref<Syntax>> const Replace(SyntaxArgVisitor const&) const override;
     };
 
     class IfThenSyntax final : public Syntax
@@ -39,7 +39,7 @@ namespace Reni
         p_function(String, SmartDump) override;
         p_function(int, priority) override{ return -10; }
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Ref<Syntax, true> const Replace(SyntaxArgVisitor const&) const override;
+        virtual Optional<Ref<Syntax>> const Replace(SyntaxArgVisitor const&) const override;
     };
 
 }

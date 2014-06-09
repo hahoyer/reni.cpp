@@ -58,8 +58,8 @@ namespace Reni{
         WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const override;
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
 
-        virtual operator Ref<ContextFeatureProvider<MinusToken>, true>()const;
-        virtual operator Ref<ContextFeatureProvider<DefineableToken>, true>()const;
+        virtual operator Optional<Ref<ContextFeatureProvider<MinusToken>>>()const;
+        virtual operator Optional<Ref<ContextFeatureProvider<DefineableToken>>>()const;
 
         template<class T>
         SearchResult<ContextFeature>  const GetGenericDefinition()const{

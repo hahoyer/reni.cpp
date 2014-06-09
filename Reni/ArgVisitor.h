@@ -21,17 +21,15 @@ namespace Reni
         Map<Tag const*, Ref<ResultCache>> results;
     public:
         ArgVisitor() {SetDumpString();}
-        ArgVisitor&  Assign(Tag const*tag, Ref<ResultCache> result){
-            results.Assign(tag, result);
-            return *this;
-        }
+
+        ArgVisitor& Assign(Tag const*tag, ResultCache const& result);
 
     private:
         p_function(Array<String>, DumpData) override;
         p_function(bool, hasArg) override;
         p_function(bool, hasThis) override;
-        Ref<CodeItem, true> const Arg(Type const&type, int depth) const override;
-        Ref<CodeItem, true> const This(Type const&type, int depth) const override;
+        Optional<Ref<CodeItem>> const Arg(Type const&type, int depth) const override;
+        Optional<Ref<CodeItem>> const This(Type const&type, int depth) const override;
     };
 }
 

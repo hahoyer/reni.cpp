@@ -13,14 +13,14 @@ namespace Reni
         using thisType = ExpressionSyntax;
     public:
         DefineableToken const& tokenClass;
-        Ref<Syntax, true> const left;
-        Ref<Syntax, true> const right;
-        ExpressionSyntax(DefineableToken const& tokenClass, Ref<Syntax, true > const left, SourcePart const part, Ref<Syntax, true > const right);
+        Optional<Ref<Syntax>> const left;
+        Optional<Ref<Syntax>> const right;
+        ExpressionSyntax(DefineableToken const& tokenClass, Optional<Ref<Syntax>> const left, SourcePart const part, Optional<Ref<Syntax>> const right);
     private:
         p_function(String, SmartDump) override;
         p_function(int, priority) override;
         virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Ref<Syntax, true> const Replace(SyntaxArgVisitor const&) const override;
+        virtual Optional<Ref<Syntax>> const Replace(SyntaxArgVisitor const&) const override;
         void AddTo(SyntaxContainer&) const override;
     };
 }

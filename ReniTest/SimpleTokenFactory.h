@@ -26,13 +26,13 @@ namespace _HWLang{
         public:
             typedef TTokenClass TokenClass;
 
-            Ref<thisType, true> const left;
+            Optional<Ref<thisType>> const left;
             TokenClass const& tokenClass;
             String const name;
-            Ref<thisType, true> const right;
+            Optional<Ref<thisType>> const right;
             bool const isMatch;
 
-            SimpleSyntax(Ref<thisType, true> const left, TokenClass const& tokenClass, String const&name, Ref<thisType, true> const right, bool isMatch)
+            SimpleSyntax(Optional<Ref<thisType>> const left, TokenClass const& tokenClass, String const&name, Optional<Ref<thisType>> const right, bool isMatch)
                 : left(left)
                   , tokenClass(tokenClass)
                   , name(name)
@@ -79,10 +79,10 @@ namespace _HWLang{
 
             p(bool, AcceptsMatch){ return this->isMatch; }
 
-            Ref<Syntax> const Mismatch(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const{
+            Ref<Syntax> const Mismatch(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const{
                 return new Syntax(left, *this, part, right, !isMatch);
             };
-            Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const{
+            Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const{
                 return new Syntax(left, *this, part, right, isMatch);
             };
 

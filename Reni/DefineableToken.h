@@ -30,7 +30,7 @@ namespace Reni
         SearchResult<Feature> const Search(TypeType const&) const override;
         virtual_p(int, priority) { return 0; };
     private:
-        Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override;;
+        Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;;
 
         p_function(Array<String>, DumpData) override
         {

@@ -32,8 +32,8 @@ ResultData const IfThenSyntax::GetResultData(Context const&context, Category cat
     return{};
 }
 
-Ref<Syntax, true> const IfThenSyntax::Replace(SyntaxArgVisitor const&visitor) const{
-    auto newLeft = condition->Replace(visitor);
+Optional<Ref<Syntax>> const IfThenSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+    Optional<Ref<Syntax>> newLeft = condition->Replace(visitor);
     auto newRight = thenClause->Replace(visitor);
     if(newLeft.IsEmpty && newRight.IsEmpty)
         return{};
@@ -87,7 +87,7 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
     return{};
 }
 
-Ref<Syntax, true> const IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const
+Optional<Ref<Syntax>> const IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const
 {
     auto newLeft = condition->Replace(visitor);
     auto newRight = thenClause->Replace(visitor);

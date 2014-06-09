@@ -3,6 +3,7 @@
 #include "../HWLib/DumpableObject.h"
 #include "../Util/Category.h"
 #include "../HWLib/Ref.h"
+#include "../HWLib/Optional.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -43,8 +44,8 @@ namespace Reni
         };
 
 
-        Ref<Simple, true> const simple;
-        Ref<Extended, true> const extended;
+        Optional<Ref<Simple>> const simple;
+        Optional<Ref<Extended>> const extended;
 
         Feature(){};
 
@@ -66,11 +67,11 @@ namespace Reni
             ExpressionSyntax const& expressionSyntax
         )const;
 
-        p(bool, isEmpty){return simple.IsEmpty && extended.IsEmpty;}
+        p(bool, isEmpty){return !simple.IsValid && extended.IsEmpty;}
 
     private:
         p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
-        ResultData const Result(Category category, Type const&target, Ref<ResultFromSyntaxAndContext, true> argResult) const;
+        ResultData const Result(Category category, Type const&target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const;
     };
 
 

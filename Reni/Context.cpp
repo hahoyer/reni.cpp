@@ -70,13 +70,13 @@ p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
     return _internal->recursionContext.Value;
 }
 
-RegularContext::operator Ref<ContextFeatureProvider<MinusToken>, true>() const
+RegularContext::operator Optional<Ref<ContextFeatureProvider<MinusToken>>>() const
 {
     md_;
     mb;
 }
 
-RegularContext::operator Ref<ContextFeatureProvider<DefineableToken>, true>() const
+RegularContext::operator Optional<Ref<ContextFeatureProvider<DefineableToken>>>() const
 {
     md_;
     mb;
@@ -168,8 +168,8 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    auto code = body.getter->Code(context);
-    auto externals = body.getter->Externals(context);
+    auto code = body.getter.Value->Code(context);
+    auto externals = body.getter.Value->Externals(context);
     md(code, externals);
     mb;
 }
@@ -179,7 +179,7 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(body.setter.IsEmpty, "NotImpl: function setter " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    return body.getter->Type(context)->asFunctionResult;
+    return body.getter.Value->Type(context)->asFunctionResult;
 }
 
 p_implementation(FunctionCallResultCache, WeakRef<Type>, valueTypeInRecursion)
@@ -188,7 +188,7 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueTypeInRecursion)
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(body.setter.IsEmpty, "NotImpl: function setter " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    return body.getter->Type(*context.recursionContext)->asFunctionResult;
+    return body.getter.Value->Type(*context.recursionContext)->asFunctionResult;
 }
 
 

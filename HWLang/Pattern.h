@@ -50,7 +50,7 @@ namespace HWLang
         p(Pattern, Find);
         Pattern const Else(Pattern const& right)const;
         Pattern const Else(String right)const;
-        Pattern const Repeat(int minCount = 0, Optional<int> maxCount = null)const;
+        Pattern const Repeat(int minCount = 0, Optional<int> maxCount = {})const;
         Pattern const Value(function<Pattern const(String)> func)const;
 
         Pattern const operator+(Pattern right)const;

@@ -11,10 +11,10 @@ namespace Reni{
         typedef Syntax baseType;
         typedef FunctionSyntax thisType;
     public:
-        Ref<Syntax, true> const setter;
-        Ref<Syntax, true> const getter;
+        Optional<Ref<Syntax>> const setter;
+        Optional<Ref<Syntax>> const getter;
 
-        FunctionSyntax(Ref<Syntax, true> const setter, SourcePart const& part, Ref<Syntax, true> const getter)
+        FunctionSyntax(Optional<Ref<Syntax>> const setter, SourcePart const& part, Optional<Ref<Syntax>> const getter)
             :baseType(part)
              , setter(setter)
              , getter(getter)

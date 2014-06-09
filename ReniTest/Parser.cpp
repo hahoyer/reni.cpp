@@ -17,19 +17,19 @@ namespace _HWLang {
     typedef TokenFactory::TokenClass TokenClass;
     typedef TokenFactory::Syntax Syntax;
 
-    void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
+    void Check(Optional<Ref<Syntax>> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     test_(ParserBaseStructure) {
         auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevel({Start}, {End});
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
         a_if(!syntax.IsEmpty, nd(syntax));
-        a_if(syntax->left.IsEmpty, nd(syntax));
-        a_if(syntax->right.IsEmpty, nd(syntax));
-        a_is(syntax->name, == , text);
+        a_if(syntax.Value->left.IsEmpty, nd(syntax));
+        a_if(syntax.Value->right.IsEmpty, nd(syntax));
+        a_is(syntax.Value->name, == , text);
     };
 
     test(Parenthesis, ParserBaseStructure) {
@@ -42,43 +42,43 @@ namespace _HWLang {
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, false, "(", true, false);
 
-        auto rr = syntax->right;
+        auto rr = syntax.Value->right;
         Check(rr, true, "]", false, true);
 
-        auto rrl = rr->left;
+        auto rrl = rr.Value->left;
         Check(rrl, true, "[", true, false);
 
-        auto rrll = rrl->left;
+        auto rrll = rrl.Value->left;
         Check(rrll, true, "]", false, true);
 
-        auto rrlll = rrll->left;
+        auto rrlll = rrll.Value->left;
         Check(rrlll, true, "[", true, false);
 
-        auto rrllll = rrlll->left;
+        auto rrllll = rrlll.Value->left;
         Check(rrllll, true, "}", false, true);
 
-        auto rrlllll = rrllll->left;
+        auto rrlllll = rrllll.Value->left;
         Check(rrlllll, false, "{", true, false);
 
-        auto rrlllllr = rrlllll->right;
+        auto rrlllllr = rrlllll.Value->right;
         Check(rrlllllr, false, ")", false, false);
 
-        auto rrlllr = rrlll->right;
+        auto rrlllr = rrlll.Value->right;
         Check(rrlllr, true, "as", false, false);
 
-        auto rrlllrl = rrlllr->left;
+        auto rrlllrl = rrlllr.Value->left;
         Check(rrlllrl, true, ")", false, true);
 
-        auto rrlllrll = rrlllrl->left;
+        auto rrlllrll = rrlllrl.Value->left;
         Check(rrlllrll, false, "(", true, false);
 
-        auto rrlllrllr = rrlllrll->right;
+        auto rrlllrllr = rrlllrll.Value->right;
         Check(rrlllrllr, false, "asdf", false, false);
 
-        auto rrlr = rrl->right;
+        auto rrlr = rrl.Value->right;
         Check(rrlr, false, "yxcv", false, false);
     }
 
@@ -93,37 +93,37 @@ namespace _HWLang {
             ;
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, true, "+", true, false);
 
-        auto rl = syntax->left;
+        auto rl = syntax.Value->left;
         Check(rl, true, "+", true, false);
 
-        auto rll = rl->left;
+        auto rll = rl.Value->left;
         Check(rll, true, "*", true, false);
         
-        auto rlll = rll->left;
+        auto rlll = rll.Value->left;
         Check(rlll, false, "a", false, false);
 
-        auto rllr = rll->right;
+        auto rllr = rll.Value->right;
         Check(rllr, false, "b", false, false);
 
-        auto rlr = rl->right;
+        auto rlr = rl.Value->right;
         Check(rlr, true, "*", true, false);
 
-        auto rlrl = rlr->left;
+        auto rlrl = rlr.Value->left;
         Check(rlrl, false, "c", false, false);
 
-        auto rlrr = rlr->right;
+        auto rlrr = rlr.Value->right;
         Check(rlrr, false, "d", false, false);
 
-        auto rr = syntax->right;
+        auto rr = syntax.Value->right;
         Check(rr, true, "*", true, false);
 
-        auto rrl = rr->left;
+        auto rrl = rr.Value->left;
         Check(rrl, false, "e", false, false);
 
-        auto rrr = rr->right;
+        auto rrr = rr.Value->right;
         Check(rrr, false, "f", false, false);
     }
 
@@ -140,19 +140,19 @@ namespace _HWLang {
         //md(pt);
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, Token<TokenClass>>(pt, sc);
         Check(syntax, true, "else", true, true);
 
-        auto rl = syntax->left;
+        auto rl = syntax.Value->left;
         Check(rl, true, "then", true, false);
 
-        auto rr = syntax->right;
+        auto rr = syntax.Value->right;
         Check(rr, false, "z", false, false);
 
-        auto rll = rl->left;
+        auto rll = rl.Value->left;
         Check(rll, false, "x", false, false);
 
-        auto rlr = rl->right;
+        auto rlr = rl.Value->right;
         Check(rlr, false, "y", false, false);
     }
 
@@ -169,22 +169,22 @@ namespace _HWLang {
         //md(pt);
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, Token<TokenClass>>(pt, sc);
         Check(syntax, true, "z", false, false);
 
-        auto rl = syntax->left;
+        auto rl = syntax.Value->left;
         Check(rl, true, "y", false, false);
 
-        auto rll = rl->left;
+        auto rll = rl.Value->left;
         Check(rll, false, "x", false, false);
     }
 
-    void Check(Ref<Syntax, true> const& target, bool isLeft, String const& part, bool isRight, bool isMatch) {
+    void Check(Optional<Ref<Syntax>> const& target, bool isLeft, String const& part, bool isRight, bool isMatch) {
         a_if(!target.IsEmpty, nd(target));
-        a_is(target->name, == , part);
-        a_if(!target->left.IsEmpty == isLeft, nd(target));
-        a_is(!target->right.IsEmpty, == , isRight);
-        a_is(target->isMatch, == , isMatch);
+        a_is(target.Value->name, == , part);
+        a_if(!target.Value->left.IsEmpty == isLeft, nd(target));
+        a_is(!target.Value->right.IsEmpty, == , isRight);
+        a_is(target.Value->isMatch, == , isMatch);
     }
 }
 

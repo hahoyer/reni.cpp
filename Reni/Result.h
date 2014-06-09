@@ -30,7 +30,7 @@ namespace Reni
     public:
         Optional<Size> const size;
         WeakPtr<Type> const type;
-        Ref<CodeItem, true> const code;
+        Optional<Ref<CodeItem>> const code;
         Optional<Externals>  const externals;
 
         ResultData() { SetDumpString(); };
@@ -39,7 +39,12 @@ namespace Reni
         ResultData(Externals externals);
 
     private:
-        ResultData(Optional<Size> const&size, Ref<CodeItem, true> code, WeakPtr<Type> type, Optional<Externals> const&externals)
+        ResultData(
+            Optional<Size> const&size, 
+            Optional<Ref<CodeItem>> const&code, 
+            WeakPtr<Type> type, 
+            Optional<Externals> const&externals
+            )
             : size(size)
             , code(code)
             , type(type)
@@ -49,9 +54,9 @@ namespace Reni
             AssertValid();
         };
 
-        static ResultData const Get(
+        static ResultData const FullGet(
             Category category,
-            Ref<CodeItem, true> code,
+            Optional<Ref<CodeItem>> const&code,
             WeakPtr<Type> type,
             Optional<Externals> const&externals
             )
@@ -95,12 +100,12 @@ namespace Reni
     private:
         p_function(Array<String>,DumpData) override;
         void AssertValid();
-        static Optional<Size>const ReplenishSize(Category const&category, Ref<CodeItem, true> code, WeakPtr<Type> type);
-        static Optional<Externals> const ReplenishExternals(Category const&category, Ref<CodeItem, true> code);
+        static Optional<Size>const ReplenishSize(Category const&category, Optional<Ref<CodeItem>> code, WeakPtr<Type> type);
+        static Optional<Externals> const ReplenishExternals(Category const&category, Optional<Ref<CodeItem>> code);
         static void AssertValid(
             Category category,
             Optional<Size> const size,
-            Ref<CodeItem, true> code,
+            Optional<Ref<CodeItem>> code,
             WeakPtr<Type> type,                            
             Optional<Externals> const&externals
             );

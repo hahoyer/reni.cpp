@@ -38,7 +38,7 @@ namespace Reni
         p_function(Externals, externals) override{ return{external}; };
 
         Ref<CodeItem> const ReferencePlus(Size offset) const override;
-        Ref<CodeItem, true> const ReplaceImpl(ReplaceVisitor const&arg) const override;
+        Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
     };
 
 };
@@ -85,7 +85,7 @@ Ref<CodeItem> const FunctionCallReferenceCode::ReferencePlus(Size offset) const
     return thisRef;
 }
 
-Ref<CodeItem, true> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const
+Optional<Ref<CodeItem>> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const
 {
     md(arg);
     mb;

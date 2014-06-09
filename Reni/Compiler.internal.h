@@ -70,7 +70,7 @@ private:
     
     static Ref<Syntax> const GetSyntax(Source const&source){
         auto scannerInstance = Reni::ScannerInstance(source);
-        return Parse<Ref<Syntax>, Ref<Syntax, true>, TokenClass, Token>(PrioTable::Main(), scannerInstance);
+        return Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, Token>(PrioTable::Main(), scannerInstance);
     };
 
     Ref<CodeItem> const GetCode()const{
@@ -94,4 +94,4 @@ private:
 
 
 
-//Parse<Ref<Syntax>,Ref<Syntax,true>,TokenClass,Token<TokenClass>,ScannerInstance>(PrioTable prioTable, ScannerInstance scanner)
+//Parse<Ref<Syntax>,Optional<Ref<Syntax>>,TokenClass,Token<TokenClass>,ScannerInstance>(PrioTable prioTable, ScannerInstance scanner)

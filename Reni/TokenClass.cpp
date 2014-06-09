@@ -17,10 +17,10 @@ static bool Trace = true;
 using namespace Reni;
 using namespace HWLang;
 
-Ref<Syntax> const TokenClass::Mismatch(Ref<Syntax, true> const left, SourcePart const& part, Ref<Syntax, true> const right) const{
+Ref<Syntax> const TokenClass::Mismatch(Optional<Ref<Syntax>> const left, SourcePart const& part, Optional<Ref<Syntax>> const right) const{
     md(left, part, right);
     mb;
-    return Ref<Syntax, true>();
+    return Optional<Ref<Syntax>>();
 }
 
 pure_p_implementation(TokenClass, bool, AcceptsMatch);
@@ -35,7 +35,7 @@ SearchResult <Feature> const DefineableToken::Search(NumberType const& target) c
     return_d(SearchResult<Feature>());
 }
 
-Ref<Syntax> const DefineableToken::CreateSyntax(Ref<Syntax, true> const left, SourcePart const& part, Ref<Syntax, true> const right) const
+Ref<Syntax> const DefineableToken::CreateSyntax(Optional<Ref<Syntax>> const left, SourcePart const& part, Optional<Ref<Syntax>> const right) const
 {
     return new ExpressionSyntax(*this, left, part, right);
 };

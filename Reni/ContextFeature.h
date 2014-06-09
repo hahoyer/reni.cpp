@@ -33,8 +33,8 @@ namespace Reni
             virtual ResultData const Result(Context const&target, Category category, Type const&arg) const = 0;
         };
 
-        Ref<Simple, true> const simple;
-        Ref<Extended, true> const extended;
+        Optional<Ref<Simple>> const simple;
+        Optional<Ref<Extended>> const extended;
 
         ContextFeature(Simple const& simple, Extended const& extended)
             : simple(simple.thisRef), extended(extended.thisRef) {}
@@ -42,7 +42,7 @@ namespace Reni
         ResultData const FunctionResult(
             Context const&context,
             Category category,
-            Ref<Syntax, true> const& right
+            Optional<Ref<Syntax>> const& right
         )const;
         p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
     private:

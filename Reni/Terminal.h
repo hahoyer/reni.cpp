@@ -28,6 +28,6 @@ namespace Reni
             return tokenClass.GetResultData(context, category, part);
         }
 
-        Ref<Syntax, true> const Replace(SyntaxArgVisitor const&visitor) const override{ return tokenClass.Replace(visitor); };
+        Optional<Ref<Syntax>> const Replace(SyntaxArgVisitor const&visitor) const override{ return tokenClass.Replace(visitor); };
     };
 };

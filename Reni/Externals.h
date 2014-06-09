@@ -60,6 +60,7 @@ namespace HWLib
         }
 
         p(bool, IsValid){return _isValid;}
+        p(bool, IsEmpty){ return !IsValid; }
 
         DefaultAssignmentOperator;
 

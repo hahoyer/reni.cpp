@@ -25,7 +25,7 @@ namespace Reni{
         , public RefCountProvider{
         typedef ContextFeatureProvider thisType;
     public:
-        virtual Ref<ContextFeatureProvider<T, TTypes...>, true>const Convert(T0 const&top)const = 0;
+        virtual Optional<Ref<ContextFeatureProvider<T, TTypes...>>>const Convert(T0 const&top)const = 0;
         virtual ~ContextFeatureProvider(){};
     };
 

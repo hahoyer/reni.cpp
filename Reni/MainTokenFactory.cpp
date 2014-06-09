@@ -45,7 +45,7 @@ public:
 
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const;
 
-    Ref<Syntax, true> Replace(ReplaceSyntaxVisitor const&visitor) const { return visitor.arg; };
+    Optional<Ref<Syntax>> Replace(ReplaceSyntaxVisitor const&visitor) const { return visitor.arg; };
 private:
     Ref<Syntax> const Create(SourcePart const&part)const override final{
         return new TerminalSyntax<ArgToken>(*this, part);
@@ -117,7 +117,7 @@ public:
     String const name;
     List(String const&name) : name(name){}
 private:
-    Ref<Syntax> const CreateSyntax(Ref<Syntax, true>const left, SourcePart const&part, Ref<Syntax, true>const right)const override final
+    Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final
     {
         Ref<SyntaxContainer> result = new SyntaxContainer(part);
         result->Add(left);
@@ -192,7 +192,7 @@ TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) con
     auto result = predefinedTokenClasses.Find(name);
     if(result.IsEmpty)
         return *tokenClasses(name);
-    return *result;
+    return *result.Value;
 }
 
 

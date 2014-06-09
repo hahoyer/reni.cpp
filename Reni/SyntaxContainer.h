@@ -23,7 +23,7 @@ namespace Reni
         ThisRef;
 
         void Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const&value);
-        void Add(Ref<Syntax,true> const& value);
+        void Add(Optional<Ref<Syntax>> const& value);
     private:
         p_function(String, SmartDump) override;
         p_function(int, priority) override{ return -12; }

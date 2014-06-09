@@ -72,7 +72,7 @@ ResultData const SyntaxContainer::GetResultData(Context const& context, Category
     return{};
 }
 
-void SyntaxContainer::Add(Ref<Syntax, true> const& value)
+void SyntaxContainer::Add(Optional<Ref<Syntax>> const& value)
 {
     Ref<Syntax> const effectiveValue = value || emptySyntax; 
     effectiveValue->AddTo(*this);
