@@ -89,7 +89,7 @@ namespace _String
     {
         String a = "Hallo";
         auto b = a.Find("a");
-        a_is(b, == , 1);
+        a_is(b.Value, == , 1);
         auto c = a.Find("c");
         a_if_(!c.IsValid);
     }

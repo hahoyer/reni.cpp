@@ -21,6 +21,11 @@ Ref<CodeItem> const CodeItem::Reference(Type const&value)
     return new ReferenceCode(value);
 }
 
+bool const CodeItem::operator==(thisType const& other) const
+{
+    return this == &other;
+}
+
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
