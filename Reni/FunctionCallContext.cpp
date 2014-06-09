@@ -60,13 +60,14 @@ FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef
 
 ResultData const FunctionCallContext::ReferenceResult(Category category, External::Function const& external) const
 {
+    bool Trace = category.hasExternals;
+    md(category, external);
     if(category == Category::Type && &external == &External::Function::Arg::Instance)
-        return args->indirectType->thisRef;
+        return_d(args->indirectType->thisRef);
 
     if(category == Category::Code)
-        return new FunctionCallReferenceCode(thisRef, external);
+        return_d(new FunctionCallReferenceCode(thisRef, external));
 
-    md(category, external);
     mb;
     return{};
 }
