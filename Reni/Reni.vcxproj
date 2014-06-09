@@ -79,7 +79,6 @@
     <ClInclude Include="SyntaxErrorToken .h" />
     <ClInclude Include="ReplaceVisitor.h" />
     <ClInclude Include="VoidType.h" />
-    <ClInclude Include="TemplateInstances.h" />
     <ClInclude Include="SearchResult.h" />
     <ClInclude Include="BitType.h" />
     <ClInclude Include="Type.h" />

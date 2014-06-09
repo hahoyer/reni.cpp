@@ -11,18 +11,18 @@ namespace Util{
         bool const hasSize;
         bool const hasCode;
         bool const hasType;
-        bool const hasExternals;
+        bool const hasExts;
 
         static Category const None;
         static Category const Size;
         static Category const Code;
         static Category const Type;
-        static Category const Externals;
-        static Category const Instance(bool hasSize, bool hasCode, bool hasType, bool hasExternals);
+        static Category const Exts;
+        static Category const Instance(bool hasSize, bool hasCode, bool hasType, bool hasExts);
 
         Category();
     private:
-        Category(bool hasSize, bool hasCode, bool hasType, bool hasExternals);
+        Category(bool hasSize, bool hasCode, bool hasType, bool hasExts);
 
     public:
         DefaultAssignmentOperator;

@@ -34,7 +34,7 @@ String const CodeItem::ToCpp(CodeVisitor const& visitor)const
 
 pure_p_implementation(CodeItem, Size, size) ;
 
-pure_p_implementation(CodeItem, Externals, externals) ;
+pure_p_implementation(CodeItem, Externals, exts);
 
 Ref<CodeItem> const CodeItem::Const(BitsConst const&value)
 {
@@ -113,7 +113,7 @@ p_implementation(TypedCode, Size, size)
 }
 
 
-p_implementation(ArgCode, Externals, externals)
+p_implementation(ArgCode, Externals, exts)
 {
     return External::Arg::Instance;
 }
@@ -130,7 +130,7 @@ Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor)
 };
 
 
-p_implementation(ThisCode, Externals, externals)
+p_implementation(ThisCode, Externals, exts)
 {
     return External::This::Instance;
 }
@@ -161,17 +161,17 @@ FiberConnector::FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnec
     a_if(IsValid, Dump);
 }
 
-p_implementation(FiberConnector, Externals, externals)
+p_implementation(FiberConnector, Externals, exts)
 {
     return items
         .Aggregate<Externals>
         (
             [&](Externals result, Ref<CodeItem> item)
             {
-                return result + item->externals;
+        return result + item->exts;
             }
         )
-        + connector->externals;
+        + connector->exts;
 }
 
 String const FiberConnector::ToCpp(CodeVisitor const& visitor)const
@@ -216,7 +216,7 @@ Optional<Ref<CodeItem>> const FiberConnector::ReplaceImpl(ReplaceVisitor const&v
 };
 
 
-p_implementation(ReferenceCode, Externals, externals)
+p_implementation(ReferenceCode, Externals, exts)
 {
     md_;
     mb;
@@ -235,32 +235,32 @@ Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&ar
     mb;
 }
 
-p_implementation(FiberItem, Externals, externals)
+p_implementation(FiberItem, Externals, exts)
 {
     return{};
 }
 
-p_implementation(FiberConnectorItem, Externals, externals)
+p_implementation(FiberConnectorItem, Externals, exts)
 {
     return{};
 }
 
-p_implementation(ConstCode, Externals, externals)
+p_implementation(ConstCode, Externals, exts)
 {
     return{};
 }
 
-p_implementation(DumpPrintNumberCode, Externals, externals)
+p_implementation(DumpPrintNumberCode, Externals, exts)
 {
     return{};
 }
 
-p_implementation(ReferencePlusCode, Externals, externals)
+p_implementation(ReferencePlusCode, Externals, exts)
 {
     return{};
 }
 
-p_implementation(BinaryOperationCode, Externals, externals)
+p_implementation(BinaryOperationCode, Externals, exts)
 {
     return{};
 }

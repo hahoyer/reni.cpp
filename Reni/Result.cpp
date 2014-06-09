@@ -97,10 +97,10 @@ p_implementation(ResultCache, WeakRef<Type>, type)
     return data.type;
 }
 
-p_implementation(ResultCache, Externals, externals)
+p_implementation(ResultCache, Externals, exts)
 {
-    Ensure(Category::Externals);
-    return data.externals;
+    Ensure(Category::Exts);
+    return data.exts;
 }
 
 p_implementation(ResultCache, WeakPtr<Type>, cachedType)
@@ -158,7 +158,7 @@ ResultData const ResultData::operator+(ResultData const& other) const
         size || other.size, 
         code || other.code, 
         type || other.type,
-        externals || other.externals
+        exts || other.exts
         );
 }
 
@@ -168,7 +168,7 @@ ResultData const ResultData::operator&(Category const& other) const
         other.hasSize ? size : Optional<Size>(),
         other.hasCode ? code : Optional<Ref<CodeItem>>(),
         other.hasType ? type : WeakPtr<Type>(),
-        other.hasExternals ? externals : Optional<Externals>()
+        other.hasExts ? exts : Optional<Externals>()
         );
 }
 
@@ -185,7 +185,7 @@ bool const ResultData::operator==(ResultData const& other) const
     return size == other.size
         && type == other.type
         && code == other.code
-        && externals == other.externals;
+        && exts == other.exts;
 }
 
 Optional<Size> const ResultData::ReplenishSize(Category const& category, Optional<Ref<CodeItem>> code, WeakPtr<Type> type)
@@ -205,12 +205,12 @@ Optional<Size> const ResultData::ReplenishSize(Category const& category, Optiona
 
 Optional<Externals> const ResultData::ReplenishExternals(Category const& category, Optional<Ref<CodeItem>> code)
 {
-    if(category.hasExternals)
+    if(category.hasExts)
     {
         if(code.IsEmpty)
         a_fail(nd(category) + nd(code))
         else
-            return code.Value->externals;
+        return code.Value->exts;
     }
     return {};
 }
@@ -219,7 +219,7 @@ ResultData const ResultData::Get(Category category, function<Ref<CodeItem>()> ge
 {
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    auto externals = category.hasExternals ? Optional<Externals>(getExternals()) : Optional<Externals>();
+    auto externals = category.hasExts ? Optional<Externals>(getExternals()) : Optional<Externals>();
     return FullGet(category, code, type, externals);
 }
 
@@ -256,7 +256,7 @@ ResultData::ResultData(Type const& type)
 
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 {
-    if(!complete.hasCode && !complete.hasExternals)
+    if(!complete.hasCode && !complete.hasExts)
         return *this;
     bool Trace = arg.Trace;
     md(arg)  ;
@@ -266,8 +266,8 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
     Optional<Externals> newExternals;
     if(complete.hasCode)
         newCode = code.Value->Replace(arg) || code;
-    if(complete.hasExternals)
-        newExternals = externals.Value.Replace(arg) || externals;
+    if(complete.hasExts)
+        newExternals = exts.Value.Replace(arg) || exts;
     return_d(Get(complete, l_(newCode), l_(type), l_(newExternals.Value)));
 }
 
@@ -282,7 +282,7 @@ p_implementation(ResultData, Array<String>, DumpData)
         nd(size),
         nd(type),
         nd(code),
-        nd(externals)
+        nd(exts)
     };
 }
 
@@ -297,8 +297,8 @@ void ResultData::AssertValid()
     }
     else if(complete.hasCode && complete.hasType)
         a_is(code.Value->size, == , type->size);
-    if(complete.hasCode && complete.hasExternals)
-        a_is(code.Value->externals, == , externals.Value);
+    if(complete.hasCode && complete.hasExts)
+        a_is(code.Value->exts, == , exts.Value);
 };
 
 void ResultData::AssertValid(Category category, Optional<Size> const size, Optional<Ref<CodeItem>> code, WeakPtr<Type> type, Optional<Externals> const& externals)
@@ -309,7 +309,7 @@ void ResultData::AssertValid(Category category, Optional<Size> const size, Optio
         a_if(!code.IsEmpty, nd(category) + nd(code));
     if(category.hasType)
         a_if(!type.IsEmpty, nd(category) + nd(type));
-    if(category.hasExternals)
+    if(category.hasExts)
         a_if(externals.IsValid, nd(category) + nd(externals));
 }
 

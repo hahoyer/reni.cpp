@@ -38,7 +38,7 @@ p_implementation(Fiber, Size, size){
     return items.Last->size;
 };
 
-p_implementation(Fiber, Externals, externals){
+p_implementation(Fiber, Externals, exts){
     md_;
     mb;
 };
@@ -101,7 +101,7 @@ int FiberConnectorItem::nextObjectId = 0;
 
 pure_p_implementation(FiberConnectorItem, int, inCount);
 pure_p_implementation(FiberConnectorItem, Size, size);
-pure_p_implementation(FiberConnectorItem, Externals, externals);
+pure_p_implementation(FiberConnectorItem, Externals, exts);
 
 String const FiberConnectorItem::InName(int index) const
 {

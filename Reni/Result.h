@@ -31,24 +31,24 @@ namespace Reni
         Optional<Size> const size;
         WeakPtr<Type> const type;
         Optional<Ref<CodeItem>> const code;
-        Optional<Externals>  const externals;
+        Optional<Externals>  const exts;
 
         ResultData() { SetDumpString(); };
         ResultData(Ref<CodeItem> code);
         ResultData(Type const& type);
-        ResultData(Externals externals);
+        ResultData(Externals exts);
 
     private:
         ResultData(
             Optional<Size> const&size, 
             Optional<Ref<CodeItem>> const&code, 
             WeakPtr<Type> type, 
-            Optional<Externals> const&externals
+            Optional<Externals> const&exts
             )
             : size(size)
             , code(code)
             , type(type)
-            , externals(externals)
+            , exts(exts)
         {
             SetDumpString();
             AssertValid();
@@ -58,12 +58,12 @@ namespace Reni
             Category category,
             Optional<Ref<CodeItem>> const&code,
             WeakPtr<Type> type,
-            Optional<Externals> const&externals
+            Optional<Externals> const&exts
             )
         {
             Optional<Size> const size = ReplenishSize(category, code, type);
-            AssertValid(category, size, code, type, externals) ;
-            return ResultData(size, code, type, externals) & category;
+            AssertValid(category, size, code, type, exts) ;
+            return ResultData(size, code, type, exts) & category;
         };
     public:
         static ResultData const Get(
@@ -85,14 +85,14 @@ namespace Reni
             Category category,
             function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType,
-            function<Externals()> getExternals
+            function<Externals()> getExts
             );
 
         DefaultAssignmentOperator;
         ResultData const operator+(ResultData const&other)const;
         ResultData const operator&(Category const&other)const;
         bool const operator==(thisType const&other)const;
-        p(Category, complete){ return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, externals.IsValid); }
+        p(Category, complete){ return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, exts.IsValid); }
 
         ResultData const With(CodeItem const& code) const;
         ResultData const With(Type const& type) const;
@@ -107,7 +107,7 @@ namespace Reni
             Optional<Size> const size,
             Optional<Ref<CodeItem>> code,
             WeakPtr<Type> type,                            
-            Optional<Externals> const&externals
+            Optional<Externals> const&exts
             );
     };
 
@@ -126,7 +126,7 @@ namespace Reni
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
-        p(Externals, externals);
+        p(Externals, exts);
         p(WeakPtr<Type>, cachedType);
 
         ResultData const Get(Category category)const;

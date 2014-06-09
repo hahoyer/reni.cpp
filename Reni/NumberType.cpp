@@ -12,7 +12,7 @@
 #include "Global.h"
 #include "Result.h"
 #include "VoidType.h"
-#include "TemplateInstances.h"
+
 #include "../HWLib/RefCountContainer.instance.h"
 
 

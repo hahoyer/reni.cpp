@@ -9,7 +9,6 @@
 #include "Feature.h"
 #include "NumberType.h"
 #include "Result.h"
-#include "TemplateInstances.h"
 #include "TypeType.h"
 #include "UserDefinedToken.h"
 

@@ -169,7 +169,7 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
     auto code = body.getter.Value->Code(context);
-    auto externals = body.getter.Value->Externals(context);
+    auto externals = body.getter.Value->Exts(context);
     md(code, externals);
     mb;
 }

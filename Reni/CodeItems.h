@@ -22,7 +22,7 @@ namespace Reni{
     private:
         p_function(Array<String>,DumpData) override{ return{ nd(size), nd(value) }; };
         p_function(Size,size) override{ return size; };
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&) const override{ return{}; }
     };
@@ -42,7 +42,7 @@ namespace Reni{
         p_function(Array<String>,DumpData) override{ return{nd(size)}; };
         p_function(Size,argSize) override{ return size; };
         p_function(Size,size) override{ return 0; };
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override{ return{}; }
     };
@@ -62,7 +62,7 @@ namespace Reni{
         p_function(Array<String>, DumpData) override{ return{nd(referenceSize), nd(offset)}; };
         p_function(Size, argSize) override{ return referenceSize; };
         p_function(Size, size) override{ return referenceSize; };
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         Optional<Ref<FiberItem>> const ReplaceImpl(ReplaceVisitor const&) const{ return{}; }
     };
 
@@ -102,7 +102,7 @@ namespace Reni{
         };
         p_function(int, inCount) override{ return 2; };
         p_function(Size, size) override { return _size; };
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override{ return{}; }
 
@@ -143,7 +143,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&) const;
     };
@@ -159,7 +159,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         virtual String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
     };
@@ -175,7 +175,7 @@ namespace Reni{
     private:
         p_function(Array<String>, DumpData) override{ return{nd(items),nd(connector)}; };
         p_function(Size, size) override{ return connector->size; };
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         p(bool, IsValid) {
             if(items.Count != connector->inCount)
                 return false;
@@ -201,7 +201,7 @@ namespace Reni{
     private:
         p_function(Array<String>, DumpData) override{ return{nd(value)}; };
         p_function(Size, size) override{ return Size::Address; }
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
 
         Ref<CodeItem> const ReferencePlus(Size offset) const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;

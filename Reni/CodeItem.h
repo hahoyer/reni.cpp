@@ -47,7 +47,7 @@ namespace Reni
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
-        virtual_p(Externals, externals) = 0;
+        virtual_p(Externals, exts) = 0;
         ThisRef;
         Optional<Ref<CodeItem>> const Replace(ReplaceVisitor const&arg) const;
         virtual Ref<CodeItem> const Fiber(Array<Ref<FiberItem>> const&items)const;

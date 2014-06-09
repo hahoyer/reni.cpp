@@ -18,7 +18,7 @@ namespace Reni{
     public:
         virtual_p(Size, argSize) = 0;
         virtual_p(Size, size) = 0;
-        virtual_p(Externals, externals);
+        virtual_p(Externals, exts);
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const;
     };
@@ -42,7 +42,7 @@ namespace Reni{
         virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
         p_function(Array<String>,DumpData) override{ return{nd(head), nd(items)}; };
         p_function(Size,size) override;
-        p_function(Externals, externals)override;
+        p_function(Externals, exts)override;
         Optional<Ref<Fiber>> ReCreate(Optional<Ref<CodeItem>> const& head, Array<Optional<Ref<FiberItem>>> const& items)const;
         virtual String const ToCpp(CodeVisitor const&) const override;
         p(bool, IsValid);
@@ -64,7 +64,7 @@ namespace Reni{
         ThisRef;
         virtual_p(int, inCount) = 0;
         virtual_p(Size, size) = 0;
-        virtual_p(Externals, externals);
+        virtual_p(Externals, exts);
         virtual Size const InSize(int index)const = 0;
         virtual String const InName(int index)const;
         virtual String const ToCpp(CodeVisitor const& visitor)const = 0;

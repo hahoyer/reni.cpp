@@ -82,9 +82,9 @@ String const Syntax::SmartDumpFrame(int priority) const
     return "(" + result + ")";
 };
 
-Externals const Syntax::Externals(Context const& context) const
+Externals const Syntax::Exts(Context const& context) const
 {
-    return resultCache(&context)->externals;
+    return resultCache(&context)->exts;
 }
 
 Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const {
@@ -97,38 +97,45 @@ WeakPtr<Type> const Syntax::CachedType(RegularContext const& context) const
     return resultCache(&context)->cachedType;
 };
 
-ResultData const Syntax::GetResultData(Context const&context, Category category)const{
-    md(context, category);
+ResultData const Syntax::GetResultData(Context const&context, Category category)const
+{
+    md(context, category)    ;
     b_;
     return_d(ResultData());
 };
 
 
-Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const{
+Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const
+{
     SyntaxArgVisitor visitor = arg;
     return Replace(visitor) || Ref<Syntax> (thisRef);
 };
 
-Optional<Ref<Syntax>> const Syntax::Replace(SyntaxArgVisitor const&visitor) const{
-    md(visitor);
+Optional<Ref<Syntax>> const Syntax::Replace(SyntaxArgVisitor const&visitor) const
+{
+    md(visitor)  ;
     mb;
 }
 
-Ref<SyntaxContainer> const Syntax::Defines(SourcePart const& part, Ref<Syntax> const&value) const{
-    md(part, value);
+Ref<SyntaxContainer> const Syntax::Defines(SourcePart const& part, Ref<Syntax> const&value) const
+{
+    md(part, value)    ;
     mb;
 }
 
-void Syntax::AddTo(SyntaxContainer& syntaxContainer) const{
-    md(syntaxContainer);
+void Syntax::AddTo(SyntaxContainer& syntaxContainer) const
+{
+    md(syntaxContainer)  ;
     b_;
 }
 
-Ref<Syntax> const Syntax::TypeOperator(SourcePart const part) const{
+Ref<Syntax> const Syntax::TypeOperator(SourcePart const part) const
+{
     return new TypeOperatorSyntax(thisRef, part);
 }
 
-p_implementation(InfixSyntax, String, SmartDump){
+p_implementation(InfixSyntax, String, SmartDump)
+{
     return
         left->SmartDumpFrame(priority)
         + " "
@@ -138,7 +145,8 @@ p_implementation(InfixSyntax, String, SmartDump){
 };
 
 
-p_implementation(PrefixSyntax, String, SmartDump){
+p_implementation(PrefixSyntax, String, SmartDump)
+{
     return
         String(part)
         + " "
@@ -146,7 +154,8 @@ p_implementation(PrefixSyntax, String, SmartDump){
 };
 
 
-p_implementation(SuffixSyntax, String, SmartDump){
+p_implementation(SuffixSyntax, String, SmartDump)
+{
     return
         left->SmartDumpFrame(priority)
         + " "

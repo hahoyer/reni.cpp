@@ -11,18 +11,18 @@ Category const Category::None(false, false, false,false);
 Category const Category::Size(true, false, false, false);
 Category const Category::Code(false, true, false, false);
 Category const Category::Type(false, false, true, false);
-Category const Category::Externals(false, false, false, true);
+Category const Category::Exts(false, false, false, true);
 
-Category const Category::Instance(bool hasSize, bool hasCode, bool hasType, bool hasExternals){
-    return Category(hasSize, hasCode, hasType, hasExternals);
+Category const Category::Instance(bool hasSize, bool hasCode, bool hasType, bool hasExts){
+    return Category(hasSize, hasCode, hasType, hasExts);
 };
 
 
-Category::Category(bool hasSize, bool hasCode, bool hasType, bool hasExternals)
+Category::Category(bool hasSize, bool hasCode, bool hasType, bool hasExts)
     : hasSize(hasSize)
       , hasCode(hasCode)
       , hasType(hasType)
-      , hasExternals(hasExternals)
+      , hasExts(hasExts)
 {
     SetDumpString();
 }
@@ -41,7 +41,7 @@ p_implementation(Category, Category, replenished){
     if(result.hasCode)
     {
         result |= Size;
-        result |= Externals;
+        result |= Exts;
     }
 
     if(result.hasType)
@@ -57,7 +57,7 @@ Category const Category::operator|(Category const other)const{
         hasSize || other.hasSize,
         hasCode || other.hasCode,
         hasType || other.hasType,
-        hasExternals|| other.hasExternals
+        hasExts|| other.hasExts
     );
 }
 
@@ -67,7 +67,7 @@ Category const Category::operator&(Category const other) const
         hasSize && other.hasSize,
         hasCode && other.hasCode,
         hasType && other.hasType,
-        hasExternals && other.hasExternals
+        hasExts && other.hasExts
         );
 }
 
@@ -76,7 +76,7 @@ Category const Category::operator-(Category const other)const{
         hasSize && !other.hasSize,
         hasCode && !other.hasCode,
         hasType && !other.hasType,
-        hasExternals &&!other.hasExternals
+        hasExts &&!other.hasExts
     );
 }
 
@@ -84,7 +84,7 @@ bool Category::operator==(Category const other)const{
     return hasSize == other.hasSize
         && hasCode == other.hasCode
         && hasType == other.hasType
-        && hasExternals == other.hasExternals
+        && hasExts == other.hasExts
         ;
 }
 
@@ -96,7 +96,7 @@ bool Category::operator<=(Category const other)const{
         return false;
     if (hasType && !other.hasType)
         return false;
-    if(hasExternals && !other.hasExternals)
+    if(hasExts && !other.hasExts)
         return false;
     return true;
 }
@@ -107,7 +107,7 @@ p_implementation(Category, Array<String>, DumpData){
             hasSize ? String("Size") : "",
             hasCode ? String("Code") : "",
             hasType ? String("Type") : "",
-            hasExternals ? String("Externals") : ""
+            hasExts ? String("Externals") : ""
         });
 
 
