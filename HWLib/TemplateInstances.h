@@ -554,14 +554,7 @@ inline String const HWLib::DumpShort(CtrlPtr<T> const&target){
 }
 
 template <typename T>
-inline String const HWLib::DumpShort(Ref<T, true> const&target){
-    if(target.IsEmpty)
-        return "?{}";
-    return "?{ " + HWLib::DumpShort(*target) + " }";
-}
-
-template <typename T>
-inline String const HWLib::DumpShort(Ref<T,false> const&target){
+inline String const HWLib::DumpShort(Ref<T> const&target){
     return "*{ " + HWLib::DumpShort(*target) + " }";
 }
 
@@ -576,14 +569,7 @@ inline String const HWLib::Dump(WeakRef<T> const&target){
 }
 
 template <typename T>
-inline String const HWLib::Dump(Ref<T, true> const&target){
-    if(target.IsEmpty)
-        return "?{}";
-    return "?{ " + HWLib::Dump(*target) + " }";
-}
-
-template <typename T>
-inline String const HWLib::Dump(Ref<T,false> const&target){
+inline String const HWLib::Dump(Ref<T> const&target){
     return "*{ " + HWLib::Dump(*target) + " }";
 }
 

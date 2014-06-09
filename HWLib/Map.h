@@ -3,6 +3,7 @@
 #include "CtrlPtr.h"
 #include <unordered_map>
 #include "_.h"
+#include "Optional.h"
 
 namespace HWLib{
     template<class TKey, class TValue, class TOptionalValue = TValue>
@@ -61,7 +62,7 @@ namespace HWLib{
         Ref<TValue> const operator[](TKey const&key)const{ return *baseType::operator[](key); };
         void Assign(TKey const&key, Ref<TValue> value){ baseType::Assign(key, new Ref<TValue>(value)); };
 
-        Ref<TValue, true> const Find(TKey const&key)const{
+        Optional<Ref<TValue>> const Find(TKey const&key)const{
             auto result = baseType::Find(key);
             if(result.IsEmpty)
                 return{};

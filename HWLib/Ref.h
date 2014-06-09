@@ -16,6 +16,7 @@ namespace HWLib{
         T const* operator->()const { return value; };
         T & operator*(){ return *value; };
         T * operator->(){ return value; };
+        bool const operator==(thisType const&other)const{ return value == other.value; };
         DefaultAssignmentOperator;
     };
 
@@ -24,58 +25,31 @@ namespace HWLib{
         return !value.operator->();
     };
 
-
-    template<typename T, bool isOptional = false>
+    template<class T>  class Constants;
+    
+    template<typename T>
     class Ref final : public RefBase<T, RefCountContainer<T>>{
         typedef RefBase<T , RefCountContainer<T>> baseType;
         typedef Ref thisType;
+        Ref() :baseType({}){}
     public:
         Ref(T &value) :baseType(&value){ }
         Ref(T *value) :baseType(value){ a_if_(!IsEmpty); }
-        Ref(Ref<T, true> const&other) :baseType(other){ a_if_(!IsEmpty); };
-        Ref(Ref<T, false> const&other):baseType(other){};
+        Ref(thisType const&other):baseType(other){};
+        template<class TOther>
+        Ref(Ref<TOther>&other) :baseType(*other){};
+
         DefaultAssignmentOperator;
+        friend class Constants<Ref<T>>;
     };
 
 
-    template<typename T>
-    class Ref<T,true> final : public RefBase<T, RefCountContainer<T>>{
-        typedef RefBase<T, RefCountContainer<T>> baseType;
-        typedef Ref thisType;
+    template<class T>
+    class Constants <Ref<T>>{
     public:
-        Ref() :baseType(null){ }
-        Ref(T &value) :baseType(&value){ }
-        Ref(T *value) :baseType(value){ }
-        Ref(Ref<T, true> const&other) :baseType(other){ };
-        Ref(Ref<T> const&other) :baseType(other){};
-        DefaultAssignmentOperator;
-        p(bool, IsEmpty){ return baseType::IsEmpty; }
-
-        template <class TOther>
-        friend TOther operator||(Ref<T, true> left, TOther right){
-            if(left.IsEmpty)
-                return right;
-            return left;
-        }
-        template <class TOther>
-        friend TOther operator||(Ref<T, true> left, std::function<TOther()> right){
-            if(left.IsEmpty)
-                return right();
-            return left;
-        }
-
-        template <class TOther>
-        friend Ref<T, true> const operator&&(bool left, Ref<T, true> right){
-            if(left)
-                return right;
-            return {};
-        }
-        template <class TOther>
-        friend Ref<T, true> const operator&&(bool left, std::function<Ref<T, true>> right){
-            if(left)
-                return right();
-            return {};
-        }
+        static Ref<T> const NotValid;
     };
 
+    template<class T>
+    Ref<T> const Constants<Ref<T>>::NotValid = Ref<T>();
 }

@@ -20,7 +20,7 @@ namespace HWLib
         RefBase(T &value) : RefBase(&value){}
         RefBase(T *value) : value(value){};
         template<typename TOther, class TOtherData>
-        RefBase(RefBase<TOther, TOtherData> const&other) : RefBase(other.value){};
+        RefBase(RefBase<TOther, TOtherData> &other) : RefBase(other.operator*()){};
         RefBase(dataContainerType const&value) : value(value){}
 
     public:
@@ -29,12 +29,7 @@ namespace HWLib
         T const* operator->()const { return &*value; };
         T & operator*(){ return *value; };
         T * operator->(){ return &*value; };
-        bool const operator==(thisType const&other)const
-        {
-            if(IsEmpty)
-                return other.IsEmpty;
-            return *value == *other.value;
-        };
+        bool const operator==(thisType const&other)const{return value == other.value;};
 
     protected:
         p(bool, IsEmpty){ return IsEmptyValue(value); }

@@ -21,13 +21,14 @@ namespace HWLib
         T const value;
     public:
         Optional() : value(Constants<T>::NotValid){}
-        Optional(decltype(null)) : value(Constants<T>::NotValid){}
         Optional(T const value) :value(value){}
+        template<class TOther>
+        Optional(Optional<TOther> const value) 
+            : value(value.IsEmpty ? Constants<T>::NotValid: value.Value  ){}
 
-        p(bool, IsValid){
-            return value != Constants<T>::NotValid;
-        }
-        
+        p(bool, IsValid){ return value != Constants<T>::NotValid; };
+        p(bool, IsEmpty){ return value == Constants<T>::NotValid; };
+
         DefaultAssignmentOperator;
 
         p(T, Value){
@@ -37,15 +38,25 @@ namespace HWLib
 
         operator T const ()const{ return Value; };
 
-        friend Optional<T> operator||(Optional<T> left, Optional<T> right) {
-            if(!left.IsValid)
-                return right;
-            return left;
+        friend Optional<T> operator||(Optional<T> left, Optional<T> right)
+        {
+            if(left.IsValid)
+                return left;
+            return right;
         }
-        friend Optional<T> operator||(Optional<T> left, function<Optional<T>()> right) {
-            if(!left.IsValid)
-                return right();
-            return left;
+
+        friend Optional<T> operator||(Optional<T> left, T right)
+        {
+            if(left.IsValid)
+                return left;
+            return right;
+        }
+
+        friend Optional<T> operator||(Optional<T> left, function<Optional<T>()> right)
+        {
+            if(left.IsValid)
+                return left;
+            return right();
         }
 
     };
@@ -57,12 +68,10 @@ namespace HWLib
         char const value;
     public:
         Optional() : value(1){}
-        Optional(decltype(null)) : value(1){}
         Optional(bool const value) :value(value?-1:0){}
 
-        p(bool, IsValid){
-            return value < 1;
-        }
+        p(bool, IsValid){return value < 1;}
+        p(bool, IsEmpty){ return !IsValid; }
 
         DefaultAssignmentOperator;
 
@@ -83,8 +92,8 @@ namespace HWLib
     template<typename T>
     inline bool const operator==(Optional<T> const&left, Optional<T> const&other)
     {
-        if(!left.IsValid)
-            return !other.IsValid;
+        if(left.IsEmpty)
+            return other.IsEmpty;
         return left.Value == other.Value;
     };
 
