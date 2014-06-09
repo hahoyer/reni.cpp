@@ -79,19 +79,23 @@ namespace HWLib
             return right();
         }
     };
-}
 
+    template<typename T>
+    inline bool const operator==(Optional<T> const&left, Optional<T> const&other)
+    {
+        if(!left.IsValid)
+            return !other.IsValid;
+        return left.Value == other.Value;
+    };
 
-namespace HWLib
-{
     class String; 
     
     template <typename T>
     String const Dump(Optional<T> const&target)
     {
         if(target.IsValid)
-            return "Optional{ " + HWLib::Dump(target.Value) + " }";
-        return "Optional{}";
+            return "?{ " + HWLib::Dump(target.Value) + " }";
+        return "?{}";
     }
 }
 

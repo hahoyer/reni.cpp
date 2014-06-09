@@ -29,6 +29,13 @@ namespace HWLib
         T const* operator->()const { return &*value; };
         T & operator*(){ return *value; };
         T * operator->(){ return &*value; };
+        bool const operator==(thisType const&other)const
+        {
+            if(IsEmpty)
+                return other.IsEmpty;
+            return *value == *other.value;
+        };
+
     protected:
         p(bool, IsEmpty){ return IsEmptyValue(value); }
     };
