@@ -128,11 +128,11 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = syntax.ObjectId == -11;
+    bool Trace = syntax.ObjectId == 1;
     md(category)  ;
-    b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
-    return_d(result);
+    a_is(category, <= , result.complete);
+    return_db(result);
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)
@@ -292,14 +292,14 @@ void ResultData::AssertValid()
     if(complete.hasSize)
     {
         if(complete.hasCode)
-        a_is(code->size, == , size);
+            a_is(code->size, == , size.Value);
         if(complete.hasType)
-        a_is(type->size, == , size);
+            a_is(type->size, == , size.Value);
     }
     else if(complete.hasCode && complete.hasType)
         a_is(code->size, == , type->size);
     if(complete.hasCode && complete.hasExternals)
-        a_is(code->externals, == , externals);
+        a_is(code->externals, == , externals.Value);
 };
 
 void ResultData::AssertValid(Category category, Optional<Size> const size, Ref<CodeItem, true> code, WeakPtr<Type> type, Optional<Externals> const& externals)
