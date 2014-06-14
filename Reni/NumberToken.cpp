@@ -24,5 +24,5 @@ ResultData const NumberToken::GetResultData(Context const&context, Category cate
         ->bitType
         .array(value.size.value)
         ->numberType
-        ->GetResultData(category,l_(CodeItem::Const(value)));
+        ->GetResultData(category,l_(CodeItem::Const(value)),l_(Externals()));
 }

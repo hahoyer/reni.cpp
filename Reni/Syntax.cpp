@@ -40,11 +40,11 @@ private:
 };
 
 
-ResultData const TypeOperatorSyntax::GetResultData(Context const& context, Category category) const{
-    auto result = context.global->voidType.GetResultData(category);
+ResultData const TypeOperatorSyntax::GetResultData(Context const& context, Category category) const
+{
     if(category.hasType)
-        result = result .With(*target->Type(context)->typeType);
-    return result;
+        return target->Type(context)->typeType->GetResultDataEmpty(category);
+    return context.global->voidType.GetResultDataEmpty(category);
 }
 
 pure_p_implementation(Syntax, String, SmartDump);

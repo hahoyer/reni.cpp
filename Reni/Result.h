@@ -56,36 +56,39 @@ namespace Reni
 
         static ResultData const FullGet(
             Category category,
+            Optional<Size> const&size,
             Optional<Ref<CodeItem>> const&code,
             WeakPtr<Type> type,
             Optional<Externals> const&exts
             )
         {
-            Optional<Size> const size = ReplenishSize(category, code, type);
             AssertValid(category, size, code, type, exts) ;
             return ResultData(size, code, type, exts) & category;
         };
     public:
         static ResultData const Get(
             Category category,
-            CodeItem const& code,
+            function<Size()> getSize,
+            function<Ref<CodeItem>()> getCode,
+            function<WeakRef<Type>()> getType,
+            function<Externals()> getExts
+            );
+        static ResultData const GetSmartExts(
+            Category category,
+            function<Size()> getSize,
+            function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType
             );
-        static ResultData const Get(
-            Category category,
-            function<Ref<CodeItem>()> getCode,
-            Type const& type
-            );
-        static ResultData const Get(
-            Category category,
-            CodeItem const& code,
-            Type const& type
-            );
-        static ResultData const Get(
+        static ResultData const GetSmartSize(
             Category category,
             function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType,
             function<Externals()> getExts
+            );
+        static ResultData const GetSmartSizeExts(
+            Category category,
+            function<Ref<CodeItem>()> getCode,
+            function<WeakRef<Type>()> getType
             );
 
         DefaultAssignmentOperator;
@@ -93,9 +96,6 @@ namespace Reni
         ResultData const operator&(Category const&other)const;
         bool const operator==(thisType const&other)const;
         p(Category, complete){ return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, exts.IsValid); }
-
-        ResultData const With(CodeItem const& code) const;
-        ResultData const With(Type const& type) const;
         ResultData const Replace(ReplaceVisitor const&arg) const;
     private:
         p_function(Array<String>,DumpData) override;

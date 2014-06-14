@@ -62,12 +62,11 @@ ResultData const FunctionCallContext::ReferenceResult(Category category, Externa
 {
     bool Trace = false;
     md(category, external);
-    ResultData result = ResultData::Get
+    ResultData result = ResultData::GetSmartSizeExts
         (
             category,
             l_(new FunctionCallReferenceCode(thisRef, external)),
-            l_(&args->indirectType->thisRef),
-            l_(Externals(external))
+            l_(args->indirectType)
         );
 
     return_d(result);

@@ -78,20 +78,20 @@ SearchResult<Feature> const Type::Search(NumberType const& provider) const
     mb;
 };
 
-ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode) const
+ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts) const
 {
-    return ResultData::Get(category,getCode,*this);
+    return ResultData::Get(category,l_(size), getCode,l_(&thisRef), getExts);
 }
 
-ResultData const Type::GetResultData(Category category, CodeItem const& code) const
+ResultData const Type::GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode) const
 {
-    return ResultData::Get(category, code, *this);
+    return ResultData::GetSmartExts(category, l_(size), getCode, l_(&thisRef));
 }
 
-ResultData const Type::GetResultData(Category category) const
+ResultData const Type::GetResultDataEmpty(Category category) const
 {
     a_if(!HasData, Dump);
-    return ResultData::Get(category, l_(CodeItem::Const(BitsConst::Empty())), *this);
+    return ResultData::GetSmartExts(category, l_(size), l_(CodeItem::Const(BitsConst::Empty())), l_(&thisRef));
 }
 
 WeakRef<Type> const Type::array(int count)const
@@ -165,10 +165,10 @@ WeakRef<NumberType> const Type::CreateNumberType() const
 ResultData const Type::ContextAccessResult(Category category, Type const& target, function<Size()> getOffset)const
 {
     if(!HasData)
-        return GetResultData(category);
+        return GetResultDataEmpty(category);
 
     return indirectType
-        ->GetResultData
+        ->GetResultDataSmartExts
         (category,l_(CodeItem::Reference(target)->ReferencePlus(getOffset())));
 };
 

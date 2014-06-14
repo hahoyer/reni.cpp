@@ -70,7 +70,7 @@ ResultData const EnableCutFeature::Result(Category category, Type const&target)c
 {
     return target
         .enableCutType
-        ->GetResultData(category, l_(CodeItem::This(target, 0)));
+        ->GetResultDataSmartExts(category, l_(CodeItem::This(target, 0)));
 }
 
 
@@ -79,5 +79,5 @@ ResultData const DumpPrintFeature::Result(Category category, Type const&target)c
     return target
         .global
         ->voidType
-        .GetResultData(category, l_(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target))));
+        .GetResultDataSmartExts(category, l_(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target))));
 }

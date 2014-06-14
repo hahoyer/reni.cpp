@@ -21,6 +21,7 @@ namespace Reni{
     class DefinitionPoint;
     class DumpPrintToken;
     class EnableCutType;
+    class Externals;
     class FunctionToken;
     class Global;
     class InstanceToken;
@@ -59,9 +60,9 @@ namespace Reni{
         p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
 
-        ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode)const;
-        ResultData const GetResultData(Category category, CodeItem const&code)const;
-        ResultData const GetResultData(Category category)const;
+        ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts)const;
+        ResultData const GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode)const;
+        ResultData const GetResultDataEmpty(Category category)const;
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
         ResultData const Constructor(Category category, Type const&arg)const;
 

@@ -153,15 +153,7 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     if(category == Category::None)
         return *valueTypeInRecursion;
 
-    return ResultData::Get(category,*codeGet,*valueType);
-    
-    if(category == Category::Type)
-        return *type;
-    
-
-    md(category);
-    b_;
-    return{};
+    return ResultData::GetSmartSizeExts(category,l_(codeGet),l_(valueType));
 }
 
 p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)

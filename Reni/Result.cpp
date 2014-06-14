@@ -41,7 +41,7 @@ private:
 
     ResultData const GetResultData(Category category)const override
     {
-        return ResultData::Get(category, code.Value->thisRef, *type);
+        return ResultData::GetSmartSizeExts(category, l_(code.Value), l_(type));
     }
 };
 
@@ -193,17 +193,16 @@ bool const ResultData::operator==(ResultData const& other) const
 
 Optional<Size> const ResultData::ReplenishSize(Category const& category, Optional<Ref<CodeItem>> code, WeakPtr<Type> type)
 {
-    Optional<Size> size;
     if(category.hasSize)
     {
         if(category.hasCode)
-            size = code.Value->size;
+            return code.Value->size;
         else if(category.hasType)
-            size = type->size;
+            return type->size;
         else
             a_fail(category.Dump);
     }
-    return size;
+    return {};
 }
 
 Optional<Externals> const ResultData::ReplenishExternals(Category const& category, Optional<Ref<CodeItem>> code)
@@ -218,36 +217,53 @@ Optional<Externals> const ResultData::ReplenishExternals(Category const& categor
     return {};
 }
 
-ResultData const ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType, function<Externals()> getExternals)
+ResultData const ResultData::Get(
+    Category category, 
+    function<Size()> getSize,
+    function<Ref<CodeItem>()> getCode,
+    function<WeakRef<Type>()> getType, 
+    function<Externals()> getExternals
+    )
+{
+    auto size = category.hasSize ? Optional<Size>(getSize()) : Optional<Size>();
+    auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
+    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    auto externals = category.hasExts ? Optional<Externals>(getExternals()) : Optional<Externals>();
+    return FullGet(category, size, code, type, externals);
+}
+
+ResultData const ResultData::GetSmartSize(
+    Category category,
+    function<Ref<CodeItem>()> getCode,
+    function<WeakRef<Type>()> getType,
+    function<Externals()> getExternals
+    )
 {
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
     auto externals = category.hasExts ? Optional<Externals>(getExternals()) : Optional<Externals>();
-    return FullGet(category, code, type, externals);
+    auto size = ReplenishSize(category, code, type);
+    return FullGet(category, size, code, type, externals);
 }
 
-ResultData const ResultData::Get(Category category, CodeItem const& code, Type const& type)
+ResultData const ResultData::GetSmartExts(
+    Category category,
+    function<Size()> getSize,
+    function<Ref<CodeItem>()> getCode,
+    function<WeakRef<Type>()> getType
+    )
 {
-    Optional<Externals> externals = ReplenishExternals(category, Ref<CodeItem>(code.thisRef));
-    return FullGet(category, Ref<CodeItem>(code.thisRef), type.thisRef, externals);
+    return Get(category, getSize, getCode, getType, l_(getCode()->exts));
 }
 
-ResultData const ResultData::Get(Category category, function<Ref<CodeItem>()> getCode, Type const& type)
+ResultData const ResultData::GetSmartSizeExts(
+    Category category,
+    function<Ref<CodeItem>()> getCode,
+    function<WeakRef<Type>()> getType
+    )
 {
-    auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
-    Optional<Externals> externals = ReplenishExternals(category, code);
-    return FullGet(category, code, type.thisRef, externals) ;
+    return GetSmartSize(category, getCode, getType, l_(getCode()->exts));
 }
-
-ResultData const ResultData::Get(Category category, CodeItem const& code, function<WeakRef<Type>()> getType)
-{
-    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    Optional<Externals> externals = ReplenishExternals(category, Ref<CodeItem>(code.thisRef));
-    return FullGet(category, Ref<CodeItem>(code.thisRef), type, externals);
-}
-
-ResultData const ResultData::With(Type const& type) const
-{return ResultData(size, code, type.thisRef, {});}
 
 ResultData::ResultData(Type const& type)
     : size(type.size)
@@ -265,18 +281,12 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
     md(arg)  ;
     b_if_(Trace);
 
-    Optional<Ref<CodeItem>> newCode;
-    Optional<Externals> newExternals;
-    if(complete.hasCode)
-        newCode = code.Value->Replace(arg) || code;
-    if(complete.hasExts)
-        newExternals = exts.Value.Replace(arg) || exts;
-    return_d(Get(complete, l_(newCode), l_(type), l_(newExternals.Value)));
-}
-
-ResultData const ResultData::With(CodeItem const& code) const
-{
-    return Get(complete | Category::Code, code, *type);
+    auto result = GetSmartSize(
+        complete, 
+        l_(code.Value->Replace(arg) || code), 
+        l_(type), 
+        l_(exts.Value.Replace(arg) || exts));
+    return_d(result);
 }
 
 p_implementation(ResultData, Array<String>, DumpData)
