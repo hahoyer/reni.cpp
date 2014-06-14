@@ -1,11 +1,11 @@
 #include "Import.h"
 #include "Result.h"
 
-#include "ArgVisitor.h"
 #include "CodeItem.h"
 #include "Context.h"
 #include "Externals.h"
 #include "RecursionContext.h"
+#include "ReplaceVisitor.h"
 #include "Syntax.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/LevelValue.h"
@@ -65,6 +65,8 @@ void ResultCache::Ensure(Category category)const
         a_if(todo == Category::Type, nd(category) + nd(complete) + nd(pending));
         a_if(pending == Category::Type, nd(category) + nd(complete) + nd(pending));
     }
+
+    //b_if_(newTodo.hasExts && ((ResultFromSyntaxAndContext const*)this)->syntax.ObjectId == 3)
 
     data = data + GetResultData(newTodo);
 
@@ -127,8 +129,9 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = syntax.ObjectId == 1;
-    md(category)  ;
+    bool Trace = syntax.ObjectId == -1 && category.hasExts;
+    md(category);
+    b_if_(Trace && category.hasExts);
     auto result = syntax.GetResultData(context,category);
     a_is(category, <= , result.complete);
     return_db(result);
@@ -258,7 +261,7 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 {
     if(!complete.hasCode && !complete.hasExts)
         return *this;
-    bool Trace = arg.Trace;
+    bool Trace = false;
     md(arg)  ;
     b_if_(Trace);
 

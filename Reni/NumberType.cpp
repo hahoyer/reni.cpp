@@ -2,7 +2,6 @@
 #include "NumberType.h"
 
 #include "AddressType.h"
-#include "ArgVisitor.h"
 #include "ArrayType.h"
 #include "CodeItems.h"
 #include "DefineableToken.h"
@@ -10,6 +9,7 @@
 #include "Feature.h"
 #include "Context.h"
 #include "Global.h"
+#include "ReplaceVisitor.h"
 #include "Result.h"
 #include "VoidType.h"
 

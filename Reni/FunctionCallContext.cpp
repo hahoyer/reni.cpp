@@ -35,7 +35,7 @@ namespace Reni
         };
 
         p_function(Size, size) override{return Size::Address;}
-        p_function(Externals, exts) override{ return{external}; };
+        p_function(Externals, exts) override{ return Externals(external); };
 
         Ref<CodeItem> const ReferencePlus(Size offset) const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
@@ -60,16 +60,17 @@ FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef
 
 ResultData const FunctionCallContext::ReferenceResult(Category category, External::Function const& external) const
 {
-    bool Trace = category.hasExts;
+    bool Trace = false;
     md(category, external);
-    if(category == Category::Type && &external == &External::Function::Arg::Instance)
-        return_d(args->indirectType->thisRef);
+    ResultData result = ResultData::Get
+        (
+            category,
+            l_(new FunctionCallReferenceCode(thisRef, external)),
+            l_(&args->indirectType->thisRef),
+            l_(Externals(external))
+        );
 
-    if(category == Category::Code)
-        return_d(new FunctionCallReferenceCode(thisRef, external));
-
-    mb;
-    return{};
+    return_d(result);
 }
 
 p_implementation(FunctionCallContext, WeakRef<Type>, objectType)

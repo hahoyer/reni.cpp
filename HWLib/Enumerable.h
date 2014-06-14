@@ -38,14 +38,12 @@ namespace HWLib
         CtrlRef<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>             const Select   (function<TResult(T)> selector) const;
-        template<typename TResult>
-        CtrlRef<Enumerable<TResult>>            const SelectMany (function<TResult(T)> selector) const;
-        CtrlRef<thisType>                      const Skip       (int count) const;
-        CtrlRef<Enumerable>                   const Sort       (function<bool(T,T)>isLeftSmaller) const;
-        T                                    const Stringify  (T const&delimiter)const;
-        T                                   const Sum        ()const;
-        CtrlRef<thisType>                  const Take       (int count) const;
-        CtrlRef<thisType>                 const Where      (function<bool(T)> selector)const;
+        CtrlRef<thisType>                       const Skip       (int count) const;
+        CtrlRef<Enumerable>                    const Sort       (function<bool(T,T)>isLeftSmaller) const;
+        T                                     const Stringify  (T const&delimiter)const;
+        T                                    const Sum        ()const;
+        CtrlRef<thisType>                   const Take       (int count) const;
+        CtrlRef<thisType>                  const Where      (function<bool(T)> selector)const;
 
         p(bool,    Any           );
         p(int,      Count         );

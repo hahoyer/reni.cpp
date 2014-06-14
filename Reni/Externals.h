@@ -22,10 +22,10 @@ namespace Reni
         Array<WeakRef<External>> const data;
     public:
         Externals() { SetDumpString(); }
-        Externals(External const&item);
+        explicit Externals(External const&item);
 
     private:
-        Externals(Array<WeakRef<External>> const&other);
+        explicit Externals(Array<WeakRef<External>> const&other);
     public:
         ThisRef;
         DefaultAssignmentOperator;

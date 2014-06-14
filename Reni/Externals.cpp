@@ -19,14 +19,36 @@ bool const External::operator<(External const& other) const
     return ObjectId < other.ObjectId;
 }
 
+bool const External::operator==(External const& other) const
+{
+    return ObjectId ==other.ObjectId;
+}
+
+Externals const External::Replace(ReplaceVisitor const&arg) const
+{
+    md(arg);
+    b_;
+    return{};
+}
+
 bool const External::This::IsProvided(ReplaceVisitor const& arg) const
 {
     return arg.hasThis;
 }
 
+Externals const External::This::Replace(ReplaceVisitor const& arg) const
+{
+    return arg.ThisExts;
+}
+
 bool const External::Arg::IsProvided(ReplaceVisitor const& arg) const
 {
     return arg.hasArg;
+}
+
+Externals const External::Arg::Replace(ReplaceVisitor const& arg) const
+{
+    return arg.ArgExts;
 }
 
 
@@ -39,8 +61,9 @@ Externals::Externals(External const& item)
 Optional<Externals> const Externals::Replace(ReplaceVisitor const& arg) const
 {
     return data
-        .Where([&](WeakRef<External> const&item){return !item->IsProvided(arg); })
-        ->ToArray;
+        .Select<Externals>([&](WeakRef<External> const&item){return item->Replace(arg); })
+        ->Aggregate<Externals>([&](Externals result, Externals next){return result + next; })
+        ;
 }
 
 Externals::Externals(Array<WeakRef<External>> const& other)
@@ -72,5 +95,5 @@ p_implementation(Externals, Array<String>, DumpData)
 Externals const Externals::operator+(Externals const& other) const
 {
     auto result = data.Merge(other.data, [](WeakRef<External> left, WeakRef<External> right){return *left < *right; });
-    return  result->ToArray;
+    return Externals(result->ToArray);
 }

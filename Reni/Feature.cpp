@@ -1,13 +1,13 @@
 #include "Import.h"
 #include "Feature.h"
 
-#include "ArgVisitor.h"
 #include "CodeItems.h"
 #include "ContextFeature.h"
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
 #include "Global.h"
 #include "NumberType.h"
+#include "ReplaceVisitor.h"
 #include "Result.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/Ref.h"
@@ -22,25 +22,25 @@ ResultData const Feature::FunctionResult(
     Context const&context,
     Category category,
     ExpressionSyntax const& expressionSyntax
-)const
+    )const
 {
-    bool Trace = expressionSyntax.ObjectId == -3 && category.hasExts;
+    bool Trace = expressionSyntax.ObjectId == 3 && category.hasExts;
     md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
     auto thisResult = expressionSyntax.left.Value->GetResultCache(context);
-    ArgVisitor visitor;
+    ReplaceVisitor visitor;
     visitor.Trace = Trace;
-    visitor.Assign(&ArgVisitor::Tag::expressionThis, *thisResult);
+    visitor.Assign(&ReplaceVisitor::Tag::expressionThis, *thisResult);
 
     Optional<Ref<ResultFromSyntaxAndContext>> argResult;
     if(!expressionSyntax.right.IsEmpty)
     {
         argResult = expressionSyntax.right.Value->GetResultCache(context);
-        visitor.Assign(&ArgVisitor::Tag::expressionArg, *argResult.Value);
+        visitor.Assign(&ReplaceVisitor::Tag::expressionArg, *argResult.Value);
     }
 
     b_if_(Trace);
     auto rawResult = Result(category, *thisResult->type, argResult);
-    d(rawResult);
+    b_if(Trace,nd(rawResult));
     a_is(category, == , rawResult.complete);
     auto result = rawResult.Replace(visitor);
     return_d(result);
@@ -58,7 +58,7 @@ ResultData const ContextFeature::FunctionResult(
     Context const&context,
     Category category,
     Optional<Ref<Syntax>> const& right
-)const
+    )const
 {
     if(right.IsEmpty)
         return simple.Value->Result(context, category);
@@ -70,7 +70,7 @@ ResultData const EnableCutFeature::Result(Category category, Type const&target)c
 {
     return target
         .enableCutType
-        ->GetResultData(category,l_(CodeItem::This(target, 0)));
+        ->GetResultData(category, l_(CodeItem::This(target, 0)));
 }
 
 

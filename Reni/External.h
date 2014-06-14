@@ -10,6 +10,7 @@ using namespace std;
 namespace Reni
 {
     class ReplaceVisitor;
+    class Externals;
 
     class External 
         : public WithId<DumpableObject, External>
@@ -24,7 +25,9 @@ namespace Reni
 
         ThisRef;
         bool const operator < (thisType const& other)const;
+        bool const operator == (thisType const& other)const;
         virtual bool const IsProvided(ReplaceVisitor const&) const { return false; };
+        virtual Externals const Replace(ReplaceVisitor const& arg) const;
         p_function(String, DumpShort) override{ return{internalDump()}; };
     private:
         p_function(Array<String>, DumpData) override{ return{internalDump()}; };
@@ -43,6 +46,7 @@ namespace Reni
         This() {};    
         bool const IsProvided(ReplaceVisitor const& arg) const override;
         String const internalDump() const override{ return "This"; };
+        Externals const Replace(ReplaceVisitor const& arg) const override;
     };
 
     class External::Arg final : public External
@@ -55,6 +59,7 @@ namespace Reni
         Arg() {};     
         bool const IsProvided(ReplaceVisitor const& arg) const override;
         String const internalDump() const override{ return "Arg"; };
+        Externals const Replace(ReplaceVisitor const& arg) const override;
     };
 
     class External::Function : public External

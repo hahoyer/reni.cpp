@@ -115,7 +115,7 @@ p_implementation(TypedCode, Size, size)
 
 p_implementation(ArgCode, Externals, exts)
 {
-    return External::Arg::Instance;
+    return Externals(External::Arg::Instance);
 }
 
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const
@@ -132,7 +132,7 @@ Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor)
 
 p_implementation(ThisCode, Externals, exts)
 {
-    return External::This::Instance;
+    return Externals(External::This::Instance);
 }
 
 String const ThisCode::ToCpp(CodeVisitor const& visitor)const

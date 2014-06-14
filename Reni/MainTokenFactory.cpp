@@ -204,7 +204,7 @@ Ref<Syntax> const SyntaxErrorToken::Create(SourcePart const&part)const{
 
 ResultData const ArgToken::GetResultData(Context const& context, Category category, SourcePart const&) const
 {
-    bool Trace = category.hasExts;
+    bool Trace = false;
     md(context, category);
     auto result = context.ReferenceResult(category, External::Function::Arg::Instance);
     return_db(result);
