@@ -281,8 +281,9 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
     md(arg)  ;
     b_if_(Trace);
 
-    auto result = GetSmartSize(
+    auto result = Get(
         complete, 
+        l_(size),
         l_(code.Value->Replace(arg) || code), 
         l_(type), 
         l_(exts.Value.Replace(arg) || exts));

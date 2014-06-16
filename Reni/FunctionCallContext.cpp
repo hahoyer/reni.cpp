@@ -2,6 +2,7 @@
 #include "FunctionCallContext.h"
 
 #include "ContainerContext.h"
+#include "FunctionCallResultCache.h"
 #include "Syntax.h"
 #include "ReplaceVisitor.h"
 #include "SyntaxContainer.h"
@@ -47,13 +48,14 @@ namespace Reni
 using namespace Reni;
 static bool Trace = true;
 
-int FunctionCallContext::nextIndex = 0;
-
 FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef<Type const> const args)
     : baseType(static_cast<RegularContext const&>(parent))
       , container(parent)
       , args(args)
-      , index(nextIndex++)
+      , functionCallResultCache([&](int bodyIndex)
+          {
+              return new FunctionCallResultCache(*this, bodyIndex);
+          })
 {
     SetDumpString();
 }

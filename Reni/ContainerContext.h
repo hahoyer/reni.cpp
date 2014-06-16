@@ -6,6 +6,7 @@
 
 namespace Reni
 {
+    class FunctionCallContext;
     class FunctionCallResultCache;
 
     class ContainerContext final : public ChildContext
@@ -13,7 +14,7 @@ namespace Reni
         typedef ContainerContext thisType;
         typedef ChildContext baseType;
 
-        FunctionCache<Ref<FunctionCallResultCache>, Type const*, FunctionSyntax const*> functionCallResultCache;
+        FunctionCache<WeakRef<FunctionCallContext>, Type const*> functionCallContext;
         FunctionCache<ContextFeature, int> accessFeature;
         ValueCache<WeakRef<Type>> dataTypeCache;
     public:
@@ -26,11 +27,7 @@ namespace Reni
         ContainerContext(ContainerContext const&) = delete;
         ThisRef;
 
-        p(WeakRef<Type>, dataType)
-        {
-            return dataTypeCache.Value;
-        };
-
+        p(WeakRef<Type>, dataType){return dataTypeCache.Value;};
         p(Size, dataSize);
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;

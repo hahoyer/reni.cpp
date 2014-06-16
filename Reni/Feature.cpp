@@ -24,7 +24,7 @@ ResultData const Feature::FunctionResult(
     ExpressionSyntax const& expressionSyntax
     )const
 {
-    bool Trace = expressionSyntax.ObjectId == 3 && category.hasExts;
+    bool Trace = expressionSyntax.ObjectId == -3 && category.hasExts;
     md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
     auto thisResult = expressionSyntax.left.Value->GetResultCache(context);
     ReplaceVisitor visitor;

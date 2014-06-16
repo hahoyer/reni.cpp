@@ -82,35 +82,6 @@ namespace Reni
     };
 
 
-    class FunctionCallResultCache final : public ResultCache
-    {
-        typedef ResultCache baseType;
-        typedef FunctionCallResultCache thisType;
-        FunctionSyntax const&body;
-        FunctionCallContext context;
-    public:
-        FunctionCallResultCache(ContainerContext const& container, Type const*args, FunctionSyntax const&body)
-            : context(container, args)
-              , body(body.thisRef)
-        {
-            SetDumpString();
-        }
-
-    private:
-        p(WeakPtr<Type const>, args){return context.args;}
-        p(ContainerContext const&, container){return context.container;}
-        p_function(Array<String>, DumpData) override{return{nd(body), nd(context)};}
-
-        ResultData const GetResultData(Category category)const override;
-        p(Ref<CodeItem>, codeGet);
-        p(Ref<CodeItem>, CodeSet);
-        p(WeakRef<Type>, valueType);
-        p(WeakRef<Type>, valueTypeInRecursion);
-        p(Ref<CodeItem>, codeGetter);
-        p(Ref<CodeItem>, CodeSetter);
-    };
-
-
     class ContainerType final : public Type
     {
         typedef Type baseType;

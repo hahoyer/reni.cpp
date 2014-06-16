@@ -30,6 +30,7 @@ namespace Reni
 
         static Ref<CodeItem> const Arg(Type const&value, int depth);
         static Ref<CodeItem> const Const(BitsConst const&value);
+        static Ref<CodeItem> const Empty(){ return Const(BitsConst::Empty()); };
         static Ref<CodeItem> const BinaryOperation
             (
             String name, 
@@ -40,10 +41,11 @@ namespace Reni
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
         static Ref<CodeItem> const This(Type const&value, int depth);
         static Ref<CodeItem> const Reference(Type const&target);
+        static Ref<CodeItem> const CallGetter(Size const size, int const index, Type const&arg);
+        static Ref<CodeItem> const CallGetter(Size const size, int const index);
 
         bool const operator==(thisType const&other)const;
 
-        Ref<CodeItem> const CallGetter(Size const size, int const index) const;
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;
@@ -52,6 +54,7 @@ namespace Reni
         Optional<Ref<CodeItem>> const Replace(ReplaceVisitor const&arg) const;
         virtual Ref<CodeItem> const Fiber(Array<Ref<FiberItem>> const&items)const;
         virtual Ref<CodeItem> const ReferencePlus(Size offset)const;
+        virtual Ref<CodeItem> const CallGetter(Size const size, int const index, Size const&argsSize)const;
     protected:
         virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const = 0;
     };

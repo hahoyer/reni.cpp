@@ -8,15 +8,26 @@ namespace Util{
         using thisType = Size;
     public:
         int const value;
-        Size(int value) : value(value){ SetDumpString(); }
+
+        Size(int value) : value(value)
+        {
+            a_if(value >= 0, nd(value));
+            SetDumpString();
+        }
+
+        Size() : value(Constants<int>::NotValid)
+        {
+            SetDumpString();
+        }
         DefaultAssignmentOperator;
         Size const operator+(Size const&other)const{return value + other.value;};
         Size const operator*(int other)const{ return value * other; };
         bool const operator==(Size const&other)const{ return value == other.value; };
         bool const operator<(Size const&other)const{return value < other.value;};
         bool const operator<=(Size const&other)const{return value <= other.value;};
+        bool const operator>(Size const&other)const{ return value > other.value; };
 
-        p(String, format){return String::Convert(value);}
+        p(String, format){ return String::Convert(value); }
         static thisType const Address;
     private:
         p_function(Array<String>,DumpData) override{return{ HWLib::Dump(value) };};

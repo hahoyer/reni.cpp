@@ -5,7 +5,10 @@
 #include "ContextIncludes.h"
 #include "DefineableToken.h"
 #include "ExpressionSyntax.h"
+#include "FunctionCallContext.h"
+#include "FunctionCallResultCache.h"
 #include "FunctionSyntax.h"
+#include "Global.h"
 #include "RecursionContext.h"
 #include "Result.h"
 #include "SearchResult.h"
@@ -112,13 +115,13 @@ ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer 
           {
               return ContextFeature(*new SimpleFeature(*this, tokenIndex), *new ExtendedFeature(*this, tokenIndex));
           })
-      , functionCallResultCache([&](Type const*args, FunctionSyntax const*body)
-          {
-              return new FunctionCallResultCache(*this, args, *body);
-          })
       , dataTypeCache([&]
           {
               return new ContainerType(*this);
+          })
+      , functionCallContext([&](Type const* args)
+          {
+              return new FunctionCallContext(*this, args);
           })
       , index(index)
 {
@@ -133,8 +136,7 @@ p_implementation(ContainerContext, Size, dataSize)
 
 Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type const& argsType, int const tokenIndex) const
 {
-    auto  statement = containerData->statements[tokenIndex];
-    return functionCallResultCache(&argsType, &dynamic_cast<FunctionSyntax const&>(*statement));
+    return functionCallContext(&argsType)->functionCallResultCache(tokenIndex);
 }
 
 SearchResult<ContextFeature> const ContainerContext::Search(DefineableToken const&token) const 
@@ -156,13 +158,22 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     return ResultData::GetSmartSizeExts(category,l_(codeGet),l_(valueType));
 }
 
+p_implementation(FunctionCallResultCache, int, codeIndex){ return context.global->CodeIndex(*this); };
+
+p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
+{
+    return dynamic_cast<FunctionSyntax const&>(*context.container.containerData->statements[bodyIndex]);
+};
+
 p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    auto code = body.getter.Value->Code(context);
-    auto externals = body.getter.Value->Exts(context);
-    md(code, externals);
+    auto result = body.getter.Value->GetResultCache(context)->Get(Category::Size | Category::Exts);
+    if(result.exts.Value == External::Function::Arg::Instance)
+        return CodeItem::CallGetter(result.size.Value, codeIndex, *context.args);
+    
+    md(result);
     mb;
 }
 

@@ -77,6 +77,11 @@ bool const Externals::operator==(Externals const& other) const
     return data.Compare(other.data);
 }
 
+bool const Externals::operator==(External const& other) const
+{
+    return data.Count == 1 && *data[0] == other;
+}
+
 p_implementation(Externals, Array<String>, DumpData)
 {
     return data

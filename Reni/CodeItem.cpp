@@ -26,6 +26,19 @@ bool const CodeItem::operator==(thisType const& other) const
     return this == &other;
 }
 
+Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Type const& arg)
+{
+    return Arg(*arg.dereferencedType, arg.addressLevel)
+        ->CallGetter(size, index, arg.size);
+}
+
+Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index)
+{
+    fd(size, index);
+    b_;
+    return Empty();
+}
+
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
@@ -60,6 +73,8 @@ Ref<CodeItem> const CodeItem::BinaryOperation(
 
 Ref<CodeItem> const CodeItem::Arg(Type const&value, int depth)
 {
+    a_if(*value.dereferencedType == value, nd(value));
+    a_if(depth == 0 || value.size > Size(0), nd(value) + nd(depth));
     if(value.size == 0)
         return Const(BitsConst::Empty());
     return new ArgCode(value,depth);
@@ -70,6 +85,13 @@ Ref<CodeItem> const CodeItem::This(Type const&value, int depth)
     if(value.size == 0)
         return Const(BitsConst::Empty());
     return new ThisCode(value, depth);
+}
+
+Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Size const&argsSize) const
+{
+    md(size, index, argsSize);
+    b_;
+    return Empty();
 };
 
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const

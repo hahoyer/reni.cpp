@@ -45,6 +45,7 @@
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
+    <ClInclude Include="FunctionCallResultCache.h" />
     <ClInclude Include="ContainerContext.h" />
     <ClInclude Include="Externals.h" />
     <ClInclude Include="FunctionCallContext.h" />

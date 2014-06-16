@@ -32,6 +32,7 @@ namespace Reni
 
         Externals const operator+(Externals const&other)const;
         bool const operator==(Externals const&other)const;
+        bool const operator==(External const&other)const;
 
         Optional<thisType> const Replace(ReplaceVisitor const&arg) const;
     private:

@@ -57,22 +57,12 @@ p_implementation(Syntax, Array<String>, DumpData)
 
 Reni::Syntax::Syntax(SourcePart const&part)
     : part(part)
-      , resultCache([&](Context const*context){
-          return new ResultFromSyntaxAndContext(*this, *context);
-      }){
+      , resultCache([&](Context const*context)
+          {
+              return new ResultFromSyntaxAndContext(*this, *context);
+          })
+{
 };
-
-Size const Syntax::Size(Context const& context) const{
-    return resultCache(&context)->size;
-};
-
-Ref<CodeItem> const Syntax::Code(Context const&context)const{
-    return resultCache(&context)->code;
-};
-
-WeakRef<Type>const Syntax::Type(Context const&context)const{
-    return resultCache(&context)->type;
-}
 
 String const Syntax::SmartDumpFrame(int priority) const
 {
@@ -82,12 +72,28 @@ String const Syntax::SmartDumpFrame(int priority) const
     return "(" + result + ")";
 };
 
+Size const Syntax::Size(Context const& context) const
+{
+    return resultCache(&context)->size;
+};
+
+Ref<CodeItem> const Syntax::Code(Context const&context)const
+{
+    return resultCache(&context)->code;
+};
+
+WeakRef<Type>const Syntax::Type(Context const&context)const
+{
+    return resultCache(&context)->type;
+}
+
 Externals const Syntax::Exts(Context const& context) const
 {
     return resultCache(&context)->exts;
 }
 
-Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const {
+Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const
+{
     Ref<ResultFromSyntaxAndContext> r = resultCache(&context);
     return r;
 }
