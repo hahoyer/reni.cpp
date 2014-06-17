@@ -16,20 +16,39 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-Ref<CodeItem> const CodeItem::Reference(Type const&value)
-{
-    return new ReferenceCode(value);
-}
+pure_p_implementation(CodeItem, Size, size);
+pure_p_implementation(CodeItem, Externals, exts);
 
 bool const CodeItem::operator==(thisType const& other) const
 {
     return this == &other;
 }
 
+Ref<CodeItem> const CodeItem::Arg(Type const&value, int depth)
+{
+    a_if(*value.dereferencedType == value, nd(value));
+    a_if(depth == 0 || value.size > Size(0), nd(value) + nd(depth));
+    if(value.size == 0)
+        return Const(BitsConst::Empty());
+    return new ArgCode(value, depth);
+};
+
+Ref<CodeItem> const CodeItem::BinaryOperation(
+    String name,
+    NumberType const&result,
+    NumberType const&left, int leftDepth,
+    NumberType const&right, int rightDepth
+    )
+{
+    auto action = new BinaryOperationCode(name, result.size, left.size, leftDepth, right.size, rightDepth);
+    return new FiberConnector({This(left, leftDepth), Arg(right, rightDepth)}, action);
+};
+
 Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Type const& arg)
 {
     return Arg(*arg.dereferencedType, arg.addressLevel)
-        ->CallGetter(size, index, arg.size);
+        ->Fiber({new CallGetterFiber(size, index, arg.size)})
+        ->thisRef;
 }
 
 Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index)
@@ -39,16 +58,6 @@ Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index)
     return Empty();
 }
 
-String const CodeItem::ToCpp(CodeVisitor const& visitor)const
-{
-    md(visitor);
-    mb;
-};
-
-pure_p_implementation(CodeItem, Size, size) ;
-
-pure_p_implementation(CodeItem, Externals, exts);
-
 Ref<CodeItem> const CodeItem::Const(BitsConst const&value)
 {
     return new ConstCode(value.size, value);
@@ -56,29 +65,15 @@ Ref<CodeItem> const CodeItem::Const(BitsConst const&value)
 
 Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value)
 {
-    return This(value,0)
-        ->Fiber({new DumpPrintNumberCode(value.size)});
+    return This(value, 0)
+        ->Fiber({new DumpPrintNumberCode(value.size)})
+        ->thisRef;
 };
 
-Ref<CodeItem> const CodeItem::BinaryOperation(
-    String name,
-    NumberType const&result,
-    NumberType const&left, int leftDepth,
-    NumberType const&right, int rightDepth
-)
+Ref<CodeItem> const CodeItem::Reference(Type const&value)
 {
-    auto action = new BinaryOperationCode(name, result.size, left.size, leftDepth, right.size, rightDepth);
-    return new FiberConnector({This(left, leftDepth), Arg(right, rightDepth)}, action);
-};
-
-Ref<CodeItem> const CodeItem::Arg(Type const&value, int depth)
-{
-    a_if(*value.dereferencedType == value, nd(value));
-    a_if(depth == 0 || value.size > Size(0), nd(value) + nd(depth));
-    if(value.size == 0)
-        return Const(BitsConst::Empty());
-    return new ArgCode(value,depth);
-};
+    return new ReferenceCode(value);
+}
 
 Ref<CodeItem> const CodeItem::This(Type const&value, int depth)
 {
@@ -87,12 +82,10 @@ Ref<CodeItem> const CodeItem::This(Type const&value, int depth)
     return new ThisCode(value, depth);
 }
 
-Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Size const&argsSize) const
+Ref<FiberCode> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
 {
-    md(size, index, argsSize);
-    b_;
-    return Empty();
-};
+    return new FiberCode(thisRef, items);
+}
 
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
@@ -103,17 +96,18 @@ Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
     return_d(result);
 };
 
-Ref<CodeItem> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
-{
-    return *Fiber::Create(thisRef, items);
-}
-
 Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const
 {
     md(offset);
     b_;
     return thisRef;
 }
+
+String const CodeItem::ToCpp(CodeVisitor const& visitor)const
+{
+    md(visitor);
+    mb;
+};
 
 String const ConstCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -123,7 +117,7 @@ String const ConstCode::ToCpp(CodeVisitor const& visitor)const
 
 String const DumpPrintNumberCode::ToCpp(CodeVisitor const& visitor)const
 {
-    return visitor.DumpPrintNumber(size);
+    return visitor.DumpPrintNumber(_size);
 };
 
 
@@ -158,6 +152,12 @@ p_implementation(ThisCode, Externals, exts)
 }
 
 String const ThisCode::ToCpp(CodeVisitor const& visitor)const
+{
+    md(visitor);
+    mb;
+}
+
+String const CallGetterFiber::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
     mb;
@@ -248,7 +248,8 @@ inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
 {
     if(offset == 0)
         return thisRef;
-    return Fiber({new ReferencePlusCode(size, offset)});
+    return Fiber({new ReferencePlusCode(size, offset)})
+        ->thisRef;
 }
 
 Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) const
@@ -256,35 +257,4 @@ Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&ar
     md(arg);
     mb;
 }
-
-p_implementation(FiberItem, Externals, exts)
-{
-    return{};
-}
-
-p_implementation(FiberConnectorItem, Externals, exts)
-{
-    return{};
-}
-
-p_implementation(ConstCode, Externals, exts)
-{
-    return{};
-}
-
-p_implementation(DumpPrintNumberCode, Externals, exts)
-{
-    return{};
-}
-
-p_implementation(ReferencePlusCode, Externals, exts)
-{
-    return{};
-}
-
-p_implementation(BinaryOperationCode, Externals, exts)
-{
-    return{};
-}
-
 

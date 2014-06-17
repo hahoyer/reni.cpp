@@ -13,6 +13,7 @@ namespace Reni
 {
     class CodeVisitor;
     class Externals;
+    class FiberCode;
     class FiberItem;
     class NumberType;
     class ReplaceVisitor;
@@ -52,9 +53,8 @@ namespace Reni
         virtual_p(Externals, exts) = 0;
         ThisRef;
         Optional<Ref<CodeItem>> const Replace(ReplaceVisitor const&arg) const;
-        virtual Ref<CodeItem> const Fiber(Array<Ref<FiberItem>> const&items)const;
+        virtual Ref<FiberCode> const Fiber(Array<Ref<FiberItem>> const&items)const;
         virtual Ref<CodeItem> const ReferencePlus(Size offset)const;
-        virtual Ref<CodeItem> const CallGetter(Size const size, int const index, Size const&argsSize)const;
     protected:
         virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const = 0;
     };

@@ -34,17 +34,22 @@ String const FiberItem::ToCpp(CodeVisitor const& visitor)const{
 };
 
 
-p_implementation(Fiber, Size, size){
+p_implementation(FiberCode, Size, size){
     return items.Last->size;
 };
 
-p_implementation(Fiber, Externals, exts){
+p_implementation(FiberCode, Externals, exts){
     md_;
     mb;
 };
 
 
-p_implementation(Fiber, bool, IsValid) {
+Ref<FiberCode> const FiberCode::Fiber(Array<Ref<FiberItem>> const& items) const
+{
+    return head->Fiber(this->items + items);
+}
+
+p_implementation(FiberCode, bool, IsValid) {
     Size size = head->size;
     for(auto item: items){
         if(size != item->argSize)
@@ -54,11 +59,7 @@ p_implementation(Fiber, bool, IsValid) {
     return true;
 };
 
-Ref<Fiber> Fiber::Create(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items) {
-    return new thisType(head, items);
-}
-
-Optional<Ref<CodeItem>> const Fiber::ReplaceImpl(ReplaceVisitor const&visitor) const
+Optional<Ref<CodeItem>> const FiberCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
     auto newHead = head->Replace(visitor);
     Array<Optional<Ref<FiberItem>>> newItems = items
@@ -73,7 +74,7 @@ Optional<Ref<CodeItem>> const Fiber::ReplaceImpl(ReplaceVisitor const&visitor) c
     return{};
 };
 
-Optional<Ref<Fiber>> Fiber::ReCreate(Optional<Ref<CodeItem>> const&head, Array<Optional<Ref<FiberItem>>> const& items)const{
+Optional<Ref<FiberCode>> FiberCode::ReCreate(Optional<Ref<CodeItem>> const&head, Array<Optional<Ref<FiberItem>>> const& items)const{
     if(!head.IsEmpty&& !items.Where([](Optional<Ref<FiberItem>> const&item){return item.IsEmpty; })->Any)
         return{};
     Ref<CodeItem>  newHead = this->head;
@@ -83,10 +84,10 @@ Optional<Ref<Fiber>> Fiber::ReCreate(Optional<Ref<CodeItem>> const&head, Array<O
     for(auto index = 0; index < newItems.Count; index++)
         if(!items[index].IsEmpty)
             newItems[index] = items[index];
-    return Create(newHead, newItems);
+    return newHead->Fiber(newItems);
 }
 
-String const Fiber::ToCpp(CodeVisitor const&visitor) const{
+String const FiberCode::ToCpp(CodeVisitor const&visitor) const{
     FiberVisitor localVisitor = visitor;
     auto result = head->ToCpp(localVisitor);
     for(auto item :  items) 

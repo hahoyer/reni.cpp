@@ -105,9 +105,10 @@ WeakPtr<Type> const Syntax::CachedType(RegularContext const& context) const
 
 ResultData const Syntax::GetResultData(Context const&context, Category category)const
 {
-    md(context, category)    ;
-    b_;
-    return_d(ResultData());
+    return context
+        .global
+        ->voidType
+        .GetResultDataEmpty(category);
 };
 
 

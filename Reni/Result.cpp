@@ -275,19 +275,12 @@ ResultData::ResultData(Type const& type)
 
 ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 {
-    if(!complete.hasCode && !complete.hasExts)
-        return *this;
-    bool Trace = false;
-    md(arg)  ;
-    b_if_(Trace);
-
-    auto result = Get(
+    return Get(
         complete, 
         l_(size),
         l_(code.Value->Replace(arg) || code), 
         l_(type), 
         l_(exts.Value.Replace(arg) || exts));
-    return_d(result);
 }
 
 p_implementation(ResultData, Array<String>, DumpData)
