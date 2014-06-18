@@ -39,9 +39,9 @@ String const String::FilePosition(String const&fileName, int line, int column, S
 
 p_implementation(String, Array<char const>, ToArray){
     char const* d = _data.c_str();
-    return Array<char const>(
-        Count,
-        [&](int i){return d[i];});
+    return Numbers(Count)
+        ->Select<char const>([&](int i){return d[i]; })
+        ->ToArray;
 }
 
 

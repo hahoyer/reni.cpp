@@ -78,17 +78,20 @@ void SyntaxContainer::Add(Optional<Ref<Syntax>> const& value)
     effectiveValue->AddTo(*this);
 }
 
+
 Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const
 {
-    Array<Ref<CodeItem>> result
+    auto result = Numbers(statements.Count)
+        ->Select<Ref<CodeItem>>
         (
-            statements.Count,
             [&]
             (int index)
             {
                 return GetCode(context, index);
-            }
-        );
+            })
+        ->ToArray;
+
+
     md(context, result);
     mb;
 };

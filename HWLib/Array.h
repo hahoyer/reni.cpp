@@ -4,6 +4,7 @@
 #include "_.h"
 #include "Common.h"
 #include "Enumerable.h"
+#include <vector>
 
 namespace HWLib
 {
@@ -35,13 +36,17 @@ namespace HWLib
                 new (data + index) T(other[index]);
         };
 
-        Array(int count, function<T(int)> creator)
-            : _count(count)
-            , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*count]))
+        Array(std::vector<T> const&other)
+            : _count(other.size())
+            , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {
             auto data = const_cast<remove_const<T>::type*>(_data);
-            for (auto index = 0; index < count; index++)
-                new (data + index) T(creator(index));
+            auto index = 0;
+            for(auto element : other)
+            {
+                new (data + index) T(element);
+                index++;
+            }
         }
 
         Array(std::initializer_list<T> const&other)

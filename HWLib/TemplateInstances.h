@@ -407,7 +407,7 @@ inline mutable_p_implementation(Enumerable<T>::Iterator, Array<T>const, ToArray)
         auto value = Step();
         result.push_back(value);
     }
-    return Array<T>(result.size(), [=](int i){return result[i]; });
+    return result;
 }
 
 
@@ -627,5 +627,28 @@ CtrlRef<Enumerable<T>> const Enumerable<T>::Sort(function<bool(T, T)>isLeftSmall
     std::sort<T*, sorter>(dataForSort, dataForSort + result.Count, sorter(isLeftSmaller));
     return new Array<T>(result);
 }
+
+class NumbersIterator final : public Enumerable<int>::Iterator
+{
+    using baseType = Enumerable<int>::Iterator;
+    using thisType = NumbersIterator;
+
+    int const count;
+    int index;
+public:
+    explicit NumbersIterator(int count)
+        : count(count)
+        , index(0)
+    {}
+private:
+    p_function(bool, IsValid) override{ return index < count; }
+    int const Step() override{ return index++; }
+};
+
+inline CtrlRef<Enumerable<int>> const HWLib::Numbers(int count)
+{
+    return new Enumerable<int>::Container(new NumbersIterator(count));
+}
+
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

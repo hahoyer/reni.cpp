@@ -77,8 +77,7 @@ namespace HWLib
     };
 
     template<typename T>
-    Box_<T> _(T&data){ return data; }
-
+    inline Box_<T> _(T&data){ return data; }
 }
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

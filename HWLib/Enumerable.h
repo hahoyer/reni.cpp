@@ -130,6 +130,7 @@ namespace HWLib
     };
 
 
+    CtrlRef<Enumerable<int>> const Numbers(int count);
 
 }
 

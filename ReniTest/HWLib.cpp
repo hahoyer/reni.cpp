@@ -167,7 +167,7 @@ namespace _Array
 {
     test_(WriteHallo)
     {
-        auto c = Array<int>(3, [](int i){return i; });
+        auto c = Numbers(3)->ToArray;
         a_if_(c.Count == 3);
         a_if_(c[0] == 0);
         a_if_(c[1] == 1);

@@ -173,19 +173,28 @@ PrioTableConst::Tag const PrioTable::Relation(int newIndex, int recentIndex)cons
     return data[newIndex][recentIndex];
 }
 
-Array<String> const PrioTable::AllocTokens(Array<Array<String>> const &tokens){
+Array<String> const PrioTable::AllocTokens(Array<Array<String>> const &tokens)
+{
     return tokens.ConvertMany<String>()->ToArray;
 }
 
 Array<Array<Tag>> const PrioTable::AllocData(int count, function<Tag(int, int)> getData)
 {
-    return Array<Array<Tag>>(count, [=](int i)
-    {
-        return Array<Tag>(count, [=](int j)
-        {
-            return getData(i, j);
-        });
-    });
+    return Numbers(count)
+        ->Select<Array<Tag>>
+        ([=](int i)
+            {
+                return Numbers(count)
+                    ->Select<Tag>
+                    ([=](int j)
+                        {
+                            return getData(i, j);
+                        }
+                    )
+                    ->ToArray;
+            }
+        )
+        ->ToArray;
 }
 
 Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, int leftCount, int i, int j)
