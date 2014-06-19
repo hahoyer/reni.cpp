@@ -78,5 +78,6 @@ namespace Reni{
         String const DumpPrintNumber(Size const size) const override;
         String const FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;
         String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
+        String const CallGetter(Size const& result, int const index, Size const& args) const override;
     };
 }

@@ -129,6 +129,11 @@ String const FiberVisitor::Const(Size const size, BitsConst const& value) const
     return value.format;
 }
 
+String const FiberVisitor::CallGetter(Size const& , int const index, Size const& ) const
+{
+    return "get_" + String::Convert(index) + "($(arg))";
+}
+
 String const FiberVisitor::DumpPrintNumber(Size const size) const
 {
     return "DumpPrint($(arg))";

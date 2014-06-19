@@ -164,8 +164,7 @@ String const ThisCode::ToCpp(CodeVisitor const& visitor)const
 
 String const CallGetterFiber::ToCpp(CodeVisitor const& visitor)const
 {
-    md(visitor);
-    mb;
+    return visitor.CallGetter(result, index, arg);
 }
 
 Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const

@@ -12,25 +12,35 @@ static bool Trace = true;
 
 String const CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
-    md(size, value);
+    md(size, value)    ;
     b_;
     return "";
 }
 
-String const CodeVisitor::DumpPrintNumber(Size const size) const{
-    md(size);
+String const CodeVisitor::CallGetter(Size const& result, int const index, Size const& args) const
+{
+    md(result, index,args)      ;
     b_;
     return "";
 }
 
-String const CodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const {
-    md(items, connector);
+String const CodeVisitor::DumpPrintNumber(Size const size) const
+{
+    md(size)  ;
     b_;
     return "";
 }
 
-String const CodeVisitor::BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const{
-    md(name, size, leftDepth, leftSize, rightDepth, rightSize);
+String const CodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const
+{
+    md(items, connector)    ;
+    b_;
+    return "";
+}
+
+String const CodeVisitor::BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const
+{
+    md(name, size, leftDepth, leftSize, rightDepth, rightSize)            ;
     b_;
     return "";
 };
