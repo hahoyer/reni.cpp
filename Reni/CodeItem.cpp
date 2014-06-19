@@ -18,6 +18,7 @@ static bool Trace = true;
 
 pure_p_implementation(CodeItem, Size, size);
 pure_p_implementation(CodeItem, Externals, exts);
+pure_p_implementation(CodeItem, bool, isEmpty);
 
 bool const CodeItem::operator==(thisType const& other) const
 {
@@ -103,6 +104,8 @@ Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const
     return thisRef;
 }
 
+
+
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
@@ -114,6 +117,8 @@ String const ConstCode::ToCpp(CodeVisitor const& visitor)const
     return visitor.Const(size, value);
 };
 
+
+p_implementation(ConstCode, bool, isEmpty){return value.isEmpty;}
 
 String const DumpPrintNumberCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -129,10 +134,7 @@ p_implementation(TypedCode, Size, size)
 }
 
 
-p_implementation(ArgCode, Externals, exts)
-{
-    return Externals(External::Arg::Instance);
-}
+p_implementation(ArgCode, Externals, exts){return Externals(External::Arg::Instance);}
 
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -146,10 +148,7 @@ Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor)
 };
 
 
-p_implementation(ThisCode, Externals, exts)
-{
-    return Externals(External::This::Instance);
-}
+p_implementation(ThisCode, Externals, exts){return Externals(External::This::Instance);}
 
 String const ThisCode::ToCpp(CodeVisitor const& visitor)const
 {

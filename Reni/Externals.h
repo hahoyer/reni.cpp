@@ -5,6 +5,7 @@
 #include "../HWLib/WeakPtr.h"
 #include "../HWLib/CtrlRef.h"
 #include "../HWLib/DumpToString.h"
+#include "../HWLib/Enumerable.h"
 
 using namespace HWLib;
 using namespace std;
@@ -23,12 +24,14 @@ namespace Reni
     public:
         Externals() { SetDumpString(); }
         explicit Externals(External const&item);
-
+        static Externals const Aggregate(CtrlRef<Enumerable<Externals>> const&other);
     private:
         explicit Externals(Array<WeakRef<External>> const&other);
     public:
         ThisRef;
         DefaultAssignmentOperator;
+
+        p(bool, isEmpty){ return data.Count == 0; }
 
         Externals const operator+(Externals const&other)const;
         bool const operator==(Externals const&other)const;

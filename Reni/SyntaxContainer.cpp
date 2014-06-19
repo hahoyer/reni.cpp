@@ -82,15 +82,12 @@ void SyntaxContainer::Add(Optional<Ref<Syntax>> const& value)
 Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const
 {
     auto result = Numbers(statements.Count)
-        ->Select<Ref<CodeItem>>
-        (
-            [&]
-            (int index)
-            {
-                return GetCode(context, index);
-            })
+        ->Select<Ref<CodeItem>>([&](int index){return GetCode(context, index);})
+        ->Where([&](Ref<CodeItem> item){return !item->isEmpty; })
         ->ToArray;
 
+    if(result.Count == 1)
+        return result[0];
 
     md(context, result);
     mb;

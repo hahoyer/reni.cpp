@@ -23,6 +23,7 @@ namespace Reni{
         p_function(Array<String>,DumpData) override{ return{ nd(size), nd(value) }; };
         p_function(Size,size) override{ return size; };
         p_function(Externals, exts)override{ return{}; };
+        p_function(bool, isEmpty)override;
         String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&) const override{ return{}; }
     };

@@ -13,14 +13,9 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-virtual_p_implementation(FiberItem, Size, argSize){
-    return Size(0);
-}
-
-virtual_p_implementation(FiberItem, Size, size){
-    return Size(0);
-}
-
+pure_p_implementation(FiberItem, Size, argSize); 
+pure_p_implementation(FiberItem, Size, size); 
+pure_p_implementation(FiberItem, Externals, exts);
 
 Optional<Ref<FiberItem>> const FiberItem::Replace(ReplaceVisitor const&visitor) const {
     md(visitor);
@@ -34,13 +29,16 @@ String const FiberItem::ToCpp(CodeVisitor const& visitor)const{
 };
 
 
-p_implementation(FiberCode, Size, size){
-    return items.Last->size;
-};
+p_implementation(FiberCode, Size, size){return items.Last->size;};
 
-p_implementation(FiberCode, Externals, exts){
-    md_;
-    mb;
+p_implementation(FiberCode, Externals, exts)
+{
+    auto itemExts = items
+        .Select<Externals>([&](Ref<FiberItem> item)
+            {
+                return item->exts;
+            });
+    return head->exts + Externals::Aggregate(itemExts);
 };
 
 

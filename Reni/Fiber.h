@@ -17,8 +17,8 @@ namespace Reni{
         typedef DumpableObject baseType;
         typedef CodeItem thisType;
     public:
-        virtual_p(Size, argSize) = 0;
-        virtual_p(Size, size) = 0;
+        virtual_p(Size, argSize) { return Size(0); };
+        virtual_p(Size, size) { return Size(0); };
         virtual_p(Externals, exts){ return{}; };
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const;

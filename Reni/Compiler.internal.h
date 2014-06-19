@@ -87,11 +87,10 @@ private:
 
     String const GetCppCode()const{
         CodeVisitor visitor;
-        return CppCompilerScripting(codeCache.Value->ToCpp(visitor)).program;
+        auto code = codeCache.Value;
+        a_if(code->exts.isEmpty, nd(code));
+        return CppCompilerScripting(code->ToCpp(visitor)).program;
     };
 
 };
 
-
-
-//Parse<Ref<Syntax>,Optional<Ref<Syntax>>,TokenClass,Token<TokenClass>,ScannerInstance>(PrioTable prioTable, ScannerInstance scanner)

@@ -38,6 +38,7 @@ namespace Util{
         operator int const()const;
 
         p(Size, size);
+        p(bool, isEmpty){ return !size.value; }
         bool const operator==(BitsConst const&other)const{ return value == other.value; };
         p(String, format);
         p(Array<dataChunkType>, ToArray);

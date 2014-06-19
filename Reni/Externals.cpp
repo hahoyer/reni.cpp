@@ -58,12 +58,28 @@ Externals::Externals(External const& item)
     SetDumpString();
 }
 
+Externals const Externals::Aggregate(CtrlRef<Enumerable<Externals>> const& other)
+{
+    return Externals
+        (
+            other
+            ->Aggregate<Externals>([&](Externals result, Externals next)
+                {
+                    return result + next;
+                })
+        );
+}
+
 Optional<Externals> const Externals::Replace(ReplaceVisitor const& arg) const
 {
-    return data
-        .Select<Externals>([&](WeakRef<External> const&item){return item->Replace(arg); })
-        ->Aggregate<Externals>([&](Externals result, Externals next){return result + next; })
-        ;
+    return Aggregate
+        (
+            data
+            .Select<Externals>([&](WeakRef<External> const&item)
+                {
+                    return item->Replace(arg);
+                })
+        );
 }
 
 Externals::Externals(Array<WeakRef<External>> const& other)
