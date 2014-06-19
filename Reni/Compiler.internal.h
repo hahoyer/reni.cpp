@@ -2,6 +2,7 @@
 #include "Compiler.h"
 
 #include "CodeVisitor.h"
+#include "Global.h"
 #include "MainTokenFactory.h"
 #include "PrioTable.h"
 #include "RootContext.h"
@@ -13,6 +14,7 @@
 #include "../Util/BitsConst.h"
 #include "../Util/CppCompilerScripting.h"
 #include "../Util/Scanner.h"
+#include "../ReniTest/Reni.h"
 
 using namespace HWLib;
 using namespace HWLang;
@@ -32,14 +34,40 @@ namespace Reni{
 
 using namespace Reni;
 
+class Reni::CodeBase final : public DumpableObject
+{
+    using baseType = DumpableObject; using thisType = CodeBase;
+
+    class CodeVisitor : public Reni::CodeVisitor
+    {
+        p_function(Array<String>, DumpData) override{ return{}; };
+        virtual String const Const(Size const size, BitsConst const& value) const override;
+
+    };
+
+public:
+    Ref<CodeItem> const main;
+    Array<Global::Function> const functions;
+
+    CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& functions)
+        : main(main), functions(functions)
+    {
+        SetDumpString();
+    }
+
+    p(String, cppMain);
+    p(String, cppFunctions);
+private:
+    p_function(Array<String>, DumpData) override{ return{nd(main), nd(functions)}; }
+};
+
 
 class Compiler::internal final
 {
     String const fileName;
 public:
-    ValueCache<Ref<CodeItem>> codeCache;
+    ValueCache<CodeBase> codeCache;
     ValueCache<Ref<Syntax>> syntaxCache;
-    ValueCache<String> cppCodeCache;
 private:
     RootContext rootContext;
 public:
@@ -48,48 +76,50 @@ public:
 
     internal(String const&fileName)
         : fileName  (fileName)
-        , syntaxCache([&]{return GetSyntax(); })
-        , codeCache  ([&]{return GetCode(); })
-        , cppCodeCache([&]{return GetCppCode(); })
+        , syntaxCache(l_(syntax))
+        , codeCache(l_(code))
     {}
 
-    ExecutionResult const Execute(){
-        CppCompilerScripting ccs = cppCodeCache.Value;
+    ExecutionResult const Execute()
+    {
+        auto codes = codeCache.Value;
+        CppCompilerScripting ccs (codes.cppMain, codes.cppFunctions);
         ccs.Execute();
         return ExecutionResult{ ccs.result, ccs.output };
-
     }
 
-    static Ref<Syntax> const GetSyntaxFromText(String const& text){
+    static Ref<Syntax> const GetSyntaxFromText(String const& text)
+    {
         return GetSyntax(*Source::CreateFromText(text));
     };
 
+    p(String, cppCode)
+    {
+        auto codes = codeCache.Value;
+        CppCompilerScripting ccs(codes.cppMain, codes.cppFunctions);
+        return ccs.program;
+    };
+
 private:
-    Ref<Syntax> const GetSyntax()const{return GetSyntaxFromFile(fileName);};
-    static Ref<Syntax> const GetSyntaxFromFile(String const& file){return GetSyntax(*Source::CreateFromFile(file));};
+    p(Ref<Syntax>,syntax){return GetSyntaxFromFile(fileName);};
     
-    static Ref<Syntax> const GetSyntax(Source const&source){
+    static Ref<Syntax> const GetSyntaxFromFile(String const& file){return GetSyntax(*Source::CreateFromFile(file));};
+
+    static Ref<Syntax> const GetSyntax(Source const&source)
+    {
         auto scannerInstance = Reni::ScannerInstance(source);
         return Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, Token>(PrioTable::Main(), scannerInstance);
     };
 
-    Ref<CodeItem> const GetCode()const{
-        auto syntax = syntaxCache.Value;
-        return syntax->Code(rootContext);
-    };
-
-    class CodeVisitor : public Reni::CodeVisitor
+    p(CodeBase,code)
     {
-        p_function(Array<String>,DumpData) override{ return{}; };
-        virtual String const Const(Size const size, BitsConst const& value) const override;
+        auto syntax = syntaxCache.Value;
+        Ref<CodeItem> main = syntax->Code(rootContext);
+        Array<Global::Function> functions = rootContext
+            .global
+            ->functions;
 
-    };
-
-    String const GetCppCode()const{
-        CodeVisitor visitor;
-        auto code = codeCache.Value;
-        a_if(code->exts.isEmpty, nd(code));
-        return CppCompilerScripting(code->ToCpp(visitor)).program;
+        return CodeBase(main, functions);
     };
 
 };

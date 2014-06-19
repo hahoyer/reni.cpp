@@ -158,7 +158,7 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     return ResultData::GetSmartSizeExts(category,l_(codeGet),l_(valueType));
 }
 
-p_implementation(FunctionCallResultCache, int, codeIndex){ return context.global->CodeIndex(*this); };
+p_implementation(FunctionCallResultCache, int, codeIndex){ return context.global->FunctionIndex(*this); };
 
 p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
 {
@@ -169,29 +169,59 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    auto result = body.getter.Value->GetResultCache(context)->Get(Category::Size | Category::Exts);
+    function.GetterIsUsed();
+    auto result = body
+        .getter
+        .Value
+        ->GetResultCache(context)
+        ->Get(Category::Type | Category::Exts)
+        .Convert(*valueType);
     if(result.exts.Value == External::Function::Arg::Instance)
-        return CodeItem::CallGetter(result.size.Value, codeIndex, *context.args);
+        return CodeItem::CallGetter(valueType->size, codeIndex, *context.args);
     
     md(result);
     mb;
 }
 
-p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
+p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGetter)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
-    a_if(body.setter.IsEmpty, "NotImpl: function setter " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    return body.getter.Value->Type(context)->asFunctionResult;
+    auto result = body
+        .getter
+        .Value
+        ->GetResultCache(context)
+        ->Get(Category::Type | Category::Code | Category::Exts)
+        .Convert(*valueType);
+    if(result.exts.Value == External::Function::Arg::Instance)
+        return CodeItem::GetterFunction(valueType->size, codeIndex, *context.args, result.code.Value);
+
+    md(result);
+    mb;
+}
+
+p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeSetter)
+{
+    md_;
+    mb;
+}
+
+p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
+{
+    return body
+        .getter
+        .Value
+        ->Type(context)
+        ->asFunctionResult;
 }
 
 p_implementation(FunctionCallResultCache, WeakRef<Type>, valueTypeInRecursion)
 {
-    a_if(pending == Category::Type, Dump);
-    a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
-    a_if(body.setter.IsEmpty, "NotImpl: function setter " + Dump);
-    a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    return body.getter.Value->Type(*context.recursionContext)->asFunctionResult;
+    return body
+        .getter
+        .Value
+        ->Type(*context.recursionContext)
+        ->asFunctionResult;
 }
 
 
@@ -216,3 +246,4 @@ SearchResult<ContextFeature> const RecursionContext::Search(DefineableToken cons
 {
     return parent.Search(token);
 }
+

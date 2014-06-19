@@ -3,6 +3,7 @@
 #include "ContainerContext.h"
 #include "FunctionCallContext.h"
 #include "FunctionSyntax.h"
+#include "Global.h"
 #include "SyntaxContainer.h"
 #include "Type.h"
 #include "../HWLib/ValueCache.h"
@@ -16,8 +17,9 @@ namespace Reni
         typedef FunctionCallResultCache thisType;
         int const bodyIndex;
         FunctionCallContext const& context;
-
     public:
+        Global::Function function;
+
         FunctionCallResultCache(FunctionCallContext const& context, int bodyIndex)
             : context(context)
             , bodyIndex(bodyIndex)
@@ -25,8 +27,10 @@ namespace Reni
             SetDumpString();
         }
 
+        p(Ref<CodeItem>, codeGetter);
+        p(Ref<CodeItem>, codeSetter);
     private:
-        p(WeakPtr<Type const>, args){return context.args;}
+        p(WeakPtr<Type const>, args){ return context.args; }
         p(ContainerContext const&, container){return context.container;}
         p_function(Array<String>, DumpData) override{return{nd(bodyIndex), nd(context)};}
 
@@ -35,8 +39,6 @@ namespace Reni
         p(Ref<CodeItem>, CodeSet);
         p(WeakRef<Type>, valueType);
         p(WeakRef<Type>, valueTypeInRecursion);
-        p(Ref<CodeItem>, codeGetter);
-        p(Ref<CodeItem>, CodeSetter);
         p(int, codeIndex);
         p(FunctionSyntax const&, body);
     };

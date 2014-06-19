@@ -8,6 +8,7 @@ using namespace HWLang;
 
 namespace Reni
 {
+    class CodeBase;
     class CodeItem;
     class Syntax;
     class TokenClass;
@@ -31,7 +32,8 @@ namespace Reni
     
         p(Array<Token>, tokens);
         p(Ref<Syntax>, syntax);
-        p(Ref<CodeItem>, code);
+        p(CodeBase, code);
+        p(Ref<CodeItem>, main);
         p(String, cppCode);
         ExecutionResult const Execute();
 

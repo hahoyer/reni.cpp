@@ -94,8 +94,7 @@ Externals const Syntax::Exts(Context const& context) const
 
 Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const
 {
-    Ref<ResultFromSyntaxAndContext> r = resultCache(&context);
-    return r;
+    return resultCache(&context);
 }
 
 WeakPtr<Type> const Syntax::CachedType(RegularContext const& context) const

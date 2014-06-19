@@ -23,7 +23,7 @@ namespace _Reni
     test(CodeSimple, ParseSimple) 
     {
         CompilerTest ct = "4711";
-        auto s = ct.compiler.code;
+        auto s = ct.compiler.main;
         auto sc = dynamic_cast<ConstCode const*>(&*s);
         a_if(sc, nd(s));
         a_is(sc->size, == , 14);

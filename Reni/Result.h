@@ -97,6 +97,7 @@ namespace Reni
         bool const operator==(thisType const&other)const;
         p(Category, complete){ return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, exts.IsValid); }
         ResultData const Replace(ReplaceVisitor const&arg) const;
+        ResultData const Convert(Type const& destination) const;
     private:
         p_function(Array<String>,DumpData) override;
         void AssertValid();

@@ -205,6 +205,14 @@ Optional<Size> const ResultData::ReplenishSize(Category const& category, Optiona
     return {};
 }
 
+ResultData const ResultData::Convert(Type const& destination) const
+{
+    if(destination == *type)
+        return *this;
+    md(destination);
+    mb;
+}
+
 Optional<Externals> const ResultData::ReplenishExternals(Category const& category, Optional<Ref<CodeItem>> code)
 {
     if(category.hasExts)

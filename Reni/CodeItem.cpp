@@ -52,6 +52,48 @@ Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Type 
         ->thisRef;
 }
 
+Ref<CodeItem> const CodeItem::GetterFunction(Size const size, int const index, Type const& arg, Ref<CodeItem> code)
+{
+    return code
+        ->Fiber({new GetterFunctionFiber(size, index, arg.size)})
+        ->thisRef;
+}
+
+Ref<CodeItem> const CodeItem::SmartList(Array<Optional<Ref<CodeItem>>> const& items)
+{
+    using resultType = Ref<CodeItem>;
+    using itemType = decltype(items[0]);
+
+    auto realItems = items
+        .Where([&](itemType item)
+            {
+                return item.IsValid;
+            })
+        ->Select<resultType>([&](itemType item)
+            {
+                return item.Value;
+            })
+        ->ToArray;
+    return List(realItems);
+}
+
+Ref<CodeItem> const CodeItem::List(Array<Ref<CodeItem>> const& items)
+{
+    using resultType = Ref<CodeItem>;
+
+    switch(items.Count)
+    {
+    case 0:
+        return Empty();
+    case 1:
+        return items[0];
+    }
+
+    fd(items);
+    b_;
+    return Empty();
+}
+
 Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index)
 {
     fd(size, index);
@@ -262,3 +304,8 @@ Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&ar
     mb;
 }
 
+String const GetterFunctionFiber::ToCpp(CodeVisitor const& visitor) const
+{
+    md(visitor);
+    mb;
+}

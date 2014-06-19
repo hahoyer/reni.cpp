@@ -57,11 +57,15 @@ Ref<FiberCode> const FiberCode::Fiber(Array<Ref<FiberItem>> const& items) const
 }
 
 p_implementation(FiberCode, bool, IsValid) {
-    Size size = head->size;
-    for(auto item: items){
+    Optional<Ref<FiberItem>> lastItem;
+    for(Ref<FiberItem> item: items)
+    {
+        Size size = lastItem.IsValid 
+            ? lastItem.Value->size 
+            : head->size;
         if(size != item->argSize)
             return false;
-        size = item->size;
+        lastItem = item;
     }
     return true;
 };

@@ -6,12 +6,15 @@
 using namespace HWLib;
 
 namespace Util{
-    class CppCompilerScripting{
+    class CppCompilerScripting
+    {
         using thisType = CppCompilerScripting;
-        String const cppCode;
+        String const main;
+        String const functions;
         Process currentProcess;
     public:
-        CppCompilerScripting(String const& cppCode);
+        CppCompilerScripting(String const& main, String const& functions);
+
         void Execute();
         p(String, program);
         p(int, result);

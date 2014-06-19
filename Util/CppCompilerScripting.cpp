@@ -6,9 +6,13 @@ using namespace Util;
 using namespace HWLib;
 static bool Trace = true;
 
-CppCompilerScripting::CppCompilerScripting(String const& cppCode) 
-: cppCode(cppCode)
-, currentProcess("echo none"){}
+CppCompilerScripting::CppCompilerScripting(String const& main, String const& functions) 
+    : main(main)
+    , functions(functions)
+    , currentProcess("echo none")
+{
+}
+
 
 p_implementation(CppCompilerScripting, String, program)
 {
@@ -16,10 +20,14 @@ p_implementation(CppCompilerScripting, String, program)
     #include "Common.h"
     using namespace ReniRuntime; 
     int main(void){
-        {0}
+        ${main}
     }
+    
+    ${functions}
     )";
-    return result.Replace("{0}", cppCode);
+    return result
+        .Replace("${main}", main)
+        .Replace("${functions}", functions);
 };
 
 p_implementation(CppCompilerScripting, String, fullFileName)
@@ -33,7 +41,7 @@ p_implementation(CppCompilerScripting, String, fullFileName)
 void CppCompilerScripting::InitializeFile()
 {
     File f = fullFileName + ".cpp";
-    f.Data = cppCode;
+    f.Data = program;
 };
 
 void CppCompilerScripting::Execute()
@@ -59,6 +67,7 @@ void CppCompilerScripting::Execute()
     if (currentProcess.errorData != "")
         throw *this;
 };
+
 
 p_implementation(CppCompilerScripting, int, result){
     return currentProcess.result;

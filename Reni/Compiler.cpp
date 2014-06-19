@@ -19,12 +19,16 @@ p_implementation(Compiler, Ref<Syntax>, syntax){
     return _internal->syntaxCache.Value;
 };
 
-p_implementation(Compiler, Ref<CodeItem>, code){
+p_implementation(Compiler, CodeBase, code){
     return _internal->codeCache.Value;
 };
 
+p_implementation(Compiler, Ref<CodeItem>, main){
+    return _internal->codeCache.Value.main;
+};
+
 p_implementation(Compiler, String, cppCode){
-    return _internal->cppCodeCache.Value;
+    return _internal->cppCode;
 };
 
 ExecutionResult const Compiler::Execute(){
@@ -36,7 +40,25 @@ Ref<Syntax> const Compiler::GetSyntaxFromText(String const& text){
 };
 
 
-String const Compiler::internal::CodeVisitor::Const(Size const size, BitsConst const& value) const
+p_implementation(CodeBase, String, cppMain)
+{
+    CodeVisitor visitor;
+    a_if(main->exts.isEmpty, nd(main));
+    return main->ToCpp(visitor);
+};
+
+p_implementation(CodeBase, String, cppFunctions)
+{
+    return functions
+        .Select<String>([&](Global::Function const&function){return function.cppCode; })
+        ->Aggregate<String>();
+
+    CodeVisitor visitor;
+    a_if(main->exts.isEmpty, nd(main));
+    return main->ToCpp(visitor);
+};
+
+String const CodeBase::CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
     a_if_(size <= BitCount<int>());
     return "return " + String::Convert(int(value)) + ";";
