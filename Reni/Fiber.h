@@ -31,13 +31,7 @@ namespace Reni{
         Ref<CodeItem> const head;
         Array<Ref<FiberItem>> const items;
     public:
-        FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items)
-            : head(head)
-              , items(items)
-        {
-            SetDumpString();
-            a_if(IsValid, Dump);
-        }
+        FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items);
     private:
         virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
         Ref<FiberCode> const Fiber(Array<Ref<FiberItem>> const& items) const override;

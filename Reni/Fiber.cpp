@@ -29,7 +29,16 @@ String const FiberItem::ToCpp(CodeVisitor const& visitor)const{
 };
 
 
-p_implementation(FiberCode, Size, size){return items.Last->size;};
+FiberCode::FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items)
+    : head(head)
+    , items(items)
+{
+    SetDumpString();
+    a_if(IsValid, Dump);
+    b_if(ObjectId == 12, Dump);
+}
+
+p_implementation(FiberCode, Size, size){ return items.Last->size; };
 
 p_implementation(FiberCode, Externals, exts)
 {

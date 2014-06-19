@@ -159,11 +159,7 @@ namespace Reni{
         using baseType = TypedCode;
         typedef ArgCode thisType;
     public:
-        ArgCode(Type const&type, int depth)
-            : baseType(type,depth)
-        {
-            SetDumpString();
-        }
+        ArgCode(Type const&type, int depth);
     private:
         p_function(Externals, exts)override;
         String const ToCpp(CodeVisitor const& visitor)const override;

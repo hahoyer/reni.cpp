@@ -129,9 +129,9 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = syntax.ObjectId == -1 && category.hasExts;
+    bool Trace = syntax.ObjectId == -9 && category.hasCode;
     md(category);
-    b_if_(Trace && category.hasExts);
+    b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
     a_is(category, <= , result.complete);
     return_db(result);

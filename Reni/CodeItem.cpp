@@ -90,7 +90,7 @@ Ref<FiberCode> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
 
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
-    bool Trace = arg.Trace;
+    bool Trace = arg.Trace || ObjectId == -5;
     md_;
     auto result = ReplaceImpl(arg);
     a_if(result.IsEmpty || result.Value->size == size, Dump + "\n" + result.Value->Dump);
@@ -140,6 +140,12 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
     mb;
+}
+
+ArgCode::ArgCode(Type const& type, int depth): baseType(type,depth)
+{
+    SetDumpString();
+    b_if(ObjectId == -10, Dump);
 }
 
 Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const
