@@ -67,7 +67,6 @@ namespace Reni{
     private:
         p_function(Array<String>, DumpData) override{ return{nd(_size)}; };
         p_function(Size, argSize) override{ return _size; };
-        p_function(Size, size) override{ return 0; };
         String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override{ return{}; }
     };
