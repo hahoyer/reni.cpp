@@ -395,6 +395,16 @@ CtrlRef<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)con
 }
 
 template<typename T>
+Optional<int> const Enumerable<T>::FirstIndex(function<bool(T)> selector)const
+{
+    auto i = ToIterator;
+    for(auto result = 0; i->IsValid; result++)
+        if(selector(i->Step()))
+            return result;
+    return{};
+}
+
+template<typename T>
 inline p_implementation(Enumerable<T>, Array<T>, ToArray)
 {
     return ToIterator->ToArray;
