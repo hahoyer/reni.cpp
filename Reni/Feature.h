@@ -12,7 +12,7 @@ namespace Reni
 {
     class ArrayType;
     class Context;
-    class ExpressionSyntax;
+    class Syntax;
     class ResultData;
     class ResultFromSyntaxAndContext;
     class Type;
@@ -64,7 +64,8 @@ namespace Reni
         ResultData const FunctionResult(
             Context const&context,
             Category category,
-            ExpressionSyntax const& expressionSyntax
+            Optional<Ref<Syntax>> const&left,
+            Optional<Ref<Syntax>> const&right
         )const;
 
         p(bool, isEmpty){return !simple.IsValid && extended.IsEmpty;}

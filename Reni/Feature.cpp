@@ -4,7 +4,7 @@
 #include "CodeItems.h"
 #include "ContextFeature.h"
 #include "DefineableToken.h"
-#include "ExpressionSyntax.h"
+#include "Syntax.h"
 #include "Global.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
@@ -21,20 +21,21 @@ using namespace Reni;
 ResultData const Feature::FunctionResult(
     Context const&context,
     Category category,
-    ExpressionSyntax const& expressionSyntax
+    Optional<Ref<Syntax>> const&left,
+    Optional<Ref<Syntax>> const&right
     )const
 {
-    bool Trace = expressionSyntax.ObjectId == -3 && category.hasExts;
-    md(context, category, expressionSyntax.left, expressionSyntax.tokenClass, expressionSyntax.right);
-    auto thisResult = expressionSyntax.left.Value->GetResultCache(context);
+    bool Trace = left.IsValid && left.Value->ObjectId == -3 && category.hasExts;
+    md(context, category, left, right);
+    auto thisResult = left.Value->GetResultCache(context);
     ReplaceVisitor visitor;
     visitor.Trace = Trace;
     visitor.Assign(&ReplaceVisitor::Tag::expressionThis, *thisResult);
 
     Optional<Ref<ResultFromSyntaxAndContext>> argResult;
-    if(!expressionSyntax.right.IsEmpty)
+    if(!right.IsEmpty)
     {
-        argResult = expressionSyntax.right.Value->GetResultCache(context);
+        argResult = right.Value->GetResultCache(context);
         visitor.Assign(&ReplaceVisitor::Tag::expressionArg, *argResult.Value);
     }
 
@@ -62,7 +63,13 @@ ResultData const ContextFeature::FunctionResult(
 {
     if(right.IsEmpty)
         return simple.Value->Result(context, category);
-    return extended.Value->Result(context, category, *right.Value->Type(context));
+
+    ReplaceVisitor visitor;
+    Optional<Ref<ResultFromSyntaxAndContext>> const argResult = right.Value->GetResultCache(context);
+    visitor.Assign(&ReplaceVisitor::Tag::expressionArg, *argResult.Value);
+    auto rawResult = extended.Value->Result(context, category, *right.Value->Type(context));
+    auto result = rawResult.Replace(visitor);
+    return(result);
 }
 
 

@@ -47,7 +47,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
         ->thisRef
         .Search(tokenClass)
         .feature
-        .FunctionResult(context, category, *this);
+        .FunctionResult(context, category, left, right);
     a_is(category, <=, result.complete);
     return(result);
 }
