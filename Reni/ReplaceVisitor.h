@@ -1,5 +1,4 @@
 #pragma once
-#include "Externals.h"
 
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/Ref.h"
@@ -12,6 +11,8 @@ using namespace HWLib;
 
 namespace Reni
 {
+    class External;
+    class Externals;
     class Type;
     class CodeItem;
     class ResultCache;
@@ -22,22 +23,15 @@ namespace Reni
         typedef ReplaceVisitor thisType;
     public:
         bool Trace;
-
-        struct Tag
-        {
-            static Tag expressionThis;
-            static Tag expressionArg;
-        };
-
     private:
-        Map<Tag const*, Ref<ResultCache>> results;
+        Map<External const*, Ref<ResultCache>> results;
     public:
         ReplaceVisitor()
         {
             SetDumpString();
         }
 
-        ReplaceVisitor& Assign(Tag const*tag, ResultCache const& result);
+        ReplaceVisitor& Assign(External const&tag, ResultCache const& result);
 
         Optional<Ref<CodeItem>> const Arg(Type const&type, int depth)const;
         Optional<Ref<CodeItem>> const This(Type const&type, int depth)const;
@@ -53,13 +47,3 @@ namespace Reni
     };
 }
 
-
-template<>
-inline String const HWLib::Dump(Reni::ReplaceVisitor::Tag const*value)
-{
-    if(value == &Reni::ReplaceVisitor::Tag::expressionThis)
-        return "expressionThis";
-    if(value == &Reni::ReplaceVisitor::Tag::expressionArg)
-        return "expressionArg";
-    return "<unknown>";
-}

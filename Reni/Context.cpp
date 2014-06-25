@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Context.h"
 
+#include "CodeFunction.h"
 #include "CodeItems.h"
 #include "ContextIncludes.h"
 #include "DefineableToken.h"
@@ -10,6 +11,7 @@
 #include "FunctionSyntax.h"
 #include "Global.h"
 #include "RecursionContext.h"
+#include "ReplaceVisitor.h"
 #include "Result.h"
 #include "SearchResult.h"
 #include "Syntax.h"
@@ -17,6 +19,7 @@
 #include "Type.h"
 
 #include "../HWLib/RefCountContainer.instance.h"
+#include "ResultDataDirect.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -183,7 +186,7 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
     mb;
 }
 
-p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGetter)
+p_implementation(FunctionCallResultCache, CodeFunction, getter)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
@@ -194,13 +197,17 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGetter)
         ->Get(Category::Type | Category::Code | Category::Exts)
         .Convert(*valueType);
     if(result.exts.Value == External::Function::Arg::Instance)
-        return CodeItem::GetterFunction(valueType->size, codeIndex, *context.args, result.code.Value);
-
+    {
+        ReplaceVisitor visitor;
+        Ref<ResultCache> arg = new ResultDataDirect;
+        visitor.Assign(External::Function::Arg::Instance, *arg);
+        return CodeFunction::Getter(codeIndex, result.code.Value);
+    }
     md(result);
     mb;
 }
 
-p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeSetter)
+p_implementation(FunctionCallResultCache, CodeFunction, setter)
 {
     md_;
     mb;

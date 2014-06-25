@@ -12,13 +12,36 @@ namespace Reni
     {
         using thisType = CodeVisitor;
         using baseType = DumpableObject;
-
+    protected:
+        CodeVisitor(){};
     public:
         virtual String const Const(Size const size, BitsConst const& value) const;
         virtual String const DumpPrintNumber(Size const size) const;
         virtual String const FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const;
         virtual String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const;
         virtual String const CallGetter(Size const&result, int const index, Size const&args) const;
+        virtual String const GetterFunction(Size const& result, int const index, Size const& arg) const;
+        virtual_p(String, ParameterName);
+
+        static String const GetterName(int const index){ return "get_" + String::Convert(index); };
+        static String const SetterName(int const index){ return "set_" + String::Convert(index); };
+    };
+
+    class TopCodeVisitor : public CodeVisitor
+    {
+        using thisType = TopCodeVisitor;
+        using baseType = CodeVisitor;
+        TopCodeVisitor(){};
+    public:
+        static String const Visit(Ref<CodeItem> target);
+    private:
+        p_function(Array<String>, DumpData) override
+        {
+            return{};
+        };
+
+        String const Const(Size const size, BitsConst const& value) const override;
+
     };
 
 }

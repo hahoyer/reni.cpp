@@ -30,13 +30,13 @@ ResultData const Feature::FunctionResult(
     auto thisResult = left.Value->GetResultCache(context);
     ReplaceVisitor visitor;
     visitor.Trace = Trace;
-    visitor.Assign(&ReplaceVisitor::Tag::expressionThis, *thisResult);
+    visitor.Assign(External::This::Instance, *thisResult);
 
     Optional<Ref<ResultFromSyntaxAndContext>> argResult;
     if(!right.IsEmpty)
     {
         argResult = right.Value->GetResultCache(context);
-        visitor.Assign(&ReplaceVisitor::Tag::expressionArg, *argResult.Value);
+        visitor.Assign(External::Arg::Instance, *argResult.Value);
     }
 
     b_if_(Trace);
@@ -66,7 +66,7 @@ ResultData const ContextFeature::FunctionResult(
 
     ReplaceVisitor visitor;
     Optional<Ref<ResultFromSyntaxAndContext>> const argResult = right.Value->GetResultCache(context);
-    visitor.Assign(&ReplaceVisitor::Tag::expressionArg, *argResult.Value);
+    visitor.Assign(External::Arg::Instance, *argResult.Value);
     auto rawResult = extended.Value->Result(context, category, *right.Value->Type(context));
     auto result = rawResult.Replace(visitor);
     return(result);

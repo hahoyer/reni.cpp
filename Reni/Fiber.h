@@ -69,11 +69,7 @@ namespace Reni{
     class FiberVisitor final : public CodeVisitor{
         typedef CodeVisitor baseType;
         typedef FiberVisitor thisType;
-        CodeVisitor const&parent;
-    public: 
-        FiberVisitor(CodeVisitor const&parent) : parent(parent) {}
-    private:
-        p_function(Array<String>,DumpData) override {return{ nd(parent) };};
+        p_function(Array<String>,DumpData) override {return{ };};
         String const Const(Size const size, BitsConst const& value) const override;
         String const DumpPrintNumber(Size const size) const override;
         String const FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;

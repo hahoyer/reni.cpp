@@ -10,6 +10,9 @@ using namespace HWLib;
 
 static bool Trace = true;
 
+
+virtual_p_implementation(CodeVisitor, String, ParameterName){ return "arg"; }
+
 String const CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
     md(size, value)    ;
@@ -22,6 +25,11 @@ String const CodeVisitor::CallGetter(Size const& result, int const index, Size c
     md(result, index,args)      ;
     b_;
     return "";
+}
+
+String const CodeVisitor::GetterFunction(Size const& , int const index, Size const& ) const
+{
+    return "int " + GetterName(index) + "(int $(arg)) {\n$(body)\n}\n" ;
 }
 
 String const CodeVisitor::DumpPrintNumber(Size const size) const
@@ -44,3 +52,18 @@ String const CodeVisitor::BinaryOperation(String const& name, Size const&size, i
     b_;
     return "";
 };
+
+
+String const TopCodeVisitor::Visit(Ref<CodeItem> target)
+{
+    TopCodeVisitor visitor;
+    a_if(target->exts.isEmpty, nd(target));
+    return target->ToCpp(visitor);
+}
+
+String const TopCodeVisitor::Const(Size const size, BitsConst const& value) const
+{
+    a_if_(size <= BitCount<int>());
+    return "return " + String::Convert(int(value)) + ";";
+}
+

@@ -40,27 +40,12 @@ Ref<Syntax> const Compiler::GetSyntaxFromText(String const& text){
 };
 
 
-p_implementation(CodeBase, String, cppMain)
-{
-    CodeVisitor visitor;
-    a_if(main->exts.isEmpty, nd(main));
-    return main->ToCpp(visitor);
-};
+p_implementation(CodeBase, String, cppMain){return TopCodeVisitor::Visit(main);};
 
 p_implementation(CodeBase, String, cppFunctions)
 {
     return functions
         .Select<String>([&](Global::Function const&function){return function.cppCode; })
         ->Aggregate<String>();
-
-    CodeVisitor visitor;
-    a_if(main->exts.isEmpty, nd(main));
-    return main->ToCpp(visitor);
 };
-
-String const CodeBase::CodeVisitor::Const(Size const size, BitsConst const& value) const
-{
-    a_if_(size <= BitCount<int>());
-    return "return " + String::Convert(int(value)) + ";";
-}
 

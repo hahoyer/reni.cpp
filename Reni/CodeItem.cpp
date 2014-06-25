@@ -52,13 +52,6 @@ Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Type 
         ->thisRef;
 }
 
-Ref<CodeItem> const CodeItem::GetterFunction(Size const size, int const index, Type const& arg, Ref<CodeItem> code)
-{
-    return code
-        ->Fiber({new GetterFunctionFiber(size, index, arg.size)})
-        ->thisRef;
-}
-
 Ref<CodeItem> const CodeItem::SmartList(Array<Optional<Ref<CodeItem>>> const& items)
 {
     using resultType = Ref<CodeItem>;
@@ -146,21 +139,20 @@ Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const
     return thisRef;
 }
 
-
-
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const
 {
     md(visitor);
     mb;
 };
 
+
 String const ConstCode::ToCpp(CodeVisitor const& visitor)const
 {
     return visitor.Const(size, value);
 };
 
-
 p_implementation(ConstCode, bool, isEmpty){return value.isEmpty;}
+
 
 String const DumpPrintNumberCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -304,8 +296,3 @@ Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&ar
     mb;
 }
 
-String const GetterFunctionFiber::ToCpp(CodeVisitor const& visitor) const
-{
-    md(visitor);
-    mb;
-}

@@ -2,6 +2,7 @@
 #include "Compiler.h"
 
 #include "CodeVisitor.h"
+#include "CodeBase.h"
 #include "Global.h"
 #include "MainTokenFactory.h"
 #include "PrioTable.h"
@@ -33,34 +34,6 @@ namespace Reni{
 }
 
 using namespace Reni;
-
-class Reni::CodeBase final : public DumpableObject
-{
-    using baseType = DumpableObject; using thisType = CodeBase;
-
-    class CodeVisitor : public Reni::CodeVisitor
-    {
-        p_function(Array<String>, DumpData) override{ return{}; };
-        virtual String const Const(Size const size, BitsConst const& value) const override;
-
-    };
-
-public:
-    Ref<CodeItem> const main;
-    Array<Global::Function> const functions;
-
-    CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& functions)
-        : main(main), functions(functions)
-    {
-        SetDumpString();
-    }
-
-    p(String, cppMain);
-    p(String, cppFunctions);
-private:
-    p_function(Array<String>, DumpData) override{ return{nd(main), nd(functions)}; }
-};
-
 
 class Compiler::internal final
 {

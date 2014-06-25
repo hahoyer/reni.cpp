@@ -44,12 +44,10 @@ namespace Reni
         static Ref<CodeItem> const Reference(Type const&target);
         static Ref<CodeItem> const CallGetter(Size const size, int const index, Type const&arg);
         static Ref<CodeItem> const CallGetter(Size const size, int const index);
-        static Ref<CodeItem> const GetterFunction(Size const size, int const index, Type const& args, Ref<CodeItem> code);
         static Ref<CodeItem> const SmartList(Array<Optional<Ref<CodeItem>>> const&items);
         static Ref<CodeItem> const List(Array<Ref<CodeItem>> const&items);
 
         bool const operator==(thisType const&other)const;
-
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual_p(Size, size) = 0;

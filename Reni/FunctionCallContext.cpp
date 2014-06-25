@@ -40,6 +40,7 @@ namespace Reni
 
         Ref<CodeItem> const ReferencePlus(Size offset) const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
+        String const ToCpp(CodeVisitor const& visitor) const override;
     };
 
 };
@@ -85,6 +86,13 @@ Ref<CodeItem> const FunctionCallReferenceCode::ReferencePlus(Size offset) const
     md(offset);
     mb;
     return thisRef;
+}
+
+String const FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
+{
+    if(external != External::Function::Arg::Instance)
+        return baseType::ToCpp(visitor);
+    return visitor.ParameterName;
 }
 
 Optional<Ref<CodeItem>> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const

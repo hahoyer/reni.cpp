@@ -14,14 +14,10 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-ReplaceVisitor::Tag ReplaceVisitor::Tag::expressionThis;
-ReplaceVisitor::Tag ReplaceVisitor::Tag::expressionArg;
-
-
 p_implementation(ReplaceVisitor, Array<String>, DumpData){
     return results
         .keys
-        .Select<String>([&](Tag const* key)
+        .Select<String>([&](External const* key)
     {
         return HWLib::Dump(key) + ": " + HWLib::Dump(results[key]); 
     })
@@ -30,7 +26,7 @@ p_implementation(ReplaceVisitor, Array<String>, DumpData){
 
 p_implementation(ReplaceVisitor, Optional<Externals>, ArgExts)
 {
-    auto result = results.Find(&Tag::expressionArg);
+    auto result = results.Find(&External::Arg::Instance);
     if(result.IsEmpty)
         return{};
     return result.Value->exts;
@@ -38,24 +34,24 @@ p_implementation(ReplaceVisitor, Optional<Externals>, ArgExts)
 
 p_implementation(ReplaceVisitor, Optional<Externals>, ThisExts)
 {
-    auto result = results.Find(&Tag::expressionThis);
+    auto result = results.Find(&External::This::Instance);
     if(result.IsEmpty)
         return{};
     return result.Value->exts;
 };
 
-p_implementation(ReplaceVisitor, bool, hasArg){ return !results.Find(&Tag::expressionArg).IsEmpty; };
-p_implementation(ReplaceVisitor, bool, hasThis){ return !results.Find(&Tag::expressionThis).IsEmpty; };
+p_implementation(ReplaceVisitor, bool, hasArg){ return !results.Find(&External::Arg::Instance).IsEmpty; };
+p_implementation(ReplaceVisitor, bool, hasThis){ return !results.Find(&External::This::Instance).IsEmpty; };
 
 
-ReplaceVisitor& ReplaceVisitor::Assign(Tag const* tag, ResultCache const& result)
+ReplaceVisitor& ReplaceVisitor::Assign(External const&tag, ResultCache const& result)
 {
-    results.Assign(tag, result.thisRef);
+    results.Assign(&tag, result.thisRef);
     return *this;
 }
 
 Optional<Ref<CodeItem>> const ReplaceVisitor::Arg(Type const&type, int depth) const{
-    auto result = results.Find(&Tag::expressionArg);
+    auto result = results.Find(&External::Arg::Instance);
     if(result.IsEmpty)
         return {};
 
@@ -65,7 +61,7 @@ Optional<Ref<CodeItem>> const ReplaceVisitor::Arg(Type const&type, int depth) co
 }
 
 Optional<Ref<CodeItem>> const ReplaceVisitor::This(Type const&type, int depth) const{
-    auto result = results.Find(&Tag::expressionThis);
+    auto result = results.Find(&External::This::Instance);
     if(result.IsEmpty)
         return{};
 

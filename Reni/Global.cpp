@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Global.h"
 
+#include "CodeFunction.h"
 #include "FunctionCallResultCache.h"
 
 using namespace Reni;
@@ -39,11 +40,11 @@ struct Global::Function::Xetter final : public DumpableObject
     using baseType = DumpableObject; 
     using thisType = Xetter;
     mutable bool isRequired;
-    mutable Optional<Ref<CodeItem>> code;
+    mutable Optional<CodeFunction> code;
     
     Xetter(): isRequired(false){}
     
-    bool Ensure(function<Ref<CodeItem>()> getCode) const;
+    bool Ensure(function<CodeFunction()> getCode) const;
 private:
     p_function(Array<String>, DumpData) override{ return{nd(isRequired),nd(code)}; }
 };
@@ -95,29 +96,22 @@ p_implementation(Global::Function, Array<String>, DumpData)
 bool Global::Function::Ensure(FunctionCallResultCache const&source)const
 {
     return
-        getter->Ensure(l_(source.codeGetter))
+        getter->Ensure(l_(source.getter))
         & // intensional non-short-circuid
-        setter->Ensure(l_(source.codeSetter));
-};
-
-class Global::Function::CodeVisitor final : public Reni::CodeVisitor
-{
-    using baseType = Reni::CodeVisitor; using thisType = CodeVisitor;
-    p_function(Array<String>, DumpData) override{ return{}; };
+        setter->Ensure(l_(source.setter));
 };
 
 p_implementation(Global::Function, String, cppCode)
 {
-    CodeVisitor visitor;
-    auto g = getter->code.IsValid ? getter->code.Value->ToCpp(visitor) : "";
-    auto s = setter->code.IsValid ? setter->code.Value->ToCpp(visitor) : "";
+    auto g = getter->code.IsValid ? getter->code.Value.cppCode : "";
+    auto s = setter->code.IsValid ? setter->code.Value.cppCode : "";
     return g + s;
 }
 
 void Global::Function::GetterIsUsed()const{ getter->isRequired = true; };
 void Global::Function::SetterIsUsed()const{ setter->isRequired = true; };
 
-bool Global::Function::Xetter::Ensure(function<Ref<CodeItem>()> getCode) const
+bool Global::Function::Xetter::Ensure(function<CodeFunction()> getCode) const
 {
     if(!isRequired)
         return false;
@@ -127,5 +121,15 @@ bool Global::Function::Xetter::Ensure(function<Ref<CodeItem>()> getCode) const
 
     code = getCode();
     return true;
+}
+
+
+CodeFunction const Constants<CodeFunction >::NotValid;
+
+p_implementation(CodeFunction, String,cppCode)
+{
+    auto bodyResult = TopCodeVisitor::Visit(body);
+    md(bodyResult);
+    mb;
 }
 

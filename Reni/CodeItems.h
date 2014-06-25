@@ -54,31 +54,6 @@ namespace Reni{
     };
 
 
-    class GetterFunctionFiber final : public FiberItem {
-        typedef FiberItem baseType;
-        typedef GetterFunctionFiber thisType;
-
-        Size const result;
-        int const index;
-        Size const arg;
-    public:
-
-        GetterFunctionFiber(Size const&result, int index, Size const&arg)
-            : result(result)
-            , index(index)
-            , arg(arg)
-        {
-            SetDumpString();
-        }
-    private:
-        p_function(Array<String>, DumpData) override{ return{nd(result), nd(index), nd(arg)}; };
-        p_function(Size, argSize) override{ return result; };
-        p_function(Size, size) override{ throw this; };
-        String const ToCpp(CodeVisitor const& visitor)const override;
-        Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override{ return{}; }
-    };
-
-
     class DumpPrintNumberCode final : public FiberItem {
         typedef FiberItem baseType;
         typedef DumpPrintNumberCode thisType;

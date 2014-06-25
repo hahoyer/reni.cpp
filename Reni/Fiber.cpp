@@ -35,7 +35,6 @@ FiberCode::FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& ite
 {
     SetDumpString();
     a_if(IsValid, Dump);
-    b_if(ObjectId == 12, Dump);
 }
 
 p_implementation(FiberCode, Size, size){ return items.Last->size; };
@@ -98,8 +97,8 @@ Optional<Ref<FiberCode>> FiberCode::ReCreate(Optional<Ref<CodeItem>> const&head,
     return newHead->Fiber(newItems);
 }
 
-String const FiberCode::ToCpp(CodeVisitor const&visitor) const{
-    FiberVisitor localVisitor = visitor;
+String const FiberCode::ToCpp(CodeVisitor const&) const{
+    FiberVisitor localVisitor;
     auto result = head->ToCpp(localVisitor);
     for(auto item :  items) 
         result = item->ToCpp(localVisitor).Replace("$(arg)", result);
@@ -135,7 +134,7 @@ String const FiberVisitor::Const(Size const size, BitsConst const& value) const
 
 String const FiberVisitor::CallGetter(Size const& , int const index, Size const& ) const
 {
-    return "get_" + String::Convert(index) + "($(arg))";
+    return GetterName(index) + "($(arg))";
 }
 
 String const FiberVisitor::DumpPrintNumber(Size const size) const

@@ -19,7 +19,6 @@ namespace Reni
         class Function final : public DumpableObject
         {
             struct Xetter;
-            class CodeVisitor;
             friend struct internal;
             using baseType = DumpableObject;
             using thisType = Function;

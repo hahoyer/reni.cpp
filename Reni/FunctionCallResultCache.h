@@ -11,6 +11,7 @@
 
 namespace Reni
 {
+    class CodeFunction;
     class FunctionCallResultCache final : public ResultCache
     {
         typedef ResultCache baseType;
@@ -27,8 +28,8 @@ namespace Reni
             SetDumpString();
         }
 
-        p(Ref<CodeItem>, codeGetter);
-        p(Ref<CodeItem>, codeSetter);
+        p(CodeFunction, getter);
+        p(CodeFunction, setter);
     private:
         p(WeakPtr<Type const>, args){ return context.args; }
         p(ContainerContext const&, container){return context.container;}
