@@ -2,7 +2,11 @@
 #include "ReplaceVisitor.h"
 
 #include "CodeItem.h"
+#include "ContainerContext.h"
 #include "External.h"
+#include "FunctionCallContext.h"
+#include "Syntax.h"
+#include "SyntaxContainer.h"
 #include "Result.h"
 #include "Type.h"
 
@@ -48,6 +52,14 @@ ReplaceVisitor& ReplaceVisitor::Assign(External const&tag, ResultCache const& re
 {
     results.Assign(&tag, result.thisRef);
     return *this;
+}
+
+Optional<Ref<CodeItem>> const ReplaceVisitor::FunctionCallReference(FunctionCallContext const& context, External::Function const& external) const
+{
+    bool Trace = true;
+    md(context, external);
+    mb;
+    return{};
 }
 
 Optional<Ref<CodeItem>> const ReplaceVisitor::Arg(Type const&type, int depth) const{

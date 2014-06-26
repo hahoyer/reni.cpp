@@ -1,5 +1,6 @@
 #pragma once
 
+#include "External.h"
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/Ref.h"
 #include "../HWLib/WeakRef.h"
@@ -11,8 +12,8 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class External;
     class Externals;
+    class FunctionCallContext;
     class Type;
     class CodeItem;
     class ResultCache;
@@ -35,6 +36,7 @@ namespace Reni
 
         Optional<Ref<CodeItem>> const Arg(Type const&type, int depth)const;
         Optional<Ref<CodeItem>> const This(Type const&type, int depth)const;
+        Optional<Ref<CodeItem>> const FunctionCallReference(FunctionCallContext const& context, External::Function const& external) const;
 
         p(Optional<Externals>, ArgExts);
         p(Optional<Externals>, ThisExts);

@@ -97,6 +97,7 @@ String const FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
 
 Optional<Ref<CodeItem>> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const
 {
+    return arg.FunctionCallReference(context, external);
     md(arg);
     mb;
     return{};

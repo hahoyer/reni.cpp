@@ -190,20 +190,21 @@ p_implementation(FunctionCallResultCache, CodeFunction, getter)
 {
     a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
-    auto result = body
+    auto rawResult = body
         .getter
         .Value
         ->GetResultCache(context)
         ->Get(Category::Type | Category::Code | Category::Exts)
         .Convert(*valueType);
-    if(result.exts.Value == External::Function::Arg::Instance)
+    if(rawResult.exts.Value == External::Function::Arg::Instance)
     {
         ReplaceVisitor visitor;
         Ref<ResultCache> arg = new ResultDataDirect;
         visitor.Assign(External::Function::Arg::Instance, *arg);
+        auto result = rawResult.Replace(visitor);
         return CodeFunction::Getter(codeIndex, result.code.Value);
     }
-    md(result);
+    md(rawResult);
     mb;
 }
 
