@@ -32,17 +32,13 @@ namespace Reni
             SetDumpString();
         }
 
-        ReplaceVisitor& Assign(External const&tag, ResultCache const& result);
+        void SetResults(External const&tag, ResultCache const& result);
+        Optional<Ref<ResultCache>> const GetResults(External const&tag)const;
+        Optional<Ref<CodeItem>> const GetCode(External const&tag)const;
+        Optional<Externals> const GetExts(External const&tag)const;
 
-        Optional<Ref<CodeItem>> const Arg(Type const&type, int depth)const;
-        Optional<Ref<CodeItem>> const This(Type const&type, int depth)const;
-        Optional<Ref<CodeItem>> const FunctionCallReference(FunctionCallContext const& context, External::Function const& external) const;
-
-        p(Optional<Externals>, ArgExts);
-        p(Optional<Externals>, ThisExts);
-
-        p(bool, hasArg);
-        p(bool, hasThis);
+        void Assume(External const&tag, Type const&type)const;
+        void Assume(External::Function const&tag, FunctionCallContext const& context) const;
 
     private:
         p_function(Array<String>, DumpData) override;

@@ -49,10 +49,10 @@ namespace Reni
 using namespace Reni;
 static bool Trace = true;
 
-FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef<Type const> const args)
+FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef<Type const> const arg)
     : baseType(static_cast<RegularContext const&>(parent))
       , container(parent)
-      , args(args)
+      , arg(arg)
       , functionCallResultCache([&](int bodyIndex)
           {
               return new FunctionCallResultCache(*this, bodyIndex);
@@ -69,7 +69,7 @@ ResultData const FunctionCallContext::ReferenceResult(Category category, Externa
         (
             category,
             l_(new FunctionCallReferenceCode(thisRef, external)),
-            l_(args->indirectType)
+            l_(arg->indirectType)
         );
 
     return_d(result);
@@ -97,8 +97,6 @@ String const FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
 
 Optional<Ref<CodeItem>> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const
 {
-    return arg.FunctionCallReference(context, external);
-    md(arg);
-    mb;
-    return{};
+    arg.Assume(external, context);
+    return arg.GetCode(external);
 }

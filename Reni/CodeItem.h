@@ -30,6 +30,7 @@ namespace Reni
         typedef ReniRuntime::Stack::sizeType dataItemSizeType;
 
         static Ref<CodeItem> const Arg(Type const&value, int depth);
+        static Ref<CodeItem> const FunctionArg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
         static Ref<CodeItem> const Empty(){ return Const(BitsConst::Empty()); };
         static Ref<CodeItem> const BinaryOperation
@@ -50,6 +51,7 @@ namespace Reni
         bool const operator==(thisType const&other)const;
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
+        virtual_p(bool, isReference){ return false; };
         virtual_p(Size, size) = 0;
         virtual_p(Externals, exts) = 0;
         virtual_p(bool, isEmpty){ return false; };

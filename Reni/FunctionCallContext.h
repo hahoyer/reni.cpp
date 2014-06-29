@@ -20,15 +20,15 @@ namespace Reni
         FunctionCache<Ref<FunctionCallResultCache>, int> functionCallResultCache;
     public:
         ContainerContext const& container;
-        WeakRef<Type const> const args;
+        WeakRef<Type const> const arg;
     private:
-        FunctionCallContext(ContainerContext const& container, WeakRef<Type const> const args);
+        FunctionCallContext(ContainerContext const& container, WeakRef<Type const> const arg);
     public:
         ThisRef;
         ResultData const ReferenceResult(Category category, External::Function const& external) const override;
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return thisRef; };
-        p_function(Array<String>, DumpData) override{ return{nd(args), nd(container)}; }
+        p_function(Array<String>, DumpData) override{ return{nd(arg), nd(container)}; }
         p(WeakRef<Type>, objectType);
     };
 

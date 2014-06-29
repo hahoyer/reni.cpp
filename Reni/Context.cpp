@@ -170,7 +170,7 @@ p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
 
 p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
-    a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
+    a_if(!arg.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
     function.GetterIsUsed();
     auto result = body
@@ -180,7 +180,7 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
         ->Get(Category::Type | Category::Exts)
         .Convert(*valueType);
     if(result.exts.Value == External::Function::Arg::Instance)
-        return CodeItem::CallGetter(valueType->size, codeIndex, *context.args);
+        return CodeItem::CallGetter(valueType->size, codeIndex, *arg);
     
     md(result);
     mb;
@@ -188,7 +188,7 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 
 p_implementation(FunctionCallResultCache, CodeFunction, getter)
 {
-    a_if(!args.IsEmpty, "NotImpl: no arg " + Dump);
+    a_if(!arg.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
     auto rawResult = body
         .getter
@@ -199,8 +199,8 @@ p_implementation(FunctionCallResultCache, CodeFunction, getter)
     if(rawResult.exts.Value == External::Function::Arg::Instance)
     {
         ReplaceVisitor visitor;
-        Ref<ResultCache> arg = new ResultDataDirect;
-        visitor.Assign(External::Function::Arg::Instance, *arg);
+        Ref<ResultCache> functionArg = new ResultDataDirect(CodeItem::FunctionArg(*arg), arg->IndirectType(1)->thisRef);
+        visitor.SetResults(External::Function::Arg::Instance, *functionArg);
         auto result = rawResult.Replace(visitor);
         return CodeFunction::Getter(codeIndex, result.code.Value);
     }

@@ -28,55 +28,47 @@ p_implementation(ReplaceVisitor, Array<String>, DumpData){
         ->ToArray;
 };
 
-p_implementation(ReplaceVisitor, Optional<Externals>, ArgExts)
+Optional<Externals>const ReplaceVisitor::GetExts(External const&tag)const
 {
-    auto result = results.Find(&External::Arg::Instance);
-    if(result.IsEmpty)
+    auto result = GetResults(tag);
+    if (result.IsEmpty)
         return{};
     return result.Value->exts;
 };
 
-p_implementation(ReplaceVisitor, Optional<Externals>, ThisExts)
+Optional<Ref<CodeItem>>const ReplaceVisitor::GetCode(External const&tag)const
 {
-    auto result = results.Find(&External::This::Instance);
-    if(result.IsEmpty)
+    auto result = GetResults(tag);
+    if (result.IsEmpty)
         return{};
-    return result.Value->exts;
+    return result.Value->code;
 };
 
-p_implementation(ReplaceVisitor, bool, hasArg){ return !results.Find(&External::Arg::Instance).IsEmpty; };
-p_implementation(ReplaceVisitor, bool, hasThis){ return !results.Find(&External::This::Instance).IsEmpty; };
-
-
-ReplaceVisitor& ReplaceVisitor::Assign(External const&tag, ResultCache const& result)
+void ReplaceVisitor::SetResults(External const&tag, ResultCache const& result)
 {
     results.Assign(&tag, result.thisRef);
-    return *this;
 }
 
-Optional<Ref<CodeItem>> const ReplaceVisitor::FunctionCallReference(FunctionCallContext const& context, External::Function const& external) const
+void ReplaceVisitor::Assume(External::Function const& tag, FunctionCallContext const& context) const
 {
-    bool Trace = true;
-    md(context, external);
-    mb;
-    return{};
+    auto result = GetResults(tag);
+    if (result.IsEmpty)
+        return;
+
+    a_is(*context.arg->dereferencedType, == , *result.Value->type->dereferencedType);
 }
 
-Optional<Ref<CodeItem>> const ReplaceVisitor::Arg(Type const&type, int depth) const{
-    auto result = results.Find(&External::Arg::Instance);
-    if(result.IsEmpty)
-        return {};
-
-    a_is(depth, == , 0);
-    a_is(type, == , *result.Value->type);
-    return result.Value->code;
+Optional<Ref<ResultCache>> const ReplaceVisitor::GetResults(External const& tag) const
+{
+    return results.Find(&tag);
 }
 
-Optional<Ref<CodeItem>> const ReplaceVisitor::This(Type const&type, int depth) const{
-    auto result = results.Find(&External::This::Instance);
+void ReplaceVisitor::Assume(External const& tag, Type const&type) const{
+    auto result = GetResults(tag);
     if(result.IsEmpty)
-        return{};
+        return ;
 
-    a_is(*type.IndirectType(depth), == , *result.Value->type);
-    return result.Value->code;
-};
+    a_if(type.addressLevel == 0, nd(type));
+    a_is(type, == , *result.Value->type->dereferencedType);
+}
+

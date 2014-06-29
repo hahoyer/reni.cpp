@@ -183,6 +183,19 @@ namespace Reni{
     };
 
 
+    class FunctionArgCode final : public TypedCode{
+        using baseType = TypedCode;
+        typedef FunctionArgCode  thisType;
+    public:
+        FunctionArgCode(Type const&type);
+    private:
+        String const ToCpp(CodeVisitor const& visitor)const override;
+        p_function(Externals, exts)override{ return{}; }
+        p_function(bool, isReference)override{ return true; }
+        Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&) const override{ return{}; }
+    };
+
+
     class FiberConnector final : public CodeItem {
         typedef CodeItem baseType;
         typedef FiberConnector thisType;

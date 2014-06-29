@@ -17,6 +17,7 @@ static bool Trace = true;
 
 
 pure_p_implementation(CodeItem, Size, size);
+pure_p_implementation(CodeItem, bool, isReference);
 pure_p_implementation(CodeItem, Externals, exts);
 pure_p_implementation(CodeItem, bool, isEmpty);
 
@@ -125,10 +126,10 @@ Ref<FiberCode> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
 
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
-    bool Trace = arg.Trace || ObjectId == -5;
+    bool Trace = arg.Trace || ObjectId == -17;
     md_;
     auto result = ReplaceImpl(arg);
-    a_if(result.IsEmpty || result.Value->size == size, Dump + "\n" + result.Value->Dump);
+    a_if(result.IsEmpty || result.Value->size == size, Dump + "\n" + nd(result) + nd(size)+ nd(result.Value->size));
     return_d(result);
 };
 
@@ -137,6 +138,13 @@ Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const
     md(offset);
     b_;
     return thisRef;
+}
+
+Ref<CodeItem> const CodeItem::FunctionArg(Type const& value)
+{
+    if (value.size == 0)
+        return Const(BitsConst::Empty());
+    return new FunctionArgCode(value);
 }
 
 String const CodeItem::ToCpp(CodeVisitor const& visitor)const
@@ -168,7 +176,7 @@ p_implementation(TypedCode, Size, size)
 }
 
 
-p_implementation(ArgCode, Externals, exts){return Externals(External::Arg::Instance);}
+p_implementation(ArgCode, Externals, exts){ return Externals(External::Arg::Instance); }
 
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -176,7 +184,7 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const
     mb;
 }
 
-ArgCode::ArgCode(Type const& type, int depth): baseType(type,depth)
+ArgCode::ArgCode(Type const& type, int depth) : baseType(type, depth)
 {
     SetDumpString();
     b_if(ObjectId == -10, Dump);
@@ -184,11 +192,24 @@ ArgCode::ArgCode(Type const& type, int depth): baseType(type,depth)
 
 Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    return visitor.Arg(type, depth);
+    visitor.Assume(External::Arg::Instance, type);
+    return visitor.GetCode(External::Arg::Instance);
 };
 
 
-p_implementation(ThisCode, Externals, exts){return Externals(External::This::Instance);}
+String const FunctionArgCode::ToCpp(CodeVisitor const& visitor)const
+{
+    md(visitor);
+    mb;
+}
+
+FunctionArgCode::FunctionArgCode(Type const& type) : baseType(type, 1)
+{
+    SetDumpString();
+    b_if(ObjectId == -10, Dump);
+}
+
+p_implementation(ThisCode, Externals, exts){ return Externals(External::This::Instance); }
 
 String const ThisCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -203,7 +224,8 @@ String const CallGetterFiber::ToCpp(CodeVisitor const& visitor)const
 
 Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    return visitor.This(type, depth);
+    visitor.Assume(External::This::Instance, type);
+    return visitor.GetCode(External::This::Instance);
 };
 
 

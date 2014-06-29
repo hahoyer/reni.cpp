@@ -83,6 +83,10 @@ namespace Reni
     private:
         Arg() {};
         String const internalDump() const override{ return baseType::internalDump() + "arg"; };
+
+    public:
+        bool const IsProvided(ReplaceVisitor const&) const override;
+        Externals const Replace(ReplaceVisitor const& arg) const override;
     };
 
     class External::Function::NewValue final : public Function
