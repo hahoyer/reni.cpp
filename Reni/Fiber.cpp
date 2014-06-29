@@ -12,18 +12,18 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-
 pure_p_implementation(FiberItem, Size, argSize); 
 pure_p_implementation(FiberItem, Size, size); 
 pure_p_implementation(FiberItem, Externals, exts);
 
-Optional<Ref<FiberItem>> const FiberItem::Replace(ReplaceVisitor const&visitor) const {
+Optional<Ref<FiberItem>> const FiberItem::Replace(ReplaceVisitor const&visitor) const
+{
     md(visitor);
     mb;
 };
 
-
-String const FiberItem::ToCpp(CodeVisitor const& visitor)const{
+String const FiberItem::ToCpp(CodeVisitor const& visitor)const
+{
     md(visitor);
     mb;
 };
@@ -98,7 +98,7 @@ Optional<Ref<FiberCode>> FiberCode::ReCreate(Optional<Ref<CodeItem>> const&head,
 }
 
 String const FiberCode::ToCpp(CodeVisitor const&) const{
-    FiberVisitor localVisitor;
+    MainCodeVisitor localVisitor;
     auto result = head->ToCpp(localVisitor);
     for(auto item :  items) 
         result = item->ToCpp(localVisitor).Replace("$(arg)", result);
@@ -113,67 +113,5 @@ int FiberConnectorItem::nextObjectId = 0;
 pure_p_implementation(FiberConnectorItem, int, inCount);
 pure_p_implementation(FiberConnectorItem, Size, size);
 pure_p_implementation(FiberConnectorItem, Externals, exts);
-
-String const FiberConnectorItem::InName(int index) const
-{
-    return
-        "$("
-        + DumpTypeName(*this)
-        + "."
-        + String::Convert(objectId)
-        + "."
-        + String::Convert(index)
-        + ")";
-
-}
-
-String const FiberVisitor::Const(Size const size, BitsConst const& value) const
-{
-    return value.format;
-}
-
-String const FiberVisitor::CallGetter(Size const& , int const index, Size const& ) const
-{
-    return GetterName(index) + "($(arg))";
-}
-
-String const FiberVisitor::DumpPrintNumber(Size const size) const
-{
-    return "DumpPrint($(arg))";
-}
-
-
-String const FiberVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const
-{
-    auto connectorCodeRaw = connector->ToCpp(*this);
-    auto index = 0;
-    return items
-        .Aggregate<String>
-        (
-            connectorCodeRaw,
-            [&]
-            (String const &current, Ref<CodeItem> const &item)
-            {
-                return current.Replace(connector->InName(index++), item->ToCpp(*this));
-            }
-        );
-}
-
-String UnrefCode(int depth, String const&target)
-{
-    if(depth == 0)
-        return "("+target+")";
-    if(depth == 1)
-        return "(*reinterpret_cast<int const*>" + target+ ")";
-    fd(depth, target);
-    b_;
-    return target;
-}
-
-
-String const FiberVisitor::BinaryOperation(String const& name, Size const&, int leftDepth, Size const&, int rightDepth, Size const&)const
-{
-    return UnrefCode(leftDepth, "$(left)") + " " + name + " " + UnrefCode(rightDepth, "$(right)");
-};
-
+pure_p_implementation(FiberConnectorItem, String, prefix);
 

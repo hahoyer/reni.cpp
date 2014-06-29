@@ -197,16 +197,15 @@ Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor)
 };
 
 
-String const FunctionArgCode::ToCpp(CodeVisitor const& visitor)const
-{
-    md(visitor);
-    mb;
-}
-
 FunctionArgCode::FunctionArgCode(Type const& type) : baseType(type, 1)
 {
     SetDumpString();
     b_if(ObjectId == -10, Dump);
+}
+
+String const FunctionArgCode::ToCpp(CodeVisitor const& visitor)const
+{
+    return visitor.FunctionArg();
 }
 
 p_implementation(ThisCode, Externals, exts){ return Externals(External::This::Instance); }

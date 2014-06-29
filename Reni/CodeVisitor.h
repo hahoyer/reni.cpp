@@ -19,29 +19,31 @@ namespace Reni
         virtual String const DumpPrintNumber(Size const size) const;
         virtual String const FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const;
         virtual String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const;
+        virtual String const FunctionArg() const;
         virtual String const CallGetter(Size const&result, int const index, Size const&args) const;
-        virtual String const GetterFunction(Size const& result, int const index, Size const& arg) const;
-        virtual_p(String, ParameterName);
-
+        
+        static String const InName(String const&prefix, int index);
+        static String const ParameterName();
+        static String const GetterFunction(int const index);
         static String const GetterName(int const index){ return "get_" + String::Convert(index); };
         static String const SetterName(int const index){ return "set_" + String::Convert(index); };
+
     };
 
-    class TopCodeVisitor : public CodeVisitor
-    {
-        using thisType = TopCodeVisitor;
-        using baseType = CodeVisitor;
-        TopCodeVisitor(){};
-    public:
-        static String const Visit(Ref<CodeItem> target);
-    private:
-        p_function(Array<String>, DumpData) override
-        {
-            return{};
-        };
-
+    class MainCodeVisitor final : public CodeVisitor{
+        typedef CodeVisitor baseType;
+        typedef MainCodeVisitor thisType;
+        p_function(Array<String>, DumpData) override { return{}; };
         String const Const(Size const size, BitsConst const& value) const override;
-
+        String const DumpPrintNumber(Size const size) const override;
+        String const FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;
+        String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
+        String const CallGetter(Size const& result, int const index, Size const& args) const override;
+        String const FunctionArg() const override;
+        String const Visit(Ref<CodeItem> target)const;
+    public:
+        static String const MainVisit(Ref<CodeItem> target);
+        static String const GetterVisit(int index,Ref<CodeItem> target);
     };
 
 }

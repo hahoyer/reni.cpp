@@ -40,7 +40,7 @@ Ref<Syntax> const Compiler::GetSyntaxFromText(String const& text){
 };
 
 
-p_implementation(CodeBase, String, cppMain){return TopCodeVisitor::Visit(main);};
+p_implementation(CodeBase, String, cppMain){return MainCodeVisitor::MainVisit(main);};
 
 p_implementation(CodeBase, String, cppFunctions)
 {

@@ -125,6 +125,7 @@ namespace Reni{
         };
         p_function(int, inCount) override{ return 2; };
         p_function(Size, size) override { return _size; };
+        p_function(String, prefix) override { return name; };
         String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override{ return{}; }
 

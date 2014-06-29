@@ -60,20 +60,10 @@ namespace Reni{
         virtual_p(int, inCount) = 0;
         virtual_p(Size, size) = 0;
         virtual_p(Externals, exts){ return{}; };
+        virtual_p(String, prefix) = 0;
         virtual Size const InSize(int index)const = 0;
-        virtual String const InName(int index)const;
         virtual String const ToCpp(CodeVisitor const& visitor)const = 0;
         virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const = 0;
     };
 
-    class FiberVisitor final : public CodeVisitor{
-        typedef CodeVisitor baseType;
-        typedef FiberVisitor thisType;
-        p_function(Array<String>,DumpData) override {return{ };};
-        String const Const(Size const size, BitsConst const& value) const override;
-        String const DumpPrintNumber(Size const size) const override;
-        String const FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;
-        String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
-        String const CallGetter(Size const& result, int const index, Size const& args) const override;
-    };
 }

@@ -128,8 +128,6 @@ CodeFunction const Constants<CodeFunction >::NotValid;
 
 p_implementation(CodeFunction, String,cppCode)
 {
-    auto bodyResult = TopCodeVisitor::Visit(body);
-    md(bodyResult);
-    mb;
+    return MainCodeVisitor::GetterVisit(index, body);
 }
 
