@@ -17,14 +17,11 @@ namespace Reni
         Ref<CodeItem> const main;
         Array<Global::Function> const functions;
 
-        CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& functions)
-            : main(main), functions(functions)
-        {
-            SetDumpString();
-        }
+        CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& functions);
 
         p(String, cppMain);
         p(String, cppFunctions);
+        p(String, cppDeclarations);
     private:
         p_function(Array<String>, DumpData) override
         {

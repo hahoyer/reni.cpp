@@ -92,7 +92,7 @@ String const FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
 {
     if(external != External::Function::Arg::Instance)
         return baseType::ToCpp(visitor);
-    return visitor.ParameterName();
+    return "arg";
 }
 
 Optional<Ref<CodeItem>> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const

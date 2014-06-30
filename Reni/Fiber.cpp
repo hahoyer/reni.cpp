@@ -97,14 +97,11 @@ Optional<Ref<FiberCode>> FiberCode::ReCreate(Optional<Ref<CodeItem>> const&head,
     return newHead->Fiber(newItems);
 }
 
-String const FiberCode::ToCpp(CodeVisitor const&) const{
-    MainCodeVisitor localVisitor;
-    auto result = head->ToCpp(localVisitor);
+String const FiberCode::ToCpp(CodeVisitor const&visitor) const{
+    auto result = head->ToCpp(visitor);
     for(auto item :  items) 
-        result = item->ToCpp(localVisitor).Replace("$(arg)", result);
-    if(size == 0)
-        return result + "; return 0;";
-    return "return " + result + ";";
+        result = item->ToCpp(visitor).Replace("$(arg)", result);
+    return result;
 }
 
 

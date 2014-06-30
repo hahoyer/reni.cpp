@@ -23,8 +23,7 @@ namespace Reni
         virtual String const CallGetter(Size const&result, int const index, Size const&args) const;
         
         static String const InName(String const&prefix, int index);
-        static String const ParameterName();
-        static String const GetterFunction(int const index);
+        static String const GetterFunctionDeclaration(int const index);
         static String const GetterName(int const index){ return "get_" + String::Convert(index); };
         static String const SetterName(int const index){ return "set_" + String::Convert(index); };
 
@@ -42,8 +41,8 @@ namespace Reni
         String const FunctionArg() const override;
         String const Visit(Ref<CodeItem> target)const;
     public:
-        static String const MainVisit(Ref<CodeItem> target);
-        static String const GetterVisit(int index,Ref<CodeItem> target);
+        static String const MainVisit(Ref<CodeItem> body);
+        static String const GetterVisit(int index, Ref<CodeItem> body);
     };
 
 }

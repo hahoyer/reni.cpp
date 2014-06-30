@@ -11,11 +11,6 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-String const CodeVisitor::ParameterName()
-{
-    return "arg";
-}
-
 String const CodeVisitor::InName(String const& prefix, int index) 
 {
     return
@@ -40,9 +35,9 @@ String const CodeVisitor::CallGetter(Size const& result, int const index, Size c
     return "";
 }
 
-String const CodeVisitor::GetterFunction(int const index) 
+String const CodeVisitor::GetterFunctionDeclaration(int const index)
 {
-    return "int " + GetterName(index) + "(int $(arg)) {\n$(body)\n}\n" ;
+    return "int " + GetterName(index) + "(int arg)";
 }
 
 String const CodeVisitor::DumpPrintNumber(Size const size) const
@@ -82,17 +77,19 @@ String const MainCodeVisitor::MainVisit(Ref<CodeItem> target)
 String const MainCodeVisitor::Visit(Ref<CodeItem> target)const
 {
     a_if(target->exts.isEmpty, nd(target));
-    return "return " + target->ToCpp(*this);
+    auto result= target->ToCpp(*this);
+    if(target->size == 0)
+        return result + ";\nreturn 0;";
+    return "return " + result + ";";
 }
 
 String const MainCodeVisitor::GetterVisit(int index, Ref<CodeItem> target)
 {
     MainCodeVisitor visitor;
     auto body = visitor.Visit(target);
-    auto result = GetterFunction(index);
+    auto result = GetterFunctionDeclaration(index);
     return result
-        .Replace("$(arg)", ParameterName())
-        .Replace("$(body)", body);
+        + "{\n\t" + body +"\n}\n";
 }
 
 String const MainCodeVisitor::Const(Size const size, BitsConst const& value) const
@@ -112,7 +109,7 @@ String const MainCodeVisitor::DumpPrintNumber(Size const size) const
 
 String const MainCodeVisitor::FunctionArg() const
 {
-    return ParameterName();
+    return "arg";
 }
 
 String const MainCodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const
@@ -122,21 +119,18 @@ String const MainCodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items,
     return items
         .Aggregate<String>
         (
-        connectorCodeRaw,
-        [&]
-    (String const &current, Ref<CodeItem> const &item)
-    {
-        return current.Replace(InName(connector->prefix, index++), item->ToCpp(*this));
-    }
-    );
+            connectorCodeRaw,
+            [&]
+            (String const &current, Ref<CodeItem> const &item)
+            {
+                return current.Replace(InName(connector->prefix, index++), item->ToCpp(*this));
+            }
+        );
 }
 
 String UnrefCode(int depth, String const&target)
 {
-    if(depth == 0)
-        return "(" + target + ")";
-    if(depth == 1)
-        return "(*reinterpret_cast<int const*>" + target + ")";
+    return "(" + target + ")";
     fd(depth, target);
     b_;
     return target;

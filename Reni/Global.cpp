@@ -108,6 +108,13 @@ p_implementation(Global::Function, String, cppCode)
     return g + s;
 }
 
+p_implementation(Global::Function, String, cppDeclarations)
+{
+    auto g = getter->code.IsValid ? getter->code.Value.cppDeclaration : "";
+    auto s = setter->code.IsValid ? setter->code.Value.cppDeclaration : "";
+    return g + s;
+}
+
 void Global::Function::GetterIsUsed()const{ getter->isRequired = true; };
 void Global::Function::SetterIsUsed()const{ setter->isRequired = true; };
 
@@ -126,8 +133,25 @@ bool Global::Function::Xetter::Ensure(function<CodeFunction()> getCode) const
 
 CodeFunction const Constants<CodeFunction >::NotValid;
 
+CodeFunction::CodeFunction(
+    bool isSetter,
+    int index,
+    Ref<CodeItem> const& body)
+    : isSetter(isSetter)
+      ,index(index)
+      , body(body)
+{
+    SetDumpString();
+    a_if(index >= 0, nd(index));
+}
+
 p_implementation(CodeFunction, String,cppCode)
 {
     return MainCodeVisitor::GetterVisit(index, body);
+}
+
+p_implementation(CodeFunction, String, cppDeclaration)
+{
+    return MainCodeVisitor::GetterFunctionDeclaration(index) + ";\n";
 }
 

@@ -31,14 +31,7 @@ namespace Reni
         }
 
     private:
-        CodeFunction(bool isSetter, int index, Ref<CodeItem> const& body)
-            : isSetter(isSetter)
-              ,index(index)
-              , body(body)
-        {
-            SetDumpString();
-            a_if(index >= 0, nd(index));
-        }
+        CodeFunction(bool isSetter, int index, Ref<CodeItem> const& body);
     public:
         bool const operator==(thisType const&other)const
         {
@@ -47,6 +40,7 @@ namespace Reni
         };
 
         p(String,cppCode);
+        p(String, cppDeclaration);
     private:
         p_function(Array<String>, DumpData) override
         {

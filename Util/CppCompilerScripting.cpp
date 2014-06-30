@@ -6,29 +6,12 @@ using namespace Util;
 using namespace HWLib;
 static bool Trace = true;
 
-CppCompilerScripting::CppCompilerScripting(String const& main, String const& functions) 
-    : main(main)
-    , functions(functions)
+CppCompilerScripting::CppCompilerScripting(String const& program)
+    : program(program)
     , currentProcess("echo none")
 {
 }
 
-
-p_implementation(CppCompilerScripting, String, program)
-{
-    static String const result = R"(
-    #include "Common.h"
-    using namespace ReniRuntime; 
-    int main(void){
-        ${main}
-    }
-    
-    ${functions}
-    )";
-    return result
-        .Replace("${main}", main)
-        .Replace("${functions}", functions);
-};
 
 p_implementation(CppCompilerScripting, String, fullFileName)
 {

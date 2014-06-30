@@ -53,10 +53,35 @@ public:
         , codeCache(l_(code))
     {}
 
-    ExecutionResult const Execute()
+    p(String, cppCode)
     {
         auto codes = codeCache.Value;
-        CppCompilerScripting ccs (codes.cppMain, codes.cppFunctions);
+        auto main = codes.cppMain;
+        auto functions = codes.cppFunctions;
+        auto declarations = codes.cppDeclarations;
+
+        static String const result = R"(
+#include "Common.h"
+using namespace ReniRuntime; 
+    
+${declarations}
+
+int main(void)
+{
+    ${main}
+}
+    
+${functions}
+)";
+        return result
+            .Replace("${declarations}", declarations)
+            .Replace("${main}", main)
+            .Replace("${functions}", functions);
+    };
+
+    ExecutionResult const Execute()
+    {
+        CppCompilerScripting ccs = cppCode;
         ccs.Execute();
         return ExecutionResult{ ccs.result, ccs.output };
     }
@@ -64,13 +89,6 @@ public:
     static Ref<Syntax> const GetSyntaxFromText(String const& text)
     {
         return GetSyntax(*Source::CreateFromText(text));
-    };
-
-    p(String, cppCode)
-    {
-        auto codes = codeCache.Value;
-        CppCompilerScripting ccs(codes.cppMain, codes.cppFunctions);
-        return ccs.program;
     };
 
 private:

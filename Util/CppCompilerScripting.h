@@ -9,14 +9,12 @@ namespace Util{
     class CppCompilerScripting
     {
         using thisType = CppCompilerScripting;
-        String const main;
-        String const functions;
+        String const program;
         Process currentProcess;
     public:
-        CppCompilerScripting(String const& main, String const& functions);
+        CppCompilerScripting(String const& program);
 
         void Execute();
-        p(String, program);
         p(int, result);
         p(String, output);
     private:

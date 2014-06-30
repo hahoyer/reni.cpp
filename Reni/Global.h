@@ -29,6 +29,7 @@ namespace Reni
             Function();
 
             p(String, cppCode);
+            p(String, cppDeclarations);
             void GetterIsUsed()const;
             void SetterIsUsed()const;
         private:

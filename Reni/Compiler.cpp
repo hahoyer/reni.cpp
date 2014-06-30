@@ -15,37 +15,55 @@ Compiler::Compiler(String const&fileName)
 : _internal(new internal(fileName))
 {}
 
-p_implementation(Compiler, Ref<Syntax>, syntax){
+p_implementation(Compiler, Ref<Syntax>, syntax)
+{
     return _internal->syntaxCache.Value;
 };
 
-p_implementation(Compiler, CodeBase, code){
+p_implementation(Compiler, CodeBase, code)
+{
     return _internal->codeCache.Value;
 };
 
-p_implementation(Compiler, Ref<CodeItem>, main){
+p_implementation(Compiler, Ref<CodeItem>, main)
+{
     return _internal->codeCache.Value.main;
 };
 
-p_implementation(Compiler, String, cppCode){
+p_implementation(Compiler, String, cppCode)
+{
     return _internal->cppCode;
 };
 
-ExecutionResult const Compiler::Execute(){
+ExecutionResult Compiler::Execute()
+{
     return _internal->Execute();
 }
 
-Ref<Syntax> const Compiler::GetSyntaxFromText(String const& text){
+Ref<Syntax> Compiler::GetSyntaxFromText(String const& text)
+{
     return internal::GetSyntaxFromText(text);
 };
 
 
-p_implementation(CodeBase, String, cppMain){return MainCodeVisitor::MainVisit(main);};
+CodeBase::CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& functions) : main(main), functions(functions)
+{
+    SetDumpString();
+}
+
+p_implementation(CodeBase, String, cppMain){ return MainCodeVisitor::MainVisit(main); };
 
 p_implementation(CodeBase, String, cppFunctions)
 {
     return functions
         .Select<String>([&](Global::Function const&function){return function.cppCode; })
+        ->Aggregate<String>();
+};
+
+p_implementation(CodeBase, String, cppDeclarations)
+{
+    return functions
+        .Select<String>([&](Global::Function const&function){return function.cppDeclarations; })
         ->Aggregate<String>();
 };
 

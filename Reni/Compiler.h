@@ -35,8 +35,8 @@ namespace Reni
         p(CodeBase, code);
         p(Ref<CodeItem>, main);
         p(String, cppCode);
-        ExecutionResult const Execute();
+        ExecutionResult Execute();
 
-        static Ref<Syntax> const GetSyntaxFromText(String const& text);
+        static Ref<Syntax> GetSyntaxFromText(String const& text);
     };
 }
