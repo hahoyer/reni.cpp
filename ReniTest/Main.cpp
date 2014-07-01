@@ -7,7 +7,7 @@
 
 int main()
 {
-    DumpableObject::EnableSetDumpString = true;
+    DumpableObject::EnableSetDumpString = false;
     DumpableObject::EnableSetDumpStringAsync = false;
     test_item(_Reni::Negative).isLowPriority = true;
     test_item(_Reni::Function).WatchedRun();

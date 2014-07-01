@@ -220,7 +220,7 @@ class InstanceFunctionFeature final : public Feature::Extended
     {
         auto targetType = TypeType::Convert(target)->value;
         if(category <= Category::Type.replenished)
-            return targetType->thisRef;
+            return ResultData (targetType->thisRef) & category;
         return targetType->Constructor(category, arg);
     }
 };
