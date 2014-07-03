@@ -10,6 +10,7 @@ namespace Reni
 {
     class NumberType;
     class TypeType;
+    class EnableCutType;
 
     class DefineableToken 
         : public TokenClass
@@ -29,6 +30,7 @@ namespace Reni
 
         SearchResult<Feature> const SearchFor(NumberType const&) const override;
         SearchResult<Feature> const SearchFor(TypeType const&) const override;
+        SearchResult<Feature> const SearchFor(EnableCutType const&) const override;
         virtual_p(int, priority) { return 0; };
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;;

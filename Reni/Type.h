@@ -75,6 +75,7 @@ namespace Reni{
         ResultData const ConvertTo(Category category, Type const& other) const;
         SearchResult<Feature> const SearchFor(NumberType const&provider) const override;
         SearchResult<Feature> const SearchFor(TypeType const&) const override;
+        SearchResult<Feature> const SearchFor(EnableCutType const&) const override;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };

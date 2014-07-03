@@ -35,6 +35,14 @@ SearchResult <Feature> const DefineableToken::SearchFor(NumberType const& target
     return_d(SearchResult<Feature>());
 }
 
+SearchResult <Feature> const DefineableToken::SearchFor(EnableCutType const& target) const
+{
+    bool Trace = true;
+    md(target);
+    b_;
+    return_d(SearchResult<Feature>());
+}
+
 Ref<Syntax> const DefineableToken::CreateSyntax(Optional<Ref<Syntax>> const left, SourcePart const& part, Optional<Ref<Syntax>> const right) const
 {
     return new ExpressionSyntax(*this, left, part, right);

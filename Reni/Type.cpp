@@ -78,6 +78,12 @@ SearchResult<Feature> const Type::SearchFor(NumberType const& provider) const
     mb;
 };
 
+SearchResult<Feature> const Type::SearchFor(EnableCutType const&provider) const
+{
+    md(provider);
+    mb;
+}
+
 ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts) const
 {
     return ResultData::Get(category,l_(size), getCode,l_(&thisRef), getExts);
@@ -235,8 +241,6 @@ SearchResult<Feature> const TypeType::Search<InstanceToken>() const
 
 SearchResult<Feature> const EnableCutType::Search(SearchTarget const& target) const
 {
-    md(target);
-    mb;
-    return{};
+    return target.SearchFor(thisRef);
 };
 

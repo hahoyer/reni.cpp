@@ -15,6 +15,7 @@ namespace Reni
     public:
         virtual SearchResult<Feature> const SearchFor(NumberType const&) const = 0;
         virtual SearchResult<Feature> const SearchFor(TypeType const&) const = 0;
+        virtual SearchResult<Feature> const SearchFor(EnableCutType const&) const = 0;
 
         virtual ~SearchTarget()
         {
