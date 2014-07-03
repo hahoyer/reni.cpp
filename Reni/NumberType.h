@@ -25,9 +25,7 @@ namespace Reni
 
         template<class TTokenClass>
         SearchResult<Feature> const Search() const;
-        template<>
-        SearchResult<Feature> const Search<EnableCutToken>() const;
-        SearchResult<Feature> const Search(NumberType const& provider) const override;
+        SearchResult<Feature> const SearchFor(NumberType const& provider) const override;
         WeakRef<NumberType> const Resize(int newSize)const;
         static WeakPtr<NumberType> const Convert(Type const&target);
     private:

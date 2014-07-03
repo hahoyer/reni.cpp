@@ -66,13 +66,13 @@ pure_p_implementation(Type, int, addressLevel);
 pure_p_implementation(Type, bool, isTypeTarget);
 pure_p_implementation(Type, WeakRef<Type>, dereferencedType);
 
-SearchResult<Feature> const Type::Search(TypeType const&provider) const
+SearchResult<Feature> const Type::SearchFor(TypeType const&provider) const
 {
     md(provider);
     mb;
 }
 
-SearchResult<Feature> const Type::Search(NumberType const& provider) const
+SearchResult<Feature> const Type::SearchFor(NumberType const& provider) const
 {
     md(provider);
     mb;
@@ -203,7 +203,7 @@ TypeType::TypeType(Type const& value)
 
 SearchResult<Feature> const TypeType::Search(SearchTarget const& target) const
 {
-    auto result = target.Search(*this);
+    auto result = target.SearchFor(*this);
     if(result.IsValid)
         return result;
     return baseType::Search(target);

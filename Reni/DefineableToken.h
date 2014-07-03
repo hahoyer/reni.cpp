@@ -27,8 +27,8 @@ namespace Reni
 
     public:
 
-        SearchResult<Feature> const Search(NumberType const&) const override;
-        SearchResult<Feature> const Search(TypeType const&) const override;
+        SearchResult<Feature> const SearchFor(NumberType const&) const override;
+        SearchResult<Feature> const SearchFor(TypeType const&) const override;
         virtual_p(int, priority) { return 0; };
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;;
@@ -53,10 +53,10 @@ namespace Reni
     };
 }
 
-#define tc_Search(targetType) SearchResult<Feature> const Search(targetType const& target) const override
+#define tc_Search(targetType) SearchResult<Feature> const SearchFor(targetType const& target) const override
 
 #define tc_Search_implementation(tokenClass,targetType) \
-SearchResult<Feature> const tokenClass::Search(targetType const& target) const\
+SearchResult<Feature> const tokenClass::SearchFor(targetType const& target) const\
 {\
     return target.Search<tokenClass>();\
 }

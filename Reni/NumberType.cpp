@@ -63,10 +63,10 @@ p_implementation(NumberType, String, DumpShort)
 
 SearchResult<Feature> const NumberType::Search(SearchTarget const& target) const
 {
-    return target.Search(*this);
+    return target.SearchFor(*this);
 };
 
-SearchResult<Feature> const NumberType::Search(NumberType const& provider) const
+SearchResult<Feature> const NumberType::SearchFor(NumberType const& provider) const
 {
     if (size < provider.size)
         return{};

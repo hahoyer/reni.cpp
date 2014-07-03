@@ -13,8 +13,8 @@ namespace Reni
     class SearchTarget
     {
     public:
-        virtual SearchResult<Feature> const Search(NumberType const&) const = 0;
-        virtual SearchResult<Feature> const Search(TypeType const&) const = 0;
+        virtual SearchResult<Feature> const SearchFor(NumberType const&) const = 0;
+        virtual SearchResult<Feature> const SearchFor(TypeType const&) const = 0;
 
         virtual ~SearchTarget()
         {

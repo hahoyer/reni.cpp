@@ -73,8 +73,8 @@ namespace Reni{
         WeakRef<Type> const Common(Type const&other)const;
         bool const isConvertableTo(Type const&other)const;
         ResultData const ConvertTo(Category category, Type const& other) const;
-        SearchResult<Feature> const Search(NumberType const&provider) const override;
-        SearchResult<Feature> const Search(TypeType const&) const override;
+        SearchResult<Feature> const SearchFor(NumberType const&provider) const override;
+        SearchResult<Feature> const SearchFor(TypeType const&) const override;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };
