@@ -66,19 +66,19 @@ pure_p_implementation(Type, int, addressLevel);
 pure_p_implementation(Type, bool, isTypeTarget);
 pure_p_implementation(Type, WeakRef<Type>, dereferencedType);
 
-SearchResult<Feature> const Type::SearchFor(TypeType const&provider) const
+SearchResult<Feature> const Type::Declarations(TypeType const&provider) const
 {
     md(provider);
     mb;
 }
 
-SearchResult<Feature> const Type::SearchFor(NumberType const& provider) const
+SearchResult<Feature> const Type::Declarations(NumberType const& provider) const
 {
     md(provider);
     mb;
 };
 
-SearchResult<Feature> const Type::SearchFor(EnableCutType const&provider) const
+SearchResult<Feature> const Type::Declarations(EnableCutType const&provider) const
 {
     md(provider);
     mb;
@@ -132,12 +132,12 @@ p_implementation(Type, WeakRef<Type>, asFunctionResult)
 
 bool const Type::isConvertableTo(Type const& other) const
 {
-    return Search(other).IsValid;
+    return DeclarationsForType(other).IsValid;
 }
 
 ResultData const Type::ConvertTo(Category category, Type const& destination) const
 {
-    auto result = Search(destination);
+    auto result = DeclarationsForType(destination);
     if (result.IsValid)
         return result.feature.ConversionResult(category, thisRef, destination);
     return{};
@@ -178,7 +178,7 @@ ResultData const Type::ContextAccessResult(Category category, Type const& target
         (category,l_(CodeItem::Reference(target)->ReferencePlus(getOffset())));
 };
 
-SearchResult<Feature> const Type::Search(SearchTarget const& target) const
+SearchResult<Feature> const Type::DeclarationsForType(DeclarationType const& target) const
 {
     bool Trace = true;
     md(target);
@@ -186,9 +186,9 @@ SearchResult<Feature> const Type::Search(SearchTarget const& target) const
     return_d(SearchResult<Feature>());
 }
 
-SearchResult<Feature> const AddressType::Search(SearchTarget const& target) const
+SearchResult<Feature> const AddressType::DeclarationsForType(DeclarationType const& target) const
 {
-    auto result = value.Search(target);
+    auto result = value.DeclarationsForType(target);
     if(result.IsValid)
         return result;
     return {};
@@ -207,12 +207,12 @@ TypeType::TypeType(Type const& value)
     a_if_(value.isTypeTarget);
 }
 
-SearchResult<Feature> const TypeType::Search(SearchTarget const& target) const
+SearchResult<Feature> const TypeType::DeclarationsForType(DeclarationType const& target) const
 {
-    auto result = target.SearchFor(*this);
+    auto result = target.Declarations(*this);
     if(result.IsValid)
         return result;
-    return baseType::Search(target);
+    return baseType::DeclarationsForType(target);
 }
 
 
@@ -233,14 +233,14 @@ class InstanceFunctionFeature final : public Feature::Extended
 
 
 template<>
-SearchResult<Feature> const TypeType::Search<InstanceToken>() const
+SearchResult<Feature> const TypeType::DeclarationsForType<InstanceToken>() const
 {
     return Feature::From<InstanceFunctionFeature>();
 }
 
 
-SearchResult<Feature> const EnableCutType::Search(SearchTarget const& target) const
+SearchResult<Feature> const EnableCutType::DeclarationsForType(DeclarationType const& target) const
 {
-    return target.SearchFor(thisRef);
+    return target.Declarations(thisRef);
 };
 

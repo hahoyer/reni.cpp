@@ -99,7 +99,7 @@ WeakRef<Type> const RegularContext::FunctionType(FunctionSyntax const& body) con
     return _internal->functionType(&body)->thisRef;
 }
 
-SearchResult<ContextFeature> const Context::Search(DefineableToken const&token) const
+SearchResult<ContextFeature> const Context::DeclarationsForType(DefineableToken const&token) const
 {
     md(token);
     mb;
@@ -142,14 +142,14 @@ Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type con
     return functionCallContext(&argsType)->functionCallResultCache(tokenIndex);
 }
 
-SearchResult<ContextFeature> const ContainerContext::Search(DefineableToken const&token) const 
+SearchResult<ContextFeature> const ContainerContext::DeclarationsForType(DefineableToken const&token) const 
 {
     if(containerData->names.ContainsKey(&token))
     {
         auto tokenIndex = containerData->names[&token];
         return accessFeature(tokenIndex);
     }
-    return baseType::Search(token);
+    return baseType::DeclarationsForType(token);
 }
 
 
@@ -250,8 +250,8 @@ WeakRef<Context> const RecursionContext::Container(SyntaxContainer const& syntax
     mb;
 }
 
-SearchResult<ContextFeature> const RecursionContext::Search(DefineableToken const& token) const
+SearchResult<ContextFeature> const RecursionContext::DeclarationsForType(DefineableToken const& token) const
 {
-    return parent.Search(token);
+    return parent.DeclarationsForType(token);
 }
 

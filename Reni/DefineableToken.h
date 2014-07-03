@@ -14,7 +14,7 @@ namespace Reni
 
     class DefineableToken 
         : public TokenClass
-        , public SearchTarget
+        , public DeclarationType
     {
         typedef TokenClass baseType;
         typedef DefineableToken thisType;
@@ -28,9 +28,9 @@ namespace Reni
 
     public:
 
-        SearchResult<Feature> const SearchFor(NumberType const&) const override;
-        SearchResult<Feature> const SearchFor(TypeType const&) const override;
-        SearchResult<Feature> const SearchFor(EnableCutType const&) const override;
+        SearchResult<Feature> const Declarations(NumberType const&) const override;
+        SearchResult<Feature> const Declarations(TypeType const&) const override;
+        SearchResult<Feature> const Declarations(EnableCutType const&) const override;
         virtual_p(int, priority) { return 0; };
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;;
@@ -55,11 +55,11 @@ namespace Reni
     };
 }
 
-#define tc_Search(targetType) SearchResult<Feature> const SearchFor(targetType const& target) const override
+#define tc_Search(targetType) SearchResult<Feature> const Declarations(targetType const& target) const override
 
 #define tc_Search_implementation(tokenClass,targetType) \
-SearchResult<Feature> const tokenClass::SearchFor(targetType const& target) const\
+SearchResult<Feature> const tokenClass::Declarations(targetType const& target) const\
 {\
-    return target.Search<tokenClass>();\
+    return target.DeclarationsForType<tokenClass>();\
 }
 

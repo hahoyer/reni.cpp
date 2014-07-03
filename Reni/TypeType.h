@@ -23,18 +23,18 @@ namespace Reni
         ThisRef;
 
         template<class TTokenClass>
-        SearchResult<Feature> const Search() const;
+        SearchResult<Feature> const DeclarationsForType() const;
         static WeakPtr<TypeType> const Convert(Type const&target);
     private:
         p_function(Array<String>, DumpData) override{return{ nd(*value) };};
         p_function(Size, size) override{return 0;}
         p_function(WeakRef<Global>, global) override{return value->global;}
-        SearchResult<Feature> const Search(SearchTarget const& token) const override;
+        SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
     };
 };
 
 using namespace Reni;
 
 template<>
-SearchResult<Feature> const TypeType::Search<InstanceToken>() const;
+SearchResult<Feature> const TypeType::DeclarationsForType<InstanceToken>() const;
 

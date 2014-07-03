@@ -36,7 +36,7 @@ namespace Reni{
 
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
         virtual ResultData const ReferenceResult(Category category, External::Function const& external) const;
-        virtual SearchResult<ContextFeature> const Search(DefineableToken const&token)const;
+        virtual SearchResult<ContextFeature> const DeclarationsForType(DefineableToken const&token)const;
         virtual WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const = 0;
     };
 
@@ -85,7 +85,7 @@ namespace Reni{
         }
 
         p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
-        SearchResult<ContextFeature>  const Search(DefineableToken const& token) const override{ return parent.Search(token); };
+        SearchResult<ContextFeature>  const DeclarationsForType(DefineableToken const& token) const override{ return parent.DeclarationsForType(token); };
     private:
         p_function(WeakRef<Global>, global) override{ return parent.global; };
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };

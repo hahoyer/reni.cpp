@@ -31,7 +31,7 @@ namespace Reni
         p(Size, dataSize);
 
         Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
-        SearchResult<ContextFeature> const Search(DefineableToken const&token) const override;
+        SearchResult<ContextFeature> const DeclarationsForType(DefineableToken const&token) const override;
 
     private:
         p_function(Array<String>, DumpData) override

@@ -10,14 +10,14 @@ namespace Reni
     class EnableCutType;
     template<class TFeature> class SearchResult;
     
-    class SearchTarget
+    class DeclarationType
     {
     public:
-        virtual SearchResult<Feature> const SearchFor(NumberType const&) const = 0;
-        virtual SearchResult<Feature> const SearchFor(TypeType const&) const = 0;
-        virtual SearchResult<Feature> const SearchFor(EnableCutType const&) const = 0;
+        virtual SearchResult<Feature> const Declarations(NumberType const&) const = 0;
+        virtual SearchResult<Feature> const Declarations(TypeType const&) const = 0;
+        virtual SearchResult<Feature> const Declarations(EnableCutType const&) const = 0;
 
-        virtual ~SearchTarget()
+        virtual ~DeclarationType()
         {
         };
 

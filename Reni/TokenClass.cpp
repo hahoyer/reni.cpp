@@ -25,9 +25,9 @@ Ref<Syntax> const TokenClass::Mismatch(Optional<Ref<Syntax>> const left, SourceP
 
 pure_p_implementation(TokenClass, bool, AcceptsMatch);
 
-SearchResult<Feature>  const DefineableToken::SearchFor(TypeType const&) const{ return{}; }
+SearchResult<Feature>  const DefineableToken::Declarations(TypeType const&) const{ return{}; }
 
-SearchResult <Feature> const DefineableToken::SearchFor(NumberType const& target) const
+SearchResult <Feature> const DefineableToken::Declarations(NumberType const& target) const
 {
     bool Trace = true;
     md(target);
@@ -35,7 +35,7 @@ SearchResult <Feature> const DefineableToken::SearchFor(NumberType const& target
     return_d(SearchResult<Feature>());
 }
 
-SearchResult <Feature> const DefineableToken::SearchFor(EnableCutType const& target) const
+SearchResult <Feature> const DefineableToken::Declarations(EnableCutType const& target) const
 {
     bool Trace = true;
     md(target);
@@ -56,7 +56,7 @@ tc_Search_implementation(MinusToken, NumberType);
 tc_Search_implementation(StarToken, NumberType);
 tc_Search_implementation(EnableCutToken, NumberType);
 
-SearchResult<Feature> const DumpPrintToken::SearchFor(NumberType const& target) const
+SearchResult<Feature> const DumpPrintToken::Declarations(NumberType const& target) const
 {
-    return target.Search<DumpPrintToken>();
+    return target.DeclarationsForType<DumpPrintToken>();
 };

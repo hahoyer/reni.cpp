@@ -34,7 +34,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     if(left.IsEmpty)
     {
         auto result = context
-            .Search(tokenClass)
+            .DeclarationsForType(tokenClass)
             .feature
             .FunctionResult(context, category, right);
         a_is(category, <= , result.complete);
@@ -45,7 +45,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
         .Value
         ->Type(context)
         ->thisRef
-        .Search(tokenClass)
+        .DeclarationsForType(tokenClass)
         .feature
         .FunctionResult(context, category, left, right);
     a_is(category, <=, result.complete);

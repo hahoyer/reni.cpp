@@ -61,12 +61,12 @@ p_implementation(NumberType, String, DumpShort)
     return base_p_name(DumpShort) + " size=" + size.DumpShort;
 }
 
-SearchResult<Feature> const NumberType::Search(SearchTarget const& target) const
+SearchResult<Feature> const NumberType::DeclarationsForType(DeclarationType const& target) const
 {
-    return target.SearchFor(*this);
+    return target.Declarations(*this);
 };
 
-SearchResult<Feature> const NumberType::SearchFor(NumberType const& provider) const
+SearchResult<Feature> const NumberType::Declarations(NumberType const& provider) const
 {
     if (size < provider.size)
         return{};
