@@ -1,7 +1,8 @@
 #pragma once
 #include "TokenClass.h"
+#include "SearchTarget.h"
+
 #include "../HWLib/String.h"
-#include "SearchResult.h"
 
 using namespace HWLib;
 
@@ -12,7 +13,7 @@ namespace Reni
 
     class DefineableToken 
         : public TokenClass
-        , public SearchTarget<Feature>
+        , public SearchTarget
     {
         typedef TokenClass baseType;
         typedef DefineableToken thisType;
@@ -51,3 +52,12 @@ namespace Reni
         NamedDefinableToken(): DefineableToken(TNameProvider::Text()) {SetDumpString();}
     };
 }
+
+#define tc_Search(targetType) SearchResult<Feature> const Search(targetType const& target) const override
+
+#define tc_Search_implementation(tokenClass,targetType) \
+SearchResult<Feature> const tokenClass::Search(targetType const& target) const\
+{\
+    return target.Search<tokenClass>();\
+}
+

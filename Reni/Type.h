@@ -1,5 +1,4 @@
 #pragma once
-#include "SearchResult.h"
 
 #include "../HWLib/Ref.h"
 #include "../HWLib/RefCountProvider.h"
@@ -8,6 +7,9 @@
 #include "../HWLib/WeakRef.h"
 #include "../Util/Category.h"
 #include "../Util/Size.h"
+#include "Result.h"
+#include "SearchTarget.h"
+#include "Feature.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -33,7 +35,7 @@ namespace Reni{
 
     class Type
         : public WithId<DumpableObject, Type>
-        , public SearchTarget<Feature>
+        , public SearchTarget
     {
         using baseType = WithId<DumpableObject, Type>;
         using thisType = Type;
@@ -64,19 +66,17 @@ namespace Reni{
         ResultData const GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode)const;
         ResultData const GetResultDataEmpty(Category category)const;
         ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
-        ResultData const Constructor(Category category, Type const&arg)const;
 
         virtual SearchResult<Feature> const Search(SearchTarget const&target)const;
         WeakRef<NumberType> const CreateNumberType()const;
         WeakRef<Type> const IndirectType(int depth)const;
         WeakRef<Type> const Common(Type const&other)const;
         bool const isConvertableTo(Type const&other)const;
-        
+        ResultData const ConvertTo(Category category, Type const& other) const;
         SearchResult<Feature> const Search(NumberType const&provider) const override;
         SearchResult<Feature> const Search(TypeType const&) const override;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
-
     };
 
 
@@ -92,6 +92,7 @@ namespace Reni{
         p_function(Array<String>, DumpData) override{ return{nd(*value)}; };
         p_function(Size, size) override{ return value->size; }
         p_function(WeakRef<Global>, global) override{ return value->global; }
+        SearchResult<Feature> const Search(SearchTarget const& target) const override;
     };
 
 }

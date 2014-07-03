@@ -4,9 +4,6 @@
 
 using namespace HWLib;
 
-#define tc_Search(targetType)SearchResult<Feature> const Search(targetType const& target) const override
-#define tc_Search_implementation(tokenClass,targetType)SearchResult<Feature> const tokenClass::Search(targetType const& target) const{return target.Search<tokenClass>();}
-
 namespace Reni
 {
     class NumberType;

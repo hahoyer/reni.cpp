@@ -22,6 +22,7 @@ namespace Reni
     {
         using baseType = Simple;
         using thisType = NumberConversionProvider;
+
         ResultData const Result(Category category, Type const& target) const override
         {
             bool Trace = true;
@@ -36,28 +37,27 @@ namespace Reni
 using namespace Reni;
 static bool Trace = true;
 
-NumberType::NumberType(WeakRef<ArrayType> const parent) 
-: parent(*parent){
+NumberType::NumberType(WeakRef<ArrayType> const parent)
+    : parent(*parent)
+{
     SetDumpString();
 }
 
-p_implementation(NumberType, Size, size){ return parent.size; };
-p_implementation(NumberType, WeakRef<Global>, global) { return parent.global; };
-
-p_implementation(NumberType, Array<String>, DumpData){
-    return{nd(parent)};
-};
+p_implementation(NumberType, Size, size){return parent.size;};
+p_implementation(NumberType, WeakRef<Global>, global){return parent.global;};
+p_implementation(NumberType, Array<String>, DumpData){return{nd(parent)};};
 
 WeakPtr<NumberType> const NumberType::Convert(Type const& target)
 {
     auto addressType = dynamic_cast<AddressType const*>(&target);
-    if(addressType)
+    if (addressType)
         return Convert(addressType->value);
-    
+
     return dynamic_cast<NumberType *>(&target.thisRef);
 }
 
-p_implementation(NumberType, String, DumpShort){
+p_implementation(NumberType, String, DumpShort)
+{
     return base_p_name(DumpShort) + " size=" + size.DumpShort;
 }
 
@@ -68,12 +68,13 @@ SearchResult<Feature> const NumberType::Search(SearchTarget const& target) const
 
 SearchResult<Feature> const NumberType::Search(NumberType const& provider) const
 {
-    if(size < provider.size)
+    if (size < provider.size)
         return{};
     return Feature::From<NumberConversionProvider>();
 }
 
-WeakRef<NumberType> const NumberType::Resize(int newSize)const{
+WeakRef<NumberType> const NumberType::Resize(int newSize)const
+{
     return parent
         .elementType
         .array(newSize)

@@ -72,6 +72,7 @@
     <ClInclude Include="ResultDataDirect.h" />
     <ClInclude Include="NumberTypeIncludes.h" />
     <ClInclude Include="RecursionContext.h" />
+    <ClInclude Include="SearchTarget.h" />
     <ClInclude Include="TypeType.h" />
     <ClInclude Include="SyntaxContainer.h" />
     <ClInclude Include="UserDefinedToken.h" />

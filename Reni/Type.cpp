@@ -129,6 +129,14 @@ bool const Type::isConvertableTo(Type const& other) const
     return Search(other).IsValid;
 }
 
+ResultData const Type::ConvertTo(Category category, Type const& destination) const
+{
+    auto result = Search(destination);
+    if (result.IsValid)
+        return result.feature.ConversionResult(category, thisRef, destination);
+    return{};
+}
+
 WeakRef<Type> const Type::Common(Type const& other) const
 {
     if(other.isConvertableTo(*this))
@@ -137,14 +145,6 @@ WeakRef<Type> const Type::Common(Type const& other) const
         return other.thisRef;
     md(other);
     mb;
-}
-
-ResultData const Type::Constructor(Category category, Type const& arg) const
-{
-    bool Trace = true;
-    md(category, arg);
-    b_;
-    return_d(ResultData());
 }
 
 WeakRef<Type> const Type::IndirectType(int depth) const
@@ -221,7 +221,7 @@ class InstanceFunctionFeature final : public Feature::Extended
         auto targetType = TypeType::Convert(target)->value;
         if(category <= Category::Type.replenished)
             return ResultData (targetType->thisRef) & category;
-        return targetType->Constructor(category, arg);
+        return arg.ConvertTo(category, *targetType);
     }
 };
 
@@ -231,4 +231,12 @@ SearchResult<Feature> const TypeType::Search<InstanceToken>() const
 {
     return Feature::From<InstanceFunctionFeature>();
 }
+
+
+SearchResult<Feature> const EnableCutType::Search(SearchTarget const& target) const
+{
+    md(target);
+    mb;
+    return{};
+};
 

@@ -4,6 +4,7 @@
 #include "../Util/Category.h"
 #include "../HWLib/Ref.h"
 #include "../HWLib/Optional.h"
+#include "SearchResult.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -69,7 +70,7 @@ namespace Reni
         )const;
 
         p(bool, isEmpty){return !simple.IsValid && extended.IsEmpty;}
-
+        ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
         ResultData const Result(Category category, Type const&target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const;

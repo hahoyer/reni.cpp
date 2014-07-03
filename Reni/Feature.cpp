@@ -52,6 +52,13 @@ ResultData const Feature::Result(Category category, Type const& target, Optional
     if(argResult.IsEmpty)
         return simple.Value->Result(category, target);
     return extended.Value->Result(category, target, *argResult.Value->type);
+}
+
+ResultData const Feature::ConversionResult(Category category, Type const& target, Type const& destination) const
+{
+    md(category, target, destination);
+    mb;
+    return{};
 };
 
 

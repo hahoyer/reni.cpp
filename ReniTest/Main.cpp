@@ -10,7 +10,7 @@ int main()
     DumpableObject::EnableSetDumpString = false;
     DumpableObject::EnableSetDumpStringAsync = false;
     test_item(_Reni::Negative).isLowPriority = true;
-    test_item(_Reni::Function).WatchedRun();
+    test_item(_Reni::RecursiveFunction).WatchedRun();
     HWAnalyse::TestFixture::RunAll();
     return 0;
 }
