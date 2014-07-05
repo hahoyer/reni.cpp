@@ -23,6 +23,7 @@ namespace Reni
         p_function(int, addressLevel) override{ return value.addressLevel + 1; }
         p_function(bool, isTypeTarget) override{ return false; };
         p_function(WeakRef<Type>, dereferencedType)override{ return value.dereferencedType; };
+        p_function(WeakPtr<NumberType>, asNumberType)override{ return value.As<NumberType>(); }
 
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
     };

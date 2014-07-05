@@ -56,9 +56,7 @@ ResultData const Feature::Result(Category category, Type const& target, Optional
 
 ResultData const Feature::ConversionResult(Category category, Type const& target, Type const& destination) const
 {
-    md(category, target, destination);
-    mb;
-    return{};
+    return extended.Value->Result(category, target, destination);
 };
 
 

@@ -26,13 +26,14 @@ namespace Reni
         template<class TTokenClass>
         SearchResult<Feature> const DeclarationsForType() const;
         SearchResult<Feature> const Declarations(NumberType const& provider) const override;
+        SearchResult<Feature> const Declarations(EnableCutType const& provider) const override;
         WeakRef<NumberType> const Resize(int newSize)const;
-        static WeakPtr<NumberType> const Convert(Type const&target);
     private:
         p_function(Size, size) override;
         p_function(WeakRef<Global>, global) override;
         p_function(Array<String>, DumpData) override;
         p_function(String, DumpShort) override;
+        p_function(WeakPtr<NumberType>, asNumberType)override{ return thisRef; }
 
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
 

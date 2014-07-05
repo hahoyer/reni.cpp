@@ -13,8 +13,8 @@ class NumberType::OperationFeature final : public Feature::Extended
 
     ResultData const Result(Category category, Type const&target, Type const&arg)const override
     {
-        auto thisTypeAsNumber = Convert(target);
-        auto argTypeAsNumber = Convert(arg);
+        auto thisTypeAsNumber = target.As<NumberType>();
+        auto argTypeAsNumber = arg.As<NumberType>();
         if(!thisTypeAsNumber.IsEmpty && !argTypeAsNumber.IsEmpty)
         {
             auto thisSize = thisTypeAsNumber->size.value;

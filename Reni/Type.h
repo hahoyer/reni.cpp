@@ -61,6 +61,13 @@ namespace Reni{
         p(WeakRef<Type>, indirectType);
         p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
+    protected:
+        virtual_p(WeakPtr<NumberType>, asNumberType){return{};};
+    public:
+        template <class TDestination>
+        WeakPtr<TDestination> const As()const;
+        template <>
+        WeakPtr<NumberType> const As()const{ return asNumberType; }
 
         ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts)const;
         ResultData const GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode)const;
@@ -86,13 +93,14 @@ namespace Reni{
         typedef Type baseType;
         typedef EnableCutType thisType;
     public:
-        WeakRef<Type> value;
-        EnableCutType(WeakRef<Type> value) : value(value){ SetDumpString(); }
+        Type const& value;
+        EnableCutType(Type const&value) : value(value){ SetDumpString(); }
         ThisRef;
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(*value)}; };
-        p_function(Size, size) override{ return value->size; }
-        p_function(WeakRef<Global>, global) override{ return value->global; }
+        p_function(Array<String>, DumpData) override{ return{nd(value)}; };
+        p_function(Size, size) override{ return value.size; }
+        p_function(WeakRef<Global>, global) override{ return value.global; }
+        p_function(WeakPtr<NumberType>, asNumberType)override{ return value.As<NumberType>(); }
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& target) const override;
     };
 

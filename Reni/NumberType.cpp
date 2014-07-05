@@ -18,15 +18,19 @@
 
 namespace Reni
 {
-    class NumberConversionProvider final : public Feature::Simple
+    class NumberConversionProvider final : public Feature::Extended
     {
-        using baseType = Simple;
+        using baseType = Extended;
         using thisType = NumberConversionProvider;
 
-        ResultData const Result(Category category, Type const& target) const override
+        ResultData const Result(Category category, Type const& target, Type const& destination) const override
         {
+            auto const& targetBase = *target.As<NumberType>();
+            auto const& destinationBase = *destination.As<NumberType>();
+
+
             bool Trace = true;
-            md(category, target);
+            md(category, target, destination, targetBase, destinationBase);
             b_;
             return{};
         }
@@ -45,16 +49,8 @@ NumberType::NumberType(WeakRef<ArrayType> const parent)
 
 p_implementation(NumberType, Size, size){return parent.size;};
 p_implementation(NumberType, WeakRef<Global>, global){return parent.global;};
-p_implementation(NumberType, Array<String>, DumpData){return{nd(parent)};};
+p_implementation(NumberType, Array<String>, DumpData){ return{nd(parent)}; };
 
-WeakPtr<NumberType> const NumberType::Convert(Type const& target)
-{
-    auto addressType = dynamic_cast<AddressType const*>(&target);
-    if (addressType)
-        return Convert(addressType->value);
-
-    return dynamic_cast<NumberType *>(&target.thisRef);
-}
 
 p_implementation(NumberType, String, DumpShort)
 {
@@ -70,6 +66,11 @@ SearchResult<Feature> const NumberType::Declarations(NumberType const& provider)
 {
     if (size < provider.size)
         return{};
+    return Feature::From<NumberConversionProvider>();
+}
+
+SearchResult<Feature> const NumberType::Declarations(EnableCutType const& ) const
+{
     return Feature::From<NumberConversionProvider>();
 }
 

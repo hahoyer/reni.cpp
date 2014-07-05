@@ -65,6 +65,7 @@ pure_p_implementation(Type, WeakRef<Type>, asFunctionResult) ;
 pure_p_implementation(Type, int, addressLevel);
 pure_p_implementation(Type, bool, isTypeTarget);
 pure_p_implementation(Type, WeakRef<Type>, dereferencedType);
+pure_p_implementation(Type, WeakPtr<NumberType>, asNumberType);
 
 SearchResult<Feature> const Type::Declarations(TypeType const&provider) const
 {
