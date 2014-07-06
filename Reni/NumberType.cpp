@@ -25,14 +25,13 @@ namespace Reni
 
         ResultData const Result(Category category, Type const& target, Type const& destination) const override
         {
-            auto const& targetBase = *target.As<NumberType>();
-            auto const& destinationBase = *destination.As<NumberType>();
-
-
-            bool Trace = true;
-            md(category, target, destination, targetBase, destinationBase);
-            b_;
-            return{};
+            auto destinationAddress = destination.toAddress;
+            return ResultData::GetSmartSizeExts
+                (
+                category,
+                l_(CodeItem::NumberConversion(destinationAddress, target)),
+                l_(&destination.thisRef)
+                );
         }
     };
 }

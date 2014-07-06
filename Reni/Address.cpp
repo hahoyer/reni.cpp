@@ -7,16 +7,9 @@ using namespace Reni;
 static bool Trace = true;
 
 
-Address::Address(Address const& other) : data(other.data), depth(other.depth)
+Address::Address(Size const& data, int depth) : data(data), depth(depth)
 {
     SetDumpString();
-    a_if_(data.isData);
-}
-
-Address::Address(Type const& data, int depth): data(data), depth(depth)
-{
-    SetDumpString();
-    a_if_(data.isData);
 }
 
 Address const Address::operator+(int delta) const

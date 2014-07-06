@@ -29,24 +29,25 @@ namespace Reni
         typedef ReniRuntime::Stack::dataType dataItemType;
         typedef ReniRuntime::Stack::sizeType dataItemSizeType;
 
-        static Ref<CodeItem> const Arg(Address const&type);
+        static Ref<CodeItem> const Arg(Type const&type);
         static Ref<CodeItem> const FunctionArg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
         static Ref<CodeItem> const Empty(){ return Const(BitsConst::Empty()); };
-        static Ref<CodeItem> const BinaryOperation
+        static Ref<CodeItem> const NumberOperation
             (
             String name, 
-            NumberType const&result, 
-            NumberType const&left, int leftDepth,
-            NumberType const&right, int rightDepth
+            Address const&result, 
+            Type const&left,
+            Type const&right
             );
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
-        static Ref<CodeItem> const This(Address const&type);
+        static Ref<CodeItem> const This(Type const&type);
         static Ref<CodeItem> const Reference(Type const&target);
         static Ref<CodeItem> const CallGetter(Size const size, int const index, Type const&arg);
         static Ref<CodeItem> const CallGetter(Size const size, int const index);
         static Ref<CodeItem> const SmartList(Array<Optional<Ref<CodeItem>>> const&items);
         static Ref<CodeItem> const List(Array<Ref<CodeItem>> const&items);
+        static Ref<CodeItem> const NumberConversion(Address const&result, Type const& arg);
 
         bool const operator==(thisType const&other)const;
 

@@ -21,12 +21,12 @@ class NumberType::OperationFeature final : public Feature::Extended
             auto thisSize = thisTypeAsNumber->size.value;
             auto argSize = argTypeAsNumber->size.value;
             auto resultType = thisTypeAsNumber->Resize(ResultSize(thisSize, argSize));
-            auto code = CodeItem::BinaryOperation
+            auto code = CodeItem::NumberOperation
                 (
                 TTokenClass::Text(),
-                *resultType,
-                *thisTypeAsNumber, target.toAddress.depth,
-                *argTypeAsNumber, arg.toAddress.depth
+                resultType->toAddress,
+                target,
+                arg
                 );
             return resultType->GetResultDataSmartExts(category, l_(code));
         }

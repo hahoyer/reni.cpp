@@ -45,7 +45,7 @@ struct Type::internal
               })
           , type([&]
               {
-                  return new TypeType(parent.toAddress.data);
+                  return new TypeType(parent.thisRef);
               })
           , enableCut([&]
               {
@@ -64,7 +64,7 @@ pure_p_implementation(Type, Size, size) ;
 pure_p_implementation(Type, WeakRef<Global>, global) ;
 pure_p_implementation(Type, WeakRef<Type>, asFunctionResult) ;
 pure_p_implementation(Type, bool, isData);
-pure_p_implementation(Type, bool, isTypeTarget);
+pure_p_implementation(Type, WeakRef<Type>, toTypeTarget);
 pure_p_implementation(Type, Address, toAddress);
 pure_p_implementation(Type, WeakPtr<NumberType>, asNumberType);
 
@@ -130,7 +130,7 @@ p_implementation(Type, WeakRef<EnableCutType>, enableCutType)
 p_implementation(Type, Address, toAddress)
 {
     a_if(isData, Dump);
-    return Address(thisRef,0);
+    return Address(size,0);
 }
 
 p_implementation(Type, WeakRef<Type>, asFunctionResult)
@@ -211,10 +211,9 @@ WeakPtr<TypeType> const TypeType::Convert(Type const& target)
 }
 
 TypeType::TypeType(Type const& value) 
-    : value(value.thisRef)
+    : value(value.toTypeTarget)
 {
     SetDumpString();
-    a_if_(value.isTypeTarget);
 }
 
 SearchResult<Feature> const TypeType::DeclarationsForType(DeclarationType const& target) const
@@ -248,6 +247,11 @@ SearchResult<Feature> const TypeType::DeclarationsForType<InstanceToken>() const
     return Feature::From<InstanceFunctionFeature>();
 }
 
+
+p_implementation(EnableCutType, Address, toAddress)
+{
+    return value.toAddress;
+}
 
 SearchResult<Feature> const EnableCutType::DeclarationsForType(DeclarationType const& target) const
 {

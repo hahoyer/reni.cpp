@@ -21,9 +21,9 @@ namespace Reni
         p_function(Array<String>, DumpData) override{ return{nd(value)}; };
         p_function(WeakRef<Global>, global) override{ return value.global; }
         p_function(bool, isData) { return false; };
-        p_function(bool, isTypeTarget) override{ return false; };
+        p_function(WeakRef<Type>, toTypeTarget) override{ return value.toTypeTarget; };
         p_function(Size, size) override{ return Size::Address; }
-        p_function(Address, toAddress);
+        p_function(Address, toAddress) override;
 
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
     };

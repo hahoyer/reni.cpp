@@ -83,7 +83,7 @@ ResultData const EnableCutFeature::Result(Category category, Type const&target)c
 {
     return target
         .enableCutType
-        ->GetResultDataSmartExts(category, l_(CodeItem::This(target.toAddress)));
+        ->GetResultDataSmartExts(category, l_(CodeItem::This(target)));
 }
 
 

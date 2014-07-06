@@ -64,12 +64,13 @@ Optional<Ref<ResultCache>> const ReplaceVisitor::GetResults(External const& tag)
     return results.Find(&tag);
 }
 
-void ReplaceVisitor::Assume(External const& tag, Type const&type) const{
+void ReplaceVisitor::Assume(External const& tag, Type const& type) const
+{
     auto result = GetResults(tag);
-    if(result.IsEmpty)
+    if (result.IsEmpty)
         return ;
 
     a_if(type.toAddress.depth == 0, nd(type));
-    a_is(type, == , result.Value->type->toAddress.data);
+    a_is(type.size, ==, result.Value->type->toAddress.data);
 }
 

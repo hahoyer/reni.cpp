@@ -54,9 +54,16 @@ String const CodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref
     return "";
 }
 
-String const CodeVisitor::BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const
+String const CodeVisitor::NumberOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const
 {
     md(name, size, leftDepth, leftSize, rightDepth, rightSize)            ;
+    b_;
+    return "";
+}
+
+String const CodeVisitor::NumberConversion(Size const& size, int argDepth, Size const& argSize) const
+{
+    md(size, argDepth, argSize);
     b_;
     return "";
 }
@@ -137,7 +144,7 @@ String UnrefCode(int depth, String const&target)
 }
 
 
-String const MainCodeVisitor::BinaryOperation(String const& name, Size const&, int leftDepth, Size const&, int rightDepth, Size const&)const
+String const MainCodeVisitor::NumberOperation(String const& name, Size const&, int leftDepth, Size const&, int rightDepth, Size const&)const
 {
     return UnrefCode(leftDepth, InName(name, 0)) + " " + name + " " + UnrefCode(rightDepth, InName(name, 1));
 };

@@ -18,7 +18,8 @@ namespace Reni
         virtual String const Const(Size const size, BitsConst const& value) const;
         virtual String const DumpPrintNumber(Size const size) const;
         virtual String const FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const;
-        virtual String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const;
+        virtual String const NumberOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const;
+        virtual String const NumberConversion(Size const& size, int argDepth, Size const& argSize) const;
         virtual String const FunctionArg() const;
         virtual String const CallGetter(Size const&result, int const index, Size const&args) const;
         
@@ -36,7 +37,7 @@ namespace Reni
         String const Const(Size const size, BitsConst const& value) const override;
         String const DumpPrintNumber(Size const size) const override;
         String const FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;
-        String const BinaryOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
+        String const NumberOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
         String const CallGetter(Size const& result, int const index, Size const& args) const override;
         String const FunctionArg() const override;
         String const Visit(Ref<CodeItem> target)const;

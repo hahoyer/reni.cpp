@@ -91,9 +91,9 @@ namespace Reni{
     };
 
 
-    class BinaryOperationCode final : public FiberConnectorItem {
+    class NumberOperationCode final : public FiberConnectorItem {
         typedef FiberConnectorItem baseType;
-        typedef BinaryOperationCode thisType;
+        typedef NumberOperationCode thisType;
         Size const _size;
         Size const leftSize;
         Size const rightSize;
@@ -101,7 +101,7 @@ namespace Reni{
         int const rightDepth;
     public:
         String const name;
-        BinaryOperationCode(String const& name, Size const&size, Size const&leftSize, int leftDepth, Size const&rightSize, int rightDepth)
+        NumberOperationCode(String const& name, Size const&size, Size const&leftSize, int leftDepth, Size const&rightSize, int rightDepth)
             : name(name)
             , _size(size)
             , leftSize(leftSize)
@@ -140,13 +140,46 @@ namespace Reni{
     };
 
 
+    class NumberConversionCode final : public FiberItem {
+        typedef FiberItem baseType;
+        typedef NumberConversionCode  thisType;
+        Size const _size;
+        Size const _argSize;
+        int const argDepth;
+    public:
+        String const name;
+        NumberConversionCode(Size const&size, Size const&argSize, int argDepth)
+            : name(name)
+            , _size(size)
+            , _argSize(argSize)
+            , argDepth(argDepth)
+        {
+            SetDumpString();
+        }
+    private:
+        p_function(Array<String>, DumpData) override
+        {
+            return
+            {
+                nd(size),
+                nd(name),
+                nd(argDepth),
+                nd(_argSize)
+            };
+        };
+        p_function(Size, size) override { return _size; };
+        p_function(Size, argSize) override { return _argSize; };
+        String const ToCpp(CodeVisitor const& visitor)const override;
+        Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override{ return{}; }
+    };
+
     class TypedCode : public CodeItem {
         typedef CodeItem baseType;
         typedef TypedCode thisType;
     public:
-        Address const type;
+        Type const& type;
     protected:
-        explicit TypedCode(Address const& type);
+        explicit TypedCode(Type const& type);
     private:
         p_function(Array<String>,DumpData) override;
         p_function(Size,size) override;
@@ -157,7 +190,7 @@ namespace Reni{
         using baseType = TypedCode;
         typedef ArgCode thisType;
     public:
-        explicit ArgCode(Address const&value);
+        explicit ArgCode(Type const&value);
     private:
         p_function(Externals, exts)override;
         String const ToCpp(CodeVisitor const& visitor)const override;
@@ -169,7 +202,7 @@ namespace Reni{
         using baseType = TypedCode;
         typedef ThisCode thisType;
     public:
-        explicit ThisCode(Address const& type);
+        explicit ThisCode(Type const& type);
     private:
         p_function(Externals, exts)override;
         String const ToCpp(CodeVisitor const& visitor)const override;

@@ -52,7 +52,7 @@ namespace Reni{
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(bool, isData) = 0;
-        virtual_p(bool, isTypeTarget) { return true; };
+        virtual_p(WeakRef<Type>, toTypeTarget){ return thisRef; };
         virtual_p(Address, toAddress);
 
         WeakRef<Type> const array(int count)const;
@@ -102,6 +102,7 @@ namespace Reni{
         p_function(Size, size) override{ return value.size; }
         p_function(WeakRef<Global>, global) override{ return value.global; }
         p_function(WeakPtr<NumberType>, asNumberType)override{ return value.As<NumberType>(); }
+        p_function(Address, toAddress) override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& target) const override;
     };
 
