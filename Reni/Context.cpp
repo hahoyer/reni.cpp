@@ -65,11 +65,11 @@ RegularContext::RegularContext()
 {
 }
 
-pure_p_implementation(Context, bool, isRecursion) ;
+p_virtual_header_implementation(Context, bool, isRecursion) ;
 
-pure_p_implementation(Context, WeakRef<Global>, global) ;
+p_virtual_header_implementation(Context, WeakRef<Global>, global) ;
 
-pure_p_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
+p_virtual_header_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
 
 p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
 {

@@ -16,10 +16,10 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-pure_p_implementation(CodeItem, Size, size);
-pure_p_implementation(CodeItem, bool, isReference);
-pure_p_implementation(CodeItem, Externals, exts);
-pure_p_implementation(CodeItem, bool, isEmpty);
+p_virtual_header_implementation(CodeItem, Size, size);
+p_virtual_header_implementation(CodeItem, bool, isReference);
+p_virtual_header_implementation(CodeItem, Externals, exts);
+p_virtual_header_implementation(CodeItem, bool, isEmpty);
 
 bool const CodeItem::operator==(thisType const& other) const
 {

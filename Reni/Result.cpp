@@ -44,7 +44,7 @@ void ResultCache::Ensure(Category category)const
     thisRef.SetDumpString();
 }
 
-pure_p_implementation(ResultCache, bool, isRecursion) ;
+p_virtual_header_implementation(ResultCache, bool, isRecursion) ;
 
 p_implementation(ResultCache, Category, complete)
 {

@@ -12,9 +12,9 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-pure_p_implementation(FiberItem, Size, argSize); 
-pure_p_implementation(FiberItem, Size, size); 
-pure_p_implementation(FiberItem, Externals, exts);
+p_virtual_header_implementation(FiberItem, Size, argSize); 
+p_virtual_header_implementation(FiberItem, Size, size); 
+p_virtual_header_implementation(FiberItem, Externals, exts);
 
 Optional<Ref<FiberItem>> const FiberItem::Replace(ReplaceVisitor const&visitor) const
 {
@@ -107,8 +107,8 @@ String const FiberCode::ToCpp(CodeVisitor const&visitor) const{
 
 int FiberConnectorItem::nextObjectId = 0;
 
-pure_p_implementation(FiberConnectorItem, int, inCount);
-pure_p_implementation(FiberConnectorItem, Size, size);
-pure_p_implementation(FiberConnectorItem, Externals, exts);
-pure_p_implementation(FiberConnectorItem, String, prefix);
+p_virtual_header_implementation(FiberConnectorItem, int, inCount);
+p_virtual_header_implementation(FiberConnectorItem, Size, size);
+p_virtual_header_implementation(FiberConnectorItem, Externals, exts);
+p_virtual_header_implementation(FiberConnectorItem, String, prefix);
 

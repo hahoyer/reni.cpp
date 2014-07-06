@@ -31,4 +31,4 @@ namespace Reni
 
 using namespace Reni;
 
-inline pure_p_implementation(ReplaceSyntaxVisitor, Ref<Syntax>, arg);
+inline p_virtual_header_implementation(ReplaceSyntaxVisitor, Ref<Syntax>, arg);

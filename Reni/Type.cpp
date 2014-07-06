@@ -60,13 +60,13 @@ Type::Type() : _internal(new internal(*this))
 {
 }
 
-pure_p_implementation(Type, Size, size) ;
-pure_p_implementation(Type, WeakRef<Global>, global) ;
-pure_p_implementation(Type, WeakRef<Type>, asFunctionResult) ;
-pure_p_implementation(Type, bool, isData);
-pure_p_implementation(Type, WeakRef<Type>, toTypeTarget);
-pure_p_implementation(Type, Address, toAddress);
-pure_p_implementation(Type, WeakPtr<NumberType>, asNumberType);
+p_virtual_header_implementation(Type, Size, size) ;
+p_virtual_header_implementation(Type, WeakRef<Global>, global) ;
+p_virtual_header_implementation(Type, WeakRef<Type>, asFunctionResult) ;
+p_virtual_header_implementation(Type, bool, isData);
+p_virtual_header_implementation(Type, WeakRef<Type>, toTypeTarget);
+p_virtual_header_implementation(Type, Address, toAddress);
+p_virtual_header_implementation(Type, WeakPtr<NumberType>, asNumberType);
 
 SearchResult<Feature> const Type::Declarations(TypeType const&provider) const
 {

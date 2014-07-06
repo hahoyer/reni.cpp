@@ -23,7 +23,7 @@ Ref<Syntax> const TokenClass::Mismatch(Optional<Ref<Syntax>> const left, SourceP
     return Optional<Ref<Syntax>>();
 }
 
-pure_p_implementation(TokenClass, bool, AcceptsMatch);
+p_virtual_header_implementation(TokenClass, bool, AcceptsMatch);
 
 SearchResult<Feature>  const DefineableToken::Declarations(TypeType const&) const{ return{}; }
 
@@ -48,7 +48,7 @@ Ref<Syntax> const DefineableToken::CreateSyntax(Optional<Ref<Syntax>> const left
     return new ExpressionSyntax(*this, left, part, right);
 };
 
-pure_p_implementation(DefineableToken, int, priority);
+p_virtual_header_implementation(DefineableToken, int, priority);
 
 tc_Search_implementation(InstanceToken, TypeType);
 tc_Search_implementation(PlusToken, NumberType);

@@ -59,7 +59,7 @@ p_implementation(DumpableObject, String, Dump){
     return DumpLong;
 }
 
-pure_p_implementation(DumpableObject, String, DumpHeader);
+p_virtual_header_implementation(DumpableObject, String, DumpHeader);
 p_implementation(DumpableObject, String, DumpHeader){
     return HWLib::DumpTypeName(*this);
 };
@@ -77,10 +77,10 @@ p_implementation(DumpableObject, String, DumpLong){
     return DumpHeader + String::Surround("{", dataResult, "}");
 };
 
-virtual_p_implementation(DumpableObject, String, DumpShort){
+p_virtual_implementation(DumpableObject, String, DumpShort){
     return DumpHeader;
 };
 
-pure_p_implementation(DumpableObject, Array<String>, DumpData);
+p_virtual_header_implementation(DumpableObject, Array<String>, DumpData);
 
 #include "TemplateInstances.h"

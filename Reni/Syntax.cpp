@@ -47,8 +47,8 @@ ResultData const TypeOperatorSyntax::GetResultData(Context const& context, Categ
     return context.global->voidType.GetResultDataEmpty(category);
 }
 
-pure_p_implementation(Syntax, String, SmartDump);
-pure_p_implementation(Syntax, int, priority);
+p_virtual_header_implementation(Syntax, String, SmartDump);
+p_virtual_header_implementation(Syntax, int, priority);
 
 p_implementation(Syntax, Array<String>, DumpData) 
 {
