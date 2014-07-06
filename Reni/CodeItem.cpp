@@ -3,6 +3,7 @@
 
 #include "../HWLib/RefCountContainer.instance.h"
 
+#include "Address.h"
 #include "CodeItems.h"
 #include "External.h"
 #include "Externals.h"
@@ -26,29 +27,32 @@ bool const CodeItem::operator==(thisType const& other) const
     return this == &other;
 }
 
-Ref<CodeItem> const CodeItem::Arg(Type const&value, int depth)
+Ref<CodeItem> const CodeItem::Arg(Address const&value)
 {
-    a_if(*value.dereferencedType == value, nd(value));
-    a_if(depth == 0 || value.size > Size(0), nd(value) + nd(depth));
-    if(value.size == 0)
-        return Const(BitsConst::Empty());
-    return new ArgCode(value, depth);
+    return new ArgCode(value);
 };
 
 Ref<CodeItem> const CodeItem::BinaryOperation(
     String name,
-    NumberType const&result,
-    NumberType const&left, int leftDepth,
-    NumberType const&right, int rightDepth
-    )
+    NumberType const& result,
+    NumberType const& left, int leftDepth,
+    NumberType const& right, int rightDepth
+)
 {
     auto action = new BinaryOperationCode(name, result.size, left.size, leftDepth, right.size, rightDepth);
-    return new FiberConnector({This(left, leftDepth), Arg(right, rightDepth)}, action);
+    return new FiberConnector
+        (
+            {
+                This(Address(left, leftDepth)),
+                Arg(Address(right, rightDepth))
+            },
+            action
+        );
 };
 
 Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Type const& arg)
 {
-    return Arg(*arg.dereferencedType, arg.addressLevel)
+    return Arg(arg.toAddress)
         ->Fiber({new CallGetterFiber(size, index, arg.size)})
         ->thisRef;
 }
@@ -102,7 +106,7 @@ Ref<CodeItem> const CodeItem::Const(BitsConst const&value)
 
 Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value)
 {
-    return This(value, 0)
+    return This(value.toAddress)
         ->Fiber({new DumpPrintNumberCode(value.size)})
         ->thisRef;
 };
@@ -112,11 +116,9 @@ Ref<CodeItem> const CodeItem::Reference(Type const&value)
     return new ReferenceCode(value);
 }
 
-Ref<CodeItem> const CodeItem::This(Type const&value, int depth)
+Ref<CodeItem> const CodeItem::This(Address const&value)
 {
-    if(value.size == 0)
-        return Const(BitsConst::Empty());
-    return new ThisCode(value, depth);
+    return new ThisCode(value);
 }
 
 Ref<FiberCode> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
@@ -167,12 +169,17 @@ String const DumpPrintNumberCode::ToCpp(CodeVisitor const& visitor)const
     return visitor.DumpPrintNumber(_size);
 };
 
+TypedCode::TypedCode(Address const& type): type(type)
+{
+}
+
+p_implementation(TypedCode, Array<String>, DumpData) { return{nd(type)}; };
 
 p_implementation(TypedCode, Size, size)
 {
-    if(depth > 0)
+    if(type.depth > 0)
         return Size::Address;
-    return type.size;
+    return type.data.size;
 }
 
 
@@ -184,7 +191,7 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const
     mb;
 }
 
-ArgCode::ArgCode(Type const& type, int depth) : baseType(type, depth)
+ArgCode::ArgCode(Address const& type) : baseType(type)
 {
     SetDumpString();
     b_if(ObjectId == -10, Dump);
@@ -192,12 +199,12 @@ ArgCode::ArgCode(Type const& type, int depth) : baseType(type, depth)
 
 Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    visitor.Assume(External::Arg::Instance, type);
+    visitor.Assume(External::Arg::Instance, type.data);
     return visitor.GetCode(External::Arg::Instance);
 };
 
 
-FunctionArgCode::FunctionArgCode(Type const& type) : baseType(type, 1)
+FunctionArgCode::FunctionArgCode(Type const& type) : baseType(Address(type, 1))
 {
     SetDumpString();
     b_if(ObjectId == -10, Dump);
@@ -206,6 +213,11 @@ FunctionArgCode::FunctionArgCode(Type const& type) : baseType(type, 1)
 String const FunctionArgCode::ToCpp(CodeVisitor const& visitor)const
 {
     return visitor.FunctionArg();
+}
+
+ThisCode::ThisCode(Address const& type): baseType(type)
+{
+    SetDumpString();
 }
 
 p_implementation(ThisCode, Externals, exts){ return Externals(External::This::Instance); }
@@ -223,7 +235,7 @@ String const CallGetterFiber::ToCpp(CodeVisitor const& visitor)const
 
 Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    visitor.Assume(External::This::Instance, type);
+    visitor.Assume(External::This::Instance, type.data);
     return visitor.GetCode(External::This::Instance);
 };
 

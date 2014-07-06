@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Address.h"
 #include "Feature.h"
 #include "Result.h"
 
@@ -24,8 +25,8 @@ class NumberType::OperationFeature final : public Feature::Extended
                 (
                 TTokenClass::Text(),
                 *resultType,
-                *thisTypeAsNumber, target.addressLevel,
-                *argTypeAsNumber, arg.addressLevel
+                *thisTypeAsNumber, target.toAddress.depth,
+                *argTypeAsNumber, arg.toAddress.depth
                 );
             return resultType->GetResultDataSmartExts(category, l_(code));
         }

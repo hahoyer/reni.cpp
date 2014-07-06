@@ -15,7 +15,7 @@ using namespace HWLib;
 using namespace Util;
 
 namespace Reni{
-    class AddressType;
+    class Address;
     class ArrayType;
     class CodeItem;
     class ContextReference;
@@ -51,9 +51,9 @@ namespace Reni{
         p(bool, HasData){ return size != 0; };
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
-        virtual_p(int, addressLevel) { return 0; };
+        virtual_p(bool, isData) = 0;
         virtual_p(bool, isTypeTarget) { return true; };
-        virtual_p(WeakRef<Type>, dereferencedType) { return thisRef; };
+        virtual_p(Address, toAddress);
 
         WeakRef<Type> const array(int count)const;
         p(WeakRef<NumberType>, numberType);
@@ -98,6 +98,7 @@ namespace Reni{
         ThisRef;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(value)}; };
+        p_function(bool, isData) { return false; };
         p_function(Size, size) override{ return value.size; }
         p_function(WeakRef<Global>, global) override{ return value.global; }
         p_function(WeakPtr<NumberType>, asNumberType)override{ return value.As<NumberType>(); }

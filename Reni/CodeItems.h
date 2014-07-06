@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Address.h"
 #include "CodeItem.h"
 #include "Fiber.h"
 #include "../HWLib/DumpToString.h"
@@ -143,15 +144,11 @@ namespace Reni{
         typedef CodeItem baseType;
         typedef TypedCode thisType;
     public:
-        Type const& type;
-        int const depth;
-        TypedCode(Type const&type, int depth)
-            : type(type)
-            , depth(depth)
-        {
-        }
+        Address const type;
+    protected:
+        explicit TypedCode(Address const& type);
     private:
-        p_function(Array<String>,DumpData) override{ return{nd(type),nd(depth)}; };
+        p_function(Array<String>,DumpData) override;
         p_function(Size,size) override;
     };
 
@@ -160,7 +157,7 @@ namespace Reni{
         using baseType = TypedCode;
         typedef ArgCode thisType;
     public:
-        ArgCode(Type const&type, int depth);
+        explicit ArgCode(Address const&value);
     private:
         p_function(Externals, exts)override;
         String const ToCpp(CodeVisitor const& visitor)const override;
@@ -172,11 +169,7 @@ namespace Reni{
         using baseType = TypedCode;
         typedef ThisCode thisType;
     public:
-        ThisCode(Type const&type, int depth)
-            : baseType(type, depth)
-        {
-            SetDumpString();
-        }
+        explicit ThisCode(Address const& type);
     private:
         p_function(Externals, exts)override;
         String const ToCpp(CodeVisitor const& visitor)const override;

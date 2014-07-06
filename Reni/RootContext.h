@@ -4,12 +4,14 @@
 #include "../HWLib/WeakRef.h"
 #include "../HWLib/CtrlRef.h"
 
-namespace Reni{
+namespace Reni
+{
     class BitType;
     class VoidType;
     class Global;
 
-    class RootContext : public RegularContext{
+    class RootContext : public RegularContext
+    {
         typedef RegularContext baseType;
         typedef RootContext thisType;
         class internal;

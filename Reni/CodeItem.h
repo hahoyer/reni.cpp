@@ -29,7 +29,7 @@ namespace Reni
         typedef ReniRuntime::Stack::dataType dataItemType;
         typedef ReniRuntime::Stack::sizeType dataItemSizeType;
 
-        static Ref<CodeItem> const Arg(Type const&value, int depth);
+        static Ref<CodeItem> const Arg(Address const&type);
         static Ref<CodeItem> const FunctionArg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
         static Ref<CodeItem> const Empty(){ return Const(BitsConst::Empty()); };
@@ -41,7 +41,7 @@ namespace Reni
             NumberType const&right, int rightDepth
             );
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
-        static Ref<CodeItem> const This(Type const&value, int depth);
+        static Ref<CodeItem> const This(Address const&type);
         static Ref<CodeItem> const Reference(Type const&target);
         static Ref<CodeItem> const CallGetter(Size const size, int const index, Type const&arg);
         static Ref<CodeItem> const CallGetter(Size const size, int const index);

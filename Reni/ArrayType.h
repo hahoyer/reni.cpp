@@ -31,5 +31,6 @@ namespace Reni{
                     nd(count)
                 };
         }
+        p_function(bool, isData) { return true; };
     };
 };

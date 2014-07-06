@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Feature.h"
 
+#include "Address.h"
 #include "CodeItems.h"
 #include "ContextFeature.h"
 #include "DefineableToken.h"
@@ -82,7 +83,7 @@ ResultData const EnableCutFeature::Result(Category category, Type const&target)c
 {
     return target
         .enableCutType
-        ->GetResultDataSmartExts(category, l_(CodeItem::This(target, 0)));
+        ->GetResultDataSmartExts(category, l_(CodeItem::This(target.toAddress)));
 }
 
 

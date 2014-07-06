@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Type.h"
 
+#include "Address.h"
 #include "AddressType.h"
 #include "ArrayType.h"
 #include "BitType.h"
@@ -44,7 +45,7 @@ struct Type::internal
               })
           , type([&]
               {
-                  return new TypeType(*parent.dereferencedType);
+                  return new TypeType(parent.toAddress.data);
               })
           , enableCut([&]
               {
@@ -62,9 +63,9 @@ Type::Type() : _internal(new internal(*this))
 pure_p_implementation(Type, Size, size) ;
 pure_p_implementation(Type, WeakRef<Global>, global) ;
 pure_p_implementation(Type, WeakRef<Type>, asFunctionResult) ;
-pure_p_implementation(Type, int, addressLevel);
+pure_p_implementation(Type, bool, isData);
 pure_p_implementation(Type, bool, isTypeTarget);
-pure_p_implementation(Type, WeakRef<Type>, dereferencedType);
+pure_p_implementation(Type, Address, toAddress);
 pure_p_implementation(Type, WeakPtr<NumberType>, asNumberType);
 
 SearchResult<Feature> const Type::Declarations(TypeType const&provider) const
@@ -126,6 +127,12 @@ p_implementation(Type, WeakRef<EnableCutType>, enableCutType)
     return &_internal->enableCut.Value->thisRef;
 };
 
+p_implementation(Type, Address, toAddress)
+{
+    a_if(isData, Dump);
+    return Address(thisRef,0);
+}
+
 p_implementation(Type, WeakRef<Type>, asFunctionResult)
 {
     return(thisRef);
@@ -186,6 +193,8 @@ SearchResult<Feature> const Type::DeclarationsForType(DeclarationType const& tar
     b_;
     return_d(SearchResult<Feature>());
 }
+
+p_implementation(AddressType, Address, toAddress){return value.toAddress + 1;}
 
 SearchResult<Feature> const AddressType::DeclarationsForType(DeclarationType const& target) const
 {

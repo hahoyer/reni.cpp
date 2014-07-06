@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "ReplaceVisitor.h"
 
+#include "Address.h"
 #include "CodeItem.h"
 #include "ContainerContext.h"
 #include "External.h"
@@ -55,7 +56,7 @@ void ReplaceVisitor::Assume(External::Function const& tag, FunctionCallContext c
     if (result.IsEmpty)
         return;
 
-    a_is(*context.arg->dereferencedType, == , *result.Value->type->dereferencedType);
+    a_is(context.arg->toAddress.data, == , result.Value->type->toAddress.data);
 }
 
 Optional<Ref<ResultCache>> const ReplaceVisitor::GetResults(External const& tag) const
@@ -68,7 +69,7 @@ void ReplaceVisitor::Assume(External const& tag, Type const&type) const{
     if(result.IsEmpty)
         return ;
 
-    a_if(type.addressLevel == 0, nd(type));
-    a_is(type, == , *result.Value->type->dereferencedType);
+    a_if(type.toAddress.depth == 0, nd(type));
+    a_is(type, == , result.Value->type->toAddress.data);
 }
 
