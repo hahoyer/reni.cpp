@@ -42,6 +42,7 @@ namespace Reni
         Global();
         ThisRef;
 
+        BoolType const boolType;
         BitType const bitType;
         VoidType const voidType;
 

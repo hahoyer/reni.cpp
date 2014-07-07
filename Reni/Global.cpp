@@ -50,9 +50,10 @@ private:
 };
 
 Global::Global()
-    : bitType(this)
-      , voidType(this)
-      , _internal(new internal)
+    : boolType(this)
+    , bitType(this)
+    , voidType(this)
+    , _internal(new internal)
 {
 }
 

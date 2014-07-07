@@ -4,22 +4,45 @@
 
 using namespace Util;
 
-namespace Reni{
+namespace Reni
+{
     class ArrayType;
     class DumpPrintToken;
 
-    class BitType final : public Type{
+    class BitType final : public Type
+    {
         using baseType = Type;
         using thisType = BitType;
         WeakRef<Global> _global;
     public:
-        BitType(WeakRef<Global> global)
-        : _global(global){
+        explicit BitType(WeakRef<Global> global)
+            : _global(global)
+        {
             SetDumpString();
         }
+
         ThisRef;
     private:
-        p_function(Size,size) override;
+        p_function(Size, size) override{ return 1; }
+        p_function(WeakRef<Global>, global) override{ return _global; };
+        p_function(bool, isData) { return true; };
+    };
+
+    class BoolType final : public Type
+    {
+        using baseType = Type;
+        using thisType = BoolType;
+        WeakRef<Global> _global;
+    public:
+        explicit BoolType(WeakRef<Global> global)
+            : _global(global)
+        {
+            SetDumpString();
+        }
+
+        ThisRef;
+    private:
+        p_function(Size, size) override{ return 1; }
         p_function(WeakRef<Global>, global) override{ return _global; };
         p_function(bool, isData) { return true; };
     };

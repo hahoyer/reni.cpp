@@ -177,6 +177,8 @@ Optional<Size> const ResultData::ReplenishSize(Category const& category, Optiona
 
 ResultData const ResultData::Convert(Type const& destination) const
 {
+    if(complete == Category::None)
+        return *this;
     if(destination == *type)
         return *this;
     md(destination);

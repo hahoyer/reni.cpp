@@ -1,9 +1,11 @@
 #include "Import.h"
 #include "ConditionalSyntax.h"
 
+#include "CodeItem.h"
 #include "Feature.h"
 #include "RecursionContext.h"
 #include "Type.h"
+#include "Global.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -75,16 +77,34 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
         return{};
     }
 
-    if(category == Category::Type)
-    {
-        auto thenType = thenClause->Type(context);
-        auto elseType = elseClause->Type(context);
-        return *thenType->Common(*elseType);
-    }
+    auto conditionCategory =
+        (category.hasCode || category.hasExts)
+            ? category.typed
+            : Category::None;
 
-    md(context, category);
-    b_;
-    return{};
+    auto conditionResult =
+        condition
+        ->GetResultCache(context)
+        ->Get(conditionCategory)
+        .Convert(context.global->boolType);
+
+    auto thenResult = 
+        thenClause
+        ->GetResultCache(context)
+        ->Get(category);
+    
+    auto elseResult = 
+        elseClause
+        ->GetResultCache(context)
+        ->Get(category);
+
+    return ResultData::GetSmartSize
+        (
+            category,
+            l_(CodeItem::IfThenElse(conditionResult.code, thenResult.code, elseResult.code)),
+            l_(thenResult.type->Common(*elseResult.type)),
+            l_(conditionResult.exts.Value + thenResult.exts.Value + elseResult.exts.Value)
+        );
 }
 
 Optional<Ref<Syntax>> const IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const
@@ -96,3 +116,4 @@ Optional<Ref<Syntax>> const IfThenElseSyntax::Replace(SyntaxArgVisitor const&vis
         return{};
     return new IfThenElseSyntax(newLeft || condition, newRight || thenClause, part, newElse || elseClause);
 }
+

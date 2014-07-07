@@ -48,6 +48,7 @@ namespace Reni
         static Ref<CodeItem> const SmartList(Array<Optional<Ref<CodeItem>>> const&items);
         static Ref<CodeItem> const List(Array<Ref<CodeItem>> const&items);
         static Ref<CodeItem> const NumberConversion(Address const&result, Type const& arg);
+        static Ref<CodeItem> const IfThenElse(Ref<CodeItem> const condition, Ref<CodeItem> const then, Ref<CodeItem> const _else);
 
         bool const operator==(thisType const&other)const;
 

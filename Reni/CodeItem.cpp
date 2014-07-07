@@ -75,6 +75,13 @@ Ref<CodeItem> const CodeItem::NumberConversion(Address const& result, Type const
         ->thisRef;
 }
 
+Ref<CodeItem> const CodeItem::IfThenElse(Ref<CodeItem> const condition, Ref<CodeItem> const then, Ref<CodeItem> const _else)
+{
+    fd(condition, then, _else);
+    mb;
+    return Empty();
+}
+
 Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Type const& arg)
 {
     return Arg(arg)
@@ -254,7 +261,6 @@ String const CallGetterFiber::ToCpp(CodeVisitor const& visitor)const
 
 Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    visitor.Assume(External::This::Instance, type);
     return visitor.GetCode(External::This::Instance);
 };
 
