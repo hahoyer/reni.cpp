@@ -55,8 +55,6 @@ tc_Search_implementation(PlusToken, NumberType);
 tc_Search_implementation(MinusToken, NumberType);
 tc_Search_implementation(StarToken, NumberType);
 tc_Search_implementation(EnableCutToken, NumberType);
+tc_Search_implementation(EqualToken, NumberType);
+tc_Search_implementation(DumpPrintToken, NumberType);
 
-SearchResult<Feature> const DumpPrintToken::Declarations(NumberType const& target) const
-{
-    return target.DeclarationsForType<DumpPrintToken>();
-};

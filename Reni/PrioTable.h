@@ -4,10 +4,12 @@ using namespace HWLib;
 using namespace HWLang;
 
 
-namespace Reni{
-
-    struct PrioTable{
-        static HWLang::PrioTable const Main(){
+namespace Reni
+{
+    struct PrioTable
+    {
+        static HWLang::PrioTable const Main()
+        {
             return
                 HWLang::PrioTable()
                 .Left({Any})
@@ -24,6 +26,5 @@ namespace Reni{
                 .ParenthesisLevel({Start}, {End})
                 ;
         };
-
     };
 }

@@ -3,6 +3,7 @@
 #include "Address.h"
 #include "Feature.h"
 #include "Result.h"
+#include "Global.h"
 
 using namespace Reni;
 
@@ -18,9 +19,8 @@ class NumberType::OperationFeature final : public Feature::Extended
         auto argTypeAsNumber = arg.As<NumberType>();
         if(!thisTypeAsNumber.IsEmpty && !argTypeAsNumber.IsEmpty)
         {
-            auto thisSize = thisTypeAsNumber->size.value;
             auto argSize = argTypeAsNumber->size.value;
-            auto resultType = thisTypeAsNumber->Resize(ResultSize(thisSize, argSize));
+            auto resultType = thisTypeAsNumber->ResultType<TTokenClass>(argSize);
             auto code = CodeItem::NumberOperation
                 (
                 TTokenClass::Text(),
@@ -37,6 +37,7 @@ class NumberType::OperationFeature final : public Feature::Extended
     }
 
     static int const ResultSize(int target, int arg);
+    static WeakRef<Type> const ResultType(NumberType const& target, int arg);
 };
 
 
@@ -62,19 +63,26 @@ SearchResult<Feature> const NumberType::DeclarationsForType() const
 };
 
 template<>
-inline int const NumberType::OperationFeature<MinusToken>::ResultSize(int target, int arg)
+inline WeakRef<Type> const NumberType::ResultType<MinusToken>(int other)const
 {
-    return BitsConst::MinusSize(target, arg);
+    return Resize(BitsConst::MinusSize(size.value, other));
 }
 
 template<>
-inline int const NumberType::OperationFeature<PlusToken>::ResultSize(int target, int arg)
+inline WeakRef<Type> const NumberType::ResultType<PlusToken>(int other)const
 {
-    return BitsConst::PlusSize(target, arg);
+    return Resize(BitsConst::PlusSize(size.value, other));
 }
 
 template<>
-inline int const NumberType::OperationFeature<StarToken>::ResultSize(int target, int arg)
+inline WeakRef<Type> const NumberType::ResultType<StarToken>(int other)const
 {
-    return BitsConst::TimesSize(target, arg);
+    return Resize(BitsConst::TimesSize(size.value, other));
 }
+
+template<>
+inline WeakRef<Type> const NumberType::ResultType<EqualToken>(int )const
+{
+    return global->boolType.thisRef;
+}
+

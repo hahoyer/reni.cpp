@@ -40,6 +40,8 @@ namespace Reni
 
         template<class TTokenClass>
         class OperationFeature;
+        template<class TTokenClass>
+        WeakRef<Type> const ResultType(int other)const;
 
     };
 };

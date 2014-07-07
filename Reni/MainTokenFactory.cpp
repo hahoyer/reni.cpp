@@ -161,6 +161,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new DumpPrintToken);
     AddTokenClass(new EnableCutToken);
     AddTokenClass(new ElseToken);
+    AddTokenClass(new EqualToken);
     AddTokenClass(new FunctionToken);
     AddTokenClass(new InstanceToken);
     AddTokenClass(new LeftParenthesisToken(1));

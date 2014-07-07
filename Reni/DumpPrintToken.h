@@ -52,4 +52,11 @@ namespace Reni
     private:
         tc_Search(TypeType);
     };
+
+    struct EqualToken final : public NamedDefinableToken<EqualToken>
+    {
+        static String const Text(){ return "="; }
+    private:
+        tc_Search(NumberType);
+    };
 }
