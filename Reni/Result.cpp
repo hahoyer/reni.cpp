@@ -30,15 +30,18 @@ void ResultCache::Ensure(Category category)const
     auto newTodo = todo - pending;
     LevelValue<Category> localPending(pending, pending | newTodo);
 
-    if(newTodo == Category::None)
+    if(newTodo == Category::None && todo != Category::Exts)
     {
         a_if(todo == Category::Type, nd(category) + nd(complete) + nd(pending));
         a_if(pending == Category::Type, nd(category) + nd(complete) + nd(pending));
     }
 
-    //b_if_(newTodo.hasExts && ((ResultFromSyntaxAndContext const*)this)->syntax.ObjectId == 3)
+    ResultData newResultData =
+        (newTodo == Category::None && todo == Category::Exts)
+            ? ResultData(Externals())
+            : GetResultData(newTodo);
 
-    data = data + GetResultData(newTodo);
+    data = data + newResultData;
 
     a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
     thisRef.SetDumpString();
@@ -248,6 +251,13 @@ ResultData const ResultData::GetSmartSizeExts(
 ResultData::ResultData(Type const& type)
     : size(type.size)
       , type(type.thisRef)
+{
+    SetDumpString();
+    AssertValid();
+}
+
+ResultData::ResultData(Externals exts)
+    : exts(exts)
 {
     SetDumpString();
     AssertValid();
