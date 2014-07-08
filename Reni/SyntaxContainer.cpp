@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "SyntaxContainer.h"
 
+#include "EmptySyntax.h"
 #include "ExpressionSyntax.h"
 #include "CodeItems.h"
 #include "DefineableToken.h"
@@ -12,19 +13,10 @@ using namespace Reni;
 static bool Trace = true;
 
 
-class EmptySyntax final : public Syntax
+void EmptySyntax::AddTo(SyntaxContainer& main) const
 {
-    using baseType = Syntax; 
-    using thisType = EmptySyntax;
-public:
-    explicit EmptySyntax(SourcePart const& part)
-        : Syntax(part) {}
-private:
-    p_function(String, SmartDump) override{ return ""; };
-    p_function(int, priority) override{ return 0; }
-    void AddTo(SyntaxContainer& main) const override{main.statements += thisRef;}
-};
-
+    main.statements += thisRef;
+}
 
 SyntaxContainer::SyntaxContainer(SourcePart const&part) 
     : baseType(part)

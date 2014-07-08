@@ -47,6 +47,7 @@
     <ClCompile Include="MainTokenFactory.cpp" />
     <ClInclude Include="Address.h" />
     <ClInclude Include="Compiler.internal.h" />
+    <ClInclude Include="EmptySyntax.h" />
     <ClInclude Include="FunctionCallResultCache.h" />
     <ClInclude Include="ContainerContext.h" />
     <ClInclude Include="Externals.h" />
