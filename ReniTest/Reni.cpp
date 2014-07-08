@@ -64,7 +64,14 @@ namespace _Reni
         )", "3");
     }
 
-    test(RecursiveFunction, Function, _HWLang::ThenElse, _HWLang::TrainWreck)
+    test(PrimitiveRecursiveFunctionByteWithDump, Function, _HWLang::ThenElse, _HWLang::TrainWreck)
+    {
+        CompilerTest::Check(
+            R"(i: 10; f: /\ i > 0 then (i := (i - 1)enable_cut; i dump_print; f());f();)", 
+            "9876543210");
+    }
+
+    test(RecursiveFunction, PrimitiveRecursiveFunctionByteWithDump)
     {
         CompilerTest::Check(R"(
 f: /\
