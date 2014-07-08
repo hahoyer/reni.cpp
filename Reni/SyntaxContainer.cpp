@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "SyntaxContainer.h"
 
+#include "ContainerContext.h"
 #include "EmptySyntax.h"
 #include "ExpressionSyntax.h"
 #include "CodeItems.h"
@@ -56,12 +57,17 @@ void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const
 
 ResultData const SyntaxContainer::GetResultData(Context const& context, Category category) const
 {
-    if(category == Category::Code)
-        return GetCode(context);
-
-    md(context, category);
-    b_;
-    return{};
+    return ResultData::GetSmartSizeExts
+        (
+        category,
+        l_(GetCode(context)),
+        l_(GetType(context))
+        );
+}
+     
+WeakRef<Type> const SyntaxContainer::GetType(Context const& context) const
+{
+    return context.Container(*this, statements.Count)->dataType;
 }
 
 void SyntaxContainer::Add(Optional<Ref<Syntax>> const& value)

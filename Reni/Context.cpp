@@ -46,9 +46,9 @@ struct RegularContext::internal final
     ValueCache<WeakRef<RecursionContext>> recursionContext;
 
     explicit internal(RegularContext const&context)
-        : container([&](SyntaxContainer const*containerData, int index)
+        : container([&](SyntaxContainer const*statements, int viewIndex)
               {
-                  return new ContainerContext(context, *containerData, index);
+                  return new ContainerContext(context, *statements, viewIndex);
               })
           , functionType([&](FunctionSyntax const*body)
               {
@@ -88,9 +88,9 @@ RegularContext::operator Optional<Ref<ContextFeatureProvider<DefineableToken>>>(
     mb;
 }
 
-WeakRef<Context> const RegularContext::Container(SyntaxContainer const& syntax, int index) const
+WeakRef<ContainerContext> const RegularContext::Container(SyntaxContainer const& statements, int viewIndex) const
 {
-    return _internal->container(&syntax, index)->thisRef;
+    return _internal->container(&statements, viewIndex)->thisRef;
 }
 
 
@@ -245,9 +245,9 @@ WeakPtr<Type> const RecursionContext::CachedType(Syntax const& target) const
     return target.CachedType(parent);
 }
 
-WeakRef<Context> const RecursionContext::Container(SyntaxContainer const& syntax, int index) const
+WeakRef<ContainerContext> const RecursionContext::Container(SyntaxContainer const& statements, int viewIndex) const
 {
-    md(syntax, index);
+    md(statements, viewIndex);
     mb;
 }
 

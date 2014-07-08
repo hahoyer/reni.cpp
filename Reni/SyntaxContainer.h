@@ -6,6 +6,8 @@ using namespace HWLib;
 
 namespace Reni
 {
+    class Type;
+
     class SyntaxContainer final: public Syntax
     {
         typedef Syntax baseType;
@@ -29,6 +31,7 @@ namespace Reni
         p_function(int, priority) override{ return -12; }
         void AddTo(SyntaxContainer&) const override;
         ResultData const GetResultData(Context const& context, Category category) const override;
+        WeakRef<Reni::Type> const GetType(Context const& context) const;
         Ref<CodeItem> const GetCode(Context const& context) const;
         Ref<CodeItem> const GetCode(Context const& context, int index) const;
     };

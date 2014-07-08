@@ -24,7 +24,7 @@ namespace Reni
         p_function(bool, isRecursion) override{ return true; };
 
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
-        WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const override;
+        WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, int index) const override;
         SearchResult<ContextFeature> const DeclarationsForType(DefineableToken const& token) const override;
     };
 

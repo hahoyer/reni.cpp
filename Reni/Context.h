@@ -12,6 +12,7 @@ using namespace HWLib;
 using namespace Util;
 
 namespace Reni{
+    class ContainerContext;
     class FunctionSyntax;
     class FunctionBodyType;
     class Global;
@@ -37,7 +38,7 @@ namespace Reni{
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
         virtual ResultData const ReferenceResult(Category category, External::Function const& external) const;
         virtual SearchResult<ContextFeature> const DeclarationsForType(DefineableToken const&token)const;
-        virtual WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const = 0;
+        virtual WeakRef<ContainerContext> const Container(SyntaxContainer const& statements, int viewIndex) const = 0;
     };
 
     class RegularContext: public Context
@@ -55,7 +56,7 @@ namespace Reni{
     public:
         p(WeakRef<RecursionContext>, recursionContext);
 
-        WeakRef<Context> const Container(SyntaxContainer const& syntax, int index) const override;
+        WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, int index) const override;
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
 
         virtual operator Optional<Ref<ContextFeatureProvider<MinusToken>>>()const;

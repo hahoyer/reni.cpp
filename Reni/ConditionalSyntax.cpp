@@ -29,9 +29,44 @@ p_implementation(IfThenSyntax, String, SmartDump)
 
 ResultData const IfThenSyntax::GetResultData(Context const&context, Category category)const
 {
-    md(context, category);
-    b_;
-    return{};
+    WeakRef<Reni::Type> elseType = context.global->voidType.thisRef;
+    auto recursionContext = dynamic_cast<RecursionContext const*>(&context);
+    if(recursionContext)
+    {
+        if(category == Category::Type)
+            return *elseType;
+
+        if(category == Category::Exts)
+            return Externals();
+
+        md(context, category);
+        b_;
+        return{};
+    }
+
+    auto conditionCategory =
+        (category.hasCode || category.hasExts)
+        ? category.typed
+        : Category::None;
+
+    auto conditionResult =
+        condition
+        ->GetResultCache(context)
+        ->Get(conditionCategory)
+        .Convert(context.global->boolType);
+
+    auto thenResult =
+        thenClause
+        ->GetResultCache(context)
+        ->Get(category);
+
+    return ResultData::GetSmartSize
+        (
+        category,
+        l_(CodeItem::IfThenElse(conditionResult.code, thenResult.code, CodeItem::Empty())),
+        l_(elseType),
+        l_(conditionResult.exts.Value + thenResult.exts.Value)
+        );
 }
 
 Optional<Ref<Syntax>> const IfThenSyntax::Replace(SyntaxArgVisitor const&visitor) const{
