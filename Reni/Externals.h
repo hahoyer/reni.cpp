@@ -6,6 +6,7 @@
 #include "../HWLib/CtrlRef.h"
 #include "../HWLib/DumpToString.h"
 #include "../HWLib/Enumerable.h"
+#include "../HWLib/Common.h"
 
 using namespace HWLib;
 using namespace std;
@@ -24,6 +25,7 @@ namespace Reni
     public:
         Externals() { SetDumpString(); }
         explicit Externals(External const&item);
+        Externals(Externals const&other);
         static Externals const Aggregate(CtrlRef<Enumerable<Externals>> const&other);
     private:
         explicit Externals(Array<WeakRef<External>> const&other);
@@ -41,6 +43,7 @@ namespace Reni
     private:
         p_function(String, DumpHeader) override { return ""; };
         p_function(Array<String>, DumpData) override;
+        p_function(String, DumpShort) override{ return Dump; };
     };
 }
 

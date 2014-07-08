@@ -20,6 +20,8 @@ namespace Util{
         static Category const Exts;
         static Category const Instance(bool hasSize, bool hasCode, bool hasType, bool hasExts);
 
+        Category(Category const& other);
+
         Category();
     private:
         Category(bool hasSize, bool hasCode, bool hasType, bool hasExts);

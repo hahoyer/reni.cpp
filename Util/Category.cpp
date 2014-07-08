@@ -15,6 +15,14 @@ Category const Category::Exts(false, false, false, true);
 
 Category const Category::Instance(bool hasSize, bool hasCode, bool hasType, bool hasExts){
     return Category(hasSize, hasCode, hasType, hasExts);
+}
+
+Category::Category(Category const& other): hasSize(other.hasSize)
+    , hasCode(other.hasCode)
+    , hasType(other.hasType)
+    , hasExts(other.hasExts)
+{
+    SetDumpString();
 };
 
 

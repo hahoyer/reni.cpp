@@ -99,6 +99,12 @@ Externals::Externals(Array<WeakRef<External>> const& other)
     SetDumpString();
 }
 
+Externals::Externals(Externals const& other)
+    : data(other.data)
+{
+    SetDumpString();
+}
+
 bool const Externals::operator==(Externals const& other) const
 {
     return data.Compare(other.data);
@@ -126,6 +132,14 @@ p_implementation(Externals, Array<String>, DumpData)
 
 Externals const Externals::operator+(Externals const& other) const
 {
-    auto result = data.Merge(other.data, [](WeakRef<External> left, WeakRef<External> right){return *left < *right; });
+    auto result = data.Merge
+        (
+            other.data,
+            [](WeakRef<External> left, WeakRef<External> right)
+            {
+                return *left < *right;
+            },
+            true
+        );
     return Externals(result->ToArray);
 }

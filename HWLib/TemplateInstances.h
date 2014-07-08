@@ -168,11 +168,13 @@ class MergeIterator final : public Enumerable<T>::Iterator
     LookAheadIterator<T> _left;
     LookAheadIterator<T> _right;
     function<bool(T, T)> isLess;
+    bool const removeDuplicates;
 public:
-    MergeIterator(Enumerable<T> const& left, Enumerable<T> const& right, function<bool(T, T)> isLess)
+    MergeIterator(Enumerable<T> const& left, Enumerable<T> const& right, function<bool(T, T)> isLess, bool removeDuplicates)
         : _left(left)
         , _right(right)
         , isLess(isLess)
+        , removeDuplicates(removeDuplicates)
     {
     }
 private:
@@ -186,6 +188,8 @@ private:
             return _left.Step();
         if(isLess(*_left.current,*_right.current))
             return _left.Step();
+        if(removeDuplicates && !isLess(*_right.current, *_left.current))
+            _left.Step();
         return _right.Step();
     }
 };
@@ -383,9 +387,9 @@ CtrlRef<Enumerable<T>> const Enumerable<T>::operator+(thisType const& right)cons
 }
 
 template<typename T>
-CtrlRef<Enumerable<T>> const Enumerable<T>::Merge(thisType const& right, function<bool(T, T)> isLess)const
+CtrlRef<Enumerable<T>> const Enumerable<T>::Merge(thisType const& right, function<bool(T, T)> isLess, bool removeDuplicates)const
 {
-    return new Container(new MergeIterator<T>(*this, right, isLess));
+    return new Container(new MergeIterator<T>(*this, right, isLess, removeDuplicates));
 }
 
 template<typename T>

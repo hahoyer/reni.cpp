@@ -36,7 +36,7 @@ namespace HWLib
         CtrlPtr<T>                           const Max      ()const;
         CtrlPtr<T>                            const Max      (function<bool(T)> selector)const;
         CtrlPtr<T>                             const Max      (function<bool(T,T)> isLess)const;
-        CtrlRef<thisType>                       const Merge    (thisType const& right, function<bool(T, T)> isLess)const;
+        CtrlRef<thisType>                       const Merge    (thisType const& right, function<bool(T, T)> isLess, bool removeDuplicates)const;
         CtrlRef<thisType>                        const operator+(thisType const& right)const;
         template<typename TOther>
         CtrlRef<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
