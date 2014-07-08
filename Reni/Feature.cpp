@@ -26,7 +26,10 @@ ResultData const Feature::FunctionResult(
     Optional<Ref<Syntax>> const&right
     )const
 {
-    bool Trace = left.IsValid && left.Value->ObjectId == -1 && category.hasCode;
+    bool Trace = left.IsValid 
+        && left.Value->ObjectId == 2 
+        && category.hasType && category.hasExts
+        && context.isRecursion;
     md(context, category, left, right);
     auto thisResult = left.Value->GetResultCache(context);
     ReplaceVisitor visitor;
