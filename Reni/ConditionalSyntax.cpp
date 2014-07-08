@@ -67,11 +67,22 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
     auto recursionContext = dynamic_cast<RecursionContext const*>(&context);
     if(recursionContext)
     {
-        a_is(category, ==, Category::Type);
-        auto thenType = recursionContext->CachedType(*thenClause);
-        auto elseType = recursionContext->CachedType(*elseClause);
-        if(thenType.IsEmpty != elseType.IsEmpty)
-            return *(thenType || elseType);
+        if(category == Category::Type)
+        {
+            auto thenType = recursionContext->CachedType(*thenClause);
+            auto elseType = recursionContext->CachedType(*elseClause);
+            if(thenType.IsEmpty != elseType.IsEmpty)
+                return *(thenType || elseType);
+
+            md(context, category);
+            b_;
+            return{};
+
+        }
+        
+        if(category == Category::Exts)
+            return Externals();
+
         md(context, category);
         b_;
         return{};

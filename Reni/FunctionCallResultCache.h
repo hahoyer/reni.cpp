@@ -39,7 +39,7 @@ namespace Reni
         p(Ref<CodeItem>, codeGet);
         p(Ref<CodeItem>, CodeSet);
         p(WeakRef<Type>, valueType);
-        p(WeakRef<Type>, valueTypeInRecursion);
+        p(ResultData, valueInRecursion);
         p(int, codeIndex);
         p(FunctionSyntax const&, body);
     };

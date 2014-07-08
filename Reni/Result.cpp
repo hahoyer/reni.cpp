@@ -19,6 +19,9 @@ using namespace Reni;
 ResultData const ResultCache::Get(Category category) const
 {
     Ensure(category);
+    if(category.hasExts && !data.complete.hasExts)
+        return data + Externals();
+
     return data;
 }
 
@@ -30,18 +33,14 @@ void ResultCache::Ensure(Category category)const
     auto newTodo = todo - pending;
     LevelValue<Category> localPending(pending, pending | newTodo);
 
-    if(newTodo == Category::None && todo != Category::Exts)
+    if(newTodo == Category::None)
     {
-        a_if(todo == Category::Type, nd(category) + nd(complete) + nd(pending));
-        a_if(pending == Category::Type, nd(category) + nd(complete) + nd(pending));
+        a_if(todo.hasType || todo.hasExts, nd(category) + nd(complete) + nd(pending));
+        a_if(pending == todo, nd(category) + nd(complete) + nd(pending));
     }
 
-    ResultData newResultData =
-        (newTodo == Category::None && todo == Category::Exts)
-            ? ResultData(Externals())
-            : GetResultData(newTodo);
-
-    data = data + newResultData;
+    auto newResult = GetResultData(newTodo);
+    data = data + newResult;
 
     a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
     thisRef.SetDumpString();
@@ -281,6 +280,17 @@ p_implementation(ResultData, Array<String>, DumpData)
         nd(code),
         nd(exts)
     };
+}
+
+p_implementation(ResultData, ResultData, asFunctionResult)
+{
+    return GetSmartSize
+        (
+        complete, 
+        l_(code.Value),
+        l_(type->asFunctionResult),
+        l_(exts.Value)
+        );
 }
 
 void ResultData::AssertValid()

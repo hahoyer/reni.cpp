@@ -156,7 +156,7 @@ SearchResult<ContextFeature> const ContainerContext::DeclarationsForType(Definea
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
     if(category == Category::None)
-        return *valueTypeInRecursion;
+        return valueInRecursion;
 
     return ResultData::GetSmartSizeExts(category,l_(codeGet),l_(valueType));
 }
@@ -223,13 +223,14 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
         ->asFunctionResult;
 }
 
-p_implementation(FunctionCallResultCache, WeakRef<Type>, valueTypeInRecursion)
+p_implementation(FunctionCallResultCache, ResultData, valueInRecursion)
 {
     return body
         .getter
         .Value
-        ->Type(*context.recursionContext)
-        ->asFunctionResult;
+        ->GetResultCache(*context.recursionContext)
+        ->Get(Category::Type|Category::Exts)
+        .asFunctionResult;
 }
 
 
