@@ -32,7 +32,7 @@ namespace HWLib
 #else
 #  	define a_if(p,q) {if(!(p) && _console_. BreakTrace("Assertion failed: " #p, __FILE__, __LINE__, String(q) )) breakpoint; __analysis_assume(p);}
 #  	define b_if(p,q) {if((p) && _console_. BreakTrace("Breakpoint: " #p, __FILE__, __LINE__, String(q) )) breakpoint;}
-#  	define b(q) if(_console_. BreakTrace("Breakpoint", __FILE__, __LINE__, String(q) )) breakpoint
+#  	define b(q) {if(_console_. BreakTrace("Breakpoint", __FILE__, __LINE__, String(q) )) breakpoint;}
 #	define breakpoint {bool Throw=false; __asm_int3; if(Throw) throw String("breakpoint"); _console_. Write("continued\n");}
 #   define a_return(p) if(p)return ""; else return #p
 #endif
