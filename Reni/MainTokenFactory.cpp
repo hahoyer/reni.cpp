@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "MainTokenFactory.h"
 
+#include "AccessCache.h"
 #include "CodeItems.h"
 #include "ConditionalSyntax.h"
 #include "ExpressionSyntax.h"

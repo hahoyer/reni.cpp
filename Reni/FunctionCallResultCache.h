@@ -9,6 +9,8 @@
 #include "../HWLib/ValueCache.h"
 #include "../HWLib/FunctionCache.h"
 
+using namespace HWLib;
+
 namespace Reni
 {
     class CodeFunction;

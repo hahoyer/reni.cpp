@@ -1,4 +1,5 @@
 #pragma once
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "../HWLib/Ref.h"
 #include "../HWLib/RefCountProvider.h"
@@ -14,7 +15,8 @@
 using namespace HWLib;
 using namespace Util;
 
-namespace Reni{
+namespace Reni
+{
     class Address;
     class ArrayType;
     class CodeItem;
@@ -46,13 +48,25 @@ namespace Reni{
     public:
         Type(Type const&) = delete;
         ThisRef;
-        bool operator==(Type const&other)const{ return this == &other; }
 
-        p(bool, HasData){ return size != 0; };
+        bool operator==(Type const& other)const
+        {
+            return this == &other;
+        }
+
+        p(bool, HasData)
+        {
+            return size != 0;
+        };
+
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(bool, isData) = 0;
-        virtual_p(WeakRef<Type>, toTypeTarget){ return thisRef; };
+        virtual_p(WeakRef<Type>, toTypeTarget)
+        {
+            return thisRef;
+        };
+
         virtual_p(Address, toAddress);
 
         WeakRef<Type> const array(int count)const;
@@ -62,29 +76,40 @@ namespace Reni{
         p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
     protected:
-        virtual_p(WeakPtr<NumberType>, asNumberType){return{};};
+        virtual_p(WeakPtr<NumberType>, asNumberType)
+        {
+            return{};
+        };
+
     public:
         template <class TDestination>
         WeakPtr<TDestination> const As()const;
+
         template <>
-        WeakPtr<NumberType> const As()const{ return asNumberType; }
+        WeakPtr<NumberType> const As()const
+        {
+            return asNumberType;
+        }
 
         ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts)const;
         ResultData const GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode)const;
         ResultData const GetResultDataEmpty(Category category)const;
-        ResultData const ContextAccessResult(Category category, Type const&target, std::function<Size()> getOffset)const;
+        ResultData const ContextAccessResult(Category category, Type const& target, std::function<Size()> getOffset)const;
 
-        virtual SearchResult<Feature> const DeclarationsForType(DeclarationType const&target)const;
+        virtual SearchResult<Feature> const DeclarationsForType(DeclarationType const& target)const;
         WeakRef<NumberType> const CreateNumberType()const;
         WeakRef<Type> const IndirectType(int depth)const;
-        WeakRef<Type> const Common(Type const&other)const;
-        bool const isConvertableTo(Type const&other)const;
+        WeakRef<Type> const Common(Type const& other)const;
+        bool const isConvertableTo(Type const& other)const;
         ResultData const ConvertTo(Category category, Type const& other) const;
-        SearchResult<Feature> const Declarations(NumberType const&provider) const override;
+        SearchResult<Feature> const Declarations(NumberType const& provider) const override;
         SearchResult<Feature> const Declarations(TypeType const&) const override;
         SearchResult<Feature> const Declarations(EnableCutType const&) const override;
     private:
-        p_function(Array<String>,DumpData) override{ return{}; };
+        p_function(Array<String>,DumpData) override
+        {
+            return{};
+        };
     };
 
 
@@ -94,16 +119,43 @@ namespace Reni{
         typedef EnableCutType thisType;
     public:
         Type const& value;
-        EnableCutType(Type const&value) : value(value){ SetDumpString(); }
+
+        EnableCutType(Type const& value) : value(value)
+        {
+            SetDumpString();
+        }
+
         ThisRef;
+
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(value)}; };
-        p_function(bool, isData) { return false; };
-        p_function(Size, size) override{ return value.size; }
-        p_function(WeakRef<Global>, global) override{ return value.global; }
-        p_function(WeakPtr<NumberType>, asNumberType)override{ return value.As<NumberType>(); }
+        p_function(Array<String>, DumpData) override
+        {
+            return{nd(value)};
+        };
+
+        p_function(bool, isData)
+        {
+            return false;
+        };
+
+        p_function(Size, size) override
+        {
+            return value.size;
+        }
+
+        p_function(WeakRef<Global>, global) override
+        {
+            return value.global;
+        }
+
+        p_function(WeakPtr<NumberType>, asNumberType) override
+        {
+            return value.As<NumberType>();
+        }
+
         p_function(Address, toAddress) override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& target) const override;
     };
-
 }
+
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

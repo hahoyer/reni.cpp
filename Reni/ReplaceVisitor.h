@@ -38,7 +38,7 @@ namespace Reni
         Optional<Externals> const GetExts(External const&tag)const;
 
         void Assume(External const&tag, Type const&type)const;
-        void Assume(External::Function const&tag, FunctionCallContext const& context) const;
+        void AssumeFunctionArg(External::Function const&tag, Type const&arg) const;
 
     private:
         p_function(Array<String>, DumpData) override;

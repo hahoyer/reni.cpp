@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Context.h"
 
+#include "AccessCache.h"
 #include "CodeFunction.h"
 #include "CodeItems.h"
 #include "ContextIncludes.h"
@@ -25,16 +26,15 @@ using namespace Reni;
 static bool Trace = true;
 
 
-ResultData const SimpleFeature::Result(Context const& context, Category category) const
+ResultData const SimpleFeature::Result(Context const& , Category category) const
 {
-    md(context, category);
-    b_;
-    return{};
+    auto result = parent.AccessResult(tokenIndex);
+    return result->Get(category);
 }
 
 ResultData const ExtendedFeature::Result(Context const&, Category category, Type const& right) const
 {
-    auto result = parent.FunctionCallResult(right, tokenIndex);
+    auto result = parent.AccessResult(right, tokenIndex);
     return result->Get(category);
 }
 
@@ -137,9 +137,14 @@ p_implementation(ContainerContext, Size, dataSize)
     return containerData->Size(parent);
 }
 
-Ref<FunctionCallResultCache> const ContainerContext::FunctionCallResult(Type const& argsType, int const tokenIndex) const
+Ref<FunctionCallResultCache> const ContainerContext::AccessResult(Type const& argsType, int const tokenIndex) const
 {
     return functionCallContext(&argsType)->functionCallResultCache(tokenIndex);
+}
+
+Ref<AccessCache> const ContainerContext::AccessResult(int const tokenIndex) const
+{
+    return accessFeature(tokenIndex).resultCache;
 }
 
 SearchResult<ContextFeature> const ContainerContext::DeclarationsForType(DefineableToken const&token) const 

@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "FunctionCallContext.h"
 
+#include "AccessCache.h"
 #include "ContainerContext.h"
 #include "FunctionCallResultCache.h"
 #include "Syntax.h"
@@ -97,6 +98,6 @@ String const FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
 
 Optional<Ref<CodeItem>> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const
 {
-    arg.Assume(external, context);
+    arg.AssumeFunctionArg(external, *context.arg);
     return arg.GetCode(external);
 }

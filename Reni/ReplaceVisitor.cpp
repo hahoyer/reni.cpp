@@ -3,15 +3,10 @@
 
 #include "Address.h"
 #include "CodeItem.h"
-#include "ContainerContext.h"
-#include "External.h"
-#include "FunctionCallContext.h"
-#include "Syntax.h"
-#include "SyntaxContainer.h"
+#include "Externals.h"
 #include "Result.h"
 #include "Type.h"
 
-#include "../HWLib/DumpMacros.h"
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;
@@ -50,13 +45,13 @@ void ReplaceVisitor::SetResults(External const&tag, ResultCache const& result)
     results.Assign(&tag, result.thisRef);
 }
 
-void ReplaceVisitor::Assume(External::Function const& tag, FunctionCallContext const& context) const
+void ReplaceVisitor::AssumeFunctionArg(External::Function const& tag, Type const& arg) const
 {
     auto result = GetResults(tag);
     if (result.IsEmpty)
         return;
 
-    a_is(context.arg->toAddress.data, == , result.Value->type->toAddress.data);
+    a_is(arg.toAddress.data, == , result.Value->type->toAddress.data);
 }
 
 Optional<Ref<ResultCache>> const ReplaceVisitor::GetResults(External const& tag) const

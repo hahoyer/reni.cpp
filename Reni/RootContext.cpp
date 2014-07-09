@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "RootContext.h"
 
+#include "AccessCache.h"
 #include "CodeItems.h"
 #include "ContextFeature.h"
 #include "ContextFeatureProvider.h"

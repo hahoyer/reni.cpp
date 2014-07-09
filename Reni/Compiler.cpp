@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Compiler.h"
 
+#include "AccessCache.h"
 #include "BitType.h"
 #include "Result.h"
 #include "TokenClass.h"

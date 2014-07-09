@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Type.h"
 
+#include "AccessCache.h"
 #include "Address.h"
 #include "AddressType.h"
 #include "ArrayType.h"

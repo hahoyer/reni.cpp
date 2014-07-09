@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Syntax.h"
 
+#include "AccessCache.h"
 #include "CodeItem.h"
 #include "Context.h"
 #include "Global.h"

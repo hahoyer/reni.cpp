@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Result.h"
 
+#include "AccessCache.h"
 #include "CodeItem.h"
 #include "Context.h"
 #include "Externals.h"

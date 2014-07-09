@@ -1,4 +1,5 @@
 #pragma once
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 #include "Context.h"
 #include "../HWLib/FunctionCache.h"
 #include "../HWLib/ValueCache.h"
@@ -6,9 +7,10 @@
 
 namespace Reni
 {
+    class AccessCache;
     class FunctionCallContext;
     class FunctionCallResultCache;
-
+                            
     class ContainerContext final : public ChildContext
     {
         typedef ContainerContext thisType;
@@ -30,7 +32,8 @@ namespace Reni
         p(WeakRef<Type>, dataType){return dataTypeCache.Value;};
         p(Size, dataSize);
 
-        Ref<FunctionCallResultCache> const FunctionCallResult(Type const& argsType, int const tokenIndex) const;
+        Ref<FunctionCallResultCache> const AccessResult(Type const& argsType, int const tokenIndex) const;
+        Ref<AccessCache> const AccessResult(int const tokenIndex) const;
         SearchResult<ContextFeature> const DeclarationsForType(DefineableToken const&token) const override;
 
     private:
@@ -46,3 +49,4 @@ namespace Reni
     };
 
 };
+//#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

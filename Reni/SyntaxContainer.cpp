@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "SyntaxContainer.h"
 
+#include "AccessCache.h"
 #include "ContainerContext.h"
 #include "EmptySyntax.h"
 #include "ExpressionSyntax.h"
