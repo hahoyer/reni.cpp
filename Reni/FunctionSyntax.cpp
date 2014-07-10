@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "FunctionSyntax.h"
 
+#include "ContextIncludes.h"
 #include "Type.h"
 
 using namespace Reni;

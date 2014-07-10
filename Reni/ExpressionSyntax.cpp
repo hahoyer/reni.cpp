@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "ExpressionSyntax.h"
 
+#include "ContextIncludes.h"
 #include "DefineableToken.h"
 #include "Feature.h"
 #include "SyntaxContainer.h"

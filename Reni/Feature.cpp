@@ -1,10 +1,10 @@
 #include "Import.h"
 #include "Feature.h"
 
-#include "AccessCache.h"
 #include "Address.h"
 #include "CodeItems.h"
 #include "ContextFeature.h"
+#include "ContextIncludes.h"
 #include "DefineableToken.h"
 #include "Syntax.h"
 #include "Global.h"
@@ -65,9 +65,9 @@ ResultData const Feature::ConversionResult(Category category, Type const& target
 };
 
 
-ContextFeature::ContextFeature(Simple const& simple, Extended const& extended): simple(simple.thisRef)
+ContextFeature::ContextFeature(Simple const& simple, Extended const& extended)
+    : simple(simple.thisRef)
     , extended(extended.thisRef) 
-    , resultCache(new AccessCache())
 {}
 
 ResultData const ContextFeature::FunctionResult(

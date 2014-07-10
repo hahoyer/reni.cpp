@@ -23,6 +23,7 @@ namespace Reni
     public:
         SimpleFeature(ContainerContext const& parent, int const tokenIndex)
             : parent(parent), tokenIndex(tokenIndex) {}
+        ThisRef;
     private:
         ResultData const Result(
             Context const&context,
@@ -41,6 +42,7 @@ namespace Reni
     public:
         ExtendedFeature(ContainerContext const& parent, int const tokenIndex)
             : parent(parent), tokenIndex(tokenIndex) {}
+        ThisRef;
     private:
         ResultData const Result(
             Context const&context,

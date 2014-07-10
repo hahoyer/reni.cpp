@@ -4,6 +4,7 @@
 #include "BitType.h"
 #include "CodeItems.h"
 #include "Context.h"
+#include "ContextIncludes.h"
 #include "Global.h"
 #include "NumberType.h"
 #include "../Util/BitsConst.h"

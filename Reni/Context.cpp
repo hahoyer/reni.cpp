@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "Context.h"
 
-#include "AccessCache.h"
 #include "CodeFunction.h"
 #include "CodeItems.h"
 #include "ContextIncludes.h"
@@ -142,9 +141,10 @@ Ref<FunctionCallResultCache> const ContainerContext::AccessResult(Type const& ar
     return functionCallContext(&argsType)->functionCallResultCache(tokenIndex);
 }
 
-Ref<AccessCache> const ContainerContext::AccessResult(int const tokenIndex) const
+Ref<ResultCache> const ContainerContext::AccessResult(int const tokenIndex) const
 {
-    return accessFeature(tokenIndex).resultCache;
+    auto statement = containerData->statements[tokenIndex];
+    return statement->GetResultCache(*this)->thisRef;
 }
 
 SearchResult<ContextFeature> const ContainerContext::DeclarationsForType(DefineableToken const&token) const 

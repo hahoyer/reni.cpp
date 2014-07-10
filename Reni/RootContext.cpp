@@ -1,10 +1,10 @@
 #include "Import.h"
 #include "RootContext.h"
 
-#include "AccessCache.h"
 #include "CodeItems.h"
 #include "ContextFeature.h"
 #include "ContextFeatureProvider.h"
+#include "ContextIncludes.h"
 #include "Global.h"
 #include "Result.h"
 #include "Syntax.h"

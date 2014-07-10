@@ -3,6 +3,7 @@
 
 #include "CodeItems.h"
 #include "Context.h"
+#include "ContextIncludes.h"
 #include "DefineableToken.h"
 #include "DumpPrintToken.h"
 #include "ExpressionSyntax.h"

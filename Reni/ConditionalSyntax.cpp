@@ -2,6 +2,7 @@
 #include "ConditionalSyntax.h"
 
 #include "CodeItem.h"
+#include "ContextIncludes.h"
 #include "Feature.h"
 #include "RecursionContext.h"
 #include "Type.h"

@@ -2,6 +2,7 @@
 #include "Global.h"
 
 #include "CodeFunction.h"
+#include "ContextIncludes.h"
 #include "FunctionCallResultCache.h"
 
 using namespace Reni;

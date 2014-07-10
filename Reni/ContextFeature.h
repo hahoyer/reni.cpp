@@ -6,6 +6,9 @@ using namespace HWLib;
 namespace Reni
 {
     class AccessCache;
+    class ContainerContext;
+    class ExtendedFeature;
+    class SimpleFeature;
     class Syntax;
     class TokenClass;
 
@@ -36,7 +39,6 @@ namespace Reni
 
         Optional<Ref<Simple>> const simple;
         Optional<Ref<Extended>> const extended;
-        Ref<AccessCache> resultCache;
 
         ContextFeature(Simple const& simple, Extended const& extended);
 

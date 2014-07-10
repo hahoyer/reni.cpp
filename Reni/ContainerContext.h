@@ -7,7 +7,6 @@
 
 namespace Reni
 {
-    class AccessCache;
     class FunctionCallContext;
     class FunctionCallResultCache;
                             
@@ -33,7 +32,7 @@ namespace Reni
         p(Size, dataSize);
 
         Ref<FunctionCallResultCache> const AccessResult(Type const& argsType, int const tokenIndex) const;
-        Ref<AccessCache> const AccessResult(int const tokenIndex) const;
+        Ref<ResultCache> const AccessResult(int const tokenIndex) const;
         SearchResult<ContextFeature> const DeclarationsForType(DefineableToken const&token) const override;
 
     private:
