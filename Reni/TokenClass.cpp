@@ -57,5 +57,6 @@ tc_Search_implementation(MinusToken, NumberType);
 tc_Search_implementation(StarToken, NumberType);
 tc_Search_implementation(EnableCutToken, NumberType);
 tc_Search_implementation(EqualToken, NumberType);
+tc_Search_implementation(GreaterToken, NumberType);
 tc_Search_implementation(DumpPrintToken, NumberType);
 

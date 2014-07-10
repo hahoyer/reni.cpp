@@ -59,4 +59,12 @@ namespace Reni
     private:
         tc_Search(NumberType);
     };
+
+    struct GreaterToken final : public NamedDefinableToken<GreaterToken > {
+        static String const Text() {
+            return ">";
+        }
+    private:
+        tc_Search(NumberType);
+    };
 }
