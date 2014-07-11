@@ -164,6 +164,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new ElseToken);
     AddTokenClass(new EqualToken);
     AddTokenClass(new FunctionToken);
+    AddTokenClass(new GreaterToken);
     AddTokenClass(new InstanceToken);
     AddTokenClass(new LeftParenthesisToken(1));
     AddTokenClass(new LeftParenthesisToken(2));
