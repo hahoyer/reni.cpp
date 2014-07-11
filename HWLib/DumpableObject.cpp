@@ -60,9 +60,8 @@ p_implementation(DumpableObject, String, Dump){
 }
 
 p_virtual_header_implementation(DumpableObject, String, DumpHeader);
-p_implementation(DumpableObject, String, DumpHeader){
-    return HWLib::DumpTypeName(*this);
-};
+
+p_implementation(DumpableObject, String, DumpHeader){return HWLib::DumpTypeName(*this);};
 
 p_implementation(DumpableObject, String, DumpLong){
     auto result = DumpHeader;
