@@ -27,7 +27,7 @@ namespace Reni
         ResultData const Result(Category category, Type const& target, Type const& destination) const override
         {
             auto destinationAddress = destination.toAddress;
-            return ResultData::GetSmartSizeExts
+            return ResultData::GetSmartHllwSizeExts
                 (
                 category,
                 l_(CodeItem::NumberConversion(destinationAddress, target)),

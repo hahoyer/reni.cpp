@@ -12,17 +12,16 @@ namespace Reni
 {
     class ContainerContext;
 
-    class SimpleFeature final : public ContextFeature::Simple
+    class SimpleFeature final : public AccessFeature::Simple
     {
         typedef Simple baseType;
         typedef SimpleFeature thisType;
 
-        ContainerContext const&parent;
-        int const tokenIndex;
+        Ref<ResultCache> resultCache;
+        int const statementIndex;
 
     public:
-        SimpleFeature(ContainerContext const& parent, int const tokenIndex)
-            : parent(parent), tokenIndex(tokenIndex) {}
+        SimpleFeature(ContainerContext const& parent, int const tokenIndex);
         ThisRef;
     private:
         ResultData const Result(
@@ -31,7 +30,7 @@ namespace Reni
         )const override;
     };
 
-    class ExtendedFeature final : public ContextFeature::Extended
+    class ExtendedFeature final : public AccessFeature::Extended
     {
         typedef Extended baseType;
         typedef ExtendedFeature thisType;

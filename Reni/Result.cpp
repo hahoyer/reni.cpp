@@ -54,6 +54,12 @@ p_implementation(ResultCache, Category, complete)
     return data.complete;
 }
 
+bool const ResultCache::get_hllw() const
+{
+    Ensure(Category::Hllw);
+    return data.hllw;
+}
+
 p_implementation(ResultCache, Size, size)
 {
     Ensure(Category::Size);
@@ -102,7 +108,7 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = syntax.ObjectId == -9 && category.hasCode;
+    bool Trace = syntax.ObjectId == 8 && category.hasType;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
@@ -131,7 +137,8 @@ ResultData const ResultData::operator+(ResultData const& other) const
         DumpList({nd((complete & other.complete)), nd(*this), nd(other)}));
 
     return ResultData(
-        size || other.size, 
+        hllw || other.hllw,
+        size || other.size,
         code || other.code, 
         type || other.type,
         exts || other.exts
@@ -141,6 +148,7 @@ ResultData const ResultData::operator+(ResultData const& other) const
 ResultData const ResultData::operator&(Category const& other) const
 {
     return ResultData(
+        other.hasHllw ? hllw : Optional<bool>(),
         other.hasSize ? size : Optional<Size>(),
         other.hasCode ? code : Optional<Ref<CodeItem>>(),
         other.hasType ? type : WeakPtr<Type>(),
@@ -158,23 +166,39 @@ ResultData::ResultData(Ref<CodeItem> code)
 
 bool const ResultData::operator==(ResultData const& other) const
 {
-    return size == other.size
+    return hllw == other.hllw
+        && size == other.size
         && type == other.type
         && code == other.code
         && exts == other.exts;
 }
 
-Optional<Size> const ResultData::ReplenishSize(Category const& category, Optional<Ref<CodeItem>> code, WeakPtr<Type> type)
+Optional<bool> const ResultData::ReplenishHllw(Category const& category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
+{
+    if(!category.hasHllw)
+        return{};
+
+    if(category.hasCode)
+        return getCode()->size == 0;
+
+    if(category.hasType)
+        return getType()->size == 0;
+    
+    a_fail(category.Dump);
+    return{};
+}
+
+Optional<Size> const ResultData::ReplenishSize(Category const& category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
 {
     if(category.hasSize)
     {
         if(category.hasCode)
-            return code.Value->size;
-        else if(category.hasType)
-            return type->size;
-        else
-            a_fail(category.Dump);
+            return getCode()->size;
+        if(category.hasType)
+            return getType()->size;
+        a_fail(category.Dump);
     }
+
     return {};
 }
 
@@ -188,34 +212,31 @@ ResultData const ResultData::Convert(Type const& destination) const
     mb;
 }
 
-Optional<Externals> const ResultData::ReplenishExternals(Category const& category, Optional<Ref<CodeItem>> code)
+Optional<Externals> const ResultData::ReplenishExternals(Category const& category, function<Ref<CodeItem>()> getCode)
 {
     if(category.hasExts)
-    {
-        if(code.IsEmpty)
-        a_fail(nd(category) + nd(code))
-        else
-        return code.Value->exts;
-    }
+        return getCode()->exts;
     return {};
 }
 
 ResultData const ResultData::Get(
     Category category, 
+    function<bool()> const&getHllw,
     function<Size()> getSize,
     function<Ref<CodeItem>()> getCode,
     function<WeakRef<Type>()> getType, 
     function<Externals()> getExternals
     )
 {
+    auto hllw = category.hasHllw? Optional<bool>(getHllw()) : Optional<bool>();
     auto size = category.hasSize ? Optional<Size>(getSize()) : Optional<Size>();
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
     auto externals = category.hasExts ? Optional<Externals>(getExternals()) : Optional<Externals>();
-    return FullGet(category, size, code, type, externals);
+    return FullGet(category, hllw, size, code, type, externals);
 }
 
-ResultData const ResultData::GetSmartSize(
+ResultData const ResultData::GetSmartHllwSize(
     Category category,
     function<Ref<CodeItem>()> getCode,
     function<WeakRef<Type>()> getType,
@@ -225,27 +246,28 @@ ResultData const ResultData::GetSmartSize(
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
     auto externals = category.hasExts ? Optional<Externals>(getExternals()) : Optional<Externals>();
-    auto size = ReplenishSize(category, code, type);
-    return FullGet(category, size, code, type, externals);
+    auto size = ReplenishSize(category, l_(code), l_(type));
+    auto hllw = ReplenishHllw(category, l_(code), l_(type));
+    return FullGet(category, hllw, size, code, type, externals);
 }
 
-ResultData const ResultData::GetSmartExts(
+ResultData const ResultData::GetSmartHllwExts(
     Category category,
     function<Size()> getSize,
     function<Ref<CodeItem>()> getCode,
     function<WeakRef<Type>()> getType
     )
 {
-    return Get(category, getSize, getCode, getType, l_(getCode()->exts));
+    return Get(category, l_(ReplenishHllw(category, getCode, getType)), getSize, getCode, getType, l_(getCode()->exts));
 }
 
-ResultData const ResultData::GetSmartSizeExts(
+ResultData const ResultData::GetSmartHllwSizeExts(
     Category category,
     function<Ref<CodeItem>()> getCode,
     function<WeakRef<Type>()> getType
     )
 {
-    return GetSmartSize(category, getCode, getType, l_(getCode()->exts));
+    return GetSmartHllwSize(category, getCode, getType, l_(getCode()->exts));
 }
 
 ResultData::ResultData(Type const& type)
@@ -267,6 +289,7 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 {
     return Get(
         complete, 
+        l_(hllw),
         l_(size),
         l_(code.Value->Replace(arg) || code), 
         l_(type), 
@@ -276,6 +299,7 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 p_implementation(ResultData, Array<String>, DumpData)
 {
     return{
+        nd(hllw),
         nd(size),
         nd(type),
         nd(code),
@@ -285,7 +309,7 @@ p_implementation(ResultData, Array<String>, DumpData)
 
 p_implementation(ResultData, ResultData, asFunctionResult)
 {
-    return GetSmartSize
+    return GetSmartHllwSize
         (
         complete, 
         l_(code.Value),
@@ -296,6 +320,16 @@ p_implementation(ResultData, ResultData, asFunctionResult)
 
 void ResultData::AssertValid()
 {
+    if (complete.hasHllw)
+    {
+        if (complete.hasSize)
+            a_if(hllw.Value == (size.Value == 0), nd(hllw) + nd(size));
+        if (complete.hasCode)
+            a_if(hllw.Value == (code.Value->size == 0), nd(hllw) + nd(code));
+        if (complete.hasType)
+            a_if(hllw.Value == (type->size == 0), nd(hllw) + nd(type));
+    }
+
     if(complete.hasSize)
     {
         if(complete.hasCode)
@@ -307,10 +341,12 @@ void ResultData::AssertValid()
         a_is(code.Value->size, == , type->size);
     if(complete.hasCode && complete.hasExts)
         a_is(code.Value->exts, == , exts.Value);
-};
+}
 
-void ResultData::AssertValid(Category category, Optional<Size> const size, Optional<Ref<CodeItem>> code, WeakPtr<Type> type, Optional<Externals> const& externals)
+void ResultData::AssertValid(Category category, Optional<bool> const& hllw, Optional<Size> const size, Optional<Ref<CodeItem>> code, WeakPtr<Type> type, Optional<Externals> const& exts)
 {
+    if(category.hasHllw)
+        a_if(hllw.IsValid, nd(category) + nd(hllw));
     if(category.hasSize)
         a_if(size.IsValid, nd(category) + nd(size));
     if(category.hasCode)
@@ -318,6 +354,6 @@ void ResultData::AssertValid(Category category, Optional<Size> const size, Optio
     if(category.hasType)
         a_if(!type.IsEmpty, nd(category) + nd(type));
     if(category.hasExts)
-        a_if(externals.IsValid, nd(category) + nd(externals));
+        a_if(exts.IsValid, nd(category) + nd(exts));
 }
 

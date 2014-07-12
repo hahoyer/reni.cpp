@@ -28,6 +28,7 @@ namespace Reni
         using baseType = DumpableObject;
         using thisType = ResultData;
     public:
+        Optional<bool> const hllw;
         Optional<Size> const size;
         WeakPtr<Type> const type;
         Optional<Ref<CodeItem>> const code;
@@ -40,12 +41,14 @@ namespace Reni
 
     private:
         ResultData(
-            Optional<Size> const&size, 
+            Optional<bool> const&hllw,
+            Optional<Size> const&size,
             Optional<Ref<CodeItem>> const&code, 
             WeakPtr<Type> type, 
             Optional<Externals> const&exts
             )
-            : size(size)
+            : hllw(hllw)
+            , size(size)
             , code(code)
             , type(type)
             , exts(exts)
@@ -56,36 +59,38 @@ namespace Reni
 
         static ResultData const FullGet(
             Category category,
+            Optional<bool> const&hllw,
             Optional<Size> const&size,
             Optional<Ref<CodeItem>> const&code,
             WeakPtr<Type> type,
             Optional<Externals> const&exts
             )
         {
-            AssertValid(category, size, code, type, exts) ;
-            return ResultData(size, code, type, exts) & category;
+            AssertValid(category, hllw, size, code, type, exts) ;
+            return ResultData(hllw, size, code, type, exts) & category;
         };
     public:
         static ResultData const Get(
             Category category,
+            function<bool()> const&getHllw,
             function<Size()> getSize,
             function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType,
             function<Externals()> getExts
             );
-        static ResultData const GetSmartExts(
+        static ResultData const GetSmartHllwExts(
             Category category,
             function<Size()> getSize,
             function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType
             );
-        static ResultData const GetSmartSize(
+        static ResultData const GetSmartHllwSize(
             Category category,
             function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType,
             function<Externals()> getExts
             );
-        static ResultData const GetSmartSizeExts(
+        static ResultData const GetSmartHllwSizeExts(
             Category category,
             function<Ref<CodeItem>()> getCode,
             function<WeakRef<Type>()> getType
@@ -95,17 +100,19 @@ namespace Reni
         ResultData const operator+(ResultData const&other)const;
         ResultData const operator&(Category const&other)const;
         bool const operator==(thisType const&other)const;
-        p(Category, complete){ return Category::Instance(size.IsValid, !code.IsEmpty, !type.IsEmpty, exts.IsValid); }
+        p(Category, complete){ return Category::Instance(hllw.IsValid, size.IsValid, !code.IsEmpty, !type.IsEmpty, exts.IsValid); }
         ResultData const Replace(ReplaceVisitor const&arg) const;
         ResultData const Convert(Type const& destination) const;
         p(ResultData, asFunctionResult);
     private:
         p_function(Array<String>,DumpData) override;
         void AssertValid();
-        static Optional<Size>const ReplenishSize(Category const&category, Optional<Ref<CodeItem>> code, WeakPtr<Type> type);
-        static Optional<Externals> const ReplenishExternals(Category const&category, Optional<Ref<CodeItem>> code);
+        static Optional<bool>const ReplenishHllw(Category const&category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType);
+        static Optional<Size>const ReplenishSize(Category const&category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType);
+        static Optional<Externals> const ReplenishExternals(Category const&category, function<Ref<CodeItem>()> getCode);
         static void AssertValid(
             Category category,
+            Optional<bool> const&hllw,
             Optional<Size> const size,
             Optional<Ref<CodeItem>> code,
             WeakPtr<Type> type,                            
@@ -125,6 +132,7 @@ namespace Reni
         mutable Category pending;
     public:
         ThisRef;
+        p(bool, hllw);
         p(Size, size);
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);

@@ -6,7 +6,7 @@
 using namespace HWLib;
 
 namespace Reni{
-    class ContextFeature;
+    class AccessFeature;
 
 
     template <typename T, typename... TTypes>
@@ -36,7 +36,7 @@ namespace Reni{
         , public RefCountProvider{
         typedef ContextFeatureProvider thisType;
     public:
-        virtual_p(Ref<ContextFeature>, feature) = 0;
+        virtual_p(Ref<AccessFeature>, feature) = 0;
         virtual ~ContextFeatureProvider(){};
     };
 }

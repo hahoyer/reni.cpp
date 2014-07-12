@@ -38,7 +38,7 @@ namespace Reni
 
         ResultData const GetResultData(Category category)const override
         {
-            return ResultData::GetSmartSizeExts(category, l_(code.Value), l_(type));
+            return ResultData::GetSmartHllwSizeExts(category, l_(code.Value), l_(type));
         }
     };
 }

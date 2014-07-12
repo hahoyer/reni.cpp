@@ -8,23 +8,25 @@ namespace Util{
         using baseType = DumpableObject;
         using thisType = Category;
     public:
+        bool const hasHllw;
         bool const hasSize;
         bool const hasCode;
         bool const hasType;
         bool const hasExts;
 
         static Category const None;
+        static Category const Hllw;
         static Category const Size;
         static Category const Code;
         static Category const Type;
         static Category const Exts;
-        static Category const Instance(bool hasSize, bool hasCode, bool hasType, bool hasExts);
+        static Category const Instance(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts);
 
         Category(Category const& other);
 
         Category();
     private:
-        Category(bool hasSize, bool hasCode, bool hasType, bool hasExts);
+        Category(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts);
 
     public:
         DefaultAssignmentOperator;

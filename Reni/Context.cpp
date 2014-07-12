@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Context.h"
 
+#include "AccessResultCache.h"
 #include "CodeFunction.h"
 #include "CodeItems.h"
 #include "ContextIncludes.h"
@@ -13,22 +14,26 @@
 #include "RecursionContext.h"
 #include "ReplaceVisitor.h"
 #include "Result.h"
+#include "ResultDataDirect.h"
 #include "SearchResult.h"
 #include "Syntax.h"
 #include "SyntaxContainer.h"
 #include "Type.h"
 
 #include "../HWLib/RefCountContainer.instance.h"
-#include "ResultDataDirect.h"
 
 using namespace Reni;
 static bool Trace = true;
 
 
+SimpleFeature::SimpleFeature(ContainerContext const& parent, int const statementIndex)
+    : statementIndex(statementIndex)
+    , resultCache(new AccessResultCache(parent, statementIndex))
+{}
+
 ResultData const SimpleFeature::Result(Context const& , Category category) const
 {
-    auto result = parent.AccessResult(tokenIndex);
-    return result->Get(category);
+    return resultCache->Get(category);
 }
 
 ResultData const ExtendedFeature::Result(Context const&, Category category, Type const& right) const
@@ -98,7 +103,7 @@ WeakRef<Type> const RegularContext::FunctionType(FunctionSyntax const& body) con
     return _internal->functionType(&body)->thisRef;
 }
 
-SearchResult<ContextFeature> const Context::DeclarationsForType(DefineableToken const&token) const
+SearchResult<AccessFeature> const Context::DeclarationsForType(DefineableToken const&token) const
 {
     md(token);
     mb;
@@ -110,12 +115,12 @@ ResultData const Context::ReferenceResult(Category category, External::Function 
 }
 
 
-ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int index)
+ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int viewIndex)
     : baseType(parent)
       , containerData(containerData.thisRef)
-      , accessFeature([&](int tokenIndex)
+      , accessFeature([&](int statementIndex)
           {
-              return ContextFeature(*new SimpleFeature(*this, tokenIndex), *new ExtendedFeature(*this, tokenIndex));
+              return AccessFeature(*new SimpleFeature(*this, statementIndex), *new ExtendedFeature(*this, statementIndex));
           })
       , dataTypeCache([&]
           {
@@ -125,7 +130,7 @@ ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer 
           {
               return new FunctionCallContext(*this, args);
           })
-      , index(index)
+      , viewIndex(viewIndex)
 {
     SetDumpString();
 };
@@ -136,34 +141,32 @@ p_implementation(ContainerContext, Size, dataSize)
     return containerData->Size(parent);
 }
 
-Ref<FunctionCallResultCache> const ContainerContext::AccessResult(Type const& argsType, int const tokenIndex) const
+Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int const statementIndex) const
 {
-    return functionCallContext(&argsType)->functionCallResultCache(tokenIndex);
+    return functionCallContext(&argsType)->functionCallResultCache(statementIndex)->thisRef;
 }
 
-Ref<ResultCache> const ContainerContext::AccessResult(int const tokenIndex) const
-{
-    auto statement = containerData->statements[tokenIndex];
-    return statement->GetResultCache(*this)->thisRef;
-}
-
-SearchResult<ContextFeature> const ContainerContext::DeclarationsForType(DefineableToken const&token) const 
+SearchResult<AccessFeature> const ContainerContext::DeclarationsForType(DefineableToken const&token) const 
 {
     if(containerData->names.ContainsKey(&token))
-    {
-        auto tokenIndex = containerData->names[&token];
-        return accessFeature(tokenIndex);
-    }
+        return accessFeature(containerData->names[&token]);
     return baseType::DeclarationsForType(token);
 }
 
+
+
+FunctionCallResultCache::FunctionCallResultCache(FunctionCallContext const& context, int bodyIndex) : context(context)
+, bodyIndex(bodyIndex)
+{
+    SetDumpString();
+}
 
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
     if(category == Category::None)
         return valueInRecursion;
 
-    return ResultData::GetSmartSizeExts(category,l_(codeGet),l_(valueType));
+    return ResultData::GetSmartHllwSizeExts(category,l_(codeGet),l_(valueType));
 }
 
 p_implementation(FunctionCallResultCache, int, codeIndex){ return context.global->FunctionIndex(*this); };
@@ -256,7 +259,7 @@ WeakRef<ContainerContext> const RecursionContext::Container(SyntaxContainer cons
     mb;
 }
 
-SearchResult<ContextFeature> const RecursionContext::DeclarationsForType(DefineableToken const& token) const
+SearchResult<AccessFeature> const RecursionContext::DeclarationsForType(DefineableToken const& token) const
 {
     return parent.DeclarationsForType(token);
 }

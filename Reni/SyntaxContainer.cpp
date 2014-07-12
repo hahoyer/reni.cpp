@@ -58,7 +58,7 @@ void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const
 
 ResultData const SyntaxContainer::GetResultData(Context const& context, Category category) const
 {
-    return ResultData::GetSmartSizeExts
+    return ResultData::GetSmartHllwSizeExts
         (
         category,
         l_(GetCode(context)),

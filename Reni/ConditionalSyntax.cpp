@@ -61,7 +61,7 @@ ResultData const IfThenSyntax::GetResultData(Context const&context, Category cat
         ->GetResultCache(context)
         ->Get(category);
 
-    return ResultData::GetSmartSize
+    return ResultData::GetSmartHllwSize
         (
         category,
         l_(CodeItem::IfThenElse(conditionResult.code, thenResult.code, CodeItem::Empty())),
@@ -145,7 +145,7 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
         ->GetResultCache(context)
         ->Get(category);
 
-    return ResultData::GetSmartSize
+    return ResultData::GetSmartHllwSize
         (
             category,
             l_(CodeItem::IfThenElse(conditionResult.code, thenResult.code, elseResult.code)),

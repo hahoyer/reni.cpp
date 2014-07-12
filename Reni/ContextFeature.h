@@ -12,11 +12,11 @@ namespace Reni
     class Syntax;
     class TokenClass;
 
-    class ContextFeature final
+    class AccessFeature final
         : public WithId<DumpableObject, Feature>
     {
         typedef DumpableObject baseType;
-        typedef ContextFeature thisType;
+        typedef AccessFeature thisType;
     public:
 
         class Simple : public RefCountProvider
@@ -40,7 +40,7 @@ namespace Reni
         Optional<Ref<Simple>> const simple;
         Optional<Ref<Extended>> const extended;
 
-        ContextFeature(Simple const& simple, Extended const& extended);
+        AccessFeature(Simple const& simple, Extended const& extended);
 
         ResultData const FunctionResult(
             Context const&context,

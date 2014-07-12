@@ -65,12 +65,12 @@ ResultData const Feature::ConversionResult(Category category, Type const& target
 };
 
 
-ContextFeature::ContextFeature(Simple const& simple, Extended const& extended)
+AccessFeature::AccessFeature(Simple const& simple, Extended const& extended)
     : simple(simple.thisRef)
     , extended(extended.thisRef) 
 {}
 
-ResultData const ContextFeature::FunctionResult(
+ResultData const AccessFeature::FunctionResult(
     Context const&context,
     Category category,
     Optional<Ref<Syntax>> const& right

@@ -23,12 +23,7 @@ namespace Reni
     public:
         Global::Function function;
 
-        FunctionCallResultCache(FunctionCallContext const& context, int bodyIndex)
-            : context(context)
-            , bodyIndex(bodyIndex)
-        {
-            SetDumpString();
-        }
+        FunctionCallResultCache(FunctionCallContext const& context, int bodyIndex);
 
         p(CodeFunction, getter);
         p(CodeFunction, setter);

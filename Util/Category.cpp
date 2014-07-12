@@ -7,17 +7,21 @@ static bool Trace = true;
 using namespace HWLib;
 using namespace Util;
 
-Category const Category::None(false, false, false,false);
-Category const Category::Size(true, false, false, false);
-Category const Category::Code(false, true, false, false);
-Category const Category::Type(false, false, true, false);
-Category const Category::Exts(false, false, false, true);
+Category const Category::None(false, false, false, false, false);
+Category const Category::Hllw(true, true, false, false, false);
+Category const Category::Size(false, true, false, false, false);
+Category const Category::Code(false, false, true, false, false);
+Category const Category::Type(false, false, false, true, false);
+Category const Category::Exts(false, false, false, false, true);
 
-Category const Category::Instance(bool hasSize, bool hasCode, bool hasType, bool hasExts){
-    return Category(hasSize, hasCode, hasType, hasExts);
+Category const Category::Instance(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts)
+{
+    return Category(hasHllw, hasSize, hasCode, hasType, hasExts);
 }
 
-Category::Category(Category const& other): hasSize(other.hasSize)
+Category::Category(Category const& other)
+    : hasHllw(other.hasHllw)
+    , hasSize(other.hasSize)
     , hasCode(other.hasCode)
     , hasType(other.hasType)
     , hasExts(other.hasExts)
@@ -26,101 +30,122 @@ Category::Category(Category const& other): hasSize(other.hasSize)
 };
 
 
-Category::Category(bool hasSize, bool hasCode, bool hasType, bool hasExts)
-    : hasSize(hasSize)
-      , hasCode(hasCode)
-      , hasType(hasType)
-      , hasExts(hasExts)
+Category::Category(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts)
+    : hasHllw(hasHllw)
+    , hasSize(hasSize)
+    , hasCode(hasCode)
+    , hasType(hasType)
+    , hasExts(hasExts)
 {
     SetDumpString();
 }
 
 Category::Category()
-    : thisType(false, false, false, false){
+    : thisType(false, false, false, false, false)
+{
     SetDumpString();
 }
 
-p_implementation(Category, Category, typed){
-    return *this | Type;
-}
+p_implementation(Category, Category, typed){return *this | Type;}
 
-p_implementation(Category, Category, replenished){
+p_implementation(Category, Category, replenished)
+{
     auto result = *this;
-    if(result.hasCode)
+    if (result.hasCode)
     {
+        result |= Hllw;
         result |= Size;
         result |= Exts;
     }
 
-    if(result.hasType)
+    if (result.hasType)
+    {
+        result |= Hllw;
         result |= Size;
+    }
 
-    //if(result.HasSize)
-        //result |= IsDataLess;
+    if (result.hasSize)
+        result |= Hllw;
+
     return result;
 }
 
-Category const Category::operator|(Category const other)const{
+Category const Category::operator|(Category const other)const
+{
     return Category(
+        hasHllw || other.hasHllw,
         hasSize || other.hasSize,
         hasCode || other.hasCode,
         hasType || other.hasType,
-        hasExts|| other.hasExts
+        hasExts || other.hasExts
     );
 }
 
 Category const Category::operator&(Category const other) const
 {
     return Category(
+        hasHllw && other.hasHllw,
         hasSize && other.hasSize,
         hasCode && other.hasCode,
         hasType && other.hasType,
         hasExts && other.hasExts
-        );
-}
-
-Category const Category::operator-(Category const other)const{
-    return Category(
-        hasSize && !other.hasSize,
-        hasCode && !other.hasCode,
-        hasType && !other.hasType,
-        hasExts &&!other.hasExts
     );
 }
 
-bool Category::operator==(Category const other)const{
-    return hasSize == other.hasSize
+Category const Category::operator-(Category const other)const
+{
+    return Category(
+        hasHllw && !other.hasHllw,
+        hasSize && !other.hasSize,
+        hasCode && !other.hasCode,
+        hasType && !other.hasType,
+        hasExts && !other.hasExts
+    );
+}
+
+bool Category::operator==(Category const other)const
+{
+    return hasHllw == other.hasHllw
+        && hasSize == other.hasSize
         && hasCode == other.hasCode
         && hasType == other.hasType
         && hasExts == other.hasExts
         ;
 }
 
-bool Category::operator<=(Category const other)const{
-
-    if (hasSize&& !other.hasSize)
+bool Category::operator<=(Category const other)const
+{
+    if(hasHllw && !other.hasHllw)
+        return false;
+    if(hasSize && !other.hasSize)
         return false;
     if (hasCode && !other.hasCode)
         return false;
     if (hasType && !other.hasType)
         return false;
-    if(hasExts && !other.hasExts)
+    if (hasExts && !other.hasExts)
         return false;
     return true;
 }
 
-p_implementation(Category, Array<String>, DumpData){
+p_implementation(Category, Array<String>, DumpData)
+{
     auto result =
         _({
+            hasHllw ? String("Hllw") : "",
             hasSize ? String("Size") : "",
             hasCode ? String("Code") : "",
             hasType ? String("Type") : "",
-            hasExts ? String("Externals") : ""
+            hasExts ? String("Exts") : ""
         });
 
 
-    auto r2 = result.Where([](String element){return element != "";})->Stringify(",");
-    if (r2=="")
-        return{ "<none>" };
+    auto r2 = result.Where([](String element)
+        {
+            return element != "";
+        })->Stringify(",");
+    if (r2 == "")
+        return{"<none>"};
     return{r2};
 };
+

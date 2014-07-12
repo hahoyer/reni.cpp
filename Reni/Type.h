@@ -54,19 +54,11 @@ namespace Reni
             return this == &other;
         }
 
-        p(bool, HasData)
-        {
-            return size != 0;
-        };
-
+        p(bool, hllw){return size == 0;};
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(bool, isData) = 0;
-        virtual_p(WeakRef<Type>, toTypeTarget)
-        {
-            return thisRef;
-        };
-
+        virtual_p(WeakRef<Type>, toTypeTarget){return thisRef;};
         virtual_p(Address, toAddress);
 
         WeakRef<Type> const array(int count)const;

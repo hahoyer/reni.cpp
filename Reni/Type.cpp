@@ -89,18 +89,18 @@ SearchResult<Feature> const Type::Declarations(EnableCutType const&provider) con
 
 ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts) const
 {
-    return ResultData::Get(category,l_(size), getCode,l_(&thisRef), getExts);
+    return ResultData::Get(category, l_(hllw), l_(size), getCode, l_(&thisRef), getExts);
 }
 
 ResultData const Type::GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode) const
 {
-    return ResultData::GetSmartExts(category, l_(size), getCode, l_(&thisRef));
+    return ResultData::GetSmartHllwExts(category, l_(size), getCode, l_(&thisRef));
 }
 
 ResultData const Type::GetResultDataEmpty(Category category) const
 {
-    a_if(!HasData, Dump);
-    return ResultData::GetSmartExts(category, l_(size), l_(CodeItem::Const(BitsConst::Empty())), l_(&thisRef));
+    a_if(hllw, Dump);
+    return ResultData::GetSmartHllwExts(category, l_(size), l_(CodeItem::Const(BitsConst::Empty())), l_(&thisRef));
 }
 
 WeakRef<Type> const Type::array(int count)const
@@ -179,7 +179,7 @@ WeakRef<NumberType> const Type::CreateNumberType() const
 
 ResultData const Type::ContextAccessResult(Category category, Type const& target, function<Size()> getOffset)const
 {
-    if(!HasData)
+    if(hllw)
         return GetResultDataEmpty(category);
 
     return indirectType

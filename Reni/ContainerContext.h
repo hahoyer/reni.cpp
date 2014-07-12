@@ -8,7 +8,7 @@
 namespace Reni
 {
     class FunctionCallContext;
-    class FunctionCallResultCache;
+    class ResultCache;
                             
     class ContainerContext final : public ChildContext
     {
@@ -16,12 +16,12 @@ namespace Reni
         typedef ChildContext baseType;
 
         FunctionCache<WeakRef<FunctionCallContext>, Type const*> functionCallContext;
-        FunctionCache<ContextFeature, int> accessFeature;
+        FunctionCache<AccessFeature, int> accessFeature;
         ValueCache<WeakRef<Type>> dataTypeCache;
     public:
         Ref<SyntaxContainer> containerData;
     private:
-        int const index;
+        int const viewIndex;
     public:
         ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int index);
 
@@ -31,9 +31,8 @@ namespace Reni
         p(WeakRef<Type>, dataType){return dataTypeCache.Value;};
         p(Size, dataSize);
 
-        Ref<FunctionCallResultCache> const AccessResult(Type const& argsType, int const tokenIndex) const;
-        Ref<ResultCache> const AccessResult(int const tokenIndex) const;
-        SearchResult<ContextFeature> const DeclarationsForType(DefineableToken const&token) const override;
+        Ref<ResultCache> const AccessResult(Type const& argsType, int const tokenIndex) const;
+        SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token) const override;
 
     private:
         p_function(Array<String>, DumpData) override
@@ -41,7 +40,7 @@ namespace Reni
             return base_p_name(DumpData) +
                 _({
                     nd(containerData),
-                    nd(index)
+                    nd(viewIndex)
                 });
         };
 
