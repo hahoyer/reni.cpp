@@ -64,6 +64,7 @@ namespace HWLib
     template<>
     class Optional<bool> final{
         using thisType = Optional;
+        using T = bool;
 
         char const value;
     public:
@@ -87,6 +88,21 @@ namespace HWLib
                 return left;
             return right();
         }
+
+        friend Optional<T> operator||(Optional<T> left, Optional<T> right)
+        {
+            if(left.IsValid)
+                return left;
+            return right;
+        }
+
+        friend Optional<T> operator||(Optional<T> left, T right)
+        {
+            if(left.IsValid)
+                return left;
+            return right;
+        }
+
     };
 
     template<typename T>
