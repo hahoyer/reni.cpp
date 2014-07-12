@@ -30,8 +30,8 @@ ResultData const AccessResultCache::GetResultData(Category category) const
     {
         if (dataResultCache->hllw)
             return dataResultCache->type->thisRef;
+        return container.AccessType(statementIndex)->thisRef;
     }
-
 
     md(category);
     mb;

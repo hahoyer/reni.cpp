@@ -25,6 +25,32 @@
 using namespace Reni;
 static bool Trace = true;
 
+namespace Reni
+{
+    class AccessType final : public Type
+    {
+        using baseType = Type;
+        using thisType = AccessType;
+
+        int const statementIndex;
+        ContainerContext const& container;
+    public:
+        AccessType(AccessType const&) = delete;
+        AccessType(ContainerContext const& container, int statementIndex)
+            : container(container)
+            , statementIndex(statementIndex)
+        {
+            SetDumpString();
+        }
+        ThisRef;
+    private:
+        p_function(bool, hllw) { return false; };
+        p_function(Array<String>, DumpData) override{ return{nd(statementIndex), nd(container)}; }
+        p_function(Size, size)override { return Size::Address; }
+        p_function(WeakRef<Global>, global) override{ return container.global; }
+    };
+};
+
 
 SimpleFeature::SimpleFeature(ContainerContext const& parent, int const statementIndex)
     : statementIndex(statementIndex)
@@ -115,22 +141,26 @@ ResultData const Context::ReferenceResult(Category category, External::Function 
 }
 
 
-ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int viewIndex)
+ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer const& containerData, int viewIndex)
     : baseType(parent)
-      , containerData(containerData.thisRef)
-      , accessFeature([&](int statementIndex)
-          {
-              return AccessFeature(*new SimpleFeature(*this, statementIndex), *new ExtendedFeature(*this, statementIndex));
-          })
-      , dataTypeCache([&]
-          {
-              return new ContainerType(*this);
-          })
-      , functionCallContext([&](Type const* args)
-          {
-              return new FunctionCallContext(*this, args);
-          })
-      , viewIndex(viewIndex)
+    , containerData(containerData.thisRef)
+    , accessFeature([&](int statementIndex)
+        {
+            return AccessFeature(*new SimpleFeature(*this, statementIndex), *new ExtendedFeature(*this, statementIndex));
+        })
+    , accessType([&](int statementIndex)
+        {
+            return new Reni::AccessType(*this, statementIndex);
+        })
+    , dataTypeCache([&]
+        {
+            return new ContainerType(*this);
+        })
+    , functionCallContext([&](Type const* args)
+        {
+            return new FunctionCallContext(*this, args);
+        })
+    , viewIndex(viewIndex)
 {
     SetDumpString();
 };
@@ -139,6 +169,11 @@ ContainerContext::ContainerContext(RegularContext const&parent, SyntaxContainer 
 p_implementation(ContainerContext, Size, dataSize)
 {
     return containerData->Size(parent);
+}
+
+WeakRef<Type> const ContainerContext::AccessType(int const statementIndex) const
+{
+    return accessType(statementIndex)->thisRef;
 }
 
 Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int const statementIndex) const

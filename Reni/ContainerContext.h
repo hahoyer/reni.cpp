@@ -7,6 +7,7 @@
 
 namespace Reni
 {
+    class AccessType;
     class FunctionCallContext;
     class ResultCache;
                             
@@ -17,6 +18,7 @@ namespace Reni
 
         FunctionCache<WeakRef<FunctionCallContext>, Type const*> functionCallContext;
         FunctionCache<AccessFeature, int> accessFeature;
+        FunctionCache<WeakRef<AccessType>, int> accessType;
         ValueCache<WeakRef<Type>> dataTypeCache;
     public:
         Ref<SyntaxContainer> containerData;
@@ -31,6 +33,7 @@ namespace Reni
         p(WeakRef<Type>, dataType){return dataTypeCache.Value;};
         p(Size, dataSize);
 
+        WeakRef<Type> const AccessType(int const statementIndex) const;
         Ref<ResultCache> const AccessResult(Type const& argsType, int const tokenIndex) const;
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token) const override;
 
