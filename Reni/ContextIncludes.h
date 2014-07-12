@@ -78,7 +78,7 @@ namespace Reni
             };
         };
 
-        p_function(bool, isData) { return false; };
+        p_function(bool, hllw) { return true; };
         p_function(Size, size) override{ return 0; }
         p_function(WeakRef<Global>, global) override{return context.global;};
     };
@@ -97,7 +97,7 @@ namespace Reni
 
     private:
         p_function(Array<String>, DumpData) override{return{nd(parent)};}
-        p_function(bool, isData) { return size > 0; };
+        p_function(bool, hllw) { return size == 0; };
         p_function(Size, size) override{ return parent.dataSize; }
         p_function(WeakRef<Global>, global) override{return parent.global;};
     };

@@ -27,7 +27,7 @@ namespace Reni
         static WeakPtr<TypeType> const Convert(Type const&target);
     private:
         p_function(Array<String>, DumpData) override{return{ nd(*value) };};
-        p_function(bool, isData) { return false; };
+        p_function(bool, hllw) { return true; };
         p_function(Size, size) override{ return 0; }
         p_function(WeakRef<Global>, global) override{return value->global;}
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;

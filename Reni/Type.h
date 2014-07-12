@@ -54,10 +54,9 @@ namespace Reni
             return this == &other;
         }
 
-        p(bool, hllw){return size == 0;};
+        virtual_p(bool, hllw) = 0;
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
-        virtual_p(bool, isData) = 0;
         virtual_p(WeakRef<Type>, toTypeTarget){return thisRef;};
         virtual_p(Address, toAddress);
 
@@ -115,36 +114,17 @@ namespace Reni
         EnableCutType(Type const& value) : value(value)
         {
             SetDumpString();
+            a_if_(!this->value.hllw);
         }
 
         ThisRef;
 
     private:
-        p_function(Array<String>, DumpData) override
-        {
-            return{nd(value)};
-        };
-
-        p_function(bool, isData)
-        {
-            return false;
-        };
-
-        p_function(Size, size) override
-        {
-            return value.size;
-        }
-
-        p_function(WeakRef<Global>, global) override
-        {
-            return value.global;
-        }
-
-        p_function(WeakPtr<NumberType>, asNumberType) override
-        {
-            return value.As<NumberType>();
-        }
-
+        p_function(Array<String>, DumpData) override{return{nd(value)};};
+        p_function(bool, hllw) { return false; };
+        p_function(Size, size) override{ return value.size; }
+        p_function(WeakRef<Global>, global) override{return value.global;}
+        p_function(WeakPtr<NumberType>, asNumberType) override{return value.As<NumberType>();}
         p_function(Address, toAddress) override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& target) const override;
     };

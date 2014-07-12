@@ -64,7 +64,7 @@ Type::Type() : _internal(new internal(*this))
 p_virtual_header_implementation(Type, Size, size) ;
 p_virtual_header_implementation(Type, WeakRef<Global>, global) ;
 p_virtual_header_implementation(Type, WeakRef<Type>, asFunctionResult) ;
-p_virtual_header_implementation(Type, bool, isData);
+p_virtual_header_implementation(Type, bool, hllw);
 p_virtual_header_implementation(Type, WeakRef<Type>, toTypeTarget);
 p_virtual_header_implementation(Type, Address, toAddress);
 p_virtual_header_implementation(Type, WeakPtr<NumberType>, asNumberType);
@@ -130,7 +130,7 @@ p_implementation(Type, WeakRef<EnableCutType>, enableCutType)
 
 p_implementation(Type, Address, toAddress)
 {
-    a_if(isData, Dump);
+    a_if(!hllw, Dump);
     return Address(size,0);
 }
 

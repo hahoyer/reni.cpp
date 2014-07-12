@@ -29,7 +29,7 @@ namespace Reni
         SearchResult<Feature> const Declarations(EnableCutType const& provider) const override;
         WeakRef<NumberType> const Resize(int newSize)const;
     private:
-        p_function(bool, isData) { return true; };
+        p_function(bool, hllw) { return false; };
         p_function(Size, size) override;
         p_function(WeakRef<Global>, global) override;
         p_function(Array<String>, DumpData) override;

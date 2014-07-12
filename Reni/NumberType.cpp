@@ -45,6 +45,7 @@ NumberType::NumberType(WeakRef<ArrayType> const parent)
     : parent(*parent)
 {
     SetDumpString();
+    a_if(!parent->hllw, nd(parent));
 }
 
 p_implementation(NumberType, Size, size){return parent.size;};

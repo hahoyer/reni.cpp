@@ -25,7 +25,7 @@ namespace Reni
     private:
         p_function(Size, size) override{ return 1; }
         p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(bool, isData) { return true; };
+        p_function(bool, hllw) { return false; };
     };
 
     class BoolType final : public Type
@@ -44,6 +44,6 @@ namespace Reni
     private:
         p_function(Size, size) override{ return 1; }
         p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(bool, isData) { return true; };
+        p_function(bool, hllw) { return false; };
     };
 }
