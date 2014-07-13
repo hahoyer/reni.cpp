@@ -67,7 +67,3 @@ namespace Reni
         tc_Search(NumberType);
     };
 }
-    private:
-        tc_Search(NumberType);
-    };
-}
