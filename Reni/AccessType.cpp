@@ -16,13 +16,8 @@ AccessType::AccessType(AccessData const& data)
 
 p_implementation(AccessType, Array<String>, DumpData) { return data->p_name(DumpData)(); }
 p_implementation(AccessType, WeakRef<Global>, global){ return data->global; }
-
-p_implementation(AccessType, WeakRef<Type>, value)
-{
-    md_;
-    mb;
-}
-
+p_implementation(AccessType, WeakRef<Type>, value){return data->dataResultCache->type;}
+p_implementation(AccessType, WeakPtr<NumberType>, asNumberType){ return value->As<NumberType>(); }
 
 SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType const& target) const
 {

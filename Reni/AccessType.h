@@ -13,7 +13,7 @@ namespace Reni
         using baseType = Type;
         using thisType = AccessType;
 
-        Ref<AccessData> data;
+        WeakRef<AccessData> data;
     public:
         AccessType(AccessType const&) = delete;
         explicit AccessType(AccessData const& data);
@@ -24,7 +24,7 @@ namespace Reni
         p_function(Array<String>, DumpData) override;
         p_function(Size, size)override { return Size::Address; }
         p_function(WeakRef<Global>, global) override;
-
+        WeakPtr<NumberType> const get_asNumberType() const override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
     };
 

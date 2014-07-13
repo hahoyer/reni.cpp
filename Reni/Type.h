@@ -67,11 +67,7 @@ namespace Reni
         p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
     protected:
-        virtual_p(WeakPtr<NumberType>, asNumberType)
-        {
-            return{};
-        };
-
+        virtual_p(WeakPtr<NumberType>, asNumberType){return{};};
     public:
         template <class TDestination>
         WeakPtr<TDestination> const As()const;
