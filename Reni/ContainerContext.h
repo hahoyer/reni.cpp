@@ -7,6 +7,7 @@
 
 namespace Reni
 {
+    class AccessData;
     class AccessType;
     class FunctionCallContext;
     class ResultCache;
@@ -16,12 +17,11 @@ namespace Reni
         typedef ContainerContext thisType;
         typedef ChildContext baseType;
 
-        FunctionCache<WeakRef<FunctionCallContext>, Type const*> functionCallContext;
-        FunctionCache<AccessFeature, int> accessFeature;
-        FunctionCache<WeakRef<AccessType>, int> accessType;
-        ValueCache<WeakRef<Type>> dataTypeCache;
+        FunctionCache<WeakRef<FunctionCallContext>, Type const*> const functionCallContext;
+        FunctionCache<Ref<AccessData>, int> const accessData;
+        ValueCache<WeakRef<Type>> const dataTypeCache;
     public:
-        Ref<SyntaxContainer> containerData;
+        Ref<SyntaxContainer> const containerData;
     private:
         int const viewIndex;
     public:

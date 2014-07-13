@@ -2,12 +2,12 @@
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/RefCountProvider.h"
 #include "../HWLib/Ref.h"
+#include "../HWLib/Optional.h"
 
 using namespace HWLib;
 
 namespace Reni{
     class AccessFeature;
-
 
     template <typename T, typename... TTypes>
     class ContextFeatureProvider

@@ -1,32 +1,35 @@
 #pragma once
-#include "TokenClass.h"
-#include "SearchResult.h"
-#include "ContextFeature.h"
-#include "ContextFeatureProvider.h"
+
+#include "External.h"
 
 #include "../HWLib/RefCountProvider.h"
 #include "../Util/Category.h"
-#include "External.h"
 
 using namespace HWLib;
 using namespace Util;
 
-namespace Reni{
+namespace Reni
+{
+    class AccessFeature;
     class ContainerContext;
-    class FunctionSyntax;
+    template <class T>class ContextFeatureProvider;
+    class DefineableToken;
     class FunctionBodyType;
+    class FunctionCallContext;
+    class FunctionSyntax;
     class Global;
     class MinusToken;
+    class RecursionContext;
     class ResultData;
     class RootContext;
+    template <class T>class SearchResult;
     class Syntax;
     class SyntaxContainer;
-    class DefineableToken;
-    class FunctionCallContext;
-    class RecursionContext;
+    class Type;
 
     class Context
-        : public WithId<DumpableObject, Context>{
+        : public WithId<DumpableObject, Context>
+    {
         using baseType = WithId<DumpableObject, Context>;
         using thisType = Context;
 
@@ -86,7 +89,8 @@ namespace Reni{
         }
 
         p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
-        SearchResult<AccessFeature>  const DeclarationsForType(DefineableToken const& token) const override{ return parent.DeclarationsForType(token); };
+
+        SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const& token) const override;;
     private:
         p_function(WeakRef<Global>, global) override{ return parent.global; };
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };

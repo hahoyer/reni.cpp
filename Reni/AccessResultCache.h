@@ -1,25 +1,22 @@
 ﻿#pragma once
-
 #include "Result.h"
 
 using namespace HWLib;
 
 namespace Reni
 {
-    class ContainerContext;
+    class AccessData;
 
     class AccessResultCache final : public ResultCache
     {
         typedef ResultCache baseType;
         typedef AccessResultCache thisType;
-        int const statementIndex;
-        Ref<ResultCache> dataResultCache;
-    public:
-        ContainerContext const& container;
 
-        AccessResultCache(ContainerContext const& container, int statementIndex);
-    private:
-        p_function(Array<String>, DumpData) override{ return{nd(statementIndex), nd(container)}; }
+        Ref<AccessData> data;
+    public:
+        AccessResultCache(AccessData const&data);
+
+        Array<String> const p_name(DumpData)()const override;
 
         ResultData const GetResultData(Category category)const override;
         p(Ref<CodeItem>, codeGet);

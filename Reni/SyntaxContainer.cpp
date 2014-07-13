@@ -1,12 +1,13 @@
 #include "Import.h"
 #include "SyntaxContainer.h"
 
+#include "CodeItems.h"
 #include "ContainerContext.h"
-#include "ContextIncludes.h"
+#include "DefineableToken.h"
 #include "EmptySyntax.h"
 #include "ExpressionSyntax.h"
-#include "CodeItems.h"
-#include "DefineableToken.h"
+#include "FunctionSyntax.h"
+
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLang/Admin/Export.h"
 

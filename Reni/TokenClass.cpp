@@ -3,14 +3,16 @@
 
 #include "CodeItems.h"
 #include "Context.h"
-#include "ContextIncludes.h"
+#include "ContainerContext.h"
 #include "DefineableToken.h"
 #include "DumpPrintToken.h"
 #include "ExpressionSyntax.h"
 #include "NumberType.h"
 #include "NumberTypeIncludes.h"
 #include "Syntax.h"
+#include "SyntaxContainer.h"
 #include "TypeType.h"
+
 #include "..\HWLang\SourcePart.h"
 
 static bool Trace = true;

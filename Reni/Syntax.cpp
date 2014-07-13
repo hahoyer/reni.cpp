@@ -3,13 +3,14 @@
 
 #include "CodeItem.h"
 #include "Context.h"
-#include "ContextIncludes.h"
+#include "ContainerContext.h"
 #include "Global.h"
 #include "Result.h"
-#include "TokenClass.h"
 #include "SyntaxContainer.h"
 #include "SyntaxVisitor.h"
+#include "TokenClass.h"
 #include "TypeType.h"
+
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/DumpMacros.h"
 

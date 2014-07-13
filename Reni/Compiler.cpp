@@ -2,9 +2,11 @@
 #include "Compiler.h"
 
 #include "BitType.h"
-#include "ContextIncludes.h"
+#include "ContainerContext.h"
 #include "Result.h"
+#include "SyntaxContainer.h"
 #include "TokenClass.h"
+
 #include "../HWLib/RefCountContainer.instance.h"
 
 static bool Trace = true;

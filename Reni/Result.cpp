@@ -3,11 +3,13 @@
 
 #include "CodeItem.h"
 #include "Context.h"
-#include "ContextIncludes.h"
+#include "ContainerContext.h"
 #include "Externals.h"
 #include "RecursionContext.h"
 #include "ReplaceVisitor.h"
 #include "Syntax.h"
+#include "SyntaxContainer.h"
+
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/LevelValue.h"
 

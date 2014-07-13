@@ -2,11 +2,12 @@
 #include "ConditionalSyntax.h"
 
 #include "CodeItem.h"
-#include "ContextIncludes.h"
+#include "ContainerContext.h"
 #include "Feature.h"
-#include "RecursionContext.h"
-#include "Type.h"
 #include "Global.h"
+#include "RecursionContext.h"
+#include "SyntaxContainer.h"
+#include "Type.h"
 
 using namespace Reni;
 static bool Trace = true;

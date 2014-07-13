@@ -2,11 +2,13 @@
 #include "NumberToken.h"
 
 #include "BitType.h"
+#include "Global.h"
 #include "CodeItems.h"
 #include "Context.h"
-#include "ContextIncludes.h"
-#include "Global.h"
+#include "ContainerContext.h"
 #include "NumberType.h"
+#include "SyntaxContainer.h"
+
 #include "../Util/BitsConst.h"
 
 using namespace Reni;

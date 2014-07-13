@@ -1,9 +1,11 @@
 #include "Import.h"
 #include "ExpressionSyntax.h"
 
-#include "ContextIncludes.h"
+#include "AccessFeature.h"
+#include "ContainerContext.h"
 #include "DefineableToken.h"
 #include "Feature.h"
+#include "SearchResult.h"
 #include "SyntaxContainer.h"
 #include "Type.h"
 

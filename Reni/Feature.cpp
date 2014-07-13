@@ -1,16 +1,18 @@
 #include "Import.h"
 #include "Feature.h"
 
+#include "AccessFeature.h"
 #include "Address.h"
 #include "CodeItems.h"
-#include "ContextFeature.h"
-#include "ContextIncludes.h"
+#include "ContainerContext.h"
 #include "DefineableToken.h"
 #include "Syntax.h"
 #include "Global.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
 #include "Result.h"
+#include "SyntaxContainer.h"
+
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/Ref.h"
 

@@ -1,5 +1,9 @@
 #pragma once
 
+#include "AccessFeature.h"
+#include "Global.h"
+
+#if 0
 #include "ContainerContext.h"
 #include "FunctionCallContext.h"
 #include "FunctionSyntax.h"
@@ -7,21 +11,22 @@
 #include "Type.h"
 #include "../HWLib/ValueCache.h"
 #include "../HWLib/FunctionCache.h"
+#endif
 
 namespace Reni
 {
+    class AccessData;
     class ContainerContext;
+    class FunctionSyntax;
 
     class SimpleFeature final : public AccessFeature::Simple
     {
         typedef Simple baseType;
         typedef SimpleFeature thisType;
 
-        Ref<ResultCache> resultCache;
-        int const statementIndex;
-
+        Ref<AccessData> data;
     public:
-        SimpleFeature(ContainerContext const& parent, int const tokenIndex);
+        SimpleFeature(AccessData const&data);
         ThisRef;
     private:
         ResultData const Result(
@@ -61,11 +66,7 @@ namespace Reni
         Ref<FunctionSyntax> body;
     public:
 
-        FunctionBodyType(Context const& context, FunctionSyntax const& body)
-            : context(context)
-              , body(body.thisRef)
-        {
-        }
+        FunctionBodyType(Context const& context, FunctionSyntax const& body);
 
         ThisRef;
 
@@ -80,7 +81,7 @@ namespace Reni
 
         p_function(bool, hllw) { return true; };
         p_function(Size, size) override{ return 0; }
-        p_function(WeakRef<Global>, global) override{return context.global;};
+        p_function(WeakRef<Global>, global)override;
     };
 
 
@@ -98,7 +99,8 @@ namespace Reni
     private:
         p_function(Array<String>, DumpData) override{return{nd(parent)};}
         p_function(bool, hllw) { return size == 0; };
-        p_function(Size, size) override{ return parent.dataSize; }
-        p_function(WeakRef<Global>, global) override{return parent.global;};
+        p_function(Size,size) override;
+        p_function(WeakRef<Global>, global) override;
     };
+
 };

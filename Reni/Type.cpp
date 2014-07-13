@@ -6,11 +6,12 @@
 #include "ArrayType.h"
 #include "BitType.h"
 #include "CodeItem.h"
-#include "ContextIncludes.h"
+#include "ContainerContext.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
 #include "NumberType.h"
 #include "Result.h"
+#include "SyntaxContainer.h"
 #include "TypeType.h"
 #include "UserDefinedToken.h"
 

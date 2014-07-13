@@ -1,65 +1,46 @@
 #include "Import.h"
 #include "Context.h"
 
-#include "AccessResultCache.h"
+
+#include "AccessData.h"
+#include "AccessFeature.h"
+#include "AccessType.h"
 #include "CodeFunction.h"
-#include "CodeItems.h"
+#include "ContainerContext.h"
 #include "ContextIncludes.h"
 #include "DefineableToken.h"
-#include "ExpressionSyntax.h"
 #include "FunctionCallContext.h"
+#include "FunctionCallResultCache.h"
+#include "RecursionContext.h"
+#include "ReplaceVisitor.h"
+#include "ResultDataDirect.h"
+#include "SyntaxContainer.h"
+
+#if 0
+#include "AccessResultCache.h"
+#include "CodeItems.h"
+#include "ExpressionSyntax.h"
 #include "FunctionCallResultCache.h"
 #include "FunctionSyntax.h"
 #include "Global.h"
-#include "RecursionContext.h"
-#include "ReplaceVisitor.h"
 #include "Result.h"
-#include "ResultDataDirect.h"
 #include "SearchResult.h"
 #include "Syntax.h"
-#include "SyntaxContainer.h"
 #include "Type.h"
+#endif
 
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;
 static bool Trace = true;
 
-namespace Reni
-{
-    class AccessType final : public Type
-    {
-        using baseType = Type;
-        using thisType = AccessType;
-
-        int const statementIndex;
-        ContainerContext const& container;
-    public:
-        AccessType(AccessType const&) = delete;
-        AccessType(ContainerContext const& container, int statementIndex)
-            : container(container)
-            , statementIndex(statementIndex)
-        {
-            SetDumpString();
-        }
-        ThisRef;
-    private:
-        p_function(bool, hllw) { return false; };
-        p_function(Array<String>, DumpData) override{ return{nd(statementIndex), nd(container)}; }
-        p_function(Size, size)override { return Size::Address; }
-        p_function(WeakRef<Global>, global) override{ return container.global; }
-    };
-};
-
-
-SimpleFeature::SimpleFeature(ContainerContext const& parent, int const statementIndex)
-    : statementIndex(statementIndex)
-    , resultCache(new AccessResultCache(parent, statementIndex))
+SimpleFeature::SimpleFeature(AccessData const&data)
+    : data(data.thisRef)
 {}
 
 ResultData const SimpleFeature::Result(Context const& , Category category) const
 {
-    return resultCache->Get(category);
+    return data->resultCache->Get(category);
 }
 
 ResultData const ExtendedFeature::Result(Context const&, Category category, Type const& right) const
@@ -96,9 +77,7 @@ RegularContext::RegularContext()
 }
 
 p_virtual_header_implementation(Context, bool, isRecursion) ;
-
 p_virtual_header_implementation(Context, WeakRef<Global>, global) ;
-
 p_virtual_header_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
 
 p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
@@ -144,13 +123,9 @@ ResultData const Context::ReferenceResult(Category category, External::Function 
 ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer const& containerData, int viewIndex)
     : baseType(parent)
     , containerData(containerData.thisRef)
-    , accessFeature([&](int statementIndex)
+    , accessData([&](int statementIndex)
         {
-            return AccessFeature(*new SimpleFeature(*this, statementIndex), *new ExtendedFeature(*this, statementIndex));
-        })
-    , accessType([&](int statementIndex)
-        {
-            return new Reni::AccessType(*this, statementIndex);
+            return new AccessData(*this, statementIndex);
         })
     , dataTypeCache([&]
         {
@@ -166,14 +141,11 @@ ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer
 };
 
 
-p_implementation(ContainerContext, Size, dataSize)
-{
-    return containerData->Size(parent);
-}
+p_implementation(ContainerContext, Size, dataSize){return containerData->Size(parent);}
 
 WeakRef<Type> const ContainerContext::AccessType(int const statementIndex) const
 {
-    return accessType(statementIndex)->thisRef;
+    return accessData(statementIndex)->type->thisRef;
 }
 
 Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int const statementIndex) const
@@ -184,7 +156,10 @@ Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int 
 SearchResult<AccessFeature> const ContainerContext::DeclarationsForType(DefineableToken const&token) const 
 {
     if(containerData->names.ContainsKey(&token))
-        return accessFeature(containerData->names[&token]);
+    {
+        auto data = accessData(containerData->names[&token]);
+        return data->feature->thisRef;
+    }
     return baseType::DeclarationsForType(token);
 }
 
@@ -298,4 +273,22 @@ SearchResult<AccessFeature> const RecursionContext::DeclarationsForType(Defineab
 {
     return parent.DeclarationsForType(token);
 }
+
+
+SearchResult<AccessFeature> const ChildContext::DeclarationsForType(DefineableToken const& token) const
+{
+    return parent.DeclarationsForType(token);
+}
+
+
+FunctionBodyType::FunctionBodyType(Context const& context, FunctionSyntax const& body) : context(context)
+, body(body.thisRef)
+{
+}
+
+
+p_implementation(FunctionBodyType, WeakRef<Global>, global){return context.global;}
+
+p_implementation(ContainerType, Size ,size){return parent.dataSize;}
+p_implementation(ContainerType, WeakRef<Global>, global){return parent.global;}
 

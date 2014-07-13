@@ -21,7 +21,9 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="AccessData.cpp" />
     <ClCompile Include="AccessResultCache.cpp" />
+    <ClCompile Include="AccessType.cpp" />
     <ClCompile Include="Address.cpp" />
     <ClCompile Include="FunctionCallContext.cpp" />
     <ClCompile Include="ArrayType.cpp" />
@@ -46,7 +48,9 @@
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="TokenClass.cpp" />
     <ClCompile Include="MainTokenFactory.cpp" />
+    <ClInclude Include="AccessData.h" />
     <ClInclude Include="AccessResultCache.h" />
+    <ClInclude Include="AccessType.h" />
     <ClInclude Include="Address.h" />
     <ClInclude Include="Compiler.internal.h" />
     <ClInclude Include="EmptySyntax.h" />
@@ -63,7 +67,7 @@
     <ClInclude Include="DefinitionPoint.h" />
     <ClInclude Include="DumpPrintToken.h" />
     <ClInclude Include="DefineableToken.h" />
-    <ClInclude Include="ContextFeature.h" />
+    <ClInclude Include="AccessFeature.h" />
     <ClInclude Include="Fiber.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ConditionalSyntax.h" />

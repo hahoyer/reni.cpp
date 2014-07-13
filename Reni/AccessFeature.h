@@ -42,6 +42,8 @@ namespace Reni
 
         AccessFeature(Simple const& simple, Extended const& extended);
 
+        ThisRef;
+
         ResultData const FunctionResult(
             Context const&context,
             Category category,

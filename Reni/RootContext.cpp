@@ -2,9 +2,6 @@
 #include "RootContext.h"
 
 #include "CodeItems.h"
-#include "ContextFeature.h"
-#include "ContextFeatureProvider.h"
-#include "ContextIncludes.h"
 #include "Global.h"
 #include "Result.h"
 #include "Syntax.h"
