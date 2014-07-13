@@ -33,7 +33,6 @@ namespace Reni
         p(WeakRef<Type>, dataType){return dataTypeCache.Value;};
         p(Size, dataSize);
 
-        WeakRef<Type> const AccessType(int const statementIndex) const;
         Ref<ResultCache> const AccessResult(Type const& argsType, int const tokenIndex) const;
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token) const override;
 

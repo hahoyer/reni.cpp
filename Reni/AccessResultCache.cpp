@@ -15,18 +15,6 @@ AccessResultCache::AccessResultCache(AccessData const&data)
 {
 }
 
-Array<String> const AccessResultCache::get_DumpData() const{ return data->p_name(DumpData)(); }
+p_implementation(AccessResultCache, Array<String>, DumpData){ return data->p_name(DumpData)(); }
 
-ResultData const AccessResultCache::GetResultData(Category category) const
-{
-    if (category == Category::Type)
-    {
-        if (data->dataResultCache->hllw)
-            return data->dataResultCache->type->thisRef;
-        return data->container.AccessType(data->statementIndex)->thisRef;
-    }
-
-    md(category);
-    mb;
-    return{};
-}
+ResultData const AccessResultCache::GetResultData(Category category) const{return data->GetResultData(category);}

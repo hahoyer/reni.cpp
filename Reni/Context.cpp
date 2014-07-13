@@ -143,11 +143,6 @@ ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer
 
 p_implementation(ContainerContext, Size, dataSize){return containerData->Size(parent);}
 
-WeakRef<Type> const ContainerContext::AccessType(int const statementIndex) const
-{
-    return accessData(statementIndex)->type->thisRef;
-}
-
 Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int const statementIndex) const
 {
     return functionCallContext(&argsType)->functionCallResultCache(statementIndex)->thisRef;
