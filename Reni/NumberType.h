@@ -3,7 +3,6 @@
 #include "../Util/Size.h"
 
 #include "Type.h"
-#include <complex>
 
 using namespace HWLib;
 using namespace Util;

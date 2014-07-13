@@ -81,10 +81,9 @@ inline WeakRef<Type> const NumberType::ResultType<StarToken>(int other)const
 }
 
 template<>
-inline WeakRef<Type> const NumberType::ResultType<EqualToken>(int )const
-{
-    return global->boolType.thisRef;
-}
+inline WeakRef<Type> const NumberType::ResultType<EqualToken>(int)const{return global->boolType.thisRef;}
+template<>
+inline WeakRef<Type> const NumberType::ResultType<GreaterToken>(int)const {return global->boolType.thisRef;}
 
 template<>
 inline WeakRef<Type> const NumberType::ResultType<GreaterToken>(int)const
