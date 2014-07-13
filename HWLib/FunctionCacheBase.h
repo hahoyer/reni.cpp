@@ -19,14 +19,19 @@ namespace HWLib
         mutable std::unordered_set<TKeys> busyKeys;
     protected:
         FunctionCacheBase(FunctionCacheBase<TValue, TKey...> const& x) = delete;
+
         FunctionCacheBase(function<TValue(TKey...)> createValue)
-            : createValue(createValue){};
+            : createValue(createValue)
+        {
+        };
     public:
-        class KeyNotFoundException{
+        class KeyNotFoundException
+        {
             TKeys const _key;
         public:
-            KeyNotFoundException(TKeys const &key)
-                : _key(key){
+            KeyNotFoundException(TKeys const& key)
+                : _key(key)
+            {
                 b(Message);
             };
             p(String, Message){ return "Key not found: " + ::dump(_key); }
@@ -34,14 +39,16 @@ namespace HWLib
 
         static TValue ThrowKeyNotFoundException(TKeys key){ throw KeyNotFoundException(key); };
 
-        TValue const operator()(TKey...key)const{
+        TValue const operator()(TKey...key)const
+        {
             Ensure(key...);
             return data.find(TKeys(key...))->second;
         };
 
         bool const IsValid(TKey... key) const{ return data.find(TKeys(key...)) != data.end(); }
 
-        void IsValid(TKey... key, bool value)const{
+        void IsValid(TKey... key, bool value)const
+        {
             if (value)
                 Ensure(key...);
             else
@@ -49,9 +56,11 @@ namespace HWLib
         }
 
     private:
-        void Ensure(TKey... key)const{
+        void Ensure(TKey... key)const
+        {
             auto element = data.find(TKeys(key...));
-            if (element == data.end()){
+            if (element == data.end())
+            {
                 a_throw(busyKeys.find(TKeys(key...)) == busyKeys.end(), "illegal recursion");
                 busyKeys.insert(TKeys(key...));
                 auto result = createValue(key...);
@@ -59,8 +68,9 @@ namespace HWLib
                 data.insert(std::pair<TKeys, TValue>(TKeys(key...), result));
             }
         }
-            
-        void Reset(TKey... key)const{
+
+        void Reset(TKey... key)const
+        {
             auto element = data.find(TKeys(key...));
             if (element != data.end())
                 data.erase(TKeys(key...));
@@ -68,17 +78,22 @@ namespace HWLib
     };
 };
 
-namespace std {
+namespace std
+{
     template <class TKey>
-    struct hash<tuple<TKey>>{
-        size_t operator()(tuple<TKey> const& key) const{
+    struct hash<tuple<TKey>>
+    {
+        size_t operator()(tuple<TKey> const& key) const
+        {
             return hash<TKey>()(get<0>(key));
         }
     };
 
     template <class TKey0, class TKey1, class... TKeys>
-    struct hash<tuple<TKey0, TKey1, TKeys...>>{
-        size_t operator()(tuple<TKey0, TKey1, TKeys...> const& key) const{
+    struct hash<tuple<TKey0, TKey1, TKeys...>>
+    {
+        size_t operator()(tuple<TKey0, TKey1, TKeys...> const& key) const
+        {
             return hash<TKey0>()(get<0>(key)) + 2 * hash<TKey1>()(get<1>(key));
         }
     };
