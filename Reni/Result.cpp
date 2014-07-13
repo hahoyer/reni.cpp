@@ -227,30 +227,30 @@ ResultData const ResultData::Get(
     function<Size()> getSize,
     function<Ref<CodeItem>()> getCode,
     function<WeakRef<Type>()> getType, 
-    function<Externals()> getExternals
+    function<Externals()> getExts
     )
 {
     auto hllw = category.hasHllw? Optional<bool>(getHllw()) : Optional<bool>();
     auto size = category.hasSize ? Optional<Size>(getSize()) : Optional<Size>();
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    auto externals = category.hasExts ? Optional<Externals>(getExternals()) : Optional<Externals>();
-    return FullGet(category, hllw, size, code, type, externals);
+    auto exts = category.hasExts ? Optional<Externals>(getExts()) : Optional<Externals>();
+    return FullGet(category, hllw, size, code, type, exts);
 }
 
 ResultData const ResultData::GetSmartHllwSize(
     Category category,
     function<Ref<CodeItem>()> getCode,
     function<WeakRef<Type>()> getType,
-    function<Externals()> getExternals
+    function<Externals()> getExts
     )
 {
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
     auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
-    auto externals = category.hasExts ? Optional<Externals>(getExternals()) : Optional<Externals>();
+    auto exts = category.hasExts ? Optional<Externals>(getExts()) : Optional<Externals>();
     auto size = ReplenishSize(category, l_(code), l_(type));
     auto hllw = ReplenishHllw(category, l_(code), l_(type));
-    return FullGet(category, hllw, size, code, type, externals);
+    return FullGet(category, hllw, size, code, type, exts);
 }
 
 ResultData const ResultData::GetSmartHllwExts(
