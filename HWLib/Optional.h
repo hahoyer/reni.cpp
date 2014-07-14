@@ -32,7 +32,7 @@ namespace HWLib
         DefaultAssignmentOperator;
 
         p(T, Value){
-            a_if_(IsValid);
+           a_if_(IsValid);
             return value;
         };
 
