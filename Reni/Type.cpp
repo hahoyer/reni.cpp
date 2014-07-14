@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "Type.h"
 
+#include "AccessType.h"
 #include "Address.h"
 #include "AddressType.h"
 #include "ArrayType.h"
@@ -83,6 +84,12 @@ SearchResult<Feature> const Type::Declarations(NumberType const& provider) const
 };
 
 SearchResult<Feature> const Type::Declarations(EnableCutType const&provider) const
+{
+    md(provider);
+    mb;
+}
+
+SearchResult<Feature> const Type::Declarations(AccessType const&provider) const
 {
     md(provider);
     mb;

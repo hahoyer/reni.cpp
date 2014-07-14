@@ -21,8 +21,13 @@ p_implementation(AccessType, WeakPtr<NumberType>, asNumberType){ return value->A
 
 SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType const& target) const
 {
-    auto result = value->DeclarationsForType(target);
-    if(result.IsValid)
-        return result;
+    auto dircetResult = target.Declarations(*this);
+    if(dircetResult.IsValid)
+        return dircetResult;
+
+    auto parentResult = value->DeclarationsForType(target);
+    if(parentResult.IsValid)
+        return parentResult;
+    
     return{};
 }

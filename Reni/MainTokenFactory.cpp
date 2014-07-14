@@ -159,6 +159,7 @@ MainTokenFactory::MainTokenFactory()
 {
     AddTokenClass(new ArgToken);
     AddTokenClass(new Colon);
+    AddTokenClass(new ColonEqual);
     AddTokenClass(new DumpPrintToken);
     AddTokenClass(new EnableCutToken);
     AddTokenClass(new ElseToken);

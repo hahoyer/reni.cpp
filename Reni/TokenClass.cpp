@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "TokenClass.h"
 
+#include "AccessType.h"
 #include "CodeItems.h"
 #include "Context.h"
 #include "ContainerContext.h"
@@ -28,23 +29,18 @@ Ref<Syntax> const TokenClass::Mismatch(Optional<Ref<Syntax>> const left, SourceP
 
 p_virtual_header_implementation(TokenClass, bool, AcceptsMatch);
 
-SearchResult<Feature>  const DefineableToken::Declarations(TypeType const&) const{ return{}; }
+SearchResult<Feature>  const DefineableToken::Declarations(TypeType const&) const{ return{}; };
+SearchResult <Feature> const DefineableToken::Declarations(NumberType const&) const{ return{}; };
 
-SearchResult <Feature> const DefineableToken::Declarations(NumberType const& target) const
+SearchResult <Feature> const DefineableToken::Declarations(EnableCutType const& provider) const
 {
     bool Trace = true;
-    md(target);
+    md(provider);
     b_;
     return_d(SearchResult<Feature>());
 }
 
-SearchResult <Feature> const DefineableToken::Declarations(EnableCutType const& target) const
-{
-    bool Trace = true;
-    md(target);
-    b_;
-    return_d(SearchResult<Feature>());
-}
+SearchResult<Feature> const DefineableToken::Declarations(AccessType const&) const{ return{}; };
 
 Ref<Syntax> const DefineableToken::CreateSyntax(Optional<Ref<Syntax>> const left, SourcePart const& part, Optional<Ref<Syntax>> const right) const
 {
@@ -61,4 +57,5 @@ tc_Search_implementation(EnableCutToken, NumberType);
 tc_Search_implementation(EqualToken, NumberType);
 tc_Search_implementation(GreaterToken, NumberType);
 tc_Search_implementation(DumpPrintToken, NumberType);
+tc_Search_implementation(ColonEqual, AccessType);
 

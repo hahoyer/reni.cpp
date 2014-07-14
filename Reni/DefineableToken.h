@@ -31,6 +31,7 @@ namespace Reni
         SearchResult<Feature> const Declarations(NumberType const&) const override;
         SearchResult<Feature> const Declarations(TypeType const&) const override;
         SearchResult<Feature> const Declarations(EnableCutType const&) const override;
+        SearchResult<Feature> const Declarations(AccessType const&) const override;
         virtual_p(int, priority) { return 0; };
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;;

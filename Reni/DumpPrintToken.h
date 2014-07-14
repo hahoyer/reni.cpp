@@ -6,6 +6,7 @@ using namespace HWLib;
 
 namespace Reni
 {
+    class AccessType;
     class NumberType;
     class TypeType;
 
@@ -65,5 +66,12 @@ namespace Reni
         static String const Text(){ return ">"; }
     private:
         tc_Search(NumberType);
+    };
+
+    struct ColonEqual final : public NamedDefinableToken<ColonEqual>
+    {
+        static String const Text(){ return ":="; }
+    private:
+        tc_Search(AccessType);
     };
 }

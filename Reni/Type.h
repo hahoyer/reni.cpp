@@ -92,6 +92,7 @@ namespace Reni
         SearchResult<Feature> const Declarations(NumberType const& provider) const override;
         SearchResult<Feature> const Declarations(TypeType const&) const override;
         SearchResult<Feature> const Declarations(EnableCutType const&) const override;
+        SearchResult<Feature> const Declarations(AccessType const&) const override;
     private:
         p_function(Array<String>,DumpData) override
         {

@@ -18,6 +18,9 @@ namespace Reni
         AccessType(AccessType const&) = delete;
         explicit AccessType(AccessData const& data);
         ThisRef;
+
+        template<class TTokenClass>
+        SearchResult<Feature> const DeclarationsForType()const;
     private:
         p(WeakRef<Type>, value);
         p_function(bool, hllw) { return false; };
@@ -26,6 +29,7 @@ namespace Reni
         p_function(WeakRef<Global>, global) override;
         WeakPtr<NumberType> const get_asNumberType() const override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
+
     };
 
 };
