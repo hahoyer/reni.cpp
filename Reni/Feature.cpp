@@ -29,10 +29,10 @@ ResultData const Feature::FunctionResult(
     Optional<Ref<Syntax>> const&right
     )const
 {
-    bool Trace = left.IsValid 
-        && left.Value->ObjectId == 2 
-        && category.hasType && category.hasExts
-        && context.isRecursion;
+    bool Trace = context.ObjectId == 6
+        && left.IsValid && left.Value->ObjectId == 8 
+        && category.hasType
+        && !context.isRecursion;
     md(context, category, left, right);
     auto thisResult = left.Value->GetResultCache(context);
     ReplaceVisitor visitor;
