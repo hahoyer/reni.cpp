@@ -38,6 +38,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     {
         auto result = context
             .DeclarationsForType(tokenClass)
+            .CheckAssertValid()
             .feature
             .FunctionResult(context, category, right);
         a_is(category, <= , result.complete);
@@ -49,6 +50,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
         ->Type(context)
         ->thisRef
         .DeclarationsForType(tokenClass)
+        .CheckAssertValid()
         .feature
         .FunctionResult(context, category, left, right);
     a_is(category, <=, result.complete);

@@ -22,6 +22,22 @@ namespace Reni
 
         SearchResult(){SetDumpString();}
 
+        thisType const& CheckAssertValid()const
+        {
+            AssertValid();
+            return *this;            
+        }
+        thisType & CheckAssertValid()
+        {
+            AssertValid();
+            return *this;
+        }
+
+        void AssertValid()const
+        {
+            a_if(IsValid, Dump);
+        }
+
         p(bool, IsValid){return !feature.isEmpty;};
     private:
         p_function(Array<String>, DumpData) override{return{nd(feature)};};
