@@ -69,7 +69,7 @@ namespace Reni
             Optional<Ref<Syntax>> const&right
         )const;
 
-        p(bool, isEmpty){return !simple.IsValid && extended.IsEmpty;}
+        p(bool, isEmpty){return simple.IsEmpty && extended.IsEmpty;}
         ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
