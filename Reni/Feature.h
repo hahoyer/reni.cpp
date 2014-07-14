@@ -26,6 +26,8 @@ namespace Reni
     public:
         template<class T>
         static Feature const From(){ return Feature(*new T); }
+        static Feature const None(){ return Feature(); }
+        static Feature const Error(String const&title);
 
         class Simple : public RefCountProvider
         {
@@ -48,9 +50,9 @@ namespace Reni
         Optional<Ref<Simple>> const simple;
         Optional<Ref<Extended>> const extended;
 
+    private:
         Feature(){};
 
-    private:
         explicit Feature(Extended const& extended)
             : extended(extended.thisRef)
         {

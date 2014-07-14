@@ -20,7 +20,7 @@ namespace Reni
             SetDumpString();
         }
 
-        SearchResult(){SetDumpString();}
+        SearchResult(): feature(TFeature::None()){SetDumpString();}
 
         thisType const& CheckAssertValid()const
         {

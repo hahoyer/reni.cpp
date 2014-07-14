@@ -22,6 +22,12 @@ using namespace HWLib;
 using namespace Reni;
 
 
+Feature const Feature::Error(String const&title)
+{
+    _console_ .Write(title);
+    mb;
+}
+
 ResultData const Feature::FunctionResult(
     Context const&context,
     Category category,
@@ -29,7 +35,7 @@ ResultData const Feature::FunctionResult(
     Optional<Ref<Syntax>> const&right
     )const
 {
-    bool Trace = context.ObjectId == 6
+    bool Trace = context.ObjectId == -6
         && left.IsValid && left.Value->ObjectId == 8 
         && category.hasType
         && !context.isRecursion;

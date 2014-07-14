@@ -31,3 +31,10 @@ SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType cons
     
     return{};
 }
+
+ResultData const AccessType::AssignmentFeature::Result(Category category, Type const& target, Type const& arg) const
+{
+    md(category, target, arg);
+    mb;
+    return{};
+}

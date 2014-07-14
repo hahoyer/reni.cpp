@@ -7,6 +7,7 @@ namespace Reni
 {
     class AccessData;
     class ContainerContext;
+    class ColonEqual;
 
     class AccessType final : public Type
     {
@@ -30,8 +31,30 @@ namespace Reni
         WeakPtr<NumberType> const get_asNumberType() const override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
 
+        class AssignmentFeature final : public Feature::Extended
+        {
+            using baseType = Feature::Extended;
+            using thisType = AssignmentFeature;
+
+            ResultData const Result(Category category, Type const& target, Type const& arg) const override;
+        };
     };
 
 };
 
 
+#include "DumpPrintToken.h"
+
+using namespace Reni;
+
+template <>
+inline SearchResult<Feature> const AccessType::DeclarationsForType<ColonEqual>() const
+{
+    return Feature::From<AssignmentFeature>();
+}
+
+template <class TTokenClass>
+inline SearchResult<Feature> const AccessType::DeclarationsForType() const
+{
+    return Feature::Error(Dump + "\n" + typeid(TTokenClass).name());
+};
