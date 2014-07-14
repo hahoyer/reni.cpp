@@ -6,6 +6,7 @@
 #include "../Util/Category.h"
 #include "../HWLib/ValueCache.h"
 #include "../Util/Size.h"
+#include "../HWLib/WeakRef.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -51,6 +52,5 @@ namespace Reni
         Ref<CodeItem> const GetCode()const;
         WeakRef<Type> const GetType()const;
         Externals const GetExts()const;
-
     };
 }
