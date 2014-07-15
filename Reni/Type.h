@@ -81,7 +81,6 @@ namespace Reni
         ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts)const;
         ResultData const GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode)const;
         ResultData const GetResultDataEmpty(Category category)const;
-        ResultData const ContextAccessResult(Category category, Type const& target, std::function<Size()> getOffset)const;
 
         virtual SearchResult<Feature> const DeclarationsForType(DeclarationType const& target)const;
         WeakRef<NumberType> const CreateNumberType()const;

@@ -24,7 +24,7 @@ namespace Reni
 
         template<class TTokenClass>
         SearchResult<Feature> const DeclarationsForType() const;
-        static WeakPtr<TypeType> const Convert(Type const&target);
+        static WeakPtr<thisType> const Convert(Type const&target);
     private:
         p_function(Array<String>, DumpData) override{return{ nd(*value) };};
         p_function(bool, hllw) { return true; };

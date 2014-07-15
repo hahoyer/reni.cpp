@@ -32,9 +32,19 @@ SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType cons
     return{};
 }
 
+WeakPtr<AccessType> const AccessType::Convert(Type const& target)
+{
+    return dynamic_cast<AccessType*>(&target.thisRef);
+}
+
+
 ResultData const AccessType::AssignmentFeature::Result(Category category, Type const& target, Type const& arg) const
 {
-    md(category, target, arg);
+    auto typedTarget = Convert(target);
+    auto rawResult = typedTarget->data->SetResultData(category);
+    if(category <= Category::Type.replenished)
+        return rawResult;
+    md(category, target, arg, rawResult);
     mb;
     return{};
 }

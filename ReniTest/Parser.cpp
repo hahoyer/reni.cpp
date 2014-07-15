@@ -140,7 +140,7 @@ namespace _HWLang {
         //md(pt);
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, true, "else", true, true);
 
         auto rl = syntax.Value->left;
@@ -169,7 +169,7 @@ namespace _HWLang {
         //md(pt);
 
         auto sc = ScannerInstance(text);
-        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, Token<TokenClass>>(pt, sc);
+        auto syntax = Parse<Ref<Syntax>, Optional<Ref<Syntax>>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
         Check(syntax, true, "z", false, false);
 
         auto rl = syntax.Value->left;

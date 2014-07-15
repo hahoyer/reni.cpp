@@ -18,10 +18,11 @@ namespace Reni
         typedef ChildContext baseType;
 
         FunctionCache<WeakRef<FunctionCallContext>, Type const*> const functionCallContext;
-        FunctionCache<Ref<AccessData>, int> const accessData;
         ValueCache<WeakRef<Type>> const dataTypeCache;
     public:
+        FunctionCache<Ref<AccessData>, int> const accessData;
         Ref<SyntaxContainer> const containerData;
+        External const& asExternal;
     private:
         int const viewIndex;
     public:
@@ -32,10 +33,11 @@ namespace Reni
 
         p(WeakRef<Type>, dataType){return dataTypeCache.Value;};
         p(Size, dataSize);
+        p(WeakRef<External>, asExternal);
 
-        Ref<ResultCache> const AccessResult(Type const& argsType, int const tokenIndex) const;
+        Ref<ResultCache> const AccessResult(Type const& argsType, int tokenIndex) const;
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token) const override;
-
+        Size const PartSize(int position) const;
     private:
         p_function(Array<String>, DumpData) override
         {

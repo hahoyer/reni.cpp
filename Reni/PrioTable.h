@@ -17,6 +17,7 @@ namespace Reni
                 .Left({"=", "<>"})
                 .Left({"*", "/"})
                 .Left({"+", "-"})
+                .Right({":="})
                 .ThenElseLevel({"then"}, {"else"})
                 .Left({"/\\", "/!\\", "/\\/\\", "/!\\/!\\"})
                 .Right({":"})

@@ -22,6 +22,7 @@ namespace Reni
 
         template<class TTokenClass>
         SearchResult<Feature> const DeclarationsForType()const;
+        static WeakPtr<thisType> const Convert(Type const&target);
     private:
         p(WeakRef<Type>, value);
         p_function(bool, hllw) { return false; };

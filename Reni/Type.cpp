@@ -185,16 +185,6 @@ WeakRef<NumberType> const Type::CreateNumberType() const
     return new NumberType(a->thisRef);
 };
 
-ResultData const Type::ContextAccessResult(Category category, Type const& target, function<Size()> getOffset)const
-{
-    if(hllw)
-        return GetResultDataEmpty(category);
-
-    return indirectType
-        ->GetResultDataSmartExts
-        (category,l_(CodeItem::Reference(target)->ReferencePlus(getOffset())));
-};
-
 SearchResult<Feature> const Type::DeclarationsForType(DeclarationType const& target) const
 {
     bool Trace = true;

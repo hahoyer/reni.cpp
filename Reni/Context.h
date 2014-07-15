@@ -4,6 +4,9 @@
 
 #include "../HWLib/RefCountProvider.h"
 #include "../Util/Category.h"
+#include "../HWLib/WeakRef.h"
+#include "../HWLib/Ref.h"
+#include "../HWLib/Optional.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -37,6 +40,7 @@ namespace Reni
         virtual_p(bool, isRecursion) { return false; };
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
+        p(int, alignBits) { return 3; };
 
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
         virtual ResultData const ReferenceResult(Category category, External::Function const& external) const;
@@ -96,6 +100,22 @@ namespace Reni
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
     };
 }
+
+using namespace Reni;
+
+class External::Context final : public External
+{
+    using baseType = Reni::External;
+    using thisType = Context;
+    Reni::Context const& target;
+public:
+    Context(Reni::Context const& target)
+        : target(target)
+    {
+    }
+    String const internalDump() const override;
+};
+
 
 namespace std{
     template <>

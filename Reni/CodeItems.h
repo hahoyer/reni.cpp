@@ -250,14 +250,11 @@ namespace Reni{
     class ReferenceCode final : public CodeItem{
         typedef CodeItem baseType;
         typedef ReferenceCode thisType;
-        Type const&value;
+        Context const&value;
     public:
-        explicit ReferenceCode(Type const&value)
-            : value(value){
-            SetDumpString();
-        }
+        explicit ReferenceCode(Context const& value);
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(value)}; };
+        p_function(Array<String>, DumpData) override;
         p_function(Size, size) override{ return Size::Address; }
         p_function(Externals, exts)override;
 

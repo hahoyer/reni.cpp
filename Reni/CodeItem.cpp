@@ -5,6 +5,7 @@
 
 #include "Address.h"
 #include "CodeItems.h"
+#include "Context.h"
 #include "External.h"
 #include "Externals.h"
 #include "NumberType.h"
@@ -143,7 +144,7 @@ Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value)
         ->thisRef;
 };
 
-Ref<CodeItem> const CodeItem::Reference(Type const&value)
+Ref<CodeItem> const CodeItem::Reference(Context const&value)
 {
     return new ReferenceCode(value);
 }
@@ -339,6 +340,13 @@ Optional<Ref<CodeItem>> const FiberConnector::ReplaceImpl(ReplaceVisitor const&v
     return_db(new FiberConnector(newItems COMMA connector));
 };
 
+
+ReferenceCode::ReferenceCode(Context const& value): value(value)
+{
+    SetDumpString();
+}
+
+p_implementation(ReferenceCode, Array<String>, DumpData) { return{nd(value)}; };
 
 p_implementation(ReferenceCode, Externals, exts)
 {

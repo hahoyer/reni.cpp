@@ -42,7 +42,7 @@ namespace Reni
             );
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
         static Ref<CodeItem> const This(Type const&type);
-        static Ref<CodeItem> const Reference(Type const&target);
+        static Ref<CodeItem> const Reference(Context const&value);
         static Ref<CodeItem> const CallGetter(Size const size, int const index, Type const&arg);
         static Ref<CodeItem> const CallGetter(Size const size, int const index);
         static Ref<CodeItem> const SmartList(Array<Optional<Ref<CodeItem>>> const&items);

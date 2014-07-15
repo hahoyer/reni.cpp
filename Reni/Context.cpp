@@ -136,6 +136,7 @@ ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer
             return new FunctionCallContext(*this, args);
         })
     , viewIndex(viewIndex)
+    , asExternal(*new External::Context(thisRef))
 {
     SetDumpString();
 };
@@ -143,7 +144,7 @@ ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer
 
 p_implementation(ContainerContext, Size, dataSize){return containerData->Size(parent);}
 
-Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int const statementIndex) const
+Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int statementIndex) const
 {
     return functionCallContext(&argsType)->functionCallResultCache(statementIndex)->thisRef;
 }
@@ -158,6 +159,10 @@ SearchResult<AccessFeature> const ContainerContext::DeclarationsForType(Defineab
     return baseType::DeclarationsForType(token);
 }
 
+Size const ContainerContext::PartSize(int position) const
+{
+    return accessData(position)->dataResultCache->size.Align(alignBits);
+}
 
 
 FunctionCallResultCache::FunctionCallResultCache(FunctionCallContext const& context, int bodyIndex) : context(context)
@@ -287,3 +292,7 @@ p_implementation(FunctionBodyType, WeakRef<Global>, global){return context.globa
 p_implementation(ContainerType, Size ,size){return parent.dataSize;}
 p_implementation(ContainerType, WeakRef<Global>, global){return parent.global;}
 
+String const External::Context::internalDump() const
+{
+    return target.DumpShort;
+}

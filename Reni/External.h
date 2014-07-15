@@ -11,6 +11,7 @@ namespace Reni
 {
     class ReplaceVisitor;
     class Externals;
+    class Context;
 
     class External 
         : public WithId<DumpableObject, External>
@@ -22,6 +23,7 @@ namespace Reni
         class This;
         class Arg;
         class Function;
+        class Context;
 
         ThisRef;
         bool const operator < (thisType const& other)const;
@@ -99,4 +101,5 @@ namespace Reni
         NewValue() {};
         String const internalDump() const override{ return baseType::internalDump() + "new_value"; };
     };
+
 }

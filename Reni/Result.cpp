@@ -110,7 +110,7 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = syntax.ObjectId == -8 && category.hasType;
+    bool Trace = context.ObjectId == -6 && syntax.ObjectId == 15 && category.hasCode;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);

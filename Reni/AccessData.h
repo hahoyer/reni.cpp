@@ -44,13 +44,21 @@ namespace Reni
         p_function(Array<String>, DumpData) override{ return{nd(statementIndex), nd(container)}; }
         p(WeakRef<Global>, global);
 
-        ResultData const GetResultData(Util::Category category) const;
-        CtrlRef<Type> const get_type() const;
+        ResultData const GetResultData(Category category) const;
+        ResultData const SetResultData(Category category) const;
     private:
-        bool const GetHllw()const;
-        Size const GetSize()const;
-        Ref<CodeItem> const GetCode()const;
-        WeakRef<Type> const GetType()const;
-        Externals const GetExts()const;
+        p(bool, GetHllw);
+        p(Size, GetSize);
+        p(Ref<CodeItem>, GetCode);
+        p(WeakRef<Type>, GetType);
+
+        p(Externals, XetExts);
+
+        p(bool, SetHllw);
+        p(Size, SetSize);
+        p(Ref<CodeItem>, SetCode);
+        p(WeakRef<Type>, SetType);
+
+        p(Ref<CodeItem>, ThisCode);
     };
 }
