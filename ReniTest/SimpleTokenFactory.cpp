@@ -4,22 +4,22 @@
 using namespace _HWLang;
 
 typedef SimpleTokenFactory TokenFactory;
-typedef TokenFactory::TokenClass TokenClass;
+typedef TokenFactory::TokenClass SimpleTokenClass;
 
-static TokenClass const theMatchInstance = true;
-static TokenClass const theNormalInstance = false;
+static SimpleTokenClass const theMatchInstance = true;
+static SimpleTokenClass const theNormalInstance = false;
 
-TokenClass const & TokenFactory::End =(theMatchInstance);
-TokenClass const & TokenFactory::Number(theNormalInstance);
-TokenClass const & TokenFactory::Text(theNormalInstance);
-TokenClass const & TokenFactory::Start(theNormalInstance);
+SimpleTokenClass const & TokenFactory::End =(theMatchInstance);
+SimpleTokenClass const & TokenFactory::Number(theNormalInstance);
+SimpleTokenClass const & TokenFactory::Text(theNormalInstance);
+SimpleTokenClass const & TokenFactory::Start(theNormalInstance);
 
-TokenClass const & TokenFactory::GetTokenClass(String const &name){
+SimpleTokenClass const & TokenFactory::GetTokenClass(String const &name){
     if(name.Count == 1 && String(")]}").Contains(name[0]))
         return theMatchInstance;
     return theNormalInstance;
 };
 
-TokenClass const& TokenFactory::GetErrorClass(String const&){
+SimpleTokenClass const& TokenFactory::GetErrorClass(String const&){
     return theNormalInstance;
 };
