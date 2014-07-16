@@ -10,6 +10,7 @@
 #include "Externals.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
+#include "ReferenceCode.h"
 
 
 using namespace Reni;
@@ -88,7 +89,7 @@ Ref<CodeItem> const CodeItem::IfThenElse(Ref<CodeItem> const condition, Ref<Code
     return Empty();
 }
 
-Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index, Type const& arg)
+Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index, Type const& arg)
 {
     return Arg(arg)
         ->Fiber({new CallGetterFiber(size, index, arg.size)})
@@ -130,7 +131,7 @@ Ref<CodeItem> const CodeItem::List(Array<Ref<CodeItem>> const& items)
     return Empty();
 }
 
-Ref<CodeItem> const CodeItem::CallGetter(Size const size, int const index)
+Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index)
 {
     fd(size, index);
     b_;
@@ -149,7 +150,7 @@ Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value)
         ->thisRef;
 };
 
-Ref<CodeItem> const CodeItem::Reference(Context const&value)
+Ref<CodeItem> const CodeItem::Reference(ContainerContext const&value)
 {
     return new ReferenceCode(value);
 }
@@ -346,36 +347,3 @@ Optional<Ref<CodeItem>> const FiberConnector::ReplaceImpl(ReplaceVisitor const&v
 };
 
 
-ReferenceCode::ReferenceCode(Context const& value): value(value)
-{
-    SetDumpString();
-}
-
-p_implementation(ReferenceCode, Array<String>, DumpData) { return{nd(value)}; };
-
-p_implementation(ReferenceCode, Externals, exts)
-{
-    md_;
-    mb;
-}
-
-inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
-{
-    if(offset == 0)
-        return thisRef;
-    return Fiber({new ReferencePlusCode(size, offset)})
-        ->thisRef;
-}
-
-Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&arg) const
-{
-    md(arg);
-    mb;
-}
-
-
-String const AssignCode::ToCpp(CodeVisitor const& visitor) const
-{
-    md(visitor);
-    mb;
-}

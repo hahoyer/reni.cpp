@@ -3,6 +3,7 @@
 
 #include "AccessData.h"
 #include "ContainerContext.h"
+#include "ReplaceVisitor.h"
 #include "SyntaxContainer.h"
 
 using namespace Reni;
@@ -44,7 +45,8 @@ ResultData const AccessType::AssignmentFeature::Result(Category category, Type c
     auto rawResult = typedTarget->data->SetResultData(category);
     if(category <= Category::Type.replenished)
         return rawResult;
-    md(category, target, arg, rawResult);
-    mb;
-    return{};
+
+    ReplaceVisitor visitor;
+    visitor.SetResults(External::Arg::Instance, *arg.ConvertTo(typedTarget->value->thisRef));
+    return rawResult.Replace(visitor);
 }

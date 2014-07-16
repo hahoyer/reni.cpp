@@ -20,6 +20,7 @@
 #include "../HWLib/FunctionCache.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/ValueCache.h"
+#include "FunctionResultCache.h"
 
 
 using namespace Reni;
@@ -152,12 +153,17 @@ bool const Type::isConvertableTo(Type const& other) const
     return DeclarationsForType(other).IsValid;
 }
 
-ResultData const Type::ConvertTo(Category category, Type const& destination) const
+Ref<ResultCache> const Type::ConvertTo(Type const& destination) const
 {
-    auto result = DeclarationsForType(destination);
-    if (result.IsValid)
-        return result.feature.ConversionResult(category, thisRef, destination);
-    return{};
+    return new FunctionResultCache
+        ([&](Category category) -> ResultData const
+            {
+                auto result = DeclarationsForType(destination);
+                if (result.IsValid)
+                    return result.feature.ConversionResult(category, thisRef, destination);
+                return{};
+            }
+        );
 }
 
 WeakRef<Type> const Type::Common(Type const& other) const
@@ -232,10 +238,7 @@ class InstanceFunctionFeature final : public Feature::Extended
 
     ResultData const Result(Category category, Type const&target, Type const&arg)const override
     {
-        auto targetType = TypeType::Convert(target)->value;
-        if(category <= Category::Type.replenished)
-            return ResultData (targetType->thisRef) & category;
-        return arg.ConvertTo(category, *targetType);
+        return arg.ConvertTo(TypeType::Convert(target)->value->thisRef)->Get(category);
     }
 };
 
