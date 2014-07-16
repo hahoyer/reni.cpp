@@ -27,6 +27,11 @@ bool const CodeItem::operator==(thisType const& other) const
     return this == &other;
 }
 
+Ref<CodeItem> const CodeItem::Assign(Type const& data, Ref<CodeItem> left)
+{
+    return new FiberConnector({left, Arg(data)}, new AssignCode(data.size));
+}
+
 Ref<CodeItem> const CodeItem::Arg(Type const&value)
 {
     return new ArgCode(value);
@@ -369,3 +374,8 @@ Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&ar
 }
 
 
+String const AssignCode::ToCpp(CodeVisitor const& visitor) const
+{
+    md(visitor);
+    mb;
+}

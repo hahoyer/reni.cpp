@@ -97,16 +97,14 @@ p_implementation(AccessData, Ref<CodeItem>, GetCode)
 
 p_implementation(AccessData, Ref<CodeItem>, SetCode)
 {
-    auto xx = ThisCode;
-    md(xx);
-    mb;
+    return CodeItem::Assign(dataResultCache->type->thisRef, ThisCode);
 }
 
 p_implementation(AccessData, Ref<CodeItem>, ThisCode)
 {
     auto backOffset = Size(0);
     for(auto position = 0; position <= statementIndex; position++)
-        backOffset -= container.PartSize(position);
+        backOffset -= container.AlignedPartSize(position);
     return CodeItem::Reference(container)->ReferencePlus(backOffset);
 }
 

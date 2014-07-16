@@ -159,9 +159,14 @@ SearchResult<AccessFeature> const ContainerContext::DeclarationsForType(Defineab
     return baseType::DeclarationsForType(token);
 }
 
+Size const ContainerContext::AlignedPartSize(int position) const
+{
+    return PartSize(position).Align(alignBits);
+}
+
 Size const ContainerContext::PartSize(int position) const
 {
-    return accessData(position)->dataResultCache->size.Align(alignBits);
+    return accessData(position)->dataResultCache->size;
 }
 
 

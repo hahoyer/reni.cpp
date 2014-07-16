@@ -37,6 +37,7 @@ namespace Reni
 
         Ref<ResultCache> const AccessResult(Type const& argsType, int tokenIndex) const;
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token) const override;
+        Size const AlignedPartSize(int position) const;
         Size const PartSize(int position) const;
     private:
         p_function(Array<String>, DumpData) override

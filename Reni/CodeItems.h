@@ -262,5 +262,37 @@ namespace Reni{
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
     };
 
+    class AssignCode final : public FiberConnectorItem {
+        typedef AssignCode baseType;
+        typedef NumberOperationCode thisType;
+        Size const data;
+    public:
+        AssignCode(Size const& data)
+            : data(data)
+        {
+            SetDumpString();
+        }
+    private:
+        p_function(Array<String>, DumpData) override
+        {
+            return
+            {
+                nd(data)
+            };
+        };
+        p_function(int, inCount) override{ return 2; };
+        p_function(Size, size) override { return 0; };
+        p_function(String, prefix) override { return "assign"; };
+        String const ToCpp(CodeVisitor const& visitor)const override;
+        Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override{ return{}; }
+
+        Size const InSize(int index) const override
+        {
+            if(index == 0)
+                return Size::Address ;
+            return data;
+        }
+
+    };
 
 }

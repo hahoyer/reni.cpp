@@ -29,6 +29,7 @@ namespace Reni
         typedef ReniRuntime::Stack::dataType dataItemType;
         typedef ReniRuntime::Stack::sizeType dataItemSizeType;
 
+        static Ref<CodeItem> const Assign(Type const&data, Ref<CodeItem> left);
         static Ref<CodeItem> const Arg(Type const&type);
         static Ref<CodeItem> const FunctionArg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
