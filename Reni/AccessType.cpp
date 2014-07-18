@@ -4,6 +4,7 @@
 #include "AccessData.h"
 #include "ContainerContext.h"
 #include "ReplaceVisitor.h"
+#include "SearchResultIncludes.h"
 #include "SyntaxContainer.h"
 
 using namespace Reni;
@@ -28,8 +29,8 @@ SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType cons
 
     auto parentResult = value->DeclarationsForType(target);
     if(parentResult.IsValid)
-        return parentResult;
-    
+        return parentResult + thisRef;
+
     return{};
 }
 

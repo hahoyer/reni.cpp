@@ -3,6 +3,7 @@
 
 
 #include "AccessData.h"
+#include "Result.h"
 #include "AccessFeature.h"
 #include "AccessType.h"
 #include "CodeFunction.h"
@@ -23,8 +24,6 @@
 #include "FunctionCallResultCache.h"
 #include "FunctionSyntax.h"
 #include "Global.h"
-#include "Result.h"
-#include "SearchResult.h"
 #include "Syntax.h"
 #include "Type.h"
 #endif

@@ -90,9 +90,7 @@ p_implementation(AccessData, WeakRef<Type>, GetType)
 
 p_implementation(AccessData, Ref<CodeItem>, GetCode)
 {
-    auto xx = ThisCode;
-    md(xx);
-    mb;
+    return ThisCode;
 }
 
 p_implementation(AccessData, Ref<CodeItem>, SetCode)

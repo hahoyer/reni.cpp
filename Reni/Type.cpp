@@ -10,8 +10,10 @@
 #include "ContainerContext.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
+#include "FunctionResultCache.h"
 #include "NumberType.h"
 #include "Result.h"
+#include "SearchResultIncludes.h"
 #include "SyntaxContainer.h"
 #include "TypeType.h"
 #include "UserDefinedToken.h"
@@ -20,7 +22,6 @@
 #include "../HWLib/FunctionCache.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/ValueCache.h"
-#include "FunctionResultCache.h"
 
 
 using namespace Reni;
@@ -160,7 +161,7 @@ Ref<ResultCache> const Type::ConvertTo(Type const& destination) const
             {
                 auto result = DeclarationsForType(destination);
                 if (result.IsValid)
-                    return result.feature.ConversionResult(category, thisRef, destination);
+                    return result.ConversionResult(category, thisRef, destination);
                 return{};
             }
         );

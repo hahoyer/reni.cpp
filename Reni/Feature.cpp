@@ -10,7 +10,6 @@
 #include "Global.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
-#include "Result.h"
 #include "SyntaxContainer.h"
 
 #include "../HWLib/RefCountContainer.instance.h"
@@ -104,10 +103,14 @@ ResultData const EnableCutFeature::Result(Category category, Type const&target)c
 }
 
 
-ResultData const DumpPrintFeature::Result(Category category, Type const&target)const
+ResultData const DumpPrintFeature::Result(Category category, Type const& target)const
 {
     return target
         .global
         ->voidType
-        .GetResultDataSmartExts(category, l_(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target))));
+        .GetResultDataSmartExts
+        (
+            category,
+            l_(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target)))
+        );
 }

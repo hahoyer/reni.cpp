@@ -22,12 +22,7 @@ ReferenceCode::ReferenceCode(ContainerContext const& value) : value(value)
 }
 
 p_implementation(ReferenceCode, Array<String>, DumpData) { return{nd(value)}; };
-
-p_implementation(ReferenceCode, Externals, exts)
-{
-    md_;
-    mb;
-}
+p_implementation(ReferenceCode, Externals, exts){return Externals(value.asExternal);}
 
 inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
 {
