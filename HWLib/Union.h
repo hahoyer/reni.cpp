@@ -65,6 +65,7 @@ namespace HWLib
             new (&rawData) T(data);
         };
 
+        DefaultAssignmentOperator;
         ~Union(){ internal::UnionHelper<TItems...>::Dispose(typeId, &rawData); }
 
         template<class T> bool const is()const{ return internal::UnionHelper<TItems...>::typeId<T>() == typeId; };
@@ -72,7 +73,7 @@ namespace HWLib
         {
             if(is<T>())
                 return *reinterpret_cast<T const*>(static_cast<void const*>(&rawData));
-            throw "type differs from requested type";
+            throw "current type differs from requested type";
         };
     };
 
