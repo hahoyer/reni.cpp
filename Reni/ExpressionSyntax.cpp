@@ -6,7 +6,6 @@
 #include "DefineableToken.h"
 #include "Feature.h"
 #include "SearchResult.h"
-#include "SearchResultIncludes.h"
 #include "SyntaxContainer.h"
 #include "Type.h"
 
@@ -39,7 +38,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     {
         auto result = context
             .DeclarationsForType(tokenClass)
-            .CheckAssertValid()
+            .found
             .FunctionResult(context, category, right);
         a_is(category, <= , result.complete);
         return(result);
@@ -50,7 +49,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
         ->Type(context)
         ->thisRef
         .DeclarationsForType(tokenClass)
-        .CheckAssertValid()
+        .found
         .FunctionResult(context, category, left, right);
     a_is(category, <=, result.complete);
     return(result);

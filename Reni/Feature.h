@@ -4,6 +4,8 @@
 #include "../Util/Category.h"
 #include "../HWLib/Ref.h"
 #include "../HWLib/Optional.h"
+#include "../HWLib/WeakRef.h"
+
 #include "SearchResult.h"
 
 using namespace HWLib;
@@ -13,21 +15,22 @@ namespace Reni
 {
     class ArrayType;
     class Context;
+    class Feature;
     class Syntax;
     class ResultData;
     class ResultFromSyntaxAndContext;
     class Type;
+    template<> class FoundFeature < Feature > ;
 
     class Feature final
-        : public WithId<DumpableObject, Feature>
+        : public WithId < DumpableObject, Feature >
     {
-        typedef DumpableObject baseType;
-        typedef Feature thisType;
+        using baseType = DumpableObject;
+        using thisType = Feature;
     public:
         template<class T>
-        static Feature const From(){ return Feature(*new T); }
-        static Feature const None(){ return Feature(); }
-        static Feature const Error(String const&title);
+        static FoundFeature<Feature> const From();
+        static FoundFeature<Feature> const Error(String const&title);
 
         class Simple : public RefCountProvider
         {
@@ -69,9 +72,9 @@ namespace Reni
             Category category,
             Optional<Ref<Syntax>> const&left,
             Optional<Ref<Syntax>> const&right
-        )const;
+            )const;
 
-        p(bool, isEmpty){return simple.IsEmpty && extended.IsEmpty;}
+        p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
         ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
@@ -92,4 +95,49 @@ namespace Reni
         using thisType = DumpPrintFeature;
         ResultData const Result(Category category, Type const&target)const override;
     };
+
+    template<>
+    class FoundFeature<Feature> final : public FoundFeatureBase<Feature>
+    {
+        using baseType = FoundFeatureBase < Feature > ;
+        using thisType = FoundFeature;
+
+        Feature const feature;
+        Array<WeakRef<Type>> const path;
+        FoundFeature(Feature const&feature, Array<WeakRef<Type>> const&path)
+            : feature(feature)
+            , path(path)
+        {
+            SetDumpString();
+        }
+    public:
+        FoundFeature(Feature const&feature)
+            : feature(feature)
+        {
+            SetDumpString();
+        }
+
+        ResultData const FunctionResult(
+            Context const&context,
+            Category category,
+            Optional<Ref<Syntax>> const& left,
+            Optional<Ref<Syntax>> const& right
+            )const;
+        thisType const operator+(Type const&fromType)const;
+
+        ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
+
+    private:
+        p_function(Array<String>, DumpData) override{ return{nd(feature) + nd(path)}; };
+    };
+
 }
+
+using namespace Reni;
+
+template <class T>
+FoundFeature<Feature> const Feature::From()
+{
+    return Feature(*new T);
+}
+

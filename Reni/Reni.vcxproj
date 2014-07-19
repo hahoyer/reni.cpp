@@ -59,7 +59,6 @@
     <ClInclude Include="ContainerContext.h" />
     <ClInclude Include="Externals.h" />
     <ClInclude Include="FunctionCallContext.h" />
-    <ClInclude Include="ContextFeatureProvider.h" />
     <ClInclude Include="ArrayType.h" />
     <ClInclude Include="CodeItems.h" />
     <ClInclude Include="CodeVisitor.h" />
@@ -80,10 +79,10 @@
     <ClInclude Include="External.h" />
     <ClInclude Include="CodeFunction.h" />
     <ClInclude Include="ReferenceCode.h" />
+    <ClInclude Include="ResultData.h" />
     <ClInclude Include="ResultDataDirect.h" />
     <ClInclude Include="NumberTypeIncludes.h" />
     <ClInclude Include="RecursionContext.h" />
-    <ClInclude Include="SearchResultIncludes.h" />
     <ClInclude Include="SearchTarget.h" />
     <ClInclude Include="TypeType.h" />
     <ClInclude Include="SyntaxContainer.h" />

@@ -13,7 +13,6 @@
 #include "FunctionResultCache.h"
 #include "NumberType.h"
 #include "Result.h"
-#include "SearchResultIncludes.h"
 #include "SyntaxContainer.h"
 #include "TypeType.h"
 #include "UserDefinedToken.h"
@@ -161,7 +160,9 @@ Ref<ResultCache> const Type::ConvertTo(Type const& destination) const
             {
                 auto result = DeclarationsForType(destination);
                 if (result.IsValid)
-                    return result.ConversionResult(category, thisRef, destination);
+                    return result
+                    .found
+                    .ConversionResult(category, thisRef, destination);
                 return{};
             }
         );

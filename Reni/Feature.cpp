@@ -21,7 +21,7 @@ using namespace HWLib;
 using namespace Reni;
 
 
-Feature const Feature::Error(String const&title)
+FoundFeature<Feature> const Feature::Error(String const&title)
 {
     _console_ .Write(title);
     mb;
@@ -114,3 +114,25 @@ ResultData const DumpPrintFeature::Result(Category category, Type const& target)
             l_(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target)))
         );
 }
+
+
+ResultData const FoundFeature<Feature>::FunctionResult(
+    Context const& context,
+    Category category,
+    Optional<Ref<Syntax>> const& left,
+    Optional<Ref<Syntax>> const& right
+    )const
+{
+    return feature.FunctionResult(context, category, left, right);
+};
+
+FoundFeature<Feature> const FoundFeature<Feature>::operator+(Type const& fromType)const
+{
+    return FoundFeature<Feature>(feature, path + WeakRef<Type>(fromType.thisRef));
+}
+
+ResultData const FoundFeature<Feature>::ConversionResult(Category category, Type const& target, Type const& destination) const
+{
+    return feature.ConversionResult(category, target, destination);
+};
+
