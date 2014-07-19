@@ -16,10 +16,6 @@ namespace Util{
             SetDumpString();
         }
 
-        Size() : value(Constants<int>::NotValid)
-        {
-            SetDumpString();
-        }
         DefaultAssignmentOperator;
         Size const operator+(Size const&other)const{return value + other.value;};
         Size const operator-(Size const&other)const{ return value - other.value; };
@@ -45,16 +41,3 @@ namespace Util{
     inline Size const BitCount(){return Size(sizeof(T)* 8);};
 }
 
-namespace HWLib{
-    template<>
-    class Constants<Util::Size>{
-    public:
-        static Util::Size const NotValid;
-    };
-
-    template<>
-    class Constants<Util::Size const>{
-    public:
-        static Util::Size const NotValid;
-    };
-}

@@ -6,9 +6,6 @@ using namespace HWLib;
 
 Size const Size::Address = 64;
 
-Size const Constants<Size>::NotValid;
-Size const Constants<Size const>::NotValid;
-
 Size const Size::Align(int alignBits) const
 {
     auto result = value - 1;
