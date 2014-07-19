@@ -1,122 +1,67 @@
 #pragma once
 
 #include "DefaultAssignmentOperator.h"
+#include "Union.h"
 using namespace std;
 
 namespace HWLib
 {
-    template<typename T>
-    class Constants final{};
+    class Nothing{};
 
-    template<>
-    class Constants <int>{
-    public:
-        static int const NotValid = 0x80000000;
-    };
-
-    template<typename T>
-    class Optional final{
+    template<class T>
+    class Optional final 
+    {
         using thisType = Optional;
-
-        T const value;
+        Union<T, Nothing> data;
     public:
-        Optional() : value(Constants<T>::NotValid){}
-        Optional(T const value) :value(value){}
-        template<class TOther>
-        Optional(Optional<TOther> const value) 
-            : value(value.IsEmpty ? Constants<T>::NotValid: value.Value  ){}
-
-        p(bool, IsValid){ return value != Constants<T>::NotValid; };
-        p(bool, IsEmpty){ return value == Constants<T>::NotValid; };
-
+        Optional() : data(Nothing()){};
+        Optional(T const&data) : data(data){};
+        Optional(thisType const&other) : data(other.data){};
         DefaultAssignmentOperator;
+        p(bool, IsValid){ return data.is<T>(); };
+        p(bool, IsEmpty){ return data.is<Nothing>(); };
 
         p(T, Value){
-           a_if_(IsValid);
-            return value;
+            a_if_(IsValid);
+            return data.get<T>();
         };
-
         operator T const ()const{ return Value; };
 
-        friend Optional<T> operator||(Optional<T> left, Optional<T> right)
+        thisType const operator||(Optional<T> right)const
         {
-            if(left.IsValid)
-                return left;
+            if (IsValid)
+                return *this;
             return right;
         }
 
-        friend Optional<T> operator||(Optional<T> left, T right)
+        T const operator||(T right)const
         {
-            if(left.IsValid)
-                return left;
+            if (IsValid)
+                return Value;
             return right;
         }
 
-        friend Optional<T> operator||(Optional<T> left, function<Optional<T>()> right)
+        thisType const operator||(function<Optional<T>()> right)const
         {
-            if(left.IsValid)
-                return left;
+            if (IsValid)
+                return *this;
             return right();
         }
 
-    };
-
-    template<>
-    class Optional<bool> final{
-        using thisType = Optional;
-        using T = bool;
-
-        char const value;
-    public:
-        Optional() : value(1){}
-        Optional(bool const value) :value(value?-1:0){}
-
-        p(bool, IsValid){return value < 1;}
-        p(bool, IsEmpty){ return !IsValid; }
-
-        DefaultAssignmentOperator;
-
-        p(bool, Value){
-            a_if_(IsValid);
-            return value < 0;
+        bool const operator==(Optional<T> const& other)const
+        {
+            if (IsEmpty)
+                return other.IsEmpty;
+            return Value == other.Value;
         };
 
-        operator bool const ()const{ return Value; };
-
-        friend Optional<bool> operator||(Optional<bool> left, function<Optional<bool>()> right){
-            if(left.IsValid)
-                return left;
-            return right();
-        }
-
-        friend Optional<T> operator||(Optional<T> left, Optional<T> right)
-        {
-            if(left.IsValid)
-                return left;
-            return right;
-        }
-
-        friend Optional<T> operator||(Optional<T> left, T right)
-        {
-            if(left.IsValid)
-                return left;
-            return right;
-        }
-
     };
 
-    template<typename T>
-    inline bool const operator==(Optional<T> const&left, Optional<T> const&other)
-    {
-        if(left.IsEmpty)
-            return other.IsEmpty;
-        return left.Value == other.Value;
-    };
 
-    class String; 
-    
+    class String;
+
     template <typename T>
-    String const Dump(Optional<T> const&target)
+    inline String const Dump(Optional<T> const& target)
     {
         if(target.IsValid)
             return "?{ " + HWLib::Dump(target.Value) + " }";
