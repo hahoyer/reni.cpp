@@ -8,13 +8,14 @@
 #include "DefineableToken.h"
 #include "DumpPrintToken.h"
 #include "ExpressionSyntax.h"
+#include "Feature.h"
 #include "NumberType.h"
 #include "NumberTypeIncludes.h"
 #include "Syntax.h"
 #include "SyntaxContainer.h"
 #include "TypeType.h"
 
-#include "..\HWLang\SourcePart.h"
+#include "../HWLib/RefCountContainer.instance.h"
 
 static bool Trace = true;
 
