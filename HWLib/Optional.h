@@ -6,20 +6,18 @@ using namespace std;
 
 namespace HWLib
 {
-    class Nothing{};
-
     template<class T>
     class Optional final 
     {
         using thisType = Optional;
-        Union<T, Nothing> data;
+        Union<T, Union<>> data;
     public:
-        Optional() : data(Nothing()){};
+        Optional() : data(Union<>()){};
         Optional(T const&data) : data(data){};
         Optional(thisType const&other) : data(other.data){};
         DefaultAssignmentOperator;
         p(bool, IsValid){ return data.is<T>(); };
-        p(bool, IsEmpty){ return data.is<Nothing>(); };
+        p(bool, IsEmpty){ return data.is<Union<>>(); };
 
         p(T, Value){
             a_if_(IsValid);
