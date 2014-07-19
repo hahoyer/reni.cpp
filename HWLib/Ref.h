@@ -42,14 +42,4 @@ namespace HWLib{
         DefaultAssignmentOperator;
         friend class Constants<Ref<T>>;
     };
-
-
-    template<class T>
-    class Constants <Ref<T>>{
-    public:
-        static Ref<T> const NotValid;
-    };
-
-    template<class T>
-    Ref<T> const Constants<Ref<T>>::NotValid = Ref<T>();
 }
