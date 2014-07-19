@@ -1,114 +1,82 @@
 ﻿#pragma once;
 
+using namespace std;
+
 namespace HWLib
 {
     namespace internal
     {
-        template <class T>
-        struct RawContainer
-        {
-            using thisType = RawContainer;
-            std::aligned_union<sizeof(T), T> rawData[sizeof(T)];
-            void Initialize(T const&data){ new (rawData)T(data); }
-            void Dispose(){ reinterpret_cast<T*>(rawData)->~T(); }
-
-            T const& operator*()const { return *reinterpret_cast<T const*>(rawData); };
-            T const* operator->()const { return reinterpret_cast<T const*>(rawData); };
-            T & operator*(){ return *reinterpret_cast<T *>(rawData); };
-            T * operator->(){ return reinterpret_cast<T *>(rawData); };
-        };
+        using typeIdType = unsigned __int8;
 
         template<class... TItems>
-        class UnionData
-        {
-        public:
-            template<class T> static int const typeId();
-            void Dispose(int typeId);
-            template<class T> T const get()const;
-        };
+        struct UnionHelper;
 
         template<>
-        class UnionData < >
+        struct UnionHelper<>
         {
-        public:
-            void Dispose(int)
-            {
-                throw "Invalid typeid";
-            }
-
-            template<class T> static int const typeId();
+            template<class T> static typeIdType const typeId(){ throw "invalid type"; };
+            static void Dispose(int, void*){ throw "invalid type"; };
+            static void Initialize(typeIdType, void const*, void*){ throw "unexpected typeId"; };
         };
 
         template<class TItem, class... TItems>
-        class UnionData < TItem, TItems... >
+        struct UnionHelper<TItem, TItems...>
         {
-            using thisType = UnionData;
-            union
-            {
-                RawContainer<TItem> item;
-                RawContainer<UnionData<TItems...>> tail;
-            };
-        public:
-            UnionData(TItem const& data)
-            {
-                item.Initialize(data);
-            };
+            template<class T> static typeIdType const typeId(){ return UnionHelper<TItems...>::typeId<T>() + 1; };
+            template<> static typeIdType const typeId<TItem>(){ return 0; };
 
-            template<class T>
-            UnionData(T const& data)
-            {
-                tail.Initialize(data);
-
-            };
-
-            void Dispose(int typeId)
+            static void Dispose(typeIdType typeId, void* data)
             {
                 if(typeId)
-                    tail->Dispose(typeId - 1);
+                    UnionHelper<TItems...>::Dispose(typeId - 1, data);
                 else
-                    item.Dispose();
-            }
+                    reinterpret_cast<TItem*>(data)->~TItem();
+            };
 
-            template<class T> T const get(int typeId)const
-            {
-                if(!typeId)
-                    throw "invalid type";
-                return tail->get<T>(typeId - 1);
-            }
-
-            template<> TItem const get<TItem>(int typeId)const
+            static void Initialize(typeIdType typeId, void const* sourceData, void* data)
             {
                 if(typeId)
-                    throw "invalid type";
-                return *item;
-            }
-
-            template<class T> static int const typeId(){ return UnionData<TItems...>::typeId<T>() + 1; }
-            template<> static int const typeId<TItem>(){ return 0; };
-
+                    UnionHelper<TItems...>::Initialize(typeId - 1, sourceData, data);
+                else
+                    new (data)TItem(*reinterpret_cast<TItem const*>(sourceData));
+            };
         };
+
+
     }
 
-    template<class... TItems> class Union
+    template<class... TItems>
+    class Union
     {
         using thisType = Union;
-        int const typeId;
-        internal::UnionData<TItems...> data;
+        internal::typeIdType const typeId;
+        typename std::aligned_union<0, TItems...>::type rawData;
     public:
-        template<class T> 
-        bool const is()const{ return internal::UnionData<TItems...>::typeId<T>() == typeId; };
-        template<class T> 
-        Union(T const&data)
-            : typeId(internal::UnionData<TItems...>::typeId<T>())
-            , data(data)
-        {};
+        Union() = delete;
+        Union(Union const&other)
+            : typeId(other.typeId)
+        {
+            internal::UnionHelper<TItems...>::Initialize(other.typeId, &other.rawData, &rawData);
+        };
 
-        ~Union(){ Dispose(); }
+        template<class T> Union(T const&data)
+            : typeId(internal::UnionHelper<TItems...>::typeId<T>())
+        {
+            new (&rawData) T(data);
+        };
 
-        template<class T>
-        T const get()const{ return data.get<T>(typeId); };
-        
-        void Dispose(){ data.Dispose(typeId); }
+        ~Union(){ internal::UnionHelper<TItems...>::Dispose(typeId, &rawData); }
+
+        template<class T> bool const is()const{ return internal::UnionHelper<TItems...>::typeId<T>() == typeId; };
+        template<class T> T const get()const
+        {
+            if(is<T>())
+                return *reinterpret_cast<T const*>(static_cast<void const*>(&rawData));
+            throw "type differs from requested type";
+        };
     };
+
+    template<>class Union<>{};
+
 
 }
