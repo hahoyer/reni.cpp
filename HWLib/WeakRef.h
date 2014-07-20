@@ -14,24 +14,23 @@ namespace HWLib
     public:
         using dataContainerType = T*;
     private:
-        dataContainerType _value;
+        dataContainerType value;
     public:
-        WeakRef(T &value) :_value(&value){ }
-        WeakRef(T *value) :_value(value){ a_if_(IsValid); }
-        WeakRef(WeakRef<T> const&value) : _value(value.value){ };
+        WeakRef(T &value) :value(&value){ }
+        WeakRef(T *value) :value(value){ a_if_(value); }
+        WeakRef(WeakRef<T> const&other) : value(other.value){ };
+        
+        friend class WeakRef;
         template<typename TOther>
-        WeakRef(WeakRef<TOther> const&other) : _value(other.value){ };
+        WeakRef(WeakRef<TOther> const&other) : value(other.value){ };
+
         DefaultAssignmentOperator;
 
-        bool const operator==(thisType const&other)const{ return _value == other._value; }
-        T const& operator*()const { return *_value; };
-        T const* operator->()const { return _value; };
-        T & operator*(){ return *_value; };
-        T * operator->(){ return _value; };
-
-        p(dataContainerType, value){ return _value; }
-    private:
-        p(bool, IsValid){ return !!_value; }
+        bool const operator==(thisType const&other)const{ return value == other.value; }
+        T const& operator*()const { return *value; };
+        T const* operator->()const { return value; };
+        T & operator*(){ return *value; };
+        T * operator->(){ return value; };
     };
 }
 

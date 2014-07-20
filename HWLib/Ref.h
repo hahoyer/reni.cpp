@@ -20,13 +20,6 @@ namespace HWLib{
         DefaultAssignmentOperator;
     };
 
-    template<class T>
-    bool IsEmptyValue(RefCountContainer<T> const&value){
-        return !value.operator->();
-    };
-
-    template<class T>  class Constants;
-    
     template<typename T>
     class Ref final : public RefBase<T, RefCountContainer<T>>{
         typedef RefBase<T , RefCountContainer<T>> baseType;
@@ -34,12 +27,11 @@ namespace HWLib{
         Ref() :baseType({}){}
     public:
         Ref(T &value) :baseType(&value){ }
-        Ref(T *value) :baseType(value){ a_if_(!IsEmpty); }
+        Ref(T *value) :baseType(value){ a_if_(value); }
         Ref(thisType const&other):baseType(other){};
         template<class TOther>
         Ref(Ref<TOther>&other) :baseType(*other){};
 
         DefaultAssignmentOperator;
-        friend class Constants<Ref<T>>;
     };
 }
