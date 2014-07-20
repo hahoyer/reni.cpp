@@ -17,18 +17,12 @@ Category const Category::Exts(false, false, false, false, true);
 Category const Category::Instance(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts)
 {
     return Category(hasHllw, hasSize, hasCode, hasType, hasExts);
-}
-
-Category::Category(Category const& other)
-    : hasHllw(other.hasHllw)
-    , hasSize(other.hasSize)
-    , hasCode(other.hasCode)
-    , hasType(other.hasType)
-    , hasExts(other.hasExts)
-{
-    SetDumpString();
 };
 
+Category::Category(Category const& other)
+    : thisType(other.hasHllw, other.hasSize, other.hasCode, other.hasType, other.hasExts)
+{
+};
 
 Category::Category(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts)
     : hasHllw(hasHllw)
@@ -38,13 +32,12 @@ Category::Category(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool 
     , hasExts(hasExts)
 {
     SetDumpString();
-}
+};
 
 Category::Category()
     : thisType(false, false, false, false, false)
 {
-    SetDumpString();
-}
+};
 
 p_implementation(Category, Category, typed){return *this | Type;}
 
