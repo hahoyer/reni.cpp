@@ -284,8 +284,8 @@ template<typename T, typename TResult>
 class ConvertManyIterator final : public Enumerable<TResult>::Iterator
 {
     CtrlRef<typename Enumerable<T>::Iterator> _parent;
-    CtrlPtr<typename T> _subData;
-    CtrlPtr<typename Enumerable<TResult>::Iterator> _subParent;
+    Optional<CtrlRef<T>> _subData;
+    Optional<CtrlRef<typename Enumerable<TResult>::Iterator>> _subParent;
 public:
     ConvertManyIterator(Enumerable<T> const& parent)
         : _parent(parent.ToIterator){
@@ -293,12 +293,12 @@ public:
     }
 protected:
     p_function(bool,IsValid) override{
-        return !_subParent.IsEmpty && _subParent->IsValid;
+        return !_subParent.IsEmpty && _subParent.Value->IsValid;
     }
 
     TResult const Step()override
     {
-        TResult const& result = _subParent->Step();
+        TResult const& result = _subParent.Value->Step();
         Align();
         return result;
     }
@@ -306,12 +306,12 @@ protected:
 private:
     void Align(){
         while (true){
-            if(!_subParent.IsEmpty && _subParent->IsValid)
+            if(!_subParent.IsEmpty && _subParent.Value->IsValid)
                 return;
             if (!_parent->IsValid)
                 return;
-            _subData = new T(_parent->Step());
-            _subParent = _subData->ToIterator;
+            _subData = CtrlRef<T>(new T(_parent->Step()));
+            _subParent = _subData.Value->ToIterator;
         }
     }
 };
