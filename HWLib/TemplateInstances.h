@@ -59,10 +59,49 @@ inline String const HWLib::DumpShort(T*target){
 
 
 template<typename T>
+class Enumerable<T>::RangeBasedForLoopSimulator final
+{
+    Optional<CtrlRef<Iterator>> _data;
+    mutable bool _hasBeenAccessed;
+
+public:
+    RangeBasedForLoopSimulator(CtrlRef<Iterator> data)
+        : _data(data)
+        , _hasBeenAccessed(false)
+    {
+    }
+    RangeBasedForLoopSimulator(){}
+
+    virtual ~RangeBasedForLoopSimulator(){}
+
+    void operator++()
+    {
+        if(_hasBeenAccessed)
+            _hasBeenAccessed = false;
+        else
+            _data.Value->Step();
+    };
+
+    T const operator *()const
+    {
+        a_if_(!_hasBeenAccessed);
+        _hasBeenAccessed = true;
+        return const_cast<RangeBasedForLoopSimulator&>(*this)._data.Value->Step();
+    }
+
+    bool operator !=(RangeBasedForLoopSimulator other)const
+    {
+        a_if_(other._data.IsEmpty);
+        return _data.Value->IsValid;
+    }
+
+};
+
+template<typename T>
 class LookAheadIterator final : public Enumerable<T>::Iterator
 {
     CtrlRef<typename Enumerable<T>::Iterator> parent;
-    CtrlPtr<T> _current;
+    Optional<CtrlRef<T>> _current;
 public:
     LookAheadIterator(Enumerable<T> const& parent)
         : parent(parent.ToIterator)
@@ -70,11 +109,11 @@ public:
         Align();
     }
 
-    p(CtrlRef<T>, current){ return _current; }
+    p(CtrlRef<T>, current){ return _current.Value; }
 
     p_function(bool, IsValid) override{ return !_current.IsEmpty; }
     T const Step()override{
-        auto result = _current;
+        auto const result = _current.Value;
         Align();
         return *result;
     }
@@ -82,7 +121,7 @@ private:
     void Align()
     {
         if(parent->IsValid)
-            _current = new T(parent->Step());
+            _current = CtrlRef<T>(new T(parent->Step()));
         else
             _current = {};
     }
@@ -465,21 +504,13 @@ inline p_implementation(Enumerable<T>, T, First){
     return ToIterator->Step();
 }
 
-template<typename T>
-inline p_implementation(Enumerable<T>, T, FirstOrEmpty){
-    auto iterator = ToIterator;
-    if(iterator->IsValid)
-        return iterator->Step();
-    return T();
-}
-
 
 template<typename T>
-CtrlPtr<T> const Enumerable<T>::Max() const{
-    CtrlPtr<T> result;
+Optional<T> const Enumerable<T>::Max() const{
+    Optional<T> result;
     for (auto element : *this)
-        if(result.IsEmpty || *result < element)
-            result = new T(element);
+        if(result.IsEmpty || result.Value < element)
+            result = element;
     return result;
 };
 

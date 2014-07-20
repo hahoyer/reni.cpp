@@ -82,7 +82,7 @@ p_implementation(PrioTable, Array<String>, DumpData){
     if (Count == 0)
         return{nd(Count)};
 
-    auto maxlen = *tokens.Select<int>([](String const&t){return t.Count; })->Max();
+    auto maxlen = tokens.Select<int>([](String const&t){return t.Count; })->Max().Value;
     auto head0 = String().CastLeft(maxlen);
     head0 += "    ";
     auto head1 = head0;

@@ -7,7 +7,9 @@
 #include "DumpMacros.h"
 #include "DumpToString.h"
 #include "String.h"
+#include "Optional.h"
 #include "System.h"
+#include "TemplateInstances.h"
 
 #include <direct.h>
 #include <fcntl.h>

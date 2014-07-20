@@ -33,9 +33,9 @@ namespace HWLib
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>       const ConvertMany() const;
         Optional<int>                       const FirstIndex(function<bool(T)> selector)const;
-        CtrlPtr<T>                           const Max      ()const;
-        CtrlPtr<T>                            const Max      (function<bool(T)> selector)const;
-        CtrlPtr<T>                             const Max      (function<bool(T,T)> isLess)const;
+        Optional<T>                          const Max()const;
+        Optional<T>                           const Max(function<bool(T)> selector)const;
+        Optional<T>                            const Max(function<bool(T, T)> isLess)const;
         CtrlRef<thisType>                       const Merge    (thisType const& right, function<bool(T, T)> isLess, bool removeDuplicates)const;
         CtrlRef<thisType>                        const operator+(thisType const& right)const;
         template<typename TOther>
@@ -52,12 +52,11 @@ namespace HWLib
         p(bool,    Any           );
         p(int,      Count         );
         p(T,         First         );
-        p(CtrlPtr<T>, FirstOrDefault);
-        p(T, FirstOrEmpty);
+        p(Optional<T>, FirstOrDefault);
         p(T, Last);
-        p(CtrlPtr<T>, LastOrDefault);
+        p(Optional<T>, LastOrDefault);
         p(T,         Single         );
-        p(CtrlPtr<T>, SingleOrDefault);
+        p(Optional<T>, SingleOrDefault);
         p(Array<T>,  ToArray        );
 
         class Iterator // It's a one-time-access-forward-read-only iterator
@@ -69,43 +68,7 @@ namespace HWLib
             mutable_p(Array<T> const, ToArray);
         };
 
-        class RangeBasedForLoopSimulator final
-        {
-            CtrlPtr<Iterator> _data;
-            mutable bool _hasBeenAccessed;
-
-        public:
-            RangeBasedForLoopSimulator(CtrlRef<Iterator> data)
-                : _data(data)
-                , _hasBeenAccessed(false)
-            {
-            }
-            RangeBasedForLoopSimulator(){}
-
-            virtual ~RangeBasedForLoopSimulator(){}
-
-            void operator++() 
-            {
-                if (_hasBeenAccessed)
-                    _hasBeenAccessed = false;
-                else
-                    _data->Step();
-            };
-            
-            T const operator *()const 
-            { 
-                a_if_(!_hasBeenAccessed);
-                _hasBeenAccessed = true;
-                return const_cast<RangeBasedForLoopSimulator&>(*this)._data->Step();
-            }
-            
-            bool operator !=(RangeBasedForLoopSimulator other)const
-            {
-                a_if_(other._data.IsEmpty);
-                return _data->IsValid;
-            }
-
-        };
+        class RangeBasedForLoopSimulator;
 
         class Container final : public Enumerable<T>
         {
@@ -123,7 +86,7 @@ namespace HWLib
 
     private:
         template <typename TLeft>
-        CtrlPtr<T> const getPlus(TLeft const&parent, thisType const& other, int index)
+        Optional<T> const getPlus(TLeft const&parent, thisType const& other, int index)
         {
             auto result = parent.get(index);
             if (result.IsValid)

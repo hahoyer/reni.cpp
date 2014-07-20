@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DefaultAssignmentOperator.h"
+#include "Properties.h"
 #include "Union.h"
 #include <functional>
 using namespace std;
@@ -21,10 +22,19 @@ namespace HWLib
         p(bool, IsValid){ return data.is<targetType>(); };
         p(bool, IsEmpty){ return data.is<Union<>>(); };
 
-        p(T, Value){
+        p_definition(T,Value); 
+        T const p_name(Value)()const
+        {
             a_if_(IsValid);
             return data.get<targetType>();
         };
+
+        T p_name(Value)()
+        {
+            a_if_(IsValid);
+            return data.get<targetType>();
+        };
+
         operator T const ()const{ return Value; };
 
         thisType const operator||(Optional<T> right)const
