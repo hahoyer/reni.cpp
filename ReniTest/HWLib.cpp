@@ -149,16 +149,16 @@ namespace _Ref
 {
     test_(WriteHallo)
     {
-        CtrlPtr<int> c;
+        Optional<CtrlRef<int>> c;
 
         a_if_(c.IsEmpty);
-        c = new int(1);
+        c = CtrlRef<int>(new int(1));
         a_if_(!c.IsEmpty);
-        c = CtrlPtr<int>();
+        c = {};
         a_if_(c.IsEmpty);
 
-        c = new int(12);
-        a_if_(*c == 12);
+        c = CtrlRef<int>(new int(12));
+        a_if_(*c.Value == 12);
         a_if_(!c.IsEmpty);
     }
 }
