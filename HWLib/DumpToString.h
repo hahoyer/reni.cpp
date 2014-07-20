@@ -49,7 +49,7 @@ namespace HWLib
 
     template <class TResult, class T>
     TResult const* const DynamicConvert(Optional<T> const&){
-        return null;
+        return {};
     };
 
     template <class TResult>

@@ -141,7 +141,7 @@ Optional<int> const String::Find(String const &target, int start)const{
     for (auto end = Count - target.Count; start < end; start++)
         if (BeginsWith(target, start))
             return Optional<int>(start);
-    return empty;
+    return {};
 }
 
 bool const String::Contains(char const &target, int start)const{

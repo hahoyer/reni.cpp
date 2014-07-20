@@ -1,49 +1,59 @@
 #pragma once
-#include "ValueCacheBase.h"
+#include "Optional.h"
 
 using std::function;
 
 namespace HWLib
 {
     template<typename T>
-    class ValueCache final : public ValueCacheBase<T, std::unique_ptr<T>>{
-        using baseType = ValueCacheBase<typename TData, typename TValue>;
+    class ValueCache final 
+    {
         using thisType = ValueCache;
 
-        virtual TValue GetValue() const override{ return TValue(new T(getValue())); };
-        virtual TData GetResult(TValue & value) const override{ return *value; }
-        virtual bool const IsValidValue(TValue & value) const override{ return !!value.get(); }
+        mutable Optional<T> value;
+        mutable bool isBusy;
     public:
         function<T()> const getValue;
-        ValueCache(function<T()> getValue) : getValue(getValue){}
-    };
 
+        ValueCache(function<T()> getValue) 
+            : getValue(getValue)
+            , isBusy(false)
+        {
+        }
+
+        p_mutable(bool, IsValid){ return value.IsValid; }
+        p(bool, IsBusy){ return isBusy; }
+
+        mutable_p(T, Value)const
+        {
+            Ensure();
+            return value.Value;
+        };
+    private:
+        void Ensure()const
+        {
+            a_if_(!isBusy);
+            if(value.IsValid)
+                return;
+            isBusy = true;
+            value = getValue();
+            isBusy = false;
+        }
+
+        void Reset()const
+        {
+            a_if_(!isBusy);
+            value = {};
+        }
+
+    };
 
     template<typename T>
-    class ValueCache<T&> final : public ValueCacheBase<CtrlRef<T>, CtrlPtr<T>>{
-        using baseType = ValueCacheBase<typename TData, typename TValue>;
-        using thisType = ValueCache;
-
-        virtual TValue GetValue() const override{ return getValue(); };
-        virtual TData GetResult(TValue & value) const override{ return value; }
-        virtual bool const IsValidValue(TValue & value) const override{ return value.IsValid; }
-    public:
-        function<T&()> const getValue;
-        ValueCache(function<T&()> getValue) : getValue(getValue){}
+    inline void ValueCache<T>::p_mutator_name(IsValid)(bool const&value)
+    {
+        if(value)
+            Ensure();
+        else
+            Reset();
     };
-
-
-    template<typename T>
-    class ValueCache<CtrlRef<T>> final : public ValueCacheBase<CtrlRef<T>, CtrlPtr<T>>{
-        using baseType = ValueCacheBase<typename TData, typename TValue>;
-        using thisType = ValueCache;
-
-        virtual TValue GetValue() const override{ return getValue(); };
-        virtual TData GetResult(TValue & value) const override{ return value; }
-        virtual bool const IsValidValue(TValue & value) const override{return !value.IsEmpty;}
-    public:
-        function<CtrlRef<T>()> const getValue;
-        ValueCache(function<CtrlRef<T>()> getValue) : getValue(getValue){}
-    };
-
 }

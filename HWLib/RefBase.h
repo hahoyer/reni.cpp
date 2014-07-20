@@ -2,6 +2,7 @@
 
 #include "DefaultAssignmentOperator.h"
 #include <boost/smart_ptr/shared_ptr.hpp>
+#include "Common.h"
 
 namespace HWLib
 {
@@ -37,7 +38,7 @@ namespace HWLib
 
     template<class T>
     bool IsEmptyValue(boost::shared_ptr<T> const&value){
-        return value.get() == null;
+        return value.get() == nullptr;
     }
 }
 

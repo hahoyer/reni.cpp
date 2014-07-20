@@ -37,7 +37,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
 
         md_
         a_fail_;
-        errorabort(Token const&);
+        return Optional<Token>().Value;
     }
     catch (Scanner::Error const& error){
         return Step(error.Count, TokenFactory::GetErrorClass(error.Id));

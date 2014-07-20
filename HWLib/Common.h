@@ -14,24 +14,6 @@ namespace HWLib
     template< class T > struct remove_ref    { using type = T; };
     template< class T > struct remove_ref<T&> { using type = T; };
 
-    const class
-    {
-    public:
-        template<typename T>
-        operator T const*const ()const{ return 0; };
-        operator std::nullptr_t ()const{ return nullptr; };
-        operator std::nullptr_t(){ return nullptr; };
-        template<typename T>
-        operator std::initializer_list<T>()const{ return std::initializer_list<T>(); };
-    } null;
-
-    const class
-    {
-    public:
-        template<typename T>
-        operator T const ()const{ return T(); };
-    } empty;
-
     template<typename TDestination, typename T> inline TDestination convert(T const&data)
     {
         auto result = TDestination(data);

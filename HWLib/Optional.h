@@ -2,6 +2,7 @@
 
 #include "DefaultAssignmentOperator.h"
 #include "Union.h"
+#include <functional>
 using namespace std;
 
 namespace HWLib
@@ -10,18 +11,19 @@ namespace HWLib
     class Optional
     {
         using thisType = Optional;
-        Union<T, Union<>> data;
+        using targetType = typename remove_const<T>::type;
+        Union<targetType, Union<>> data;
     public:
         Optional() : data(Union<>()){ Initialize(); };
         Optional(T const&data) : data(data){ Initialize(); };
         Optional(thisType const&other) : data(other.data){ Initialize(); };
         DefaultAssignmentOperator;
-        p(bool, IsValid){ return data.is<T>(); };
+        p(bool, IsValid){ return data.is<targetType>(); };
         p(bool, IsEmpty){ return data.is<Union<>>(); };
 
         p(T, Value){
             a_if_(IsValid);
-            return data.get<T>();
+            return data.get<targetType>();
         };
         operator T const ()const{ return Value; };
 

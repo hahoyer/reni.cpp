@@ -25,7 +25,6 @@
     <ClInclude Include="RefBase.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Process.h" />
-    <ClInclude Include="ValueCacheBase.h" />
     <ClInclude Include="FunctionCacheBase.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="BreakHandling.h" />
