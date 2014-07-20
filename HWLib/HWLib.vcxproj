@@ -26,7 +26,6 @@
     <ClInclude Include="RefCountContainer.instance.h" />
     <ClInclude Include="Ref.h" />
     <ClInclude Include="RefCountProvider.h" />
-    <ClInclude Include="CtrlPtr.h" />
     <ClInclude Include="Optional.h" />
     <ClInclude Include="RefBase.h" />
     <ClInclude Include="System.h" />

@@ -320,9 +320,9 @@ template<typename T, typename TOther>
 class PairIterator final : public Enumerable<std::pair<T, TOther>>::Iterator{
     typedef std::pair<T, TOther> resultType;
     CtrlRef<typename Enumerable<T>::Iterator> leftIterator;          
-    CtrlPtr<T> leftResult;
+    Optional<CtrlRef<T>> leftResult;
     Enumerable<TOther> const&right;
-    CtrlPtr<typename Enumerable<TOther>::Iterator> rightIterator;
+    Optional<CtrlRef<typename Enumerable<TOther>::Iterator>> rightIterator;
 public:
     PairIterator(Enumerable<T> const&left, Enumerable<TOther> const&right)
         : leftIterator(left.ToIterator)
@@ -335,15 +335,15 @@ public:
 protected:
     p_function(bool,IsValid) override{
         a_if_(rightIterator.IsValid);
-        return rightIterator->IsValid;
+        return rightIterator.Value->IsValid;
     };
 
     resultType const Step()override
     {
         a_if_(leftResult.IsValid);
         a_if_(rightIterator.IsValid);
-        a_if_(rightIterator->IsValid);
-        resultType result(*leftResult, rightIterator->Step());
+        a_if_(rightIterator.Value->IsValid);
+        resultType result(*leftResult.Value, rightIterator.Value->Step());
         Align();
         return result;
     };
@@ -352,26 +352,26 @@ private:
         if (leftIterator->IsValid){
             if (leftResult.IsValid){
                 if (!rightIterator.IsValid){ b_; }
-                else if (rightIterator->IsValid){ b_; }
+                else if(rightIterator.Value->IsValid){ b_; }
                 else { b_; }
             }else{
                 if (!rightIterator.IsValid){
-                    leftResult = new T(leftIterator->Step());
+                    leftResult = new T(leftIterator.Value->Step());
                     rightIterator = right.ToIterator;
                     return;
                 }
-                else if (rightIterator->IsValid){ b_; }
+                else if(rightIterator.Value->IsValid){ b_; }
                 else { b_; }
             }
         }else{
             if (leftResult.IsValid){
                 if (!rightIterator.IsValid){ b_; }
-                else if (rightIterator->IsValid){ b_; }
+                else if(rightIterator.Value->IsValid){ b_; }
                 else { return; }
             }
             else{
                 if (!rightIterator.IsValid){ b_; }
-                else if (rightIterator->IsValid){ b_; }
+                else if(rightIterator.Value->IsValid){ b_; }
                 else { b_; }
             }
         }
@@ -583,20 +583,6 @@ inline p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
     return base_p_name(DumpHeader) + ".Id" + objectId;
 };
 
-
-template <typename T>
-inline String const HWLib::Dump(CtrlPtr<T> const&target){
-    if(target.IsEmpty)
-        return "?{}";
-    return "?{ " + HWLib::Dump(*target) + " }";
-}
-
-template <typename T>
-inline String const HWLib::DumpShort(CtrlPtr<T> const&target){
-    if(target.IsEmpty)
-        return "?{}";
-    return "?{ " + HWLib::DumpShort(*target) + " }";
-}
 
 template <typename T>
 inline String const HWLib::DumpShort(Ref<T> const&target){

@@ -3,7 +3,6 @@
 
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
-#include "CtrlPtr.h"
 #include "CtrlRef.h"
 
 using std::function;

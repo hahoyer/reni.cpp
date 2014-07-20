@@ -6,22 +6,16 @@
 
 namespace HWLib
 {
-    template<typename T>class CtrlPtr;
-
     template<typename T>
     class CtrlRef final : public RefBase<T, boost::shared_ptr<T>>{
         typedef RefBase<T, boost::shared_ptr<T>> baseType;
         typedef CtrlRef thisType;
         friend class CtrlRef<T>;
-        friend class CtrlPtr<T>;
         friend class CtrlRef<T const>;
     public:
         CtrlRef(T *value) :baseType(value){ a_if_(!IsEmpty); }
-        CtrlRef(CtrlPtr<T> const&other) : baseType(other){ a_if_(!IsEmpty); };
         CtrlRef(CtrlRef<T> const&other) : baseType(other.value){ };
         CtrlRef(CtrlRef<T const> const&other) ;
-        template<typename TOther>
-        CtrlRef(CtrlPtr<TOther> const&other) : baseType(other){ a_if_(!IsEmpty); };
         template<typename TOther>
         CtrlRef(CtrlRef<TOther> const&other) : baseType(other){ };
 
@@ -35,8 +29,6 @@ namespace HWLib
     
     public:
         CtrlRef(T const *value) :baseType(value){ a_if_(!IsEmpty); }
-        CtrlRef(CtrlPtr<T> const&other) : baseType(other){ a_if_(!IsEmpty); };
-        CtrlRef(CtrlPtr<T const> const&other) : baseType(other){ a_if_(!IsEmpty); };
         CtrlRef(CtrlRef<T const> const&other) : baseType(other){ };
 
         DefaultAssignmentOperator;
