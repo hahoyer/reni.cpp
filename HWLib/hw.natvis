@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+    <Type Name="HWLib::Optional&lt;*&gt;">
+        <DisplayString>{_data}</DisplayString>
+    </Type>
+
+    <!-- ********************************************************************************************* -->
+    <Type Name="HWLib::String">
+        <!-- ********************************************************************************************* -->
+        <DisplayString>([{_data._Mysize}]{_data,s})</DisplayString>
+    </Type>
+
+    <!-- ********************************************************************************************* -->
+    <Type Name="HWLib::Array&lt;*&gt;">
+        <!-- ********************************************************************************************* -->
+        <DisplayString>{{ Count={_count} }}</DisplayString>
+        <Expand>
+            <Item Name="[Count]">_count</Item>
+            <ArrayItems>
+                <Size>_count</Size>
+                <ValuePointer>_data</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <!-- ********************************************************************************************* -->
+    <Type Name="HWLib::Ref&lt;*&gt;">
+        <!-- ********************************************************************************************* -->
+        <DisplayString Condition="value.value == 0">{null}</DisplayString>
+        <DisplayString Condition="value.value != 0">{*value.value}</DisplayString>
+        <Expand>
+            <Item Condition="value.value != 0" Name="value">value.value</Item>
+        </Expand>
+    </Type>
+
+    <!-- ********************************************************************************************* -->
+    <Type Name="HWLib::MapBase&lt;*&gt;">
+        <!-- ********************************************************************************************* -->
+        <DisplayString>{data}</DisplayString>
+    </Type>
+
+</AutoVisualizer>

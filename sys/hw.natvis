@@ -3,6 +3,11 @@
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
     <!-- ********************************************************************************************* -->
+    <Type Name="HWLib::Optional&lt;*&gt;">
+        <DisplayString>{_data}</DisplayString>
+    </Type>
+
+    <!-- ********************************************************************************************* -->
     <Type Name="HWLib::DumpableObject">
         <!-- ********************************************************************************************* -->
         <DisplayString>{dumpShortString,sb}</DisplayString>

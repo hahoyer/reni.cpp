@@ -59,5 +59,10 @@
     <ClInclude Include="WeakRef.h" />
     <ClInclude Include="_.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="hw.natvis">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>
