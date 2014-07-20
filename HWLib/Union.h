@@ -22,7 +22,14 @@ namespace HWLib
         template<class TItem, class... TItems>
         struct UnionHelper<TItem, TItems...>
         {
-            template<class T> static typeIdType const typeId(){ return UnionHelper<TItems...>::typeId<T>() + 1; };
+            static typeIdType const maxTypeId = 255;
+
+            template <class T>
+            static typeIdType const typeId()
+            {
+                static_assert(sizeof...(TItems) < maxTypeId, "too much items for union");
+                return UnionHelper<TItems...>::typeId<T>() + 1;
+            };
             template<> static typeIdType const typeId<TItem>(){ return 0; };
 
             static void Dispose(typeIdType typeId, void* data)
@@ -72,8 +79,13 @@ namespace HWLib
         template<class T> T const get()const
         {
             if(is<T>())
-                return *reinterpret_cast<T const*>(static_cast<void const*>(&rawData));
+                return get_unchecked<T>();
             throw "current type differs from requested type";
+        };
+
+        template<class T> T const& const get_unchecked()const
+        {
+            return *reinterpret_cast<T const*>(static_cast<void const*>(&rawData));
         };
     };
 
