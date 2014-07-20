@@ -7,14 +7,14 @@ using namespace std;
 namespace HWLib
 {
     template<class T>
-    class Optional final 
+    class Optional
     {
         using thisType = Optional;
         Union<T, Union<>> data;
     public:
-        Optional() : data(Union<>()){};
-        Optional(T const&data) : data(data){};
-        Optional(thisType const&other) : data(other.data){};
+        Optional() : data(Union<>()){ Initialize(); };
+        Optional(T const&data) : data(data){ Initialize(); };
+        Optional(thisType const&other) : data(other.data){ Initialize(); };
         DefaultAssignmentOperator;
         p(bool, IsValid){ return data.is<T>(); };
         p(bool, IsEmpty){ return data.is<Union<>>(); };
@@ -52,7 +52,16 @@ namespace HWLib
                 return other.IsEmpty;
             return Value == other.Value;
         };
+    private:
+        T const* _data;
 
+        void Initialize()
+        {
+            _data = nullptr;
+            if(IsEmpty)
+                return;
+            _data = &data.get_unchecked<T>();
+        };
     };
 
 
