@@ -24,7 +24,7 @@ namespace Reni
         p(Ref<CodeItem >, code);
         p(WeakRef<Type>, type);
         p(Externals, exts);
-        p(WeakPtr<Type>, cachedType);
+        p(Optional<WeakRef<Type>>, cachedType);
 
         ResultData const Get(Category category)const;
     private:

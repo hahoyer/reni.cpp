@@ -28,7 +28,6 @@
 #include "../StackTrace.h"
 #include "../System.h"
 #include "../ValueCache.h"
-#include "../WeakPtr.h"
 #include "../WeakRef.h"
 #include "../TemplateInstances.h"
 

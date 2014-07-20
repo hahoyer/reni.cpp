@@ -9,17 +9,17 @@ namespace Reni
     {
         typedef ResultCache baseType;
         typedef ResultFromSyntaxAndContext thisType;
-        WeakPtr<Type> const type;
+        Optional<WeakRef<Type>> const type;
         Optional<Ref<CodeItem>> const code;
     public:
 
-        ResultDataDirect(Optional<Ref<CodeItem>> code, WeakPtr<Type> type) 
+        ResultDataDirect(Optional<Ref<CodeItem>> code, Optional<WeakRef<Type>> type)
             : type(type)
             , code(code)
         {
             SetDumpString();
             if(!type.IsEmpty && code.IsValid)
-                a_if(type->size == code.Value->size, nd(code)+nd(type));
+                a_if(type.Value->size == code.Value->size, nd(code)+nd(type));
         }
 
         ResultDataDirect()
@@ -38,7 +38,7 @@ namespace Reni
 
         ResultData const GetResultData(Category category)const override
         {
-            return ResultData::GetSmartHllwSizeExts(category, l_(code.Value), l_(type));
+            return ResultData::GetSmartHllwSizeExts(category, l_(code.Value), l_(type.Value));
         }
     };
 }

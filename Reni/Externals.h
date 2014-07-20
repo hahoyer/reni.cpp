@@ -2,7 +2,6 @@
 
 #include "../HWLib/_EditorTemplates.h"
 #include "../HWLib/DumpableObject.h"
-#include "../HWLib/WeakPtr.h"
 #include "../HWLib/CtrlRef.h"
 #include "../HWLib/DumpToString.h"
 #include "../HWLib/Enumerable.h"

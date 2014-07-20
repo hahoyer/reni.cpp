@@ -17,7 +17,7 @@ namespace Reni
         }
         ThisRef;
     private:
-        p_function(WeakPtr<NumberType>, asNumberType)override{ return value.As<NumberType>(); }
+        p_function(Optional<WeakRef<NumberType>>, asNumberType)override{ return value.As<NumberType>(); }
         p_function(Array<String>, DumpData) override{ return{nd(value)}; };
         p_function(WeakRef<Global>, global) override{ return value.global; }
         p_function(bool, hllw) { return false; };

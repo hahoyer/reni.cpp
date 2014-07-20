@@ -67,13 +67,13 @@ namespace Reni
         p(WeakRef<EnableCutType>, enableCutType);
         virtual_p(WeakRef<Type>, asFunctionResult);
     protected:
-        virtual_p(WeakPtr<NumberType>, asNumberType){return{};};
+        virtual_p(Optional<WeakRef<NumberType>>, asNumberType){ return{}; };
     public:
         template <class TDestination>
-        WeakPtr<TDestination> const As()const;
+        Optional<WeakRef<TDestination>> const As()const;
 
         template <>
-        WeakPtr<NumberType> const As()const
+        Optional<WeakRef<NumberType>> const As()const
         {
             return asNumberType;
         }
@@ -120,7 +120,7 @@ namespace Reni
         p_function(bool, hllw) { return false; };
         p_function(Size, size) override{ return value.size; }
         p_function(WeakRef<Global>, global) override{return value.global;}
-        p_function(WeakPtr<NumberType>, asNumberType) override{return value.As<NumberType>();}
+        p_function(Optional<WeakRef<NumberType>>, asNumberType) override{return value.As<NumberType>();}
         p_function(Address, toAddress) override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& target) const override;
     };

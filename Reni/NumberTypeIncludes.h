@@ -19,8 +19,8 @@ class NumberType::OperationFeature final : public Feature::Extended
         auto argTypeAsNumber = arg.As<NumberType>();
         if(!thisTypeAsNumber.IsEmpty && !argTypeAsNumber.IsEmpty)
         {
-            auto argSize = argTypeAsNumber->size.value;
-            auto resultType = thisTypeAsNumber->ResultType<TTokenClass>(argSize);
+            auto argSize = argTypeAsNumber.Value->size.value;
+            auto resultType = thisTypeAsNumber.Value->ResultType<TTokenClass>(argSize);
             auto code = CodeItem::NumberOperation
                 (
                 TTokenClass::Text(),

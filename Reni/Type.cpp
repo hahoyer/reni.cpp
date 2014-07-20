@@ -70,7 +70,7 @@ p_virtual_header_implementation(Type, WeakRef<Type>, asFunctionResult) ;
 p_virtual_header_implementation(Type, bool, hllw);
 p_virtual_header_implementation(Type, WeakRef<Type>, toTypeTarget);
 p_virtual_header_implementation(Type, Address, toAddress);
-p_virtual_header_implementation(Type, WeakPtr<NumberType>, asNumberType);
+p_virtual_header_implementation(Type, Optional<WeakRef<NumberType>>, asNumberType);
 
 SearchResult<Feature> const Type::Declarations(TypeType const&provider) const
 {
@@ -212,9 +212,12 @@ SearchResult<Feature> const AddressType::DeclarationsForType(DeclarationType con
 };
 
 
-WeakPtr<TypeType> const TypeType::Convert(Type const& target)
+Optional<WeakRef<TypeType>> const TypeType::Convert(Type const& target)
 {
-    return dynamic_cast<TypeType*>(&target.thisRef);
+    auto result = dynamic_cast<TypeType*>(&target.thisRef);
+    if(result)
+        return WeakRef<TypeType>(result);
+    return{};
 }
 
 TypeType::TypeType(Type const& value) 
@@ -240,7 +243,7 @@ class InstanceFunctionFeature final : public Feature::Extended
 
     ResultData const Result(Category category, Type const&target, Type const&arg)const override
     {
-        return arg.ConvertTo(TypeType::Convert(target)->value->thisRef)->Get(category);
+        return arg.ConvertTo(TypeType::Convert(target).Value->value->thisRef)->Get(category);
     }
 };
 

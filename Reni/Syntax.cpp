@@ -99,7 +99,7 @@ Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&conte
     return resultCache(&context);
 }
 
-WeakPtr<Type> const Syntax::CachedType(RegularContext const& context) const
+Optional<WeakRef<Type>> const Syntax::CachedType(RegularContext const& context) const
 {
     return resultCache(&context)->cachedType;
 };

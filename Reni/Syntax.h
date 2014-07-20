@@ -4,6 +4,7 @@
 #include "..\HWLang\SourcePart.h"
 #include "..\HWLib\FunctionCache.h"
 #include "Context.h"
+#include "../Util/Size.h"
 using namespace HWLib;
 using namespace HWLang;
 
@@ -43,7 +44,7 @@ namespace Reni
         };
 
         ThisRef;
-        WeakPtr<Type> const CachedType(RegularContext const& context) const;
+        Optional<WeakRef<Type>> const CachedType(RegularContext const& context) const;
 
         Size const Size(Context const&context)const;
         Ref<CodeItem> const Code(Context const&context)const;

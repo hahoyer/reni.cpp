@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DefaultAssignmentOperator.h"
-#include "WeakPtr.h"
 
 namespace HWLib
 {
@@ -20,7 +19,6 @@ namespace HWLib
         WeakRef(T &value) :_value(&value){ }
         WeakRef(T *value) :_value(value){ a_if_(IsValid); }
         WeakRef(WeakRef<T> const&value) : _value(value.value){ };
-        WeakRef(WeakPtr<T> const&value) : _value(value.value){ a_if_(IsValid); };
         template<typename TOther>
         WeakRef(WeakRef<TOther> const&other) : _value(other.value){ };
         DefaultAssignmentOperator;

@@ -86,7 +86,7 @@ p_implementation(ResultCache, Externals, exts)
     return data.exts;
 }
 
-p_implementation(ResultCache, WeakPtr<Type>, cachedType)
+p_implementation(ResultCache, Optional<WeakRef<Type>>, cachedType)
 {
     return data.type;
 }
@@ -153,7 +153,7 @@ ResultData const ResultData::operator&(Category const& other) const
         other.hasHllw ? hllw : Optional<bool>(),
         other.hasSize ? size : Optional<Size>(),
         other.hasCode ? code : Optional<Ref<CodeItem>>(),
-        other.hasType ? type : WeakPtr<Type>(),
+        other.hasType ? type : Optional<WeakRef<Type>>(),
         other.hasExts ? exts : Optional<Externals>()
         );
 }
@@ -208,7 +208,7 @@ ResultData const ResultData::Convert(Type const& destination) const
 {
     if(complete == Category::None)
         return *this;
-    if(destination == *type)
+    if(destination == *type.Value)
         return *this;
     md(destination);
     mb;
@@ -233,7 +233,7 @@ ResultData const ResultData::Get(
     auto hllw = category.hasHllw? Optional<bool>(getHllw()) : Optional<bool>();
     auto size = category.hasSize ? Optional<Size>(getSize()) : Optional<Size>();
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
-    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    auto type = category.hasType ? Optional<WeakRef<Type>>(getType()) : Optional<WeakRef<Type>>();
     auto exts = category.hasExts ? Optional<Externals>(getExts()) : Optional<Externals>();
     return FullGet(category, hllw, size, code, type, exts);
 }
@@ -246,7 +246,7 @@ ResultData const ResultData::GetSmartHllwSize(
     )
 {
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
-    auto type = category.hasType ? WeakPtr<Type>(getType()) : WeakPtr<Type>();
+    auto type = category.hasType ? Optional<WeakRef<Type>>(getType()) : Optional<WeakRef<Type>>();
     auto exts = category.hasExts ? Optional<Externals>(getExts()) : Optional<Externals>();
     auto size = ReplenishSize(category, l_(code), l_(type));
     auto hllw = ReplenishHllw(category, l_(code), l_(type));
@@ -315,7 +315,7 @@ p_implementation(ResultData, ResultData, asFunctionResult)
         (
         complete, 
         l_(code.Value),
-        l_(type->asFunctionResult),
+        l_(type.Value->asFunctionResult),
         l_(exts.Value)
         );
 }
@@ -329,7 +329,7 @@ void ResultData::AssertValid()
         if (complete.hasCode)
             a_if(hllw.Value == (code.Value->size == 0), nd(hllw) + nd(code));
         if (complete.hasType)
-            a_if(hllw.Value == (type->size == 0), nd(hllw) + nd(type));
+            a_if(hllw.Value == (type.Value->size == 0), nd(hllw) + nd(type));
     }
 
     if(complete.hasSize)
@@ -337,24 +337,24 @@ void ResultData::AssertValid()
         if(complete.hasCode)
             a_is(code.Value->size, == , size.Value);
         if(complete.hasType)
-            a_is(type->size, == , size.Value);
+            a_is(type.Value->size, == , size.Value);
     }
     else if(complete.hasCode && complete.hasType)
-        a_is(code.Value->size, == , type->size);
+        a_is(code.Value->size, == , type.Value->size);
     if(complete.hasCode && complete.hasExts)
         a_is(code.Value->exts, == , exts.Value);
 }
 
-void ResultData::AssertValid(Category category, Optional<bool> const& hllw, Optional<Size> const size, Optional<Ref<CodeItem>> code, WeakPtr<Type> type, Optional<Externals> const& exts)
+void ResultData::AssertValid(Category category, Optional<bool> const& hllw, Optional<Size> const size, Optional<Ref<CodeItem>> code, Optional<WeakRef<Type>> type, Optional<Externals> const& exts)
 {
     if(category.hasHllw)
         a_if(hllw.IsValid, nd(category) + nd(hllw));
     if(category.hasSize)
         a_if(size.IsValid, nd(category) + nd(size));
     if(category.hasCode)
-        a_if(!code.IsEmpty, nd(category) + nd(code));
+        a_if(code.IsValid, nd(category) + nd(code));
     if(category.hasType)
-        a_if(!type.IsEmpty, nd(category) + nd(type));
+        a_if(type.IsValid, nd(category) + nd(type));
     if(category.hasExts)
         a_if(exts.IsValid, nd(category) + nd(exts));
 }

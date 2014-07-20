@@ -18,7 +18,7 @@ namespace Reni
     public:
         Optional<bool> const hllw;
         Optional<Size> const size;
-        WeakPtr<Type> const type;
+        Optional<WeakRef<Type>> const type;
         Optional<Ref<CodeItem>> const code;
         Optional<Externals>  const exts;
 
@@ -32,7 +32,7 @@ namespace Reni
             Optional<bool> const&hllw,
             Optional<Size> const&size,
             Optional<Ref<CodeItem>> const&code,
-            WeakPtr<Type> type,
+            Optional<WeakRef<Type>> type,
             Optional<Externals> const&exts
             )
             : hllw(hllw)
@@ -50,7 +50,7 @@ namespace Reni
             Optional<bool> const&hllw,
             Optional<Size> const&size,
             Optional<Ref<CodeItem>> const&code,
-            WeakPtr<Type> type,
+            Optional<WeakRef<Type>> type,
             Optional<Externals> const&exts
             )
         {
@@ -103,7 +103,7 @@ namespace Reni
             Optional<bool> const&hllw,
             Optional<Size> const size,
             Optional<Ref<CodeItem>> code,
-            WeakPtr<Type> type,
+            Optional<WeakRef<Type>> type,
             Optional<Externals> const&exts
             );
     };

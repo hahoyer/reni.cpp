@@ -202,7 +202,7 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
         ->Get(Category::Type | Category::Exts)
         .Convert(*valueType);
     if(result.exts.Value == External::Function::Arg::Instance)
-        return CodeItem::CallGetter(valueType->size, codeIndex, *arg);
+        return CodeItem::CallGetter(valueType->size, codeIndex, *arg.Value);
     
     md(result);
     mb;
@@ -221,7 +221,7 @@ p_implementation(FunctionCallResultCache, CodeFunction, getter)
     if(rawResult.exts.Value == External::Function::Arg::Instance)
     {
         ReplaceVisitor visitor;
-        Ref<ResultCache> functionArg = new ResultDataDirect(CodeItem::FunctionArg(*arg), arg->IndirectType(1)->thisRef);
+        Ref<ResultCache> functionArg = new ResultDataDirect(CodeItem::FunctionArg(*arg.Value), arg.Value->IndirectType(1));
         visitor.SetResults(External::Function::Arg::Instance, *functionArg);
         auto result = rawResult.Replace(visitor);
         return CodeFunction::Getter(codeIndex, result.code.Value);
@@ -262,7 +262,7 @@ WeakRef<Type> const RecursionContext::FunctionType(FunctionSyntax const& body) c
     mb;
 }
 
-WeakPtr<Type> const RecursionContext::CachedType(Syntax const& target) const
+Optional<WeakRef<Type>> const RecursionContext::CachedType(Syntax const& target) const
 {
     return target.CachedType(parent);
 }

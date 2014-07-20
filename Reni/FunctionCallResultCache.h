@@ -28,7 +28,7 @@ namespace Reni
         p(CodeFunction, getter);
         p(CodeFunction, setter);
     private:
-        p(WeakPtr<Type const>, arg){ return context.arg; }
+        p(Optional<WeakRef<Type const>>, arg){ return context.arg; }
         p(ContainerContext const&, container){return context.container;}
         p_function(Array<String>, DumpData) override{return{nd(bodyIndex), nd(context)};}
 

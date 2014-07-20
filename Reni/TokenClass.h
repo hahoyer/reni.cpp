@@ -3,7 +3,6 @@
 #include "../HWLib/Ref.h"
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/RefCountProvider.h"
-#include "../HWLib/WeakPtr.h"
 #include "../HWLib/Optional.h"
 
 using namespace HWLang;

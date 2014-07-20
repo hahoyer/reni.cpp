@@ -22,7 +22,6 @@
     <ClInclude Include="RefCountProvider.h" />
     <ClInclude Include="CtrlPtr.h" />
     <ClInclude Include="Optional.h" />
-    <ClInclude Include="WeakPtr.h" />
     <ClInclude Include="RefBase.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="Process.h" />

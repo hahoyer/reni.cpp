@@ -16,7 +16,7 @@ namespace Reni
         }
         ThisRef;
 
-        WeakPtr<Type> const CachedType(Syntax const& target) const ;
+        Optional<WeakRef<Type>> const CachedType(Syntax const& target) const;
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
         p_function(WeakRef<Global>, global) override{ return parent.global; };

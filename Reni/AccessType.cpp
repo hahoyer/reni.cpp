@@ -18,7 +18,7 @@ AccessType::AccessType(AccessData const& data)
 p_implementation(AccessType, Array<String>, DumpData) { return data->p_name(DumpData)(); }
 p_implementation(AccessType, WeakRef<Global>, global){ return data->global; }
 p_implementation(AccessType, WeakRef<Type>, value){return data->dataResultCache->type;}
-p_implementation(AccessType, WeakPtr<NumberType>, asNumberType){ return value->As<NumberType>(); }
+p_implementation(AccessType, Optional<WeakRef<NumberType>>, asNumberType){ return value->As<NumberType>(); }
 
 SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType const& target) const
 {
@@ -33,20 +33,23 @@ SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType cons
     return{};
 }
 
-WeakPtr<AccessType> const AccessType::Convert(Type const& target)
+Optional<WeakRef<AccessType>> const AccessType::Convert(Type const& target)
 {
-    return dynamic_cast<AccessType*>(&target.thisRef);
+    auto result = dynamic_cast<AccessType*>(&target.thisRef);
+    if(result)
+        return WeakRef<AccessType>(result);
+    return{};
 }
 
 
 ResultData const AccessType::AssignmentFeature::Result(Category category, Type const& target, Type const& arg) const
 {
     auto typedTarget = Convert(target);
-    auto rawResult = typedTarget->data->SetResultData(category);
+    auto rawResult = typedTarget.Value->data->SetResultData(category);
     if(category <= Category::Type.replenished)
         return rawResult;
 
     ReplaceVisitor visitor;
-    visitor.SetResults(External::Arg::Instance, *arg.ConvertTo(typedTarget->value->thisRef));
+    visitor.SetResults(External::Arg::Instance, *arg.ConvertTo(typedTarget.Value->value->thisRef));
     return rawResult.Replace(visitor);
 }

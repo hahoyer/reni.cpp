@@ -588,13 +588,6 @@ inline String const HWLib::Dump(Ref<T> const&target){
 }
 
 template <typename T>
-inline String const HWLib::Dump(WeakPtr<T> const&target){
-    if(target.IsEmpty)
-        return "?{}";
-    return "?{ " + HWLib::Dump(*target) + " }";
-}
-
-template <typename T>
 inline String const HWLib::Dump(Array<T> const&target)
 {
     return "Array["+ HWLib::Dump(target.Count)+ "]"

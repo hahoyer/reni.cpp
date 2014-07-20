@@ -22,14 +22,14 @@ namespace Reni
 
         template<class TTokenClass>
         SearchResult<Feature> const DeclarationsForType()const;
-        static WeakPtr<thisType> const Convert(Type const&target);
+        static Optional<WeakRef<thisType>> const Convert(Type const&target);
     private:
         p(WeakRef<Type>, value);
         p_function(bool, hllw) { return false; };
         p_function(Array<String>, DumpData) override;
         p_function(Size, size)override { return Size::Address; }
         p_function(WeakRef<Global>, global) override;
-        WeakPtr<NumberType> const get_asNumberType() const override;
+        Optional<WeakRef<NumberType>> const get_asNumberType() const override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
 
         class AssignmentFeature final : public Feature::Extended

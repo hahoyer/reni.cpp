@@ -33,7 +33,7 @@ namespace Reni
         p_function(WeakRef<Global>, global) override;
         p_function(Array<String>, DumpData) override;
         p_function(String, DumpShort) override;
-        p_function(WeakPtr<NumberType>, asNumberType)override{ return thisRef; }
+        p_function(Optional<WeakRef<NumberType>>, asNumberType)override{ return thisRef; }
 
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
 

@@ -109,7 +109,7 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
             auto thenType = recursionContext->CachedType(*thenClause);
             auto elseType = recursionContext->CachedType(*elseClause);
             if(thenType.IsEmpty != elseType.IsEmpty)
-                return *(thenType || elseType);
+                return *(thenType || elseType).Value;
 
             md(context, category);
             b_;
@@ -150,7 +150,7 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
         (
             category,
             l_(CodeItem::IfThenElse(conditionResult.code, thenResult.code, elseResult.code)),
-            l_(thenResult.type->Common(*elseResult.type)),
+            l_(thenResult.type.Value->Common(*elseResult.type.Value)),
             l_(conditionResult.exts.Value + thenResult.exts.Value + elseResult.exts.Value)
         );
 }

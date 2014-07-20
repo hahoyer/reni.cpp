@@ -3,8 +3,6 @@
 #include "Context.h"
 #include "Result.h"
 
-#include "../HWLib/WeakPtr.h"
-
 using namespace HWLib;
 
 namespace Reni
