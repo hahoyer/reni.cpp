@@ -133,8 +133,6 @@ bool Global::Function::Xetter::Ensure(function<CodeFunction()> getCode) const
 }
 
 
-CodeFunction const Constants<CodeFunction >::NotValid;
-
 CodeFunction::CodeFunction(
     bool isSetter,
     int index,

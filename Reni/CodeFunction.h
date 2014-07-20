@@ -53,14 +53,3 @@ namespace Reni
         }
     };
 }
-
-namespace HWLib
-{
-    template<>
-    class Constants<Reni::CodeFunction >
-    {
-    public:
-        static Reni::CodeFunction const NotValid;
-    };
-
-}
