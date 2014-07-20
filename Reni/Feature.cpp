@@ -123,7 +123,9 @@ ResultData const FoundFeature<Feature>::FunctionResult(
         visitor.SetResults(External::Arg::Instance, *argResult.Value);
     }
 
+    b_if_(Trace);
     auto rawResult = feature.Result(category, type->thisRef, argResult);
+    b_if(Trace, nd(rawResult));
     a_is(category, == , rawResult.complete);
     auto result = rawResult.Replace(visitor);
     return_db(result);
