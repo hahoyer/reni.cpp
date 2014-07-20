@@ -51,7 +51,7 @@ using namespace Reni;
 template <>
 inline SearchResult<Feature> const AccessType::DeclarationsForType<ColonEqual>() const
 {
-    return Feature::From<AssignmentFeature>();
+    return Feature::From<AssignmentFeature>(*this);
 }
 
 template <class TTokenClass>

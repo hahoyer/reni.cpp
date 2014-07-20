@@ -248,7 +248,7 @@ class InstanceFunctionFeature final : public Feature::Extended
 template<>
 SearchResult<Feature> const TypeType::DeclarationsForType<InstanceToken>() const
 {
-    return Feature::From<InstanceFunctionFeature>();
+    return Feature::From<InstanceFunctionFeature>(*this);
 }
 
 

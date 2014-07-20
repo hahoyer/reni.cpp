@@ -27,38 +27,6 @@ FoundFeature<Feature> const Feature::Error(String const&title)
     mb;
 }
 
-ResultData const Feature::FunctionResult(
-    Context const&context,
-    Category category,
-    Optional<Ref<Syntax>> const&left,
-    Optional<Ref<Syntax>> const&right
-    )const
-{
-    bool Trace = context.ObjectId == -6
-        && left.IsValid && left.Value->ObjectId == 8 
-        && category.hasType
-        && !context.isRecursion;
-    md(context, category, left, right);
-    auto thisResult = left.Value->GetResultCache(context);
-    ReplaceVisitor visitor;
-    visitor.Trace = Trace;
-    visitor.SetResults(External::This::Instance, *thisResult);
-
-    Optional<Ref<ResultFromSyntaxAndContext>> argResult;
-    if(!right.IsEmpty)
-    {
-        argResult = right.Value->GetResultCache(context);
-        visitor.SetResults(External::Arg::Instance, *argResult.Value);
-    }
-
-    b_if_(Trace);
-    auto rawResult = Result(category, *thisResult->type, argResult);
-    b_if(Trace,nd(rawResult));
-    a_is(category, == , rawResult.complete);
-    auto result = rawResult.Replace(visitor);
-    return_d(result);
-}
-
 ResultData const Feature::Result(Category category, Type const& target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const
 {
     if(argResult.IsEmpty)
@@ -116,6 +84,21 @@ ResultData const DumpPrintFeature::Result(Category category, Type const& target)
 }
 
 
+FoundFeature<Feature>::FoundFeature(Type const& type, Feature const& feature, Array<WeakRef<Type>> const& path)
+    : type(type.thisRef)
+    , feature(feature)
+    , path(path)
+{
+    SetDumpString();
+}
+
+FoundFeature<Feature>::FoundFeature(Type const& type, Feature const& feature)
+    : type(type.thisRef)
+    , feature(feature)
+{
+    SetDumpString();
+}
+
 ResultData const FoundFeature<Feature>::FunctionResult(
     Context const& context,
     Category category,
@@ -123,12 +106,32 @@ ResultData const FoundFeature<Feature>::FunctionResult(
     Optional<Ref<Syntax>> const& right
     )const
 {
-    return feature.FunctionResult(context, category, left, right);
+    bool Trace = context.ObjectId == 6
+        && left.IsValid && left.Value->ObjectId == 8
+        //&& category.hasType
+        && !context.isRecursion;
+    md(context, category, left, right);
+    auto thisResult = left.Value->GetResultCache(context);
+    ReplaceVisitor visitor;
+    visitor.Trace = Trace;
+    visitor.SetResults(External::This::Instance, *thisResult);
+
+    Optional<Ref<ResultFromSyntaxAndContext>> argResult;
+    if(!right.IsEmpty)
+    {
+        argResult = right.Value->GetResultCache(context);
+        visitor.SetResults(External::Arg::Instance, *argResult.Value);
+    }
+
+    auto rawResult = feature.Result(category, type->thisRef, argResult);
+    a_is(category, == , rawResult.complete);
+    auto result = rawResult.Replace(visitor);
+    return_db(result);
 };
 
 FoundFeature<Feature> const FoundFeature<Feature>::operator+(Type const& fromType)const
 {
-    return FoundFeature<Feature>(feature, path + WeakRef<Type>(fromType.thisRef));
+    return FoundFeature<Feature>(type->thisRef, feature, path + WeakRef<Type>(fromType.thisRef));
 }
 
 ResultData const FoundFeature<Feature>::ConversionResult(Category category, Type const& target, Type const& destination) const

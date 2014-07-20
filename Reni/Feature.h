@@ -29,7 +29,7 @@ namespace Reni
         using thisType = Feature;
     public:
         template<class T>
-        static FoundFeature<Feature> const From();
+        static FoundFeature<Feature> const From(Type const&type);
         static FoundFeature<Feature> const Error(String const&title);
 
         class Simple : public RefCountProvider
@@ -67,18 +67,11 @@ namespace Reni
         }
 
     public:
-        ResultData const FunctionResult(
-            Context const&context,
-            Category category,
-            Optional<Ref<Syntax>> const&left,
-            Optional<Ref<Syntax>> const&right
-            )const;
-
         p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
         ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
+        ResultData const Result(Category category, Type const&target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
-        ResultData const Result(Category category, Type const&target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const;
     };
 
 
@@ -99,23 +92,16 @@ namespace Reni
     template<>
     class FoundFeature<Feature> final : public FoundFeatureBase<Feature>
     {
-        using baseType = FoundFeatureBase < Feature > ;
+        using baseType = FoundFeatureBase<Feature>;
         using thisType = FoundFeature;
 
+        WeakRef<Type> const type;
         Feature const feature;
         Array<WeakRef<Type>> const path;
-        FoundFeature(Feature const&feature, Array<WeakRef<Type>> const&path)
-            : feature(feature)
-            , path(path)
-        {
-            SetDumpString();
-        }
+
+        FoundFeature(Type const& type, Feature const& feature, Array<WeakRef<Type>> const& path);
     public:
-        FoundFeature(Feature const&feature)
-            : feature(feature)
-        {
-            SetDumpString();
-        }
+        FoundFeature(Type const& type, Feature const& feature);
 
         ResultData const FunctionResult(
             Context const&context,
@@ -128,7 +114,7 @@ namespace Reni
         ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
 
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(feature) + nd(path)}; };
+        p_function(Array<String>, DumpData) override{ return{nd(type) + nd(feature) + nd(path)}; };
     };
 
 }
@@ -136,8 +122,8 @@ namespace Reni
 using namespace Reni;
 
 template <class T>
-FoundFeature<Feature> const Feature::From()
+FoundFeature<Feature> const Feature::From(Type const&type)
 {
-    return Feature(*new T);
+    return FoundFeature<Feature>(type, Feature(*new T));
 }
 

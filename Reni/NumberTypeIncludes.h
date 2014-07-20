@@ -47,19 +47,19 @@ class NumberType::OperationFeature final : public Feature::Extended
 template<>
 SearchResult<Feature> const NumberType::DeclarationsForType<EnableCutToken>() const
 {
-    return Feature::From<EnableCutFeature>();
+    return Feature::From<EnableCutFeature>(*this);
 };
 
 template<>
 SearchResult<Feature> const NumberType::DeclarationsForType<DumpPrintToken>() const
 {
-    return Feature::From<DumpPrintFeature>();
+    return Feature::From<DumpPrintFeature>(*this);
 };
 
 template<class TTokenClass>
 SearchResult<Feature> const NumberType::DeclarationsForType() const
 {
-    return Feature::From<OperationFeature<TTokenClass>>();
+    return Feature::From<OperationFeature<TTokenClass>>(*this);
 };
 
 template<>

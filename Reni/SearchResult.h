@@ -41,12 +41,12 @@ namespace Reni
         using baseType = DumpableObject;
         using thisType = SearchResult;
 
-        Optional<Ref<FoundFeature<TFeature>>> data;
+        Optional<FoundFeature<TFeature>> data;
     public:
         SearchResult() { SetDumpString(); }
         
         SearchResult(FoundFeature<TFeature> const&data)
-            : data(new FoundFeature<TFeature>(data))
+            : data(data)
         {
             SetDumpString();
         }
@@ -54,7 +54,7 @@ namespace Reni
         p(FoundFeature<TFeature>, found)
         {
             AssertValid();
-            return *data.Value;
+            return data.Value;
         }
 
         p(bool, IsValid){ return data.IsValid; };
@@ -63,50 +63,6 @@ namespace Reni
         p_function(Array<String>, DumpData) override{ return{nd(data)}; };
         void AssertValid()const{ a_if(IsValid, Dump); }
     };
-
-    template<class TFeature>
-    class ObsoleteSearchResult : public DumpableObject
-    {
-        using baseType = DumpableObject;
-        using thisType = ObsoleteSearchResult ;
-
-        TFeature const feature;
-        Array<WeakRef<Type>> const path;
-
-        ObsoleteSearchResult(TFeature const&feature, Array<WeakRef<Type>> const&path)
-            : feature(feature)
-            , path(path)
-        {
-            SetDumpString();
-        }
-    public:
-        ObsoleteSearchResult(TFeature const&feature)
-            : feature(feature)
-        {
-            SetDumpString();
-        }
-
-        ObsoleteSearchResult () : feature(TFeature::None()){ SetDumpString(); }
-
-        thisType const& CheckAssertValid()const
-        {
-            AssertValid();
-            return *this;
-        }
-        thisType & CheckAssertValid()
-        {
-            AssertValid();
-            return *this;
-        }
-
-        void AssertValid()const{ a_if(IsValid, Dump); }
-
-        p(bool, IsValid){ return !feature.isEmpty; };
-    private:
-        p_function(Array<String>, DumpData) override{ return{nd(feature) + nd(path)}; };
-
-    };
-
 }
 
 

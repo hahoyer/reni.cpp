@@ -68,12 +68,12 @@ SearchResult<Feature> const NumberType::Declarations(NumberType const& provider)
 {
     if (size < provider.size)
         return{};
-    return Feature::From<NumberConversionProvider>();
+    return Feature::From<NumberConversionProvider>(*this);
 }
 
 SearchResult<Feature> const NumberType::Declarations(EnableCutType const& ) const
 {
-    return Feature::From<NumberConversionProvider>();
+    return Feature::From<NumberConversionProvider>(*this);
 }
 
 WeakRef<NumberType> const NumberType::Resize(int newSize)const
