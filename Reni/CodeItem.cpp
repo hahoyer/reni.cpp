@@ -167,10 +167,14 @@ Ref<FiberCode> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
 
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
-    bool Trace = arg.Trace || ObjectId == -17;
+    bool Trace = arg.Trace || ObjectId == 18;
     md_;
     auto result = ReplaceImpl(arg);
-    a_if(result.IsEmpty || result.Value->size == size, Dump + "\n" + nd(result) + nd(size)+ nd(result.Value->size));
+    a_if(result.IsEmpty || result.Value->size == size, 
+        Dump + "\n" + 
+        nd(result) + "\n" + 
+        nd(size) + "\n" + 
+        nd(result.Value->size));
     return_d(result);
 };
 

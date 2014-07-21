@@ -13,6 +13,7 @@ static bool Trace = true;
 AccessType::AccessType(AccessData const& data)
     : data(data.thisRef)
 {
+    SetDumpString();
 }
 
 p_implementation(AccessType, Array<String>, DumpData) { return data->p_name(DumpData)(); }
@@ -44,12 +45,17 @@ Optional<WeakRef<AccessType>> const AccessType::Convert(Type const& target)
 
 ResultData const AccessType::AssignmentFeature::Result(Category category, Type const& target, Type const& arg) const
 {
+    bool Trace = false;
+    md(category, target, arg);
     auto typedTarget = Convert(target);
     auto rawResult = typedTarget.Value->data->SetResultData(category);
     if(category <= Category::Type.replenished)
-        return rawResult;
+        return_d(rawResult);
+
+    b_if(Trace, nd(rawResult));
 
     ReplaceVisitor visitor;
     visitor.SetResults(External::Arg::Instance, *arg.ConvertTo(typedTarget.Value->value->thisRef));
-    return rawResult.Replace(visitor);
+    auto result = rawResult.Replace(visitor);
+    return_db(result);
 }

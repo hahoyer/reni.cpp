@@ -125,7 +125,7 @@ ResultData const FoundFeature<Feature>::FunctionResult(
 
     b_if_(Trace);
     auto rawResult = feature.Result(category, type->thisRef, argResult);
-    b_if(Trace, nd(rawResult));
+    b_if(Trace, nd(rawResult)+"\n" + nd(visitor));
     a_is(category, == , rawResult.complete);
     auto result = rawResult.Replace(visitor);
     return_db(result);

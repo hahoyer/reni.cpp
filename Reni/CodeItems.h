@@ -148,10 +148,8 @@ namespace Reni{
         Size const _argSize;
         int const argDepth;
     public:
-        String const name;
         NumberConversionCode(Size const&size, Size const&argSize, int argDepth)
-            : name(name)
-            , _size(size)
+            : _size(size)
             , _argSize(argSize)
             , argDepth(argDepth)
         {
@@ -163,7 +161,6 @@ namespace Reni{
             return
             {
                 nd(size),
-                nd(name),
                 nd(argDepth),
                 nd(_argSize)
             };
