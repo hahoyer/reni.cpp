@@ -102,6 +102,7 @@ namespace Reni
         FoundFeature(Type const& type, Feature const& feature, Array<WeakRef<Type>> const& path);
     public:
         FoundFeature(Type const& type, Feature const& feature);
+        FoundFeature(FoundFeature const&);;
 
         ResultData const FunctionResult(
             Context const&context,

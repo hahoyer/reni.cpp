@@ -55,7 +55,7 @@ ResultData const AccessType::AssignmentFeature::Result(Category category, Type c
     b_if(Trace, nd(rawResult));
 
     ReplaceVisitor visitor;
-    visitor.SetResults(External::Arg::Instance, *arg.ConvertTo(typedTarget.Value->value->thisRef));
+    visitor.SetResults(External::Args::Instance, *arg.ConvertTo(typedTarget.Value->value->thisRef));
     auto result = rawResult.Replace(visitor);
     return_db(result);
 }

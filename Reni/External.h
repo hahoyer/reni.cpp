@@ -21,7 +21,7 @@ namespace Reni
 
     public:
         class This;
-        class Arg;
+        class Args;
         class Function;
         class Context;
 
@@ -51,14 +51,14 @@ namespace Reni
         Externals const Replace(ReplaceVisitor const& arg) const override;
     };
 
-    class External::Arg final : public External
+    class External::Args final : public External
     {
         using baseType = External;
-        using thisType = Arg;
+        using thisType = Args;
     public:
         static thisType const Instance;
     private:
-        Arg() {};     
+        Args() {};     
         bool const IsProvided(ReplaceVisitor const& arg) const override;
         String const internalDump() const override{ return "Arg"; };
         Externals const Replace(ReplaceVisitor const& arg) const override;

@@ -56,7 +56,7 @@ ResultData const AccessFeature::FunctionResult(
 
     ReplaceVisitor visitor;
     Optional<Ref<ResultFromSyntaxAndContext>> const argResult = right.Value->GetResultCache(context);
-    visitor.SetResults(External::Arg::Instance, *argResult.Value);
+    visitor.SetResults(External::Args::Instance, *argResult.Value);
     auto rawResult = extended.Value->Result(context, category, *right.Value->Type(context));
     auto result = rawResult.Replace(visitor);
     return(result);
@@ -93,10 +93,13 @@ FoundFeature<Feature>::FoundFeature(Type const& type, Feature const& feature, Ar
 }
 
 FoundFeature<Feature>::FoundFeature(Type const& type, Feature const& feature)
-    : type(type.thisRef)
-    , feature(feature)
+    : thisType(type.thisRef, feature, {})
 {
-    SetDumpString();
+}
+
+FoundFeature<Feature>::FoundFeature(FoundFeature const&other)
+    : thisType(other.type->thisRef, other.feature, other.path)
+{
 }
 
 ResultData const FoundFeature<Feature>::FunctionResult(
@@ -107,8 +110,8 @@ ResultData const FoundFeature<Feature>::FunctionResult(
     )const
 {
     bool Trace = context.ObjectId == 6
-        && left.IsValid && left.Value->ObjectId == 8
-        //&& category.hasType
+        && left.IsValid && left.Value->ObjectId == 9
+        && category.hasCode
         && !context.isRecursion;
     md(context, category, left, right);
     auto thisResult = left.Value->GetResultCache(context);
@@ -120,13 +123,14 @@ ResultData const FoundFeature<Feature>::FunctionResult(
     if(!right.IsEmpty)
     {
         argResult = right.Value->GetResultCache(context);
-        visitor.SetResults(External::Arg::Instance, *argResult.Value);
+        visitor.SetResults(External::Args::Instance, *argResult.Value);
     }
 
-    b_if_(Trace);
     auto rawResult = feature.Result(category, type->thisRef, argResult);
-    b_if(Trace, nd(rawResult)+"\n" + nd(visitor));
     a_is(category, == , rawResult.complete);
+    d(visitor);
+    d(rawResult);
+    b_if_(Trace);
     auto result = rawResult.Replace(visitor);
     return_db(result);
 };

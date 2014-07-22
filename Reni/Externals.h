@@ -6,6 +6,7 @@
 #include "../HWLib/DumpToString.h"
 #include "../HWLib/Enumerable.h"
 #include "../HWLib/Common.h"
+#include "External.h"
 
 using namespace HWLib;
 using namespace std;
@@ -37,11 +38,13 @@ namespace Reni
         Externals const operator+(Externals const&other)const;
         bool const operator==(Externals const&other)const;
         bool const operator==(External const&other)const;
+        bool const Contains(External const&item) const;
 
         Optional<thisType> const Replace(ReplaceVisitor const&arg) const;
     private:
         p_function(String, DumpHeader) override { return ""; };
         p_function(Array<String>, DumpData) override;
         p_function(String, DumpShort) override{ return Dump; };
+
     };
 }

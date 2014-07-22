@@ -10,7 +10,7 @@ using namespace Reni;
 static bool Trace = true;
 
 External::This const External::This::Instance;
-External::Arg const External::Arg::Instance;
+External::Args const External::Args::Instance;
 External::Function::Arg const External::Function::Arg::Instance;
 External::Function::NewValue const External::Function::NewValue::Instance;
 
@@ -41,14 +41,14 @@ Externals const External::This::Replace(ReplaceVisitor const& arg) const
     return arg.GetExts(External::This::Instance);
 }
 
-bool const External::Arg::IsProvided(ReplaceVisitor const& arg) const
+bool const External::Args::IsProvided(ReplaceVisitor const& arg) const
 {
-    return !arg.GetResults(External::Arg::Instance).IsEmpty;
+    return !arg.GetResults(External::Args::Instance).IsEmpty;
 }
 
-Externals const External::Arg::Replace(ReplaceVisitor const& arg) const
+Externals const External::Args::Replace(ReplaceVisitor const& arg) const
 {
-    return arg.GetExts(External::Arg::Instance);
+    return arg.GetExts(External::Args::Instance);
 }
 
 
@@ -113,6 +113,20 @@ bool const Externals::operator==(Externals const& other) const
 bool const Externals::operator==(External const& other) const
 {
     return data.Count == 1 && *data[0] == other;
+}
+
+bool const Externals::Contains(External const& item) const
+{
+    return data
+        .Where
+        (
+            [&]
+            (WeakRef<External> const& dataItem)
+            {
+                return *dataItem == item;
+            }
+        )
+        ->Any;
 }
 
 p_implementation(Externals, Array<String>, DumpData)

@@ -168,7 +168,8 @@ Ref<FiberCode> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
     bool Trace = arg.Trace || ObjectId == 18;
-    md_;
+    md(exts);
+    b_if_(Trace);
     auto result = ReplaceImpl(arg);
     a_if(result.IsEmpty || result.Value->size == size, 
         Dump + "\n" + 
@@ -226,7 +227,7 @@ ArgCode::ArgCode(Type const& type) : baseType(type)
     b_if(ObjectId == -10, Dump);
 }
 
-p_implementation(ArgCode, Externals, exts){ return Externals(External::Arg::Instance); }
+p_implementation(ArgCode, Externals, exts){ return Externals(External::Args::Instance); }
 
 String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 {
@@ -236,8 +237,8 @@ String const ArgCode::ToCpp(CodeVisitor const& visitor)const
 
 Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    visitor.Assume(External::Arg::Instance, type);
-    return visitor.GetCode(External::Arg::Instance);
+    visitor.Assume(External::Args::Instance, type);
+    return visitor.GetCode(External::Args::Instance);
 };
 
 
