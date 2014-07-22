@@ -1,16 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <ProjectGuid>{90A37787-7696-487C-BF22-8987CE007CAD}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <PlatformToolset>v140</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="BeginEndIterator.h" />
@@ -63,13 +57,9 @@
     <ClInclude Include="_.h" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="hw.natvis">
+    <None Include="hw.natvis">
       <SubType>Designer</SubType>
-      <FileType>Document</FileType>
-    </Natvis>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="hw.natvis" />
+    </None>
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>

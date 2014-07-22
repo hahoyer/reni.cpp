@@ -3,7 +3,7 @@
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
     <Type Name="HWLib::Optional&lt;*&gt;">
-        <DisplayString>{{_data}}</DisplayString>
+        <DisplayString>{_data}</DisplayString>
     </Type>
 
     <!-- ********************************************************************************************* -->
