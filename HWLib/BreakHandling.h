@@ -6,7 +6,8 @@
 #   using <mscorlib.dll>
 #   define __asm_int3 System::Diagnostics::Debugger::Break()
 #else
-#   define __asm_int3 __asm{ int 3 }
+#   define __asm_int3 __debugbreak();
+
 #endif
 
 namespace HWLib
