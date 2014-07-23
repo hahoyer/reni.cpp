@@ -33,33 +33,33 @@ Externals const External::Replace(ReplaceVisitor const&arg) const
 
 bool const External::This::IsProvided(ReplaceVisitor const& arg) const
 {
-    return !arg.GetResults(External::This::Instance).IsEmpty;
+    return !arg.GetResults(Instance).IsEmpty;
 }
 
 Externals const External::This::Replace(ReplaceVisitor const& arg) const
 {
-    return arg.GetExts(External::This::Instance);
+    return arg.GetExts(Instance);
 }
 
 bool const External::Args::IsProvided(ReplaceVisitor const& arg) const
 {
-    return !arg.GetResults(External::Args::Instance).IsEmpty;
+    return !arg.GetResults(Instance).IsEmpty;
 }
 
 Externals const External::Args::Replace(ReplaceVisitor const& arg) const
 {
-    return arg.GetExts(External::Args::Instance);
+    return arg.GetExts(Instance);
 }
 
 
 bool const External::Function::Arg::IsProvided(ReplaceVisitor const& arg) const
 {
-    return arg.GetResults(External::Function::Arg::Instance).IsEmpty;
+    return arg.GetResults(Instance).IsEmpty;
 }                                                                 
 
 Externals const External::Function::Arg::Replace(ReplaceVisitor const& arg) const
 {
-    return arg.GetExts(External::Function::Arg::Instance);
+    return arg.GetExts(Instance);
 }
 
 
