@@ -7,6 +7,7 @@ namespace HWLib
     namespace internal
     {
         using typeIdType = unsigned __int8;
+        static typeIdType const maxTypeId = 255;
 
         template<class... TItems>
         struct UnionHelper;
@@ -14,7 +15,7 @@ namespace HWLib
         template<>
         struct UnionHelper<>
         {
-            template<class T> static typeIdType const typeId(){ throw "invalid type"; };
+            template<class T> static typeIdType const typeId(){static_assert(false, "Invalid type ");};
             static void Dispose(int, void*){ throw "invalid type"; };
             static void Initialize(typeIdType, void const*, void*){ throw "unexpected typeId"; };
         };
@@ -22,8 +23,6 @@ namespace HWLib
         template<class TItem, class... TItems>
         struct UnionHelper<TItem, TItems...>
         {
-            static typeIdType const maxTypeId = 255;
-
             template <class T>
             static typeIdType const typeId()
             {
@@ -89,7 +88,7 @@ namespace HWLib
         };
     };
 
-    template<>class Union<>{};
+    template<>class Union<> {};
 
 
 }
