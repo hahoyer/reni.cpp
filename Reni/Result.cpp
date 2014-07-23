@@ -298,6 +298,11 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
         l_(exts.Value.Replace(arg) || exts));
 }
 
+ResultData const ResultData::Replace(External const& tag, ResultCache const& result) const
+{
+    return Replace(ReplaceVisitor(tag, result));
+}
+
 p_implementation(ResultData, Array<String>, DumpData)
 {
     return{

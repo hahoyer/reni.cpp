@@ -69,7 +69,6 @@ namespace Reni
     public:
         p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
         ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
-        ResultData const Result(Category category, Type const&target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const;
     private:
         p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
     };
@@ -104,6 +103,7 @@ namespace Reni
         FoundFeature(Type const& type, Feature const& feature);
         FoundFeature(FoundFeature const&);;
 
+        ResultData const AlignThis(ResultData const& start) const;
         ResultData const FunctionResult(
             Context const&context,
             Category category,
@@ -116,6 +116,7 @@ namespace Reni
 
     private:
         p_function(Array<String>, DumpData) override{ return{nd(type) + nd(feature) + nd(path)}; };
+        ResultData const Result(Context const& context, Category category, Type const& target, Optional<Ref<Syntax>> const& arg) const;
     };
 
 }

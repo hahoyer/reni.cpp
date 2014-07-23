@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "Externals.h"
+#include "../Util/Category.h"
+#include "../Util/Size.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -10,6 +12,7 @@ using namespace std;
 namespace Reni
 {
     class Type;
+    class ResultCache;
 
     class ResultData final : public DumpableObject
     {
@@ -90,6 +93,7 @@ namespace Reni
         bool const operator==(thisType const&other)const;
         p(Category, complete){ return Category::Instance(hllw.IsValid, size.IsValid, !code.IsEmpty, !type.IsEmpty, exts.IsValid); }
         ResultData const Replace(ReplaceVisitor const&arg) const;
+        ResultData const Replace(External const&tag, ResultCache const& result) const;
         ResultData const Convert(Type const& destination) const;
         p(ResultData, asFunctionResult);
     private:

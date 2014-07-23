@@ -14,6 +14,7 @@
 
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/Ref.h"
+#include "FunctionResultCache.h"
 
 static bool Trace = true;
 
@@ -25,13 +26,6 @@ FoundFeature<Feature> const Feature::Error(String const&title)
 {
     _console_ .Write(title);
     mb;
-}
-
-ResultData const Feature::Result(Category category, Type const& target, Optional<Ref<ResultFromSyntaxAndContext>> argResult) const
-{
-    if(argResult.IsEmpty)
-        return simple.Value->Result(category, target);
-    return extended.Value->Result(category, target, *argResult.Value->type);
 }
 
 ResultData const Feature::ConversionResult(Category category, Type const& target, Type const& destination) const
@@ -102,6 +96,19 @@ FoundFeature<Feature>::FoundFeature(FoundFeature const&other)
 {
 }
 
+ResultData const FoundFeature<Feature>::AlignThis(ResultData const& start) const
+{
+    if(path.Count == 1)
+    {
+        auto resultingThis = path[0];
+        return start.Replace(External::This::Instance, *type->ConvertTo(*resultingThis));
+    }
+
+    md(start);
+    mb;
+    return{};
+}
+
 ResultData const FoundFeature<Feature>::FunctionResult(
     Context const& context,
     Category category,
@@ -114,26 +121,36 @@ ResultData const FoundFeature<Feature>::FunctionResult(
         && category.hasCode
         && !context.isRecursion;
     md(context, category, left, right);
-    auto thisResult = left.Value->GetResultCache(context);
-    ReplaceVisitor visitor;
-    visitor.Trace = Trace;
-    visitor.SetResults(External::This::Instance, *thisResult);
 
-    Optional<Ref<ResultFromSyntaxAndContext>> argResult;
-    if(!right.IsEmpty)
-    {
-        argResult = right.Value->GetResultCache(context);
-        visitor.SetResults(External::Args::Instance, *argResult.Value);
-    }
-
-    auto rawResult = feature.Result(category, type->thisRef, argResult);
+    auto rawResult = Result(context, category, type->thisRef, right);
     a_is(category, == , rawResult.complete);
-    d(visitor);
     d(rawResult);
     b_if_(Trace);
-    auto result = rawResult.Replace(visitor);
+
+    auto alignedResult = AlignThis(rawResult);
+
+    auto result = rawResult
+        .Replace
+        (
+            External::This::Instance,
+                *left.Value->GetResultCache(context)
+        );
     return_db(result);
 };
+
+ResultData const FoundFeature<Feature>::Result(Context const& context, Category category, Type const& target, Optional<Ref<Syntax>> const& arg) const
+{
+    if(arg.IsEmpty)
+        return feature.simple.Value->Result(category, target);
+
+    auto argResult = arg.Value->GetResultCache(context);
+    return feature
+        .extended
+        .Value
+        ->Result(category, target, *argResult->type)
+        .Replace(ReplaceVisitor(External::Args::Instance, *argResult))
+        ;
+}
 
 FoundFeature<Feature> const FoundFeature<Feature>::operator+(Type const& fromType)const
 {
