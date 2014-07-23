@@ -45,7 +45,9 @@ namespace Reni
     public:
         static thisType const Instance;
     private:
-        This() {};    
+        This() {
+            SetDumpString();
+        };
         bool const IsProvided(ReplaceVisitor const& arg) const override;
         String const internalDump() const override{ return "This"; };
         Externals const Replace(ReplaceVisitor const& arg) const override;
@@ -58,7 +60,9 @@ namespace Reni
     public:
         static thisType const Instance;
     private:
-        Args() {};     
+        Args() {
+            SetDumpString();
+        };
         bool const IsProvided(ReplaceVisitor const& arg) const override;
         String const internalDump() const override{ return "Arg"; };
         Externals const Replace(ReplaceVisitor const& arg) const override;
@@ -83,7 +87,9 @@ namespace Reni
     public:
         static thisType const Instance;
     private:
-        Arg() {};
+        Arg() {
+            SetDumpString();
+        };
         String const internalDump() const override{ return baseType::internalDump() + "arg"; };
 
     public:
@@ -98,7 +104,9 @@ namespace Reni
     public:
         static thisType const Instance;
     private:
-        NewValue() {};
+        NewValue() {
+            SetDumpString();
+        };
         String const internalDump() const override{ return baseType::internalDump() + "new_value"; };
     };
 

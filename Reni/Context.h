@@ -112,6 +112,7 @@ public:
     Context(Reni::Context const& target)
         : target(target)
     {
+        SetDumpString();
     }
     String const internalDump() const override;
 };
