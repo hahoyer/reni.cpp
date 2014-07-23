@@ -24,11 +24,11 @@ p_implementation(ReplaceVisitor, Array<String>, DumpData){
         ->ToArray;
 };
 
-Optional<Externals>const ReplaceVisitor::GetExts(External const&tag)const
+Externals const ReplaceVisitor::GetExts(External const&tag)const
 {
     auto result = GetResults(tag);
     if (result.IsEmpty)
-        return{};
+        return Externals(tag);
     return result.Value->exts;
 };
 
@@ -43,6 +43,7 @@ Optional<Ref<CodeItem>>const ReplaceVisitor::GetCode(External const&tag)const
 void ReplaceVisitor::SetResults(External const&tag, ResultCache const& result)
 {
     results.Assign(&tag, result.thisRef);
+    SetDumpString();
 }
 
 void ReplaceVisitor::AssumeFunctionArg(External::Function const& tag, Type const& arg) const

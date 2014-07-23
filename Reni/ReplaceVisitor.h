@@ -31,11 +31,20 @@ namespace Reni
         {
             SetDumpString();
         }
+        ReplaceVisitor(External const&tag, ResultCache const& result)
+        {
+            SetResults(tag, result);
+        }
+        ReplaceVisitor(ReplaceVisitor const& other)
+            : results(other.results)
+        {
+            SetDumpString();
+        }
 
         void SetResults(External const&tag, ResultCache const& result);
         Optional<Ref<ResultCache>> const GetResults(External const&tag)const;
         Optional<Ref<CodeItem>> const GetCode(External const&tag)const;
-        Optional<Externals> const GetExts(External const&tag)const;
+        Externals const GetExts(External const&tag)const;
 
         void Assume(External const&tag, Type const&type)const;
         void AssumeFunctionArg(External::Function const&tag, Type const&arg) const;
