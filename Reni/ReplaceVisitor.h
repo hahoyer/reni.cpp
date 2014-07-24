@@ -28,15 +28,18 @@ namespace Reni
         Map<External const*, Ref<ResultCache>> results;
     public:
         ReplaceVisitor()
+            :Trace(false)
         {
             SetDumpString();
         }
         ReplaceVisitor(External const&tag, ResultCache const& result)
+            :Trace(false)
         {
             SetResults(tag, result);
         }
         ReplaceVisitor(ReplaceVisitor const& other)
             : results(other.results)
+            , Trace(false)
         {
             SetDumpString();
         }
