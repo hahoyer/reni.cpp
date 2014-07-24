@@ -98,6 +98,9 @@ FoundFeature<Feature>::FoundFeature(FoundFeature const&other)
 
 ResultData const FoundFeature<Feature>::AlignThis(ResultData const& start) const
 {
+    if(path.Count == 0)
+        return start;
+
     if(path.Count == 1)
     {
         auto resultingThis = path[0];
@@ -126,10 +129,10 @@ ResultData const FoundFeature<Feature>::FunctionResult(
     a_is(category, == , rawResult.complete);
     d(rawResult);
     b_if_(Trace);
-
     auto alignedResult = AlignThis(rawResult);
-
-    auto result = rawResult
+    d(alignedResult);
+    b_if_(Trace);
+    auto result = alignedResult
         .Replace
         (
             External::This::Instance,
