@@ -31,6 +31,8 @@ namespace Reni
         p_function(WeakRef<Global>, global) override;
         Optional<WeakRef<NumberType>> const get_asNumberType() const override;
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
+        Ref<ResultCache> const DirectConvert() const override;
+        Ref<CodeItem> const DirectConvertCode() const;
 
         class AssignmentFeature final : public Feature::Extended
         {

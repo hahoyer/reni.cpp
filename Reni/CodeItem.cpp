@@ -36,6 +36,11 @@ Ref<CodeItem> const CodeItem::Assign(Type const& data, Ref<CodeItem> left)
 Ref<CodeItem> const CodeItem::Arg(Type const&value)
 {
     return new ArgCode(value);
+}
+
+Ref<CodeItem> const CodeItem::Dereference(Type const& type)
+{
+    return new DereferenceCode(type);
 };
 
 Ref<CodeItem> const CodeItem::NumberOperation(
@@ -351,4 +356,15 @@ Optional<Ref<CodeItem>> const FiberConnector::ReplaceImpl(ReplaceVisitor const&v
     return_db(new FiberConnector(newItems COMMA connector));
 };
 
+
+DereferenceCode::DereferenceCode(Type const& type) : baseType(type)
+{
+    SetDumpString();
+}
+
+String const DereferenceCode::ToCpp(CodeVisitor const& visitor) const
+{
+    md(visitor);
+    mb;
+}
 

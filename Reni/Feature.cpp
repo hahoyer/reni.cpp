@@ -101,7 +101,7 @@ ResultData const FoundFeature<Feature>::AlignThis(ResultData const& start) const
     if(path.Count == 1)
     {
         auto resultingThis = path[0];
-        return start.Replace(External::This::Instance, *type->ConvertTo(*resultingThis));
+        return start.Replace(External::This::Instance, *resultingThis->DirectConvert());
     }
 
     md(start);

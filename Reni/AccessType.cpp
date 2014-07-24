@@ -2,9 +2,11 @@
 #include "AccessType.h"
 
 #include "AccessData.h"
+#include "CodeItems.h"
 #include "ContainerContext.h"
 #include "ReplaceVisitor.h"
 #include "SyntaxContainer.h"
+#include "FunctionResultCache.h"
 
 using namespace Reni;
 static bool Trace = true;
@@ -32,6 +34,26 @@ SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType cons
         return parentResult.found + thisRef;
 
     return{};
+}
+
+Ref<ResultCache> const AccessType::DirectConvert() const
+{
+    return new FunctionResultCache
+        ([&](Category category) -> ResultData const
+    {
+        return ResultData::GetSmartHllwSizeExts
+            (
+            category,
+            l_(DirectConvertCode()),
+            l_(WeakRef<Type>(thisRef))
+            );
+    }
+    );
+}
+
+Ref<CodeItem> const AccessType::DirectConvertCode() const
+{
+    return CodeItem::Dereference(*value);
 }
 
 Optional<WeakRef<AccessType>> const AccessType::Convert(Type const& target)

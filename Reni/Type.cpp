@@ -168,6 +168,12 @@ Ref<ResultCache> const Type::ConvertTo(Type const& destination) const
         );
 }
 
+Ref<ResultCache> const Type::DirectConvert() const
+{
+    md_;
+    mb;
+}
+
 WeakRef<Type> const Type::Common(Type const& other) const
 {
     if(other.isConvertableTo(*this))

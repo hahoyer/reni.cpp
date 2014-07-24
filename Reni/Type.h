@@ -88,6 +88,7 @@ namespace Reni
         WeakRef<Type> const Common(Type const& other)const;
         bool const isConvertableTo(Type const& other)const;
         Ref<ResultCache> const ConvertTo(Type const& destination) const;
+        virtual Ref<ResultCache> const DirectConvert() const;
         SearchResult<Feature> const Declarations(NumberType const& provider) const override;
         SearchResult<Feature> const Declarations(TypeType const&) const override;
         SearchResult<Feature> const Declarations(EnableCutType const&) const override;
@@ -97,6 +98,7 @@ namespace Reni
         {
             return{};
         };
+
     };
 
 

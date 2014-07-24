@@ -33,6 +33,7 @@ namespace Reni
 
         static Ref<CodeItem> const Assign(Type const&data, Ref<CodeItem> left);
         static Ref<CodeItem> const Arg(Type const&type);
+        static Ref<CodeItem> const Dereference(Type const&type);
         static Ref<CodeItem> const FunctionArg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
         static Ref<CodeItem> const Empty(){ return Const(BitsConst::Empty()); };

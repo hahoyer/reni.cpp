@@ -221,6 +221,17 @@ namespace Reni{
     };
 
 
+    class DereferenceCode final : public TypedCode{
+        using baseType = TypedCode;
+        using thisType = DereferenceCode;
+    public:
+        explicit DereferenceCode(Type const&value);
+    private:
+        p_function(Externals, exts)override{ return{}; };
+        String const ToCpp(CodeVisitor const& visitor)const override;
+        Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&) const{ return{}; };
+    };
+
     class FiberConnector final : public CodeItem {
         typedef CodeItem baseType;
         typedef FiberConnector thisType;
