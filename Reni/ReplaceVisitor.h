@@ -7,6 +7,7 @@
 #include "../HWLib/Optional.h"
 #include "../HWLib/Enumerable.h"
 #include "../HWLib/Map.h"
+#include "../HWLib/Pod.h"
 
 using namespace HWLib;
 
@@ -23,7 +24,7 @@ namespace Reni
         typedef DumpableObject baseType;
         typedef ReplaceVisitor thisType;
     public:
-        bool Trace;
+        pod<bool> Trace;
     private:
         Map<External const*, Ref<ResultCache>> results;
     public:
