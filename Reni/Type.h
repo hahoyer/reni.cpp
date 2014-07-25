@@ -26,6 +26,7 @@ namespace Reni
     class DumpPrintToken;
     class EnableCutType;
     class Externals;
+    class FiberItem;
     class FunctionToken;
     class Global;
     class InstanceToken;
@@ -49,15 +50,14 @@ namespace Reni
         Type(Type const&) = delete;
         ThisRef;
 
-        bool operator==(Type const& other)const
-        {
-            return this == &other;
-        }
+        bool operator==(Type const& other)const{return this == &other;}
 
         virtual_p(bool, hllw) = 0;
         virtual_p(Size, size) = 0;
         virtual_p(WeakRef<Global>, global) = 0;
-        virtual_p(WeakRef<Type>, toTypeTarget){return thisRef;};
+        virtual_p_definition(WeakRef<Type>,toTypeTarget);
+        virtual_p_function(WeakRef<Type>,toTypeTarget);
+        virtual WeakRef<Type> const get_toTypeTarget()const{return thisRef;};
         virtual_p(Address, toAddress);
 
         WeakRef<Type> const array(int count)const;
@@ -73,10 +73,7 @@ namespace Reni
         Optional<WeakRef<TDestination>> const As()const;
 
         template <>
-        Optional<WeakRef<NumberType>> const As()const
-        {
-            return asNumberType;
-        }
+        Optional<WeakRef<NumberType>> const As()const{return asNumberType;}
 
         ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts)const;
         ResultData const GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode)const;
@@ -93,6 +90,7 @@ namespace Reni
         SearchResult<Feature> const Declarations(TypeType const&) const override;
         SearchResult<Feature> const Declarations(EnableCutType const&) const override;
         SearchResult<Feature> const Declarations(AccessType const&) const override;
+        virtual Array<Ref<FiberItem>> const ConvertFiber(Type const& destination) const;
     private:
         p_function(Array<String>,DumpData) override
         {

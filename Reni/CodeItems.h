@@ -193,6 +193,7 @@ namespace Reni{
         p_function(Externals, exts)override;
         String const ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&) const;
+        Ref<CodeItem> const Convert(Type const& type) const override;
     };
 
 

@@ -38,11 +38,6 @@ Ref<CodeItem> const CodeItem::Arg(Type const&value)
     return new ArgCode(value);
 }
 
-Ref<CodeItem> const CodeItem::Dereference(Type const& type)
-{
-    return new DereferenceCode(type);
-};
-
 Ref<CodeItem> const CodeItem::NumberOperation(
     String name,
     Address const&result,
@@ -82,8 +77,7 @@ Ref<CodeItem> const CodeItem::NumberConversion(Address const& result, Type const
             argAddress.depth
         );
 
-    return Arg(arg)
-        ->Fiber({action})
+    return (*Arg(arg) + *action)
         ->thisRef;
 }
 
@@ -96,8 +90,7 @@ Ref<CodeItem> const CodeItem::IfThenElse(Ref<CodeItem> const condition, Ref<Code
 
 Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index, Type const& arg)
 {
-    return Arg(arg)
-        ->Fiber({new CallGetterFiber(size, index, arg.size)})
+    return (*Arg(arg) + *new CallGetterFiber(size, index, arg.size))
         ->thisRef;
 }
 
@@ -150,8 +143,7 @@ Ref<CodeItem> const CodeItem::Const(BitsConst const&value)
 
 Ref<CodeItem> const CodeItem::DumpPrint(NumberType const&value)
 {
-    return This(value)
-        ->Fiber({new DumpPrintNumberCode(value.size)})
+    return (*This(value) + *new DumpPrintNumberCode(value.size))
         ->thisRef;
 };
 
@@ -165,14 +157,9 @@ Ref<CodeItem> const CodeItem::This(Type const&value)
     return new ThisCode(value);
 }
 
-Ref<FiberCode> const CodeItem::Fiber(Array<Ref<FiberItem>> const&items)const
-{
-    return new FiberCode(thisRef, items);
-}
-
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
-    bool Trace = arg.Trace || ObjectId == 18;
+    bool Trace = arg.Trace || ObjectId == -19;
     md(exts);
     b_if_(Trace);
     auto result = ReplaceImpl(arg);
@@ -182,11 +169,29 @@ Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
         nd(size) + "\n" + 
         nd(result.Value->size));
     return_d(result);
+}
+
+Ref<FiberCode> const CodeItem::operator+(FiberItem const& item) const
+{
+    Array<Ref<FiberItem>> items{Ref<FiberItem>(item.thisRef)};
+    return thisRef + items;
+};
+
+Ref<FiberCode> const CodeItem::operator+(Array<Ref<FiberItem>> const&items) const
+{
+    return new FiberCode(thisRef, items);
 };
 
 Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const
 {
     md(offset);
+    b_;
+    return thisRef;
+}
+
+Ref<CodeItem> const CodeItem::Convert(Type const& type) const
+{
+    md(type);
     b_;
     return thisRef;
 }
@@ -244,6 +249,14 @@ Optional<Ref<CodeItem>> const ArgCode::ReplaceImpl(ReplaceVisitor const&visitor)
 {
     visitor.Assume(External::Args::Instance, type);
     return visitor.GetCode(External::Args::Instance);
+}
+
+Ref<CodeItem> const ArgCode::Convert(Type const& type) const
+{
+    if(type == this->type)
+        return thisRef;
+
+    return (thisRef + this->type.ConvertFiber(type))->thisRef;
 };
 
 
@@ -278,7 +291,10 @@ String const CallGetterFiber::ToCpp(CodeVisitor const& visitor)const
 
 Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    return visitor.GetCode(External::This::Instance);
+    auto result = visitor.GetCode(External::This::Instance);
+    if(result.IsEmpty)
+        return{};
+    return result.Value->Convert(type);
 };
 
 

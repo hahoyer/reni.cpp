@@ -53,7 +53,7 @@ Ref<ResultCache> const AccessType::DirectConvert() const
 
 Ref<CodeItem> const AccessType::DirectConvertCode() const
 {
-    return CodeItem::Dereference(*value);
+    return CodeItem::Arg(*value->indirectType);
 }
 
 Optional<WeakRef<AccessType>> const AccessType::Convert(Type const& target)

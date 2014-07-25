@@ -10,6 +10,7 @@
 #include "ContainerContext.h"
 #include "DumpPrintToken.h"
 #include "Feature.h"
+#include "Fiber.h"
 #include "FunctionResultCache.h"
 #include "NumberType.h"
 #include "Result.h"
@@ -93,6 +94,12 @@ SearchResult<Feature> const Type::Declarations(EnableCutType const&provider) con
 SearchResult<Feature> const Type::Declarations(AccessType const&provider) const
 {
     md(provider);
+    mb;
+}
+
+Array<Ref<FiberItem>> const Type::ConvertFiber(Type const& destination) const
+{
+    md(destination);
     mb;
 }
 

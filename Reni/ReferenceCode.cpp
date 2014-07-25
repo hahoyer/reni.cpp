@@ -28,7 +28,7 @@ inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
 {
     if(offset == 0)
         return thisRef;
-    return Fiber({new ReferencePlusCode(size, offset)})
+    return (thisRef + *new ReferencePlusCode(size, offset))
         ->thisRef;
 }
 

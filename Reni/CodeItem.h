@@ -33,7 +33,6 @@ namespace Reni
 
         static Ref<CodeItem> const Assign(Type const&data, Ref<CodeItem> left);
         static Ref<CodeItem> const Arg(Type const&type);
-        static Ref<CodeItem> const Dereference(Type const&type);
         static Ref<CodeItem> const FunctionArg(Type const&value);
         static Ref<CodeItem> const Const(BitsConst const&value);
         static Ref<CodeItem> const Empty(){ return Const(BitsConst::Empty()); };
@@ -63,8 +62,10 @@ namespace Reni
         virtual_p(bool, isEmpty){ return false; };
         ThisRef;
         Optional<Ref<CodeItem>> const Replace(ReplaceVisitor const&arg) const;
-        virtual Ref<FiberCode> const Fiber(Array<Ref<FiberItem>> const&items)const;
+        Ref<FiberCode> const operator+(FiberItem const&item)const;
+        virtual Ref<FiberCode> const operator+(Array<Ref<FiberItem>> const&items)const;
         virtual Ref<CodeItem> const ReferencePlus(Size offset)const;
+        virtual Ref<CodeItem> const Convert(Type const& type)const;
     protected:
         virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const = 0;
     };

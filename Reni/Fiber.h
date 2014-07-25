@@ -15,8 +15,9 @@ namespace Reni{
         : public DumpableObject
           , public RefCountProvider{
         typedef DumpableObject baseType;
-        typedef CodeItem thisType;
+        typedef FiberItem thisType;
     public:
+        ThisRef;
         virtual_p(Size, argSize) { return 0; };
         virtual_p(Size, size) { return 0; };
         virtual_p(Externals, exts){ return{}; };
@@ -31,10 +32,10 @@ namespace Reni{
         Ref<CodeItem> const head;
         Array<Ref<FiberItem>> const items;
     public:
-        FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items);
+        FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&items);
     private:
         virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
-        Ref<FiberCode> const Fiber(Array<Ref<FiberItem>> const& items) const override;
+        Ref<FiberCode> const operator+(Array<Ref<FiberItem>> const&items) const override;
         p_function(Array<String>,DumpData) override{ return{nd(head), nd(items)}; };
         p_function(Size,size) override;
         p_function(Externals, exts)override;

@@ -29,7 +29,7 @@ String const FiberItem::ToCpp(CodeVisitor const& visitor)const
 };
 
 
-FiberCode::FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const& items)
+FiberCode::FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&items)
     : head(head)
     , items(items)
 {
@@ -50,9 +50,9 @@ p_implementation(FiberCode, Externals, exts)
 };
 
 
-Ref<FiberCode> const FiberCode::Fiber(Array<Ref<FiberItem>> const& items) const
+Ref<FiberCode> const FiberCode::operator+(Array<Ref<FiberItem>> const&items) const
 {
-    return head->Fiber(this->items + items);
+    return *head + (this->items + items);
 }
 
 p_implementation(FiberCode, bool, IsValid) {
@@ -94,7 +94,7 @@ Optional<Ref<FiberCode>> FiberCode::ReCreate(Optional<Ref<CodeItem>> const&head,
     for(auto index = 0; index < newItems.Count; index++)
         if(!items[index].IsEmpty)
             newItems[index] = items[index];
-    return newHead->Fiber(newItems);
+    return *newHead + newItems;
 }
 
 String const FiberCode::ToCpp(CodeVisitor const&visitor) const{
