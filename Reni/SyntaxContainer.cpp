@@ -59,11 +59,12 @@ void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const
 
 ResultData const SyntaxContainer::GetResultData(Context const& context, Category category) const
 {
-    return ResultData::GetSmartHllwSizeExts
+    return ResultData::GetSmartHllwSize
         (
         category,
         l_(GetCode(context)),
-        l_(GetType(context))
+        l_(GetType(context)),
+        l_(GetExts(context))
         );
 }
      
@@ -97,4 +98,17 @@ Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context, int index) 
 {
     auto container = context.Container(*this, index);
     return statements[index]->Code(*container);
+}
+
+Externals const SyntaxContainer::GetExts(Context const& context) const
+{
+    return Numbers(statements.Count)
+        ->Select<Externals>([&](int index){return GetExts(context, index); })
+        ->Aggregate<Externals>();
+}
+
+Externals const SyntaxContainer::GetExts(Context const& context, int index) const
+{
+    auto container = context.Container(*this, index);
+    return statements[index]->Exts(*container);
 };

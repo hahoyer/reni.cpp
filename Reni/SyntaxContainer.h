@@ -34,5 +34,7 @@ namespace Reni
         WeakRef<Reni::Type> const GetType(Context const& context) const;
         Ref<CodeItem> const GetCode(Context const& context) const;
         Ref<CodeItem> const GetCode(Context const& context, int index) const;
+        Externals const GetExts(Context const& context) const;
+        Externals const GetExts(Context const& context, int index) const;
     };
 }
