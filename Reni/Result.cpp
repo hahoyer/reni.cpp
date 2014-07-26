@@ -38,7 +38,7 @@ void ResultCache::Ensure(Category category)const
 
     if(newTodo == Category::None)
     {
-        a_if(todo.hasType || todo.hasExts, nd(category) + nd(complete) + nd(pending));
+        a_if(todo.hasType || todo.hasExts, nd(category) + nd(complete) + nd(pending) +"\n"+ nd(*this));
         a_if(pending == todo, nd(category) + nd(complete) + nd(pending));
     }
 

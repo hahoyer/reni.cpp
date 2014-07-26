@@ -72,6 +72,7 @@ p_virtual_header_implementation(Type, bool, hllw);
 p_virtual_header_implementation(Type, WeakRef<Type>, toTypeTarget);
 p_virtual_header_implementation(Type, Address, toAddress);
 p_virtual_header_implementation(Type, Optional<WeakRef<NumberType>>, asNumberType);
+p_virtual_header_implementation(Type, bool, isCopyable);
 
 SearchResult<Feature> const Type::Declarations(TypeType const&provider) const
 {
@@ -222,6 +223,13 @@ SearchResult<Feature> const AddressType::DeclarationsForType(DeclarationType con
     if(result.IsValid)
         return result;
     return {};
+}
+
+Array<Ref<FiberItem>> const AddressType::ConvertFiber(Type const& destination) const
+{
+    if(destination == value)
+        return FiberItem::CopyFromAddress(value);
+    return baseType::ConvertFiber(destination);
 };
 
 

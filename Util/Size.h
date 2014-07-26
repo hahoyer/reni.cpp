@@ -1,5 +1,6 @@
 #pragma once
 #include "../HWLib/Optional.h"
+#include "../HWLib/DumpableObject.h"
 
 using namespace HWLib;
 

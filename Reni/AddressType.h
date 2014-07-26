@@ -26,6 +26,7 @@ namespace Reni
         p_function(Address, toAddress) override;
 
         SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
+        Array<Ref<FiberItem>> const ConvertFiber(Type const& destination) const override;
     };
 };
 

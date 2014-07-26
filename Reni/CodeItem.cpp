@@ -191,6 +191,8 @@ Ref<CodeItem> const CodeItem::ReferencePlus(Size offset) const
 
 Ref<CodeItem> const CodeItem::Convert(Type const& type) const
 {
+    if(size == type.size)
+        return thisRef;
     md(type);
     b_;
     return thisRef;

@@ -12,6 +12,27 @@ using namespace HWLib;
 
 static bool Trace = true;
 
+namespace Reni
+{
+    class CopyFromAddressFiber final : public FiberItem 
+    {
+        typedef FiberItem baseType;
+        typedef CopyFromAddressFiber  thisType;
+        Type const &target;
+    public:
+        CopyFromAddressFiber(Type const&target)
+            : target(target)
+        {
+            SetDumpString();
+        }
+    private:
+        p_function(Array<String>, DumpData) override{ return{nd(target)}; };
+        p_function(Size, argSize) override{ return Size::Address; };
+        p_function(Size, size) override{ return target.size; };
+        Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override { return{}; }
+    };
+}
+
 p_virtual_header_implementation(FiberItem, Size, argSize); 
 p_virtual_header_implementation(FiberItem, Size, size); 
 p_virtual_header_implementation(FiberItem, Externals, exts);
@@ -20,6 +41,12 @@ Optional<Ref<FiberItem>> const FiberItem::Replace(ReplaceVisitor const&visitor) 
 {
     md(visitor);
     mb;
+}
+
+Array<Ref<FiberItem>> const FiberItem::CopyFromAddress(Type const& target)
+{
+    a_if(target.isCopyable, nd(target));
+    return{new CopyFromAddressFiber(target)};
 };
 
 String const FiberItem::ToCpp(CodeVisitor const& visitor)const

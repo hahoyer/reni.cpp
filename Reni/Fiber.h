@@ -23,6 +23,7 @@ namespace Reni{
         virtual_p(Externals, exts){ return{}; };
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const;
+        static Array<Ref<FiberItem>> const CopyFromAddress(Type const& target);
     };
 
 
