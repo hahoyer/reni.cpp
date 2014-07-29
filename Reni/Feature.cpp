@@ -24,7 +24,7 @@ using namespace Reni;
 
 FoundFeature<Feature> const Feature::Error(String const&title)
 {
-    _console_ .Write(title);
+    _c_ .Write(title);
     mb;
 }
 

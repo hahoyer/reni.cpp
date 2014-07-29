@@ -22,7 +22,7 @@ namespace _HWLang{
 
         auto file = File("1.reni");
         file.Data = " asd f";
-        _console_. WriteLine(String::FilePosition(file.FullName, 1, 3, ""));
+        _c_. WriteLine(String::FilePosition(file.FullName, 1, 3, ""));
         auto sc = ScannerInstance(file);
 
         TokenClass const& start = sc.Step().Class;

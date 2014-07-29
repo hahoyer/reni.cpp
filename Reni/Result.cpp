@@ -83,7 +83,9 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = context.ObjectId == 4 && syntax.ObjectId == 27 && (category.hasType || category.hasExts);
+    bool Trace = context.ObjectId == 4
+        && (syntax.ObjectId == 27 || syntax.ObjectId == 23)
+        && category.hasExts;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);

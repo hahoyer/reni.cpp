@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BreakHandling.h"
 #include "Properties.h"
 #include <string>
 #include <thread>
@@ -54,5 +55,3 @@ namespace HWLib{
 template<typename TBase, typename TRealm>
 int HWLib::WithId<TBase, TRealm>::NextObjectId = 0;
 
-#undef __asm_int3
-#define __asm_int3 {DumpableObject::SetDumpStringQueueEntryWait(); __asm{ int 3 }}

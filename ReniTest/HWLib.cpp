@@ -82,7 +82,7 @@ namespace _String
 {
     test_(WriteHallo)
     {
-        _console_. WriteLine("Hallo");
+        _c_. WriteLine("Hallo");
     }
 
     test_(Find)

@@ -40,6 +40,8 @@ bool Console::BreakTrace(const String&condition, const String&fileName, int line
     WriteLine(String::FilePosition(fileName, line, 0, condition));
     if (data != "")
         WriteLine(String("Data: ") + data);
+
+    DumpableObject::SetDumpStringQueueEntryWait(); 
     return true;
 }
 
