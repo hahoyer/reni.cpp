@@ -89,7 +89,7 @@ static const std::pair<char, std::size_t> s_hex2dec[] =
     std::make_pair ('A', 10),
     std::make_pair ('b', 11),
     std::make_pair ('B', 11),
-    std::make_pair ('c', 12),
+    std::make_pair ('c_', 12),
     std::make_pair ('C', 12),
     std::make_pair ('d', 13),
     std::make_pair ('D', 13),

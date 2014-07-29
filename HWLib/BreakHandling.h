@@ -4,10 +4,10 @@
 
 #ifdef _MANAGED
 #   using <mscorlib.dll>
-#   define _b_ System::Diagnostics::Debugger::Break()
+#   define b_core System::Diagnostics::Debugger::Break()
 #else
 #include <windows.h>
-#   define _b_ {if (::IsDebuggerPresent())__debugbreak();}
+#   define b_core {if (::IsDebuggerPresent())__debugbreak();}
 
 #endif
 
@@ -26,12 +26,12 @@ namespace HWLib
 #ifdef NDEBUG
 #  	define a_if(p,q) __analysis_assume(p)
 #  	define b_if(p,q) (p)
-#	define breakpoint
+#	define b_throwOpt
 #   define a_return(p) return ""
 #else
-#  	define a_if(p,q) {if(!(p) && _c_. BreakTrace("Assertion failed: " #p, __FILE__, __LINE__, String(q) )) breakpoint; __analysis_assume(p);}
-#  	define b_if(p,q) {if((p) && _c_. BreakTrace("Breakpoint: " #p, __FILE__, __LINE__, String(q) )) breakpoint;}
-#	define breakpoint {bool Throw=false; _b_; if(Throw) throw BreakpointException(); _c_. Write("continued\n");}
+#  	define a_if(p,q) {if(!(p) && c_.BreakTrace("Assertion failed: " #p, __FILE__, __LINE__, String(q) )) b_throwOpt; __analysis_assume(p);}
+#  	define b_if(p,q) {if((p) && c_.BreakTrace("Breakpoint: " #p, __FILE__, __LINE__, String(q) )) b_throwOpt;}
+#	define b_throwOpt {bool Throw=false; b_core; if(Throw) throw BreakpointException(); c_.Write("continued\n");}
 #   define a_return(p) if(p)return ""; else return #p
 #endif
 
@@ -41,9 +41,9 @@ namespace HWLib
 #define b_if_(p) b_if(p,)
 #define b_ b_if(true,)
 
-#define a_throw(p,q) if(!(p) && _c_. BreakTrace("Assertion failed: " #p, __FILE__, __LINE__, String(q) )){ breakpoint; throw AssertionException();}
+#define a_throw(p,q) if(!(p) && c_.BreakTrace("Assertion failed: " #p, __FILE__, __LINE__, String(q) )){ b_core; throw AssertionException();}
 #define a_throw_(p) a_throw(p,)
-#define a_fail_throw(q) {a_throw(false,q); throw AssertionException();}
+#define a_fail_throw(q) a_throw(false,q)
 #define a_fail_throw_ a_throw(false,)
 
 #define errorabort(t) return (t)null

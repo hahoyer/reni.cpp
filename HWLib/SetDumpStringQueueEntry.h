@@ -41,7 +41,7 @@ namespace HWLib{
             a_if_(entry);
             a_if_(!entry->SetDumpStringToDo);
             //static int i = 0;
-            //_c_.WriteLine(Dump(i++));
+            //c_.WriteLine(Dump(i++));
             previous->next = next;
             next->previous = previous;
             entry = {};
@@ -55,7 +55,7 @@ namespace HWLib{
                 std::unique_lock<std::recursive_mutex> l(syncer);
                 for(; i < 1000 && root->previous != root; i++)
                     root->previous->Apply();
-                //_c_.WriteLine(__FUNCTION__ " " + Dump(i));
+                //c_.WriteLine(__FUNCTION__ " " + Dump(i));
             }
         };
 
@@ -95,7 +95,7 @@ namespace HWLib{
                 auto start = System::Ticks();
                 auto result = root->previous->Apply();
                 auto duration = (System::Ticks() - start) / tpms;
-                if(false)_c_.WriteLine(
+                if(false)c_.WriteLine(
                     __FUNCTION__ " " 
                     + Dump(i) 
                     + " " 

@@ -33,7 +33,7 @@ bool DumpableObject::EnableSetDumpString = false;
 bool DumpableObject::EnableSetDumpStringAsync = true;
 
 void DumpableObject::SetDumpString(){
-    if(!_c_.IsDebuggerPresent)
+    if(!c_.IsDebuggerPresent)
         return;
     
     if(!EnableSetDumpString)

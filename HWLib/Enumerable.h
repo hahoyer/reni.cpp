@@ -26,7 +26,7 @@ namespace HWLib
         template<typename TResult>
         TResult                         const Aggregate(AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); };
         template<typename TResult>
-        TResult                          const Aggregate() const{ return Aggregate(AggregateFunction<TResult> ([&](TResult c, T n){return c + n; })); };
+        TResult                          const Aggregate() const{ return Aggregate(AggregateFunction<TResult>([&](TResult current, T next){return current + next; })); };
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>      const Convert    () const;
         template<typename TResult>

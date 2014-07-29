@@ -60,8 +60,8 @@ p_implementation(String, char*, RawDataCopy){
 p_implementation(String, std::size_t, HashCode){return std::hash<std::string>()(_data);};
 
 
-String const CharQuote(char const c){
-    switch (c){
+String const CharQuote(char const character){
+    switch(character){
     case '\\':
         return "\\\\";
     case '"':
@@ -77,9 +77,9 @@ String const CharQuote(char const c){
     }
 
     static char const* hex = "0123456789abcdef";
-    if (c < 16)
-        return "\\0x0" + String(hex[c]);
-    return String(c);
+    if(character < 16)
+        return "\\0x0" + String(hex[character]);
+    return String(character);
 }
 
 p_implementation(String, String, Quote){

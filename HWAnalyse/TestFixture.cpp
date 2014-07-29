@@ -14,7 +14,7 @@ void TestFixture::RunAll(){
     while(RunAny(all, true))
         continue;
 
-    _c_. WriteLine("\n--- RUnning low priority tests ---");
+    c_.WriteLine("\n--- RUnning low priority tests ---");
     while(RunAny(all, false))
         continue;
 };
@@ -45,24 +45,24 @@ bool TestFixture::base::CheckedRun(bool skipLowPriority){
 
 void TestFixture::base::WatchedRun(){
     auto name = typeid(*this).name();
-    _c_. WriteLine(location());
-    _c_. IndentLevel++;
+    c_.WriteLine(location());
+    c_.IndentLevel++;
     try{
         Run();
         isSuccessful = true;
     }
     catch(TestFailedException const&exception){
-        _c_. IndentLevel--;
-        _c_. WriteLine(String("test_(") + name + ") exception: ");
-        _c_. IndentLevel++;
-        _c_. WriteLine(Dump(exception));
+        c_.IndentLevel--;
+        c_.WriteLine(String("test_(") + name + ") exception: ");
+        c_.IndentLevel++;
+        c_.WriteLine(Dump(exception));
     }
     catch(...){
-        _c_. IndentLevel--;
-        _c_. WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
+        c_.IndentLevel--;
+        c_.WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
         throw;
     }
-    _c_. IndentLevel--;
+    c_.IndentLevel--;
 };
 
 TestFixture::base* TestFixture::currentTest = {};
