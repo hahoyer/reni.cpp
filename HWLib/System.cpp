@@ -25,6 +25,12 @@ String const System::FormatLastErrorMessage()
     return String::Convert(int(rc)) + ": " + Buffer;
 };
 
+void System::ThrowLastErrorMessage()
+{
+    auto message = FormatLastErrorMessage();
+    throw runtime_error(message.RawData);
+};
+
 String const System::EnvironmentVariable(String const&key)
 {
     static const int bufferSize = 65535;

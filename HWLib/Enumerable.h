@@ -83,6 +83,7 @@ namespace HWLib
         RangeBasedForLoopSimulator const begin()const{ return ToIterator; }
         RangeBasedForLoopSimulator const end()const;
 
+        class EmptySequenceException : public std::exception{};
     private:
         template <typename TLeft>
         Optional<T> const getPlus(TLeft const&parent, thisType const& other, int index)

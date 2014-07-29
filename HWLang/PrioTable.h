@@ -16,6 +16,9 @@ namespace HWLang
         typedef PrioTable thisType;
 
     public:
+        class MissingFallbackEntryException : public std::exception{};
+        class UnexpectedSignException : public std::exception{};
+
         PrioTable();
         PrioTable(PrioTable const&other);
 

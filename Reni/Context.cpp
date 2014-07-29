@@ -180,7 +180,7 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     if(category == Category::None)
         return valueInRecursion;
 
-    return ResultData::GetSmartHllwSizeExts(category,l_(codeGet),l_(valueType));
+    return ResultData::GetSmartHllwSize(category, l_(codeGet), l_(valueType), l_(extsGet));
 }
 
 p_implementation(FunctionCallResultCache, int, codeIndex){ return context.global->FunctionIndex(*this); };
@@ -206,6 +206,16 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
     
     md(result);
     mb;
+}
+
+p_implementation(FunctionCallResultCache, Externals, extsGet)
+{
+    return body
+        .getter
+        .Value
+        ->GetResultCache(context)
+        ->exts 
+        - External::Function::Arg::Instance;
 }
 
 p_implementation(FunctionCallResultCache, CodeFunction, getter)
@@ -299,4 +309,9 @@ p_implementation(ContainerType, WeakRef<Global>, global){return parent.global;}
 String const External::Context::internalDump() const
 {
     return target.DumpShort;
+}
+
+Externals const External::Context::Replace(ReplaceVisitor const& arg) const
+{
+    return arg.GetExts(*this);
 }

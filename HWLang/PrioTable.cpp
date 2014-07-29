@@ -162,7 +162,7 @@ int const PrioTable::Index(String const&name)const
         if (tokens[i] == PrioTableConst::Any)
             return (i);
 
-    throw String("missing ") + PrioTableConst::Any + " entry in priority table";
+    throw MissingFallbackEntryException();
 
 }
 
@@ -220,7 +220,7 @@ Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subT
         case 1:
             return_d(PrioTableConst::HigherTag);
         default:
-            throw "Unexpected sign";
+            throw UnexpectedSignException();
         }
     }
     return_d((subTable.begin()[iGroup]).begin()[jGroup]);

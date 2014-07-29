@@ -23,7 +23,7 @@ namespace HWLang
     };
 
     template<typename T>
-    class Exception final
+    class Exception final : public exception
     {
     public:
         SourcePosition const Position;

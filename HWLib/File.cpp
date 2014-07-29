@@ -55,7 +55,7 @@ private:
     void CreateFolder(){
         if (::_mkdir(_name.RawData) == 0)
             return;
-        throw System::FormatLastErrorMessage();
+        System::ThrowLastErrorMessage();
     }
 
     void CreateFolderChain(){
@@ -72,20 +72,20 @@ private:
             if (!headFile.IsValid)
                 headFile.CreateFolder();
             else if (!headFile.IsValidFolder)
-                throw String("Error: file exits at requested location.");
+                throw runtime_error("Error: file exits at requested location.");
         };
     };
 
     void DeleteFolder(){
         if (::_rmdir(_name.RawData) == 0)
             return;
-        throw System::FormatLastErrorMessage();
+        System::ThrowLastErrorMessage();
     };
 
     void DeleteFile(){
         if (::remove(_name.RawData) == 0)
             return;
-        throw System::FormatLastErrorMessage();
+        System::ThrowLastErrorMessage();
     };
 
     int OpenFile(int oflag, int pmode = _S_IREAD | _S_IWRITE)const{

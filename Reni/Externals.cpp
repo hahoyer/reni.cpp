@@ -157,3 +157,16 @@ Externals const Externals::operator+(Externals const& other) const
         );
     return Externals(result->ToArray);
 }
+
+Externals const Externals::operator-(Externals const& other) const
+{
+    auto result = data
+        .Where
+        (
+            [&](WeakRef<External> item)
+            {
+                return !other.Contains(*item);
+            }
+        );
+    return Externals(result->ToArray);
+}

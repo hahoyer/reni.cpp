@@ -19,7 +19,7 @@ namespace HWLib
         auto result = TDestination(data);
         if (T(result) == data)
             return result;
-        throw "Conversion overflow";
+        throw std::overflow_error("");
     };
 
     template <typename T0, typename T1> bool const operator!=(T0 const&x, T1 const&y){ return !(x == y); };

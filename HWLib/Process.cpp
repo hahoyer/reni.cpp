@@ -132,8 +132,7 @@ void Process::internal::Ensure()
         &pi// 		__out        LPPROCESS_INFORMATION lpProcessInformation
         ) == 0)
     {
-        auto error = System::FormatLastErrorMessage();
-        throw error;
+        System::ThrowLastErrorMessage();
     };
 
     delete[] commandChars;

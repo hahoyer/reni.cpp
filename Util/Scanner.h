@@ -21,7 +21,7 @@ namespace Util
         static Optional<int> const Text(SourcePosition const&position);
         static Optional<int> const Any(SourcePosition const&position);
 
-        class Error final
+        class Error final: public exception
         {
         public:
             Error(int const count, String const& id)

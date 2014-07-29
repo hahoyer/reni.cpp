@@ -398,7 +398,7 @@ template<typename T>
 inline p_implementation(Enumerable<T>, T, Last){
     auto i = ToIterator;
     if(!i->IsValid)
-        throw "Enumerable contains no element";
+        throw EmptySequenceException();
     while(true){
         auto result = i->Step();
         if(!i->IsValid)

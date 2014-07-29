@@ -15,11 +15,14 @@ namespace HWLib
     class String;
     class Console;
 
-    class AssertionException
+    class DebugException: public std::exception
     {
     public:
-        AssertionException(){__asm_int3;}
+        DebugException(){ __asm_int3; }
     };
+
+    class BreakpointException : public DebugException{};
+    class AssertionException : public DebugException{};
 }
 
 #undef a_if_
@@ -34,10 +37,9 @@ namespace HWLib
 #  	define a_if(p,q) {if(!(p) && _console_. BreakTrace("Assertion failed: " #p, __FILE__, __LINE__, String(q) )) breakpoint; __analysis_assume(p);}
 #  	define b_if(p,q) {if((p) && _console_. BreakTrace("Breakpoint: " #p, __FILE__, __LINE__, String(q) )) breakpoint;}
 #  	define b(q) {if(_console_. BreakTrace("Breakpoint", __FILE__, __LINE__, String(q) )) breakpoint;}
-#	define breakpoint {bool Throw=false; __asm_int3; if(Throw) throw String("breakpoint"); _console_. Write("continued\n");}
+#	define breakpoint {bool Throw=false; __asm_int3; if(Throw) throw BreakpointException(); _console_. Write("continued\n");}
 #   define a_return(p) if(p)return ""; else return #p
 #endif
-#define errbp {bool Throw=true; __asm_int3; if(Throw) throw String("rerrbp"); _console_. Write("continued\n");}
 
 #define a_if_(p) a_if(p,)
 #define a_fail(q) a_if(false,q)

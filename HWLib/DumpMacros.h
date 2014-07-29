@@ -48,4 +48,4 @@
 #define no_md_
 #define no_fd(...)
 #define no_md(...)
-#define mb b_;throw 0
+#define mb b_;throw BreakpointException()

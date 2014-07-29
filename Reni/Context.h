@@ -115,6 +115,8 @@ public:
         SetDumpString();
     }
     String const internalDump() const override;
+private:
+    Externals const Replace(ReplaceVisitor const& arg) const override;
 };
 
 

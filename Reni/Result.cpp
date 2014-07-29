@@ -56,40 +56,13 @@ p_implementation(ResultCache, Category, complete)
     return data.complete;
 }
 
-bool const ResultCache::get_hllw() const
-{
-    Ensure(Category::Hllw);
-    return data.hllw;
-}
+p_implementation(ResultCache, bool, hllw){ return Get(Category::Hllw).hllw; };
+p_implementation(ResultCache, Size, size){ return Get(Category::Size).size; };
+p_implementation(ResultCache, Ref<CodeItem>, code){ return Get(Category::Code).code; };
+p_implementation(ResultCache, WeakRef<Type>, type){ return Get(Category::Type).type; };
+p_implementation(ResultCache, Externals, exts){ return Get(Category::Exts).exts; };
 
-p_implementation(ResultCache, Size, size)
-{
-    Ensure(Category::Size);
-    return data.size;
-}
-
-p_implementation(ResultCache, Ref<CodeItem>, code)
-{
-    Ensure(Category::Code);
-    return data.code;
-}
-
-p_implementation(ResultCache, WeakRef<Type>, type)
-{
-    Ensure(Category::Type);
-    return data.type;
-}
-
-p_implementation(ResultCache, Externals, exts)
-{
-    Ensure(Category::Exts);
-    return data.exts;
-}
-
-p_implementation(ResultCache, Optional<WeakRef<Type>>, cachedType)
-{
-    return data.type;
-}
+p_implementation(ResultCache, Optional<WeakRef<Type>>, cachedType){return data.type;}
 
 p_implementation(ResultCache, Array<String>, DumpData)
 {
@@ -110,7 +83,7 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = context.ObjectId == -6 && syntax.ObjectId == 15 && category.hasCode;
+    bool Trace = context.ObjectId == 4 && syntax.ObjectId == 27 && (category.hasType || category.hasExts);
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);

@@ -4,6 +4,10 @@ using namespace std;
 
 namespace HWLib
 {
+    class InvalidUnionTypeException : public exception{};
+    class IncorrectUnionTypeException : public exception{};
+    class UnexpectedUnionTypeException : public exception{};
+
     namespace internal
     {
         using typeIdType = unsigned __int8;
@@ -16,8 +20,8 @@ namespace HWLib
         struct UnionHelper<>
         {
             template<class T> static typeIdType const typeId(){static_assert(false, "Invalid type ");};
-            static void Dispose(int, void*){ throw "invalid type"; };
-            static void Initialize(typeIdType, void const*, void*){ throw "unexpected typeId"; };
+            static void Dispose(int, void*){ throw InvalidUnionTypeException(); };
+            static void Initialize(typeIdType, void const*, void*){ throw UnexpectedUnionTypeException(); };
         };
 
         template<class TItem, class... TItems>
@@ -79,7 +83,7 @@ namespace HWLib
         {
             if(is<T>())
                 return get_unchecked<T>();
-            throw "current type differs from requested type";
+            throw IncorrectUnionTypeException();
         };
 
         template<class T> T const& const get_unchecked()const

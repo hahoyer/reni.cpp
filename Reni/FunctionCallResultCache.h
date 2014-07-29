@@ -34,6 +34,7 @@ namespace Reni
 
         ResultData const GetResultData(Category category)const override;
         p(Ref<CodeItem>, codeGet);
+        p(Externals, extsGet);
         p(Ref<CodeItem>, CodeSet);
         p(WeakRef<Type>, valueType);
         p(ResultData, valueInRecursion);
