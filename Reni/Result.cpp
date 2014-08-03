@@ -22,9 +22,6 @@ using namespace Reni;
 ResultData const ResultCache::Get(Category category) const
 {
     Ensure(category);
-    if(category.hasExts && !data.complete.hasExts)
-        return data + Externals();
-
     return data;
 }
 
@@ -34,18 +31,16 @@ void ResultCache::Ensure(Category category)const
     if(todo == Category::None)
         return;
     auto newTodo = todo - pending;
-    LevelValue<Category> localPending(pending, pending | newTodo);
+    pending |= newTodo;
 
-    if(newTodo == Category::None)
-    {
-        a_if(todo.hasType || todo.hasExts, nd(category) + nd(complete) + nd(pending) +"\n"+ nd(*this));
-        a_if(pending == todo, nd(category) + nd(complete) + nd(pending));
-    }
-
-    auto newResult = GetResultData(newTodo);
-    data = data + newResult;
+    auto newResult = newTodo == Category::None
+        ? GetResultDataRecursive(todo)
+        : GetResultData(newTodo);
+      
+    data = data | newResult;
 
     a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
+    pending -= complete;
     thisRef.SetDumpString();
 }
 
@@ -72,6 +67,12 @@ p_implementation(ResultCache, Array<String>, DumpData)
     };
 };
 
+ResultData const ResultCache::GetResultDataRecursive(Category category) const
+{
+    md(category);
+    mb;
+}
+
 
 ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context)
     : syntax(syntax)
@@ -83,7 +84,7 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = context.ObjectId == 4
+    bool Trace = context.ObjectId == -4
         && (syntax.ObjectId == 27 || syntax.ObjectId == 23)
         && category.hasExts;
     md(category);
@@ -91,6 +92,11 @@ ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)con
     auto result = syntax.GetResultData(context,category);
     a_is(category, <= , result.complete);
     return_db(result);
+}
+
+ResultData const ResultFromSyntaxAndContext::GetResultDataRecursive(Category category) const
+{
+    return context.recursionContext->GetResult(category, syntax);
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)
@@ -108,7 +114,7 @@ p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
     return !!dynamic_cast<RecursionContext const*>(&context);
 }
 
-ResultData const ResultData::operator+(ResultData const& other) const
+ResultData const ResultData::operator|(ResultData const& other) const
 {
     a_if((*this & other.complete) == (other & complete), 
         DumpList({nd((complete & other.complete)), nd(*this), nd(other)}));

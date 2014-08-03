@@ -17,17 +17,6 @@
 #include "ResultDataDirect.h"
 #include "SyntaxContainer.h"
 
-#if 0
-#include "AccessResultCache.h"
-#include "CodeItems.h"
-#include "ExpressionSyntax.h"
-#include "FunctionCallResultCache.h"
-#include "FunctionSyntax.h"
-#include "Global.h"
-#include "Syntax.h"
-#include "Type.h"
-#endif
-
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;
@@ -77,7 +66,8 @@ RegularContext::RegularContext()
 
 p_virtual_header_implementation(Context, bool, isRecursion) ;
 p_virtual_header_implementation(Context, WeakRef<Global>, global) ;
-p_virtual_header_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
+p_virtual_header_implementation(Context, WeakRef<FunctionCallContext>, functionContext);
+p_virtual_header_implementation(Context, WeakRef<RecursionContext>, recursionContext);
 
 p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
 {
@@ -177,9 +167,7 @@ FunctionCallResultCache::FunctionCallResultCache(FunctionCallContext const& cont
 
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
-    if(category == Category::None)
-        return valueInRecursion;
-
+    a_is(category, != , Category::None);
     return ResultData::GetSmartHllwSize(category, l_(codeGet), l_(valueType), l_(extsGet));
 }
 
@@ -255,16 +243,12 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
         ->asFunctionResult;
 }
 
-p_implementation(FunctionCallResultCache, ResultData, valueInRecursion)
-{
-    return body
-        .getter
-        .Value
-        ->GetResultCache(*context.recursionContext)
-        ->Get(Category::Type|Category::Exts)
-        .asFunctionResult;
-}
 
+p_implementation(RecursionContext, WeakRef<RecursionContext>, recursionContext)
+{
+    md_;
+    mb;
+}
 
 WeakRef<Type> const RecursionContext::FunctionType(FunctionSyntax const& body) const
 {
@@ -288,6 +272,13 @@ SearchResult<AccessFeature> const RecursionContext::DeclarationsForType(Defineab
     return parent.DeclarationsForType(token);
 }
 
+ResultData const RecursionContext::GetResult(Category category, Syntax const& syntax) const
+{
+    if (category == Category::Exts)
+        return Externals();
+    md(category, syntax);
+    mb;
+}
 
 SearchResult<AccessFeature> const ChildContext::DeclarationsForType(DefineableToken const& token) const
 {
