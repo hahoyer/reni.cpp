@@ -40,6 +40,7 @@ namespace Util{
         bool operator<=(Category const other)const;
 
         void operator|= (Category const other){ *this = *this | other; }
+        void operator-= (Category const other){ *this = *this - other; }
     private:
         p_function(String, DumpHeader) override{ return ""; }
         p_function(Array<String>, DumpData) override;
