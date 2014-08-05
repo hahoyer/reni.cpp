@@ -32,19 +32,6 @@ p_implementation(IfThenSyntax, String, SmartDump)
 ResultData const IfThenSyntax::GetResultData(Context const&context, Category category)const
 {
     WeakRef<Reni::Type> elseType = context.global->voidType.thisRef;
-    auto recursionContext = dynamic_cast<RecursionContext const*>(&context);
-    if(recursionContext)
-    {
-        if(category == Category::Type)
-            return *elseType;
-
-        if(category == Category::Exts)
-            return Externals();
-
-        md(context, category);
-        b_;
-        return{};
-    }
 
     auto conditionCategory =
         (category.hasCode || category.hasExts)

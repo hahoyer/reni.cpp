@@ -272,14 +272,6 @@ SearchResult<AccessFeature> const RecursionContext::DeclarationsForType(Defineab
     return parent.DeclarationsForType(token);
 }
 
-ResultData const RecursionContext::GetResult(Category category, Syntax const& syntax) const
-{
-    if (category == Category::Exts)
-        return Externals();
-    md(category, syntax);
-    mb;
-}
-
 SearchResult<AccessFeature> const ChildContext::DeclarationsForType(DefineableToken const& token) const
 {
     return parent.DeclarationsForType(token);

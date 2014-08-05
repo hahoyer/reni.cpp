@@ -19,6 +19,11 @@ using namespace HWLib;
 using namespace Reni;
 
 
+ResultCache::ResultCache()
+    : Trace(false)
+{
+}
+
 ResultData const ResultCache::Get(Category category) const
 {
     Ensure(category);
@@ -30,27 +35,34 @@ void ResultCache::Ensure(Category category)const
     auto todo = category - complete;
     if(todo == Category::None)
         return;
+    bool Trace = this->Trace && category.hasExts;
+    md(category);
     auto newTodo = todo - pending;
-    pending |= newTodo;
+    {
+        LevelValue<Category> localPending(pending, pending | newTodo);
 
-    auto newResult = newTodo == Category::None
-        ? GetResultDataRecursive(todo)
-        : GetResultData(newTodo);
-      
-    data = data | newResult;
+        auto oldData = data;
+        d(newTodo);
+        b_if_(Trace);
+        auto newResult = newTodo == Category::None
+            ? GetResultDataRecursive(todo)
+            : GetResultData(newTodo);
 
-    a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
+        d(newResult);
+        b_if_(Trace);
+        data = data | newResult;
+        a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
+    }
+
+    //a_is(pending, == , pending - complete);
     pending -= complete;
     thisRef.SetDumpString();
+    dumpreturn(data);
 }
 
 p_virtual_header_implementation(ResultCache, bool, isRecursion) ;
 
-p_implementation(ResultCache, Category, complete)
-{
-    return data.complete;
-}
-
+p_implementation(ResultCache, Category, complete){ return data.complete; };
 p_implementation(ResultCache, bool, hllw){ return Get(Category::Hllw).hllw; };
 p_implementation(ResultCache, Size, size){ return Get(Category::Size).size; };
 p_implementation(ResultCache, Ref<CodeItem>, code){ return Get(Category::Code).code; };
@@ -78,15 +90,14 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
     : syntax(syntax)
       , context(context)
 {
+    Trace = context.ObjectId == 4 && syntax.ObjectId == 27;
     SetDumpString();
 }
 
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = context.ObjectId == -4
-        && (syntax.ObjectId == 27 || syntax.ObjectId == 23)
-        && category.hasExts;
+    bool Trace = this->Trace && category.hasExts;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
@@ -96,7 +107,7 @@ ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)con
 
 ResultData const ResultFromSyntaxAndContext::GetResultDataRecursive(Category category) const
 {
-    return context.recursionContext->GetResult(category, syntax);
+    return syntax.GetResultCache(*context.recursionContext)->Get(category);
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)

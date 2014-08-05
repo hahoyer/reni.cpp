@@ -17,7 +17,6 @@ namespace Reni
         ThisRef;
 
         Optional<WeakRef<Type>> const CachedType(Syntax const& target) const;
-        ResultData const GetResult(Category category, Syntax const& syntax) const;
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
         p_function(WeakRef<Global>, global) override{ return parent.global; };

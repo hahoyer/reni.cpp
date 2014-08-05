@@ -13,10 +13,12 @@
 #define d_here {if(Trace) c_.Write(FILE_LINE_FUNCTION);}
 #define writeLineFilePosition  c_.WriteLine(FILE_LINE_FUNCTION)
 #define srcargdump(x) {if(Trace)c_.Write(nd(x)+"\n").fsrcprint();}
-#define dumpreturn(x) {if(Trace) \
+#define dumpreturn(x) {\
+if(Trace) {\
     c_.IndentLevel--; \
     c_.Write(HWLib::String("return ") + nd(x) + "\n"); \
-    return; }
+}\
+return; }
 
 #define return_d(x) {if(Trace) \
     {c_.IndentLevel--; \
