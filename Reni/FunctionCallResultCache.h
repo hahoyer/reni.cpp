@@ -32,6 +32,7 @@ namespace Reni
         p(ContainerContext const&, container){return context.container;}
         p_function(Array<String>, DumpData) override{return{nd(bodyIndex), nd(context)};}
 
+        ResultData const GetResultDataRecursive(Category category) const override;
         ResultData const GetResultData(Category category)const override;
         p(Ref<CodeItem>, codeGet);
         p(Externals, extsGet);

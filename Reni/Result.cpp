@@ -27,7 +27,13 @@ ResultCache::ResultCache()
 ResultData const ResultCache::Get(Category category) const
 {
     Ensure(category);
-    return data;
+    auto pendingCategory = category - data.complete;
+    if (pendingCategory == Category::None)
+        return data;
+
+    auto recursive = GetResultDataRecursive(pendingCategory);
+    a_if(recursive.IsConsistent(data), nd(thisRef) + nd(recursive) + nd(pendingCategory));
+    return recursive | data;
 }
 
 void ResultCache::Ensure(Category category)const
@@ -38,23 +44,21 @@ void ResultCache::Ensure(Category category)const
     bool Trace = this->Trace && category.hasExts;
     md(category);
     auto newTodo = todo - pending;
+    if (newTodo != Category::None)
     {
         LevelValue<Category> localPending(pending, pending | newTodo);
 
         auto oldData = data;
         d(newTodo);
         b_if_(Trace);
-        auto newResult = newTodo == Category::None
-            ? GetResultDataRecursive(todo)
-            : GetResultData(newTodo);
-
+        auto newResult = GetResultData(newTodo);
         d(newResult);
         b_if_(Trace);
-        data = data | newResult;
+        a_if(isRecursion || data.IsConsistent(newResult), nd(thisRef) + nd(newResult));
+        data = newResult| data;
         a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
     }
 
-    //a_is(pending, == , pending - complete);
     pending -= complete;
     thisRef.SetDumpString();
     dumpreturn(data);
@@ -81,6 +85,7 @@ p_implementation(ResultCache, Array<String>, DumpData)
 
 ResultData const ResultCache::GetResultDataRecursive(Category category) const
 {
+    bool Trace = true;
     md(category);
     mb;
 }
@@ -90,14 +95,14 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
     : syntax(syntax)
       , context(context)
 {
-    Trace = context.ObjectId == 4 && syntax.ObjectId == 27;
+    Trace = context.ObjectId == -4 && syntax.ObjectId == 27;
     SetDumpString();
 }
 
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = this->Trace && category.hasExts;
+    bool Trace = false;// this->Trace && category.hasExts;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
@@ -107,7 +112,14 @@ ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)con
 
 ResultData const ResultFromSyntaxAndContext::GetResultDataRecursive(Category category) const
 {
-    return syntax.GetResultCache(*context.recursionContext)->Get(category);
+    if (!isRecursion)
+        return syntax.GetResultCache(*context.recursionContext)->Get(category);
+    
+    if (category == Category::Exts)
+        return Externals();
+    auto Trace = true;
+    md(category);
+    mb;
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)
@@ -127,16 +139,18 @@ p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
 
 ResultData const ResultData::operator|(ResultData const& other) const
 {
-    a_if((*this & other.complete) == (other & complete), 
-        DumpList({nd((complete & other.complete)), nd(*this), nd(other)}));
-
     return ResultData(
         hllw || other.hllw,
         size || other.size,
-        code || other.code, 
+        code || other.code,
         type || other.type,
         exts || other.exts
         );
+}
+
+bool const ResultData::IsConsistent(ResultData const& other) const
+{
+    return (*this & other.complete) == (other & complete);
 }
 
 ResultData const ResultData::operator&(Category const& other) const
