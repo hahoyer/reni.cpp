@@ -64,7 +64,14 @@ namespace _Reni
         )", "3");
     }
 
-    test(PrimitiveRecursiveFunctionByteWithDump, Function, _HWLang::ThenElse, _HWLang::TrainWreck)
+    test(SimpleFunctionWithNonLocal, Function)
+    {
+        CompilerTest::Check(R"(
+            x: 100; f: /\x;f() dump_print;
+        )", "100");
+    }
+
+    test(PrimitiveRecursiveFunctionByteWithDump, Function, SimpleFunctionWithNonLocal, _HWLang::ThenElse, _HWLang::TrainWreck)
     {
         CompilerTest::Check(
             R"(i: 10; f: /\ i > 0 then (i := (i - 1)enable_cut; i dump_print; f());f();)", 

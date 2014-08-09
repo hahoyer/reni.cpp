@@ -10,6 +10,7 @@ namespace _Reni{
     test_class(Simple);
     test_class(Negative);
     test_class(Function);
+    test_class(SimpleFunctionWithNonLocal);
     test_class(RecursiveFunction);
     test_class(PrimitiveRecursiveFunctionByteWithDump);
 }
