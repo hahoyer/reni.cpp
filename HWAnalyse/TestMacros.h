@@ -8,7 +8,7 @@
 #define test_item(name) (*test_instance_name(name).data)
 
 #define test_class(name)                                             \
-struct test_class_name(name) final: public HWAnalyse::TestFixture::base{\
+struct test_class_name(name) final: public HWAnalyse::TestFixture::Data{\
     test_class_name(name)();                                           \
     String const location()const override;                            \
     void Run() const override;                                       \
@@ -16,7 +16,7 @@ struct test_class_name(name) final: public HWAnalyse::TestFixture::base{\
 }
 
 #define test_implementation(name,initialize)                                                      \
-    test_class_name(name)::test_class_name(name)(): base(initialize){};                               \
+    test_class_name(name)::test_class_name(name)(): Data(initialize){};                               \
     String const test_class_name(name)::location()const {return FILE_LINE_FUNCTION;};                  \
     HWLib::RuntimeChain<HWAnalyse::TestFixture> test_instance_name(name) = new test_class_name(name)(); \
     void test_class_name(name)::Run() const

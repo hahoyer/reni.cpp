@@ -9,10 +9,10 @@
 #pragma warning (disable : 4237) // C4237 nonstandard extension used : 'keyword' keyword is reserved for future use
 #pragma warning (error   : 4239) // C4239 nonstandard extension used : 'token' : conversion from 'type' to 'type'
 #pragma warning (error   : 4244) // C4244 'conversion' conversion from 'type1' to 'type2', possible loss of data
-#pragma warning (disable : 4275) // C4275: non – DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
+#pragma warning (disable : 4275) // C4275: non – DLL-interface classkey 'identifier' used as Data for DLL-interface classkey 'identifier'
 #pragma warning (disable : 4291) // C4291 'declaration' : no matching operator delete found; memory will not be freed if initialization throws an exception
 #pragma warning (disable : 4309) // C4309 'conversion' : truncation of constant value
-#pragma warning (disable : 4355) // C4355 'this' : used in base member initializer list
+#pragma warning (disable : 4355) // C4355 'this' : used in Data member initializer list
 #pragma warning (disable : 4390) // C4390 ';' : empty controlled statement found; is this what was intended?"
 #pragma warning (disable : 4505) // C4505 'function' : unreferenced local function has been removed
 #pragma warning (disable : 4510) // C4510 'class' : default constructor could not be generated

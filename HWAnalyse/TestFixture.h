@@ -7,34 +7,43 @@
 using namespace HWLib;
 
 
-namespace HWAnalyse{
-    struct TestFailedException : public DumpableObject{
-        virtual~TestFailedException(){}
+namespace HWAnalyse
+{
+    struct TestFailedException : public DumpableObject
+    {
+        virtual ~TestFailedException()
+        {
+        }
     };
 
-    struct TestFixture{
-        struct base{
-            Array<CtrlRef<base>> dependencies;
+    struct TestFixture
+    {
+        struct Data
+        {
+            Array<CtrlRef<Data>> dependencies;
             bool isLowPriority;
             bool isSuccessful;
             bool isStarted;
-            base(Array<CtrlRef<base>> const& dependencies)
+
+            Data(Array<CtrlRef<Data>> const& dependencies)
                 : isLowPriority(false)
-                , isSuccessful(false)
-                , isStarted(false)
-                , dependencies(dependencies){
+                  , isSuccessful(false)
+                  , isStarted(false)
+                  , dependencies(dependencies)
+            {
             };
+
             virtual void Run()const = 0;
             virtual String const location()const = 0;
             bool CheckedRun(bool skipLowPriority);
             void WatchedRun();
         };
 
-        typedef base* dataType;
-        static base* currentTest;
+        using dataType = Data*; //Used for runtime chain
+        static Data* currentTest;
 
         static void RunAll();
     private:
-        static bool RunAny(Array<base*> const&all, bool skipLowPriority);
+        static bool RunAny(Array<Data*> const& all, bool skipLowPriority);
     };
 };
