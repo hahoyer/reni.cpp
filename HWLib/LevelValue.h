@@ -16,6 +16,11 @@ namespace HWLib
         {
             value = newValue;
         }
+        LevelValue(T & targetValue)
+            : value(targetValue)
+            , oldValue(targetValue)
+        {
+        }
 
         ~LevelValue(){ value = oldValue; }
     };

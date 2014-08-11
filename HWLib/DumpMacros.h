@@ -14,27 +14,25 @@
 #define writeLineFilePosition  c_.WriteLine(FILE_LINE_FUNCTION)
 #define srcargdump(x) {if(Trace)c_.Write(nd(x)+"\n").fsrcprint();}
 #define dumpreturn(x) {\
-if(Trace) {\
-    c_.IndentLevel--; \
+if(Trace) \
     c_.Write(HWLib::String("return ") + nd(x) + "\n"); \
-}\
 return; }
 
 #define return_d(x) {if(Trace) \
-    {c_.IndentLevel--; \
-    c_.Write(HWLib::String("return ") + nd(x) + "\n");}; \
+    c_.Write(HWLib::String("return ") + nd(x) + "\n"); \
     return x; }
 
 #define return_db(x) {if(Trace) \
-        {c_.IndentLevel--; \
+        {\
     c_.Write(HWLib::String("return ") + nd(x) + "\n");b_}; \
     return x; }
 
 #define HWLib_ARGDUMP(r, data, i, xx) nd_arg(i,xx)
 #define HWLib_HEADERDUMP(thisDump) {\
+    auto HWLib_HEADERDUMP_indentLevel = c_.IndentLevel;\
     if(Trace) {\
         c_.Write(FILE_LINE_FUNCTION);\
-        c_.IndentLevel++; \
+        c_.IndentCount++; \
         c_.Write("\n");\
         thisDump;\
     };\

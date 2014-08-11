@@ -46,23 +46,23 @@ bool TestFixture::Data::CheckedRun(bool skipLowPriority){
 void TestFixture::Data::WatchedRun(){
     auto name = typeid(*this).name();
     c_.WriteLine(location());
-    c_.IndentLevel++;
+    auto indentLevel = c_.IndentLevel;
+    c_.IndentCount++;
     try{
         Run();
         isSuccessful = true;
     }
     catch(TestFailedException const&exception){
-        c_.IndentLevel--;
+        c_.IndentCount--;
         c_.WriteLine(String("test_(") + name + ") exception: ");
-        c_.IndentLevel++;
+        c_.IndentCount++;
         c_.WriteLine(Dump(exception));
     }
     catch(...){
-        c_.IndentLevel--;
+        c_.IndentCount--;
         c_.WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
         throw;
     }
-    c_.IndentLevel--;
 };
 
 TestFixture::Data* TestFixture::currentTest = {};

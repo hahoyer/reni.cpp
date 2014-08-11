@@ -6,6 +6,7 @@
 #include "File.h"
 #include "String.h"
 #include "DumpableObject.h"
+#include "LevelValue.h"
 
 using namespace HWLib;
 
@@ -13,13 +14,12 @@ Console Console::Instance;
 
 Console::Console()
 : _isLineStart(true)
-, IndentLevel(0)
+, IndentCount(0)
 {
 }
 
-p_implementation(Console, bool, IsDebuggerPresent){
-    return !!::IsDebuggerPresent();
-};
+p_implementation(Console, bool, IsDebuggerPresent){return !!::IsDebuggerPresent();};
+mutable_p_implementation(Console, LevelValue<int>, IndentLevel){return IndentCount;};
 
 static void OutputDebug(const String&text)
 {
@@ -31,7 +31,7 @@ static void OutputDebug(const String&text)
 
 void Console::Write(String const&text, bool isLine)
 {
-    auto formattedText = text.Indent(_isLineStart, IndentLevel);
+    auto formattedText = text.Indent(_isLineStart, IndentCount);
     OutputDebug(formattedText + (isLine ? String("\n") : String("")));
 }
 
