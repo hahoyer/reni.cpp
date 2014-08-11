@@ -94,6 +94,12 @@ Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index, Type
         ->thisRef;
 }
 
+Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index)
+{
+    return (*Empty() + *new CallGetterFiber(size, index, Size(0)))
+        ->thisRef;
+}
+
 Ref<CodeItem> const CodeItem::SmartList(Array<Optional<Ref<CodeItem>>> const& items)
 {
     using resultType = Ref<CodeItem>;
@@ -125,13 +131,6 @@ Ref<CodeItem> const CodeItem::List(Array<Ref<CodeItem>> const& items)
     }
 
     fd(items);
-    b_;
-    return Empty();
-}
-
-Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index)
-{
-    fd(size, index);
     b_;
     return Empty();
 }

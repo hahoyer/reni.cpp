@@ -57,7 +57,14 @@ namespace _Reni
         CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
     }
 
-    test(Function, Simple)
+    test(SimpleFunction, Simple)
+    {
+        CompilerTest::Check(R"(
+            f: /\1; f() dump_print;
+        )", "1");
+    }
+
+    test(Function, SimpleFunction)
     {
         CompilerTest::Check(R"(
             f: /\arg + 1; f(2) dump_print;

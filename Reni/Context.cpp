@@ -185,7 +185,7 @@ p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
 
 p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
-    auto Trace = context.ObjectId == 4 && bodyIndex == 1; 
+    auto Trace = false;//context.ObjectId == 7 && bodyIndex == 0; 
     md_;
     a_if(!arg.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
@@ -199,8 +199,11 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
     d(rawResult);
     auto result = rawResult
         .Convert(*valueType);
-    if(result.exts.Value == External::Function::Arg::Instance)
-        return CodeItem::CallGetter(valueType->size, codeIndex, *arg.Value);
+    if (result.exts.Value == Externals())
+        return_d( CodeItem::CallGetter(valueType->size, codeIndex));
+
+    if (result.exts.Value == External::Function::Arg::Instance)
+        return_d(CodeItem::CallGetter(valueType->size, codeIndex, *arg.Value));
 
     md(result);
     mb;
@@ -226,7 +229,11 @@ p_implementation(FunctionCallResultCache, CodeFunction, getter)
         ->GetResultCache(context)
         ->Get(Category::Type | Category::Code | Category::Exts)
         .Convert(*valueType);
-    if(rawResult.exts.Value == External::Function::Arg::Instance)
+
+    if (rawResult.exts.Value == Externals())
+        return CodeFunction::Getter(codeIndex, rawResult.code.Value);
+    
+    if (rawResult.exts.Value == External::Function::Arg::Instance)
     {
         ReplaceVisitor visitor;
         Ref<ResultCache> functionArg = new ResultDataDirect(CodeItem::FunctionArg(*arg.Value), arg.Value->IndirectType(1));
