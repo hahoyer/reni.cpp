@@ -119,8 +119,8 @@ ResultData const FoundFeature<Feature>::FunctionResult(
     Optional<Ref<Syntax>> const& right
     )const
 {
-    bool Trace = context.ObjectId == -6
-        && left.IsValid && left.Value->ObjectId == 9
+    bool Trace = context.ObjectId == 3
+        && left.IsValid && left.Value->ObjectId >- 9
         && category.hasCode
         && !context.isRecursion;
     md(context, category, left, right);

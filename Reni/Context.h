@@ -40,6 +40,7 @@ namespace Reni
         virtual_p(bool, isRecursion) { return false; };
         virtual_p(WeakRef<Global>, global) = 0;
         virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
+        virtual_p(WeakRef<RecursionContext>, recursionContext) = 0;
         p(int, alignBits) { return 3; };
 
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
@@ -61,7 +62,6 @@ namespace Reni
         RegularContext();
 
     public:
-        p(WeakRef<RecursionContext>, recursionContext);
 
         WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, int index) const override;
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
@@ -75,7 +75,8 @@ namespace Reni
             Ref<AccessFeature> ff = f->feature;
             return *ff;
         };
-
+    private:
+        p_function(WeakRef<RecursionContext>, recursionContext) override;
     };
 
     class ChildContext : public RegularContext

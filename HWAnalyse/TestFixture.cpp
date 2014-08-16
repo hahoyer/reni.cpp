@@ -19,21 +19,21 @@ void TestFixture::RunAll(){
         continue;
 };
 
-bool TestFixture::RunAny(Array<base*> const&all, bool skipLowPriority){
+bool TestFixture::RunAny(Array<Data*> const&all, bool skipLowPriority){
     auto result = false;
     for(int i = 0; i < all.Count; i++)
         result = all[i]->CheckedRun(skipLowPriority) || result;
     return result;
 };
 
-bool TestFixture::base::CheckedRun(bool skipLowPriority){
+bool TestFixture::Data::CheckedRun(bool skipLowPriority){
     if(isStarted)
         return false;
     if(skipLowPriority&& isLowPriority)
         return false;
     bool hasUnsuccessfulDependant 
         = dependencies
-        .Where([](CtrlRef<base> dependant){return !dependant->isSuccessful;})
+        .Where([](CtrlRef<Data> dependant){return !dependant->isSuccessful;})
         ->Any;
     if(hasUnsuccessfulDependant)
         return false;
@@ -43,26 +43,26 @@ bool TestFixture::base::CheckedRun(bool skipLowPriority){
     return true;
 };
 
-void TestFixture::base::WatchedRun(){
+void TestFixture::Data::WatchedRun(){
     auto name = typeid(*this).name();
     c_.WriteLine(location());
-    c_.IndentLevel++;
+    auto indentLevel = c_.IndentLevel;
+    c_.IndentCount++;
     try{
         Run();
         isSuccessful = true;
     }
     catch(TestFailedException const&exception){
-        c_.IndentLevel--;
+        c_.IndentCount--;
         c_.WriteLine(String("test_(") + name + ") exception: ");
-        c_.IndentLevel++;
+        c_.IndentCount++;
         c_.WriteLine(Dump(exception));
     }
     catch(...){
-        c_.IndentLevel--;
+        c_.IndentCount--;
         c_.WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
         throw;
     }
-    c_.IndentLevel--;
 };
 
-TestFixture::base* TestFixture::currentTest = {};
+TestFixture::Data* TestFixture::currentTest = {};

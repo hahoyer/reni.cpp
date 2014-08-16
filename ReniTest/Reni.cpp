@@ -57,14 +57,28 @@ namespace _Reni
         CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
     }
 
-    test(Function, Simple)
+    test(SimpleFunction, Simple)
+    {
+        CompilerTest::Check(R"(
+            f: /\1; f() dump_print;
+        )", "1");
+    }
+
+    test(Function, SimpleFunction)
     {
         CompilerTest::Check(R"(
             f: /\arg + 1; f(2) dump_print;
         )", "3");
     }
 
-    test(PrimitiveRecursiveFunctionByteWithDump, Function, _HWLang::ThenElse, _HWLang::TrainWreck)
+    test(SimpleFunctionWithNonLocal, Function)
+    {
+        CompilerTest::Check(R"(
+            x: 100; f: /\x;f() dump_print;
+        )", "100");
+    }
+
+    test(PrimitiveRecursiveFunctionByteWithDump, Function, SimpleFunctionWithNonLocal, _HWLang::ThenElse, _HWLang::TrainWreck)
     {
         CompilerTest::Check(
             R"(i: 10; f: /\ i > 0 then (i := (i - 1)enable_cut; i dump_print; f());f();)", 

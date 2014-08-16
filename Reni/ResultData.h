@@ -88,7 +88,8 @@ namespace Reni
             );
 
         DefaultAssignmentOperator;
-        ResultData const operator+(ResultData const&other)const;
+        ResultData const operator|(ResultData const&other)const;
+        bool const IsConsistent(ResultData const& other) const;
         ResultData const operator&(Category const&other)const;
         bool const operator==(thisType const&other)const;
         p(Category, complete){ return Category::Instance(hllw.IsValid, size.IsValid, !code.IsEmpty, !type.IsEmpty, exts.IsValid); }

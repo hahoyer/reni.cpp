@@ -4,12 +4,13 @@
 namespace HWLib
 {
     class String;
+    template<typename T> class LevelValue;
 
     class Console  final
     {
         bool _isLineStart;
     public:
-        int IndentLevel;
+        int IndentCount;
         Console();
         void Write(String const&text, bool isLine = false);
         void WriteLine(String const&text){ Write(text, true); };
@@ -17,6 +18,7 @@ namespace HWLib
         template <typename T>
         void FunctionTrace(String const&function, T const& object);
 
+        mutable_p(LevelValue<int>, IndentLevel);
         p(bool, IsDebuggerPresent);
         static Console Instance;
     };
@@ -39,7 +41,7 @@ void Console::FunctionTrace(String const&function, T const& object)
         Write(header);
     }
 
-    IndentLevel++;
+    IndentCount++;
     Write(String("[ ") + HWLib::Dump(object) + " ]\n");
 };
 

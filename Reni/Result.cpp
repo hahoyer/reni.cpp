@@ -19,13 +19,21 @@ using namespace HWLib;
 using namespace Reni;
 
 
+ResultCache::ResultCache()
+    : Trace(false)
+{
+}
+
 ResultData const ResultCache::Get(Category category) const
 {
     Ensure(category);
-    if(category.hasExts && !data.complete.hasExts)
-        return data + Externals();
+    auto pendingCategory = category - data.complete;
+    if (pendingCategory == Category::None)
+        return data;
 
-    return data;
+    auto recursive = GetResultDataRecursive(pendingCategory);
+    a_if(recursive.IsConsistent(data), nd(thisRef) + nd(recursive) + nd(pendingCategory));
+    return recursive | data;
 }
 
 void ResultCache::Ensure(Category category)const
@@ -33,29 +41,32 @@ void ResultCache::Ensure(Category category)const
     auto todo = category - complete;
     if(todo == Category::None)
         return;
+    bool Trace = this->Trace && category.hasExts;
+    md(category);
     auto newTodo = todo - pending;
-    LevelValue<Category> localPending(pending, pending | newTodo);
-
-    if(newTodo == Category::None)
+    if (newTodo != Category::None)
     {
-        a_if(todo.hasType || todo.hasExts, nd(category) + nd(complete) + nd(pending) +"\n"+ nd(*this));
-        a_if(pending == todo, nd(category) + nd(complete) + nd(pending));
+        LevelValue<Category> localPending(pending, pending | newTodo);
+
+        auto oldData = data;
+        d(newTodo);
+        b_if_(Trace);
+        auto newResult = GetResultData(newTodo);
+        d(newResult);
+        b_if_(Trace);
+        a_if(isRecursion || data.IsConsistent(newResult), nd(thisRef) + nd(newResult));
+        data = newResult| data;
+        a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
     }
 
-    auto newResult = GetResultData(newTodo);
-    data = data + newResult;
-
-    a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
+    pending -= complete;
     thisRef.SetDumpString();
+    dumpreturn(data);
 }
 
 p_virtual_header_implementation(ResultCache, bool, isRecursion) ;
 
-p_implementation(ResultCache, Category, complete)
-{
-    return data.complete;
-}
-
+p_implementation(ResultCache, Category, complete){ return data.complete; };
 p_implementation(ResultCache, bool, hllw){ return Get(Category::Hllw).hllw; };
 p_implementation(ResultCache, Size, size){ return Get(Category::Size).size; };
 p_implementation(ResultCache, Ref<CodeItem>, code){ return Get(Category::Code).code; };
@@ -72,25 +83,43 @@ p_implementation(ResultCache, Array<String>, DumpData)
     };
 };
 
+ResultData const ResultCache::GetResultDataRecursive(Category category) const
+{
+    bool Trace = true;
+    md(category);
+    mb;
+}
+
 
 ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context)
     : syntax(syntax)
       , context(context)
 {
+    Trace = context.ObjectId == -4 && syntax.ObjectId == 27;
     SetDumpString();
 }
 
 ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = context.ObjectId == 4
-        && (syntax.ObjectId == 27 || syntax.ObjectId == 23)
-        && category.hasExts;
+    bool Trace = false;// this->Trace && category.hasExts;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
     a_is(category, <= , result.complete);
     return_db(result);
+}
+
+ResultData const ResultFromSyntaxAndContext::GetResultDataRecursive(Category category) const
+{
+    if (!isRecursion)
+        return syntax.GetResultCache(*context.recursionContext)->Get(category);
+    
+    if (category == Category::Exts)
+        return Externals();
+    auto Trace = true;
+    md(category);
+    mb;
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)
@@ -108,18 +137,20 @@ p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
     return !!dynamic_cast<RecursionContext const*>(&context);
 }
 
-ResultData const ResultData::operator+(ResultData const& other) const
+ResultData const ResultData::operator|(ResultData const& other) const
 {
-    a_if((*this & other.complete) == (other & complete), 
-        DumpList({nd((complete & other.complete)), nd(*this), nd(other)}));
-
     return ResultData(
         hllw || other.hllw,
         size || other.size,
-        code || other.code, 
+        code || other.code,
         type || other.type,
         exts || other.exts
         );
+}
+
+bool const ResultData::IsConsistent(ResultData const& other) const
+{
+    return (*this & other.complete) == (other & complete);
 }
 
 ResultData const ResultData::operator&(Category const& other) const

@@ -1,5 +1,6 @@
 #pragma once
 #include "ResultData.h"
+#include "../HWLib/Pod.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -18,6 +19,10 @@ namespace Reni
         mutable ResultData data;
         mutable Category pending;
     public:
+        pod<bool> Trace;
+
+        ResultCache();
+
         ThisRef;
         p(bool, hllw);
         p(Size, size);
@@ -33,6 +38,7 @@ namespace Reni
         p_function(Array<String>,DumpData) override;
         virtual_p(bool, isRecursion) { return false; };
         virtual ResultData const GetResultData(Category category)const = 0;
+        virtual ResultData const GetResultDataRecursive(Category category) const;
     private:
         p(Category, complete);
     };
@@ -53,6 +59,7 @@ namespace Reni
         p_function(Array<String>,DumpData) override;
         p_function(bool, isRecursion) override;
         ResultData const GetResultData(Category category)const override;
+        ResultData const GetResultDataRecursive(Category category) const override;
     };
 
 }

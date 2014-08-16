@@ -17,17 +17,6 @@
 #include "ResultDataDirect.h"
 #include "SyntaxContainer.h"
 
-#if 0
-#include "AccessResultCache.h"
-#include "CodeItems.h"
-#include "ExpressionSyntax.h"
-#include "FunctionCallResultCache.h"
-#include "FunctionSyntax.h"
-#include "Global.h"
-#include "Syntax.h"
-#include "Type.h"
-#endif
-
 #include "../HWLib/RefCountContainer.instance.h"
 
 using namespace Reni;
@@ -77,7 +66,8 @@ RegularContext::RegularContext()
 
 p_virtual_header_implementation(Context, bool, isRecursion) ;
 p_virtual_header_implementation(Context, WeakRef<Global>, global) ;
-p_virtual_header_implementation(Context, WeakRef<FunctionCallContext>, functionContext) ;
+p_virtual_header_implementation(Context, WeakRef<FunctionCallContext>, functionContext);
+p_virtual_header_implementation(Context, WeakRef<RecursionContext>, recursionContext);
 
 p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
 {
@@ -175,11 +165,14 @@ FunctionCallResultCache::FunctionCallResultCache(FunctionCallContext const& cont
     SetDumpString();
 }
 
+ResultData const FunctionCallResultCache::GetResultDataRecursive(Category category) const
+{
+    return GetResultData(category);
+}
+
 ResultData const FunctionCallResultCache::GetResultData(Category category) const
 {
-    if(category == Category::None)
-        return valueInRecursion;
-
+    a_is(category, != , Category::None);
     return ResultData::GetSmartHllwSize(category, l_(codeGet), l_(valueType), l_(extsGet));
 }
 
@@ -192,18 +185,26 @@ p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
 
 p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
+    auto Trace = false;//context.ObjectId == 7 && bodyIndex == 0; 
+    md_;
     a_if(!arg.IsEmpty, "NotImpl: no arg " + Dump);
     a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
     function.GetterIsUsed();
-    auto result = body
+    auto rawResult
+        = body
         .getter
         .Value
         ->GetResultCache(context)
-        ->Get(Category::Type | Category::Exts)
+        ->Get(Category::Type | Category::Exts);
+    d(rawResult);
+    auto result = rawResult
         .Convert(*valueType);
-    if(result.exts.Value == External::Function::Arg::Instance)
-        return CodeItem::CallGetter(valueType->size, codeIndex, *arg.Value);
-    
+    if (result.exts.Value == Externals())
+        return_d( CodeItem::CallGetter(valueType->size, codeIndex));
+
+    if (result.exts.Value == External::Function::Arg::Instance)
+        return_d(CodeItem::CallGetter(valueType->size, codeIndex, *arg.Value));
+
     md(result);
     mb;
 }
@@ -228,7 +229,11 @@ p_implementation(FunctionCallResultCache, CodeFunction, getter)
         ->GetResultCache(context)
         ->Get(Category::Type | Category::Code | Category::Exts)
         .Convert(*valueType);
-    if(rawResult.exts.Value == External::Function::Arg::Instance)
+
+    if (rawResult.exts.Value == Externals())
+        return CodeFunction::Getter(codeIndex, rawResult.code.Value);
+    
+    if (rawResult.exts.Value == External::Function::Arg::Instance)
     {
         ReplaceVisitor visitor;
         Ref<ResultCache> functionArg = new ResultDataDirect(CodeItem::FunctionArg(*arg.Value), arg.Value->IndirectType(1));
@@ -255,16 +260,12 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
         ->asFunctionResult;
 }
 
-p_implementation(FunctionCallResultCache, ResultData, valueInRecursion)
-{
-    return body
-        .getter
-        .Value
-        ->GetResultCache(*context.recursionContext)
-        ->Get(Category::Type|Category::Exts)
-        .asFunctionResult;
-}
 
+p_implementation(RecursionContext, WeakRef<RecursionContext>, recursionContext)
+{
+    md_;
+    mb;
+}
 
 WeakRef<Type> const RecursionContext::FunctionType(FunctionSyntax const& body) const
 {
@@ -279,15 +280,13 @@ Optional<WeakRef<Type>> const RecursionContext::CachedType(Syntax const& target)
 
 WeakRef<ContainerContext> const RecursionContext::Container(SyntaxContainer const& statements, int viewIndex) const
 {
-    md(statements, viewIndex);
-    mb;
+    return parent.Container(statements, viewIndex);
 }
 
 SearchResult<AccessFeature> const RecursionContext::DeclarationsForType(DefineableToken const& token) const
 {
     return parent.DeclarationsForType(token);
 }
-
 
 SearchResult<AccessFeature> const ChildContext::DeclarationsForType(DefineableToken const& token) const
 {

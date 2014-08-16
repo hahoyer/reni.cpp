@@ -118,7 +118,7 @@ void Process::internal::Ensure()
 
     char module[2000];
     auto val = ::GetEnvironmentVariable("ComSpec", module, 2000);
-    auto commandChars = ("/c_ " + _command).RawDataCopy;
+    auto commandChars = ("/c " + _command).RawDataCopy;
     if (::CreateProcess(
         module,
         commandChars,

@@ -22,6 +22,7 @@ namespace Reni
         p_function(WeakRef<Global>, global) override{ return parent.global; };
         p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
         p_function(bool, isRecursion) override{ return true; };
+        p_function(WeakRef<RecursionContext>, recursionContext) override;
 
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
         WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, int index) const override;

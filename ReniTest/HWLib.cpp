@@ -48,7 +48,7 @@ namespace _Process
         a_is(e, == , "");
     };
 
-    test_(Double)
+    test(Double, Simple)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -57,7 +57,7 @@ namespace _Process
         a_is(t0, == , t1);
     };
 
-    test_(Double2)
+    test(Double2, Simple)
     {
         auto p = Process("time");
         auto t0 = p.data;
@@ -67,7 +67,7 @@ namespace _Process
         a_is(t0, != , t1);
     };
 
-    test_(Error)
+    test(Error, Simple)
     {
         auto p = Process("%");
         auto d = p.data;

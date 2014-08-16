@@ -94,6 +94,12 @@ Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index, Type
         ->thisRef;
 }
 
+Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index)
+{
+    return (*Empty() + *new CallGetterFiber(size, index, Size(0)))
+        ->thisRef;
+}
+
 Ref<CodeItem> const CodeItem::SmartList(Array<Optional<Ref<CodeItem>>> const& items)
 {
     using resultType = Ref<CodeItem>;
@@ -129,13 +135,6 @@ Ref<CodeItem> const CodeItem::List(Array<Ref<CodeItem>> const& items)
     return Empty();
 }
 
-Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index)
-{
-    fd(size, index);
-    b_;
-    return Empty();
-}
-
 Ref<CodeItem> const CodeItem::Const(BitsConst const&value)
 {
     return new ConstCode(value.size, value);
@@ -159,7 +158,7 @@ Ref<CodeItem> const CodeItem::This(Type const&value)
 
 Optional<Ref<CodeItem>> const CodeItem::Replace(ReplaceVisitor const&arg) const
 {
-    bool Trace = arg.Trace || ObjectId == -19;
+    bool Trace = arg.Trace || ObjectId == -16;
     md(exts);
     b_if_(Trace);
     auto result = ReplaceImpl(arg);
@@ -262,7 +261,8 @@ Ref<CodeItem> const ArgCode::Convert(Type const& type) const
 };
 
 
-FunctionArgCode::FunctionArgCode(Type const& type) : baseType(type.indirectType->thisRef)
+FunctionArgCode::FunctionArgCode(Type const& type) 
+    : baseType(type.indirectType->thisRef)
 {
     SetDumpString();
     b_if(ObjectId == -10, Dump);
@@ -293,10 +293,14 @@ String const CallGetterFiber::ToCpp(CodeVisitor const& visitor)const
 
 Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor) const
 {
-    auto result = visitor.GetCode(External::This::Instance);
-    if(result.IsEmpty)
+    auto rawResult = visitor.GetCode(External::This::Instance);
+    if(rawResult.IsEmpty)
         return{};
-    return result.Value->Convert(type);
+    auto Trace = false;
+    md(visitor,rawResult);
+    auto result = rawResult.Value->Convert(type);
+    d(result);
+    return result;
 };
 
 
