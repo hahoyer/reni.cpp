@@ -296,7 +296,7 @@ Optional<Ref<CodeItem>> const ThisCode::ReplaceImpl(ReplaceVisitor const&visitor
     auto rawResult = visitor.GetCode(External::This::Instance);
     if(rawResult.IsEmpty)
         return{};
-    auto Trace = false;
+    auto Trace = visitor.Trace;
     md(visitor,rawResult);
     auto result = rawResult.Value->Convert(type);
     d(result);

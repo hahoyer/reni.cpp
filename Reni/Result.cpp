@@ -306,7 +306,9 @@ ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
 
 ResultData const ResultData::Replace(External const& tag, ResultCache const& result) const
 {
-    return Replace(ReplaceVisitor(tag, result));
+    auto visitor = ReplaceVisitor(tag, result);
+    visitor.Trace = result.Trace;
+    return Replace(visitor);
 }
 
 p_implementation(ResultData, Array<String>, DumpData)

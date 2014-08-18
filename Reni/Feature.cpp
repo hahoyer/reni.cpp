@@ -132,11 +132,13 @@ ResultData const FoundFeature<Feature>::FunctionResult(
     auto alignedResult = AlignThis(rawResult);
     d(alignedResult);
     b_if_(Trace);
+    auto leftResult = left.Value->GetResultCache(context);
+    leftResult->Trace = Trace;
     auto result = alignedResult
         .Replace
         (
             External::This::Instance,
-                *left.Value->GetResultCache(context)
+                *leftResult
         );
     return_db(result);
 };
