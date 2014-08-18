@@ -42,7 +42,7 @@ class ArgToken final : public TerminalTokenClass {
     using baseType = TerminalTokenClass;
     using thisType = ArgToken;
 public:
-    p(String, name){ return "arg"; };
+    p(String, name){ return "."; };
 
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const;
 

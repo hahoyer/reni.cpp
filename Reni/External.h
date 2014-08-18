@@ -90,7 +90,7 @@ namespace Reni
         Arg() {
             SetDumpString();
         };
-        String const internalDump() const override{ return baseType::internalDump() + "arg"; };
+        String const internalDump() const override{ return baseType::internalDump() + "."; };
 
     public:
         bool const IsProvided(ReplaceVisitor const&) const override;

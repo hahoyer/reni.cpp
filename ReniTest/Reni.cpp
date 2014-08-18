@@ -67,7 +67,7 @@ namespace _Reni
     test(Function, SimpleFunction)
     {
         CompilerTest::Check(R"(
-            f: /\arg + 1; f(2) dump_print;
+            f: /\ . + 1; f(2) dump_print;
         )", "3");
     }
 
@@ -81,7 +81,7 @@ namespace _Reni
     test(PrimitiveRecursiveFunctionByteWithDump, Function, SimpleFunctionWithNonLocal, _HWLang::ThenElse, _HWLang::TrainWreck)
     {
         CompilerTest::Check(
-            R"(i: 10; f: /\ i > 0 then (i := (i - 1)enable_cut; i dump_print; f());f();)", 
+            R"(i: <!> 10; f: /\ i > 0 then (i := (i - 1)enable_cut; i dump_print; f());f();)", 
             "9876543210");
     }
 
@@ -93,12 +93,12 @@ f: /\
 1000 type instance
     (
         {
-            arg = 1 then 1
+            . = 1 then 1
             else
             (
-                arg * f
+                . * f
                 [
-                    arg type instance((arg - 1)enable_cut)
+                    . type instance((. - 1)enable_cut)
                 ]
             )
         }
