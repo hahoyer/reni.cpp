@@ -22,10 +22,10 @@ static bool Trace = true;
 using namespace Reni;
 using namespace HWLang;
 
-Ref<Syntax> const TokenClass::Mismatch(Optional<Ref<Syntax>> const left, SourcePart const& part, Optional<Ref<Syntax>> const right) const{
+Ref<Syntax> const TokenClass::Mismatch(Optional<Ref<Syntax>> const left, SourcePart const& part, Optional<Ref<Syntax>> const right) const
+{
     md(left, part, right);
     mb;
-    return Optional<Ref<Syntax>>();
 }
 
 p_virtual_header_implementation(TokenClass, bool, AcceptsMatch);
@@ -39,7 +39,7 @@ SearchResult <Feature> const DefineableToken::Declarations(EnableCutType const& 
     md(provider);
     b_;
     return_d(SearchResult<Feature>());
-}
+};
 
 SearchResult<Feature> const DefineableToken::Declarations(AccessType const&) const{ return{}; };
 

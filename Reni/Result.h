@@ -31,6 +31,7 @@ namespace Reni
         p(Externals, exts);
         p(Optional<WeakRef<Type>>, cachedType);
 
+        ResultData const operator &(Category category)const{ return Get(category); }
         ResultData const Get(Category category)const;
     private:
         void Ensure(Category category)const;
