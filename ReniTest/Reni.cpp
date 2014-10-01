@@ -67,7 +67,7 @@ namespace _Reni
     test(Function, SimpleFunction)
     {
         CompilerTest::Check(R"(
-            f: /\ . + 1; f(2) dump_print;
+            f: /\ ^ + 1; f(2) dump_print;
         )", "3");
     }
 
@@ -93,12 +93,12 @@ f: /\
 1000 type instance
     (
         {
-            . = 1 then 1
+            ^ = 1 then 1
             else
             (
-                . * f
+                ^ * f
                 [
-                    . type instance((. - 1)enable_cut)
+                    ^ type instance((^ - 1)enable_cut)
                 ]
             )
         }

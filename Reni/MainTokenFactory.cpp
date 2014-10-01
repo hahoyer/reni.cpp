@@ -42,7 +42,7 @@ class ArgToken final : public TerminalTokenClass {
     using baseType = TerminalTokenClass;
     using thisType = ArgToken;
 public:
-    p(String, name){ return "."; };
+    p(String, name){ return "^"; };
 
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const;
 
@@ -170,6 +170,7 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new LeftParenthesisToken(1));
     AddTokenClass(new LeftParenthesisToken(2));
     AddTokenClass(new LeftParenthesisToken(3));
+    AddTokenClass(new List("."));
     AddTokenClass(new List(","));
     AddTokenClass(new List(";"));
     AddTokenClass(new MinusToken);
