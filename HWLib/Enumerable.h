@@ -17,6 +17,9 @@ namespace HWLib
     {
         typedef Enumerable thisType;
     public:
+        Enumerable() = default;
+        Enumerable(thisType const&) = delete;
+
         typedef T targetType;
         template<typename TResult>
         using AggregateFunction = function<TResult const(TResult, T)>;
@@ -77,7 +80,8 @@ namespace HWLib
             mutable_p_function(CtrlRef<Iterator>, ToIterator) const override{ return _iterator; }
         };
 
-        p_definition(CtrlRef<Iterator>, ToIterator);
+        virtual_p_definition(CtrlRef<Iterator>,ToIterator); 
+        CtrlRef<Iterator> virtual_p_name(ToIterator)()const { return p_name(ToIterator)(); }
         virtual mutable_p_function(CtrlRef<Iterator>, ToIterator)const = 0;
 
         RangeBasedForLoopSimulator const begin()const{ return ToIterator; }
