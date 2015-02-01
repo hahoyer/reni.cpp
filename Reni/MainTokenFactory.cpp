@@ -76,9 +76,9 @@ public:
     p(String, name){ return "else"; };
 
 private:
-    p_function(bool, AcceptsMatch) override { return true; };
-    Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
-        auto const&conditional = dynamic_cast<IfThenSyntax const&>(*left);
+    Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const& part, Ref<Syntax>const right)const override final
+    {
+        auto const& conditional = dynamic_cast<IfThenSyntax const&>(*left);
         return conditional.AddElse(part, right);
     }
 };
@@ -141,10 +141,10 @@ private:
 
 MainTokenFactory const MainTokenFactory::Instance;
 
-TokenClass const& MainTokenFactory::Number = NumberToken();
-TokenClass const& MainTokenFactory::Text = TextToken();
-TokenClass const& MainTokenFactory::Start = LeftParenthesisToken(0);
-TokenClass const& MainTokenFactory::End = RightParenthesisToken(0);
+TokenClass const& MainTokenFactory::Number = *new NumberToken();
+TokenClass const& MainTokenFactory::Text = *new TextToken();
+TokenClass const& MainTokenFactory::Start = *new LeftParenthesisToken(0);
+TokenClass const& MainTokenFactory::End = *new RightParenthesisToken(0);
 
 template<class TTokenClass>
 void MainTokenFactory::AddTokenClass(TTokenClass const*tokenClass){
