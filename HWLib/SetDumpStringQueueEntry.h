@@ -18,19 +18,19 @@ namespace HWLib{
         int const id;
 
         SetDumpStringQueueEntry()
-            : id(nextId++)
-            , entry({})
-            , previous(this)
-            , next(this){
+            : previous(this)
+            , next(this)
+            , entry(nullptr)
+            , id(nextId++){
            // worker = std::thread(Run);
 
         }
 
         SetDumpStringQueueEntry(DumpableObject const&entry)
-            : id(nextId++)
+            : previous(root->previous)
+            , next(root)
             , entry(&entry)
-            , previous(root->previous)
-            , next(root){
+            , id(nextId++){
             assert(root == &rootInstance);
             next->previous = this;
             previous->next = this;

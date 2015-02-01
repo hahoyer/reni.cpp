@@ -14,14 +14,14 @@ DumpableObject::DumpableObject()
 : isInDump(false)
 , dumpString("missing call to SetDumpString()")
 , dumpShortString("missing call to SetDumpString()")
-, SetDumpStringToDo({})
+, SetDumpStringToDo(0)
 {};
 
 DumpableObject::DumpableObject(DumpableObject const&other)
 : isInDump(false)
 , dumpString(other.dumpString)
 , dumpShortString(other.dumpShortString)
-, SetDumpStringToDo({})
+, SetDumpStringToDo(0)
 {};
 
 
