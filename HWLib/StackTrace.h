@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Array.h"
-#include <windows.h>
 #include <dbghelp.h>
 #include "String.h"
 #include "MemBox.h"

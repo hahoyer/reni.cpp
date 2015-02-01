@@ -3,7 +3,6 @@
 
 #include "String.h"
 #include "TemplateInstances.h"
-#include <windows.h>
 
 static bool Trace = true;
 using namespace HWLib;
@@ -11,7 +10,7 @@ using namespace HWLib;
 
 String const System::FormatLastErrorMessage()
 {
-    DWORD rc = ::GetLastError();
+    auto rc = ::GetLastError();
     char Buffer[3000];
     ::FormatMessage
         (
