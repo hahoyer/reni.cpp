@@ -58,9 +58,10 @@
     <ClInclude Include="_.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="hw.natvis">
+    <Natvis Include="Admin\hw.natvis">
       <SubType>Designer</SubType>
-    </None>
+      <FileType>Document</FileType>
+    </Natvis>
   </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>

@@ -25,6 +25,7 @@ namespace HWLib{
 
     class DumpableObject{
         using thisType = DumpableObject;
+        mutable bool isDumpStringValid;
         mutable std::string dumpString;
         mutable std::string dumpShortString;
         mutable bool isInDump;

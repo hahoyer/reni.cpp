@@ -19,6 +19,14 @@ namespace HWLang{
         int const _position;
         int const _count;
     public:
+        SourcePart(SourcePart const&other)
+            : _source(other._source)
+            , _position(other._position)
+            , _count(other._count)
+        {
+            SetDumpString();
+        };
+
         SourcePart(Ref<Source> source, int position, int count)
             : _source(source)
             , _position(position)

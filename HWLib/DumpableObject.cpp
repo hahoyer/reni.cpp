@@ -11,17 +11,19 @@
 using namespace HWLib;
 
 DumpableObject::DumpableObject() 
-: isInDump(false)
-, dumpString("missing call to SetDumpString()")
-, dumpShortString("missing call to SetDumpString()")
-, SetDumpStringToDo(0)
+: isDumpStringValid(false)
+, dumpString("")
+, dumpShortString("")
+, isInDump(false)
+, SetDumpStringToDo(nullptr)
 {};
 
 DumpableObject::DumpableObject(DumpableObject const&other)
-: isInDump(false)
+: isDumpStringValid(other.isDumpStringValid)
 , dumpString(other.dumpString)
 , dumpShortString(other.dumpShortString)
-, SetDumpStringToDo(0)
+, isInDump(false)
+, SetDumpStringToDo(nullptr)
 {};
 
 
@@ -52,6 +54,7 @@ void DumpableObject::SetDumpStringQueueEntryWait(){
 String const DumpableObject::SetDumpStringWorker(){
     dumpString = DumpLong.RawData;
     dumpShortString = DumpShort.RawData;
+    isDumpStringValid = true;
     return dumpString;
 }
 
