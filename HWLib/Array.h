@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "Enumerable.h"
 #include <vector>
+#include <queue>
 
 namespace HWLib
 {
@@ -36,13 +37,25 @@ namespace HWLib
                 new (data + index) T(other[index]);
         };
 
-        Array(std::vector<T> const&other)
+        Array(std::queue<std::unique_ptr<T>> & other)
+            : _count(other.size())
+            , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
+        {
+            auto data = const_cast<remove_const<T>::type*>(_data);
+            for(auto index = 0; index < _count; index++)
+            {
+                new (data + index) T(*other.front());
+                other.pop();
+            }
+        }
+
+        explicit Array(std::vector<T> const&other)
             : _count(other.size())
             , _data(reinterpret_cast<T * const>(new __int8[sizeof(T)*other.size()]))
         {
             auto data = const_cast<remove_const<T>::type*>(_data);
             auto index = 0;
-            for(auto element : other)
+            for(auto const& element : other)
             {
                 new (data + index) T(element);
                 index++;

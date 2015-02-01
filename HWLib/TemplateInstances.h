@@ -5,6 +5,7 @@
 #include "DumpableObject.h"
 #include "FunctionCacheBase.h"
 #include "CtrlRef.h"
+#include <queue>
 
 using namespace HWLib;
 using namespace std;
@@ -454,11 +455,9 @@ inline p_implementation(Enumerable<T>, Array<T>, ToArray)
 
 template<typename T>
 inline mutable_p_implementation(Enumerable<T>::Iterator, Array<T>const, ToArray){
-    auto result = std::vector<T>();
-    while (IsValid){
-        auto value = Step();
-        result.push_back(value);
-    }
+    auto result = queue<unique_ptr<T>>();
+    while (IsValid)
+        result.push(unique_ptr<T>(new T(Step())));
     return result;
 }
 
