@@ -23,8 +23,8 @@ namespace Reni
                 .Right({":"})
                 .Right({","})
                 .Right({";"})
-                .ParenthesisLevel({"(", "[", "{"}, {")", "]", "}"})
-                .ParenthesisLevel({Start}, {End})
+                .ParenthesisLevelRight({"(", "[", "{"}, {")", "]", "}"})
+                .ParenthesisLevelLeft({Start}, {End})
                 ;
         };
     };

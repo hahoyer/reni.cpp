@@ -62,18 +62,21 @@ namespace Reni
         int const level;
     public:
         RightParenthesisToken(int level) : level(level){}
-        p(String, name){
+
+        p(String, name)
+        {
             a_is(level, >, 0);
             a_is(level, <, 4);
             return level[" }])"];
         }
     private:
-        p_function(bool, AcceptsMatch) override{ return true; }
-        Ref<Syntax > const Create(Ref<Syntax >const left, SourcePart const&part)const  override final{
+        Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const& part)const override final
+        {
             return left->ParenthesisMatch(level, part);
         };
 
-        p_function(Array<String>,DumpData) override{
+        p_function(Array<String>,DumpData) override
+        {
             return{nd(level)};
         };
     };

@@ -22,14 +22,6 @@ static bool Trace = true;
 using namespace Reni;
 using namespace HWLang;
 
-Ref<Syntax> const TokenClass::Mismatch(Optional<Ref<Syntax>> const left, SourcePart const& part, Optional<Ref<Syntax>> const right) const
-{
-    md(left, part, right);
-    mb;
-}
-
-p_virtual_header_implementation(TokenClass, bool, AcceptsMatch);
-
 SearchResult<Feature>  const DefineableToken::Declarations(TypeType const&) const{ return{}; };
 SearchResult <Feature> const DefineableToken::Declarations(NumberType const&) const{ return{}; };
 

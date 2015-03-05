@@ -20,7 +20,7 @@ namespace _HWLang {
     void Check(Optional<Ref<Syntax>> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
 
     test_(ParserBaseStructure) {
-        auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevel({Start}, {End});
+        auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevelLeft({Start}, {End});
 
         String text = "asdf";
         auto sc = ScannerInstance(text);
@@ -37,8 +37,8 @@ namespace _HWLang {
         String text = "({)} [(asdf)as][yxcv]";
 
         auto pt = PrioTable::CreateLeft({ Any })
-            .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
-            .ParenthesisLevel({Start}, {End})
+            .ParenthesisLevelRight({ "(", "[", "{" }, { ")", "]", "}" })
+            .ParenthesisLevelLeft({Start}, {End})
             ;
 
         auto sc = ScannerInstance(text);
@@ -88,8 +88,8 @@ namespace _HWLang {
         auto pt = PrioTable::CreateLeft({ Any })
             .Left({ "*" })
             .Left({ "+" })
-            .ParenthesisLevel({ "(", "[", "{" }, { ")", "]", "}" })
-            .ParenthesisLevel({Start}, {End})
+            .ParenthesisLevelRight({ "(", "[", "{" }, { ")", "]", "}" })
+            .ParenthesisLevelLeft({Start}, {End})
             ;
 
         auto sc = ScannerInstance(text);
@@ -134,7 +134,7 @@ namespace _HWLang {
 
         auto pt = PrioTable::CreateLeft({Any})
             .ThenElseLevel({"then"}, {"else"})
-            .ParenthesisLevel({Start}, {End})
+            .ParenthesisLevelLeft({Start}, {End})
             ;
 
         //md(pt);
@@ -163,7 +163,7 @@ namespace _HWLang {
 
         auto pt = PrioTable()
             .Left({Any})
-            .ParenthesisLevel({Start}, {End})
+            .ParenthesisLevelLeft({Start}, {End})
             ;
 
         //md(pt);

@@ -21,19 +21,16 @@ namespace HWLang
             {
                 auto topItem = stack.Top;
                 auto relation = topItem.Relation(item.Name, prioTable);
-                if (item.IsEnd && relation == MatchTag)
-                {
-                    stack.Pop();
-                    a_if_(stack.IsEmpty);
-                    return result;
-                }
 
-                if (relation != HigherTag)
+                if (relation == LowerTag)
                     result = stack.Pop().CreateSyntax(result);
+                
+                if(stack.IsEmpty)
+                    return result;
 
-                if (relation != LowerTag)
+                if (relation == HigherTag)
                 {
-                    stack.Push(OpenItem(result, item, relation == MatchTag));
+                    stack.Push(OpenItem(result, item));
                     result ={};
                 }
             }
@@ -43,11 +40,8 @@ namespace HWLang
     };
 
     template <class TSyntax, class TToken>
-    TSyntax const CreateSyntax(Optional<TSyntax> const& left, TToken const& token, Optional<TSyntax> const& right, bool isMatch)
+    TSyntax const CreateSyntax(Optional<TSyntax> const& left, TToken const& token, Optional<TSyntax> const& right)
     {
-        auto& tc = token.Class;
-        if (tc.AcceptsMatch == isMatch)
-            return tc.CreateSyntax(left, token.Part, right);
-        return tc.Mismatch(left, token.Part, right);
+        return token.Class.CreateSyntax(left, token.Part, right);
     }
 }

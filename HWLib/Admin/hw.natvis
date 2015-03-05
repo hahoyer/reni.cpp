@@ -9,7 +9,7 @@
     <!-- ********************************************************************************************* -->
     <Type Name="HWLib::String">
         <!-- ********************************************************************************************* -->
-        <DisplayString>([{_data._Mysize}]{_data,s})</DisplayString>
+        <DisplayString>[{_data._Mypair._Myval2._Mysize}]{_data}</DisplayString>
     </Type>
 
     <!-- ********************************************************************************************* -->
@@ -26,12 +26,20 @@
     </Type>
 
     <!-- ********************************************************************************************* -->
+    <Type Name="HWLib::RefBase&lt;*&gt;">
+        <!-- ********************************************************************************************* -->
+        <DisplayString>{value}</DisplayString>
+        <Expand>
+            <Item Name="value">value</Item>
+        </Expand>
+    </Type>
+
+    <!-- ********************************************************************************************* -->
     <Type Name="HWLib::Ref&lt;*&gt;">
         <!-- ********************************************************************************************* -->
-        <DisplayString Condition="value.value == 0">{null}</DisplayString>
-        <DisplayString Condition="value.value != 0">{*value.value}</DisplayString>
+        <DisplayString>{*value.value}</DisplayString>
         <Expand>
-            <Item Condition="value.value != 0" Name="value">value.value</Item>
+            <Item Name="value">value.value</Item>
         </Expand>
     </Type>
 
@@ -40,5 +48,18 @@
         <!-- ********************************************************************************************* -->
         <DisplayString>{data}</DisplayString>
     </Type>
+
+    <Type Name="HWLib::WithId&lt;*,*&gt;">
+        <DisplayString>ObjectId={ObjectId}</DisplayString>
+    </Type>
+
+    <Type Name="HWLib::DumpableObject">
+        <DisplayString Condition="isDumpStringValid==true">{dumpShortString}</DisplayString>
+        <DisplayString>missing call to SetDumpString</DisplayString>
+        <Expand>
+            <Item Condition="isDumpStringValid==true" Name="long">dumpString</Item>
+        </Expand>
+    </Type>
+
 
 </AutoVisualizer>

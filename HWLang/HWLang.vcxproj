@@ -28,5 +28,8 @@
       <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Admin\hw.natvis" />
+  </ItemGroup>
   <Import Project="$(SolutionDir)sys.targets" />
 </Project>

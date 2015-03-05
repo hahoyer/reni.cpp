@@ -1,4 +1,6 @@
 #pragma once
+#include <initializer_list>
+#include "../HWLib/String.h"
 
 namespace HWLang
 {
@@ -12,7 +14,6 @@ namespace HWLang
                 {
                 case '+': return "HigherTag";
                 case '-': return "LowerTag";
-                case '=': return "MatchTag";
                 case ' ': return "UnknownTag";
                 }
                 return String(value).Quote;
@@ -22,7 +23,6 @@ namespace HWLang
                 {
                 case '+':
                 case '-':
-                case '=':
                 case ' ':
                     return true;
                 }
@@ -30,7 +30,7 @@ namespace HWLang
             };
         };
 
-        typedef std::initializer_list<std::initializer_list<Tag const> const> TagTable;
+        typedef std::initializer_list<initializer_list<Tag const> const> TagTable;
 
         static char const* Any = "(any)";
         static char const* End = "(end)";
@@ -39,14 +39,20 @@ namespace HWLang
 
         Tag const HigherTag('+');
         Tag const LowerTag('-');
-        Tag const MatchTag('=');
         Tag const UnknownTag(' ');
 
-        static TagTable const ParenthesisTable =
+        static TagTable const ParenthesisTableLeft =
         {
             { HigherTag, HigherTag, LowerTag },
             { HigherTag, UnknownTag, LowerTag },
             { UnknownTag, LowerTag, LowerTag }
+        };
+
+        static TagTable const ParenthesisTableRight =
+        {
+            {HigherTag, HigherTag, HigherTag},
+            {HigherTag, UnknownTag, LowerTag},
+            {UnknownTag, LowerTag, LowerTag}
         };
 
         static TagTable const ThenElseTable =

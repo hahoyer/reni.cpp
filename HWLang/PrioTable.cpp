@@ -62,8 +62,12 @@ PrioTable const PrioTable::CreateRight(Array<String> const& tokens){
     return PrioTable(HigherTag, tokens);
 }
 
-PrioTable const PrioTable::ParenthesisLevel(Array<String> leftToken, Array<String> rightToken)const{
-    return Level(ParenthesisTable, leftToken, rightToken);
+PrioTable const PrioTable::ParenthesisLevelLeft(Array<String> leftToken, Array<String> rightToken)const{
+    return Level(ParenthesisTableLeft, leftToken, rightToken);
+}
+
+PrioTable const PrioTable::ParenthesisLevelRight(Array<String> leftToken, Array<String> rightToken)const{
+    return Level(ParenthesisTableRight, leftToken, rightToken);
 }
 
 PrioTable const PrioTable::ThenElseLevel(Array<String> leftToken, Array<String> rightToken)const{
@@ -211,17 +215,11 @@ Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subT
 
     if (iGroup == 2 && jGroup == 0)
     {
-        switch (sign(leftCount + baseCount - i + j))
-        {
-        case -1:
-            return_d(PrioTableConst::LowerTag);
-        case 0:
-            return_d(PrioTableConst::MatchTag);
-        case 1:
-            return_d(PrioTableConst::HigherTag);
-        default:
-            throw UnexpectedSignException();
-        }
+        auto result =
+            i - leftCount - baseCount < j ?
+                PrioTableConst::HigherTag :
+                PrioTableConst::LowerTag;
+        return_d(result);
     }
     return_d((subTable.begin()[iGroup]).begin()[jGroup]);
 };

@@ -15,14 +15,12 @@ namespace HWLang
 
         Optional<TSyntax> const left;
         TToken const token;
-        bool const isMatch;
     public:
         OpenItem() = delete;
 
-        OpenItem(Optional<TSyntax> left, TToken const& token, bool isMatch)
+        OpenItem(Optional<TSyntax> left, TToken const& token)
             : left(left)
             , token(token)
-            , isMatch(isMatch)
         {
         }
 
@@ -30,7 +28,7 @@ namespace HWLang
 
         static OpenItem const StartItem(TToken const& token)
         {
-            return OpenItem({}, token, false);
+            return OpenItem({}, token);
         };
 
         PrioTableConst::Tag const Relation(String const& newTokenName, PrioTable const& prioTable)const
@@ -40,7 +38,7 @@ namespace HWLang
 
         TSyntax const CreateSyntax(Optional<TSyntax> const& right)const
         {
-            return HWLang::CreateSyntax<TSyntax>(left, token, right, isMatch);
+            return HWLang::CreateSyntax<TSyntax>(left, token, right);
         }
     };
 }

@@ -29,8 +29,6 @@ namespace Reni
 
         ThisRef;
 
-        virtual_p(bool, AcceptsMatch){ return false; };
-        Ref<Syntax> const Mismatch(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const;
         virtual Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const = 0;
     private:
         p_function(Array<String>, DumpData) override{ return{}; };

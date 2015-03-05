@@ -36,7 +36,8 @@ namespace HWLang
         PrioTable const Right(Array<String> const& tokens)const;
         static PrioTable const CreateLeft(Array<String> const& tokens);
         static PrioTable const CreateRight(Array<String> const& tokens);
-        PrioTable const ParenthesisLevel(Array<String> leftToken, Array<String> rightToken)const;
+        PrioTable const ParenthesisLevelRight(Array<String> leftToken, Array<String> rightToken)const;
+        PrioTable const ParenthesisLevelLeft(Array<String> leftToken, Array<String> rightToken)const;
         PrioTable const ThenElseLevel(Array<String> leftToken, Array<String> rightToken)const;
 
         // <summary>
