@@ -1,2 +1,2 @@
-language: csharp
+language: cpp
 solution: Reni.sln
