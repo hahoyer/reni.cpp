@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F4E5DE84-370D-4D2D-8376-15591C3720BF}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="CompilerTest.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="HWLib.cpp" />
+    <ClCompile Include="Reni.cpp" />
+    <ClCompile Include="SimpleTokenFactory.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HWAnalyse\HWAnalyse.vcxproj">
+      <Project>{2ada25bd-56a2-4432-b4ea-23643db12004}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HWLang\HWLang.vcxproj">
+      <Project>{77c95811-31db-44f1-a4a9-a9b5c29aaa42}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HWLib\HWLib.vcxproj">
+      <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Reni\Reni.vcxproj">
+      <Project>{bfcca11e-fcd1-483c-828c-7df6cde5aa85}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Runtime\Runtime.vcxproj">
+      <Project>{50aed5d9-37c7-4a6e-8e77-f7bc6f144c50}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CompilerTest.h" />
+    <ClInclude Include="HWLib.h" />
+    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="Reni.h" />
+    <ClInclude Include="SimpleTokenFactory.h" />
+  </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(SolutionDir)sys.targets" />
+</Project>

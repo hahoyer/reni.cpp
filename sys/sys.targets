@@ -1,0 +1,121 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup Label="ProjectConfigurations">
+        <ProjectConfiguration Include="Debug|Win32">
+            <Configuration>Debug</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|Win32">
+            <Configuration>Release</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+    </ItemGroup>
+
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+    <PropertyGroup Label="Configuration">
+        <PlatformToolset>v140</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+
+    <PropertyGroup Condition="'$(ConfigurationType)'=='StaticLibrary'">
+        <TargetExt>.lib</TargetExt>
+    </PropertyGroup>
+    <ItemDefinitionGroup Condition="'$(ConfigurationType)'=='StaticLibrary'">
+        <ClCompile>
+            <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(ConfigurationType)'=='DynamicLibrary'">
+        <Link>
+            <SubSystem>Windows</SubSystem>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(ConfigurationType)'=='Application'">
+        <ClCompile>
+            <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <PropertyGroup>
+        <Boost>$(ProgramFiles)\boost_1_57_0</Boost>
+        <VLD>$(ProgramFiles)\Visual Leak Detector</VLD>
+        <ProjectName>$(MSBuildProjectName)</ProjectName>
+        <TargetName>$(MSBuildProjectName)</TargetName>
+        <ShowAllFiles>true</ShowAllFiles>
+        <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
+        <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
+        <IncludePath>$(VLD)\include;$(Boost);$(IncludePath)</IncludePath>
+        <LibraryPath>$(VLD)\lib\Win32;$(Boost)\libs;$(LibraryPath)</LibraryPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+        <UseDebugLibraries>true</UseDebugLibraries>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+    </PropertyGroup>
+
+    <ImportGroup Label="ExtensionSettings" />
+    <ImportGroup Label="PropertySheets">
+        <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" 
+            Label="LocalAppDataPlatform" />
+    </ImportGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+            <FunctionLevelLinking>false</FunctionLevelLinking>
+            <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <MinimalRebuild>false</MinimalRebuild>
+            <MultiProcessorCompilation>true</MultiProcessorCompilation>
+            <PrecompiledHeader>Use</PrecompiledHeader>
+            <PrecompiledHeaderFile>Import.h</PrecompiledHeaderFile>
+            <PreprocessorDefinitions>WIN32;_WINDOWS;$(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <RuntimeTypeInfo>true</RuntimeTypeInfo>
+            <SDLCheck>true</SDLCheck>
+            <UseFullPaths>true</UseFullPaths>
+            <WarningLevel>Level4</WarningLevel>
+            <ShowIncludes>false</ShowIncludes>
+        </ClCompile>
+        <Link>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <OptimizeReferences>false</OptimizeReferences>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        <ClCompile>
+            <Optimization>Disabled</Optimization>
+            <PreprocessorDefinitions>_DEBUG;$(PreprocessorDefinitions)</PreprocessorDefinitions>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        <ClCompile>
+            <Optimization>MaxSpeed</Optimization>
+            <PreprocessorDefinitions>NDEBUG;$(PreprocessorDefinitions)</PreprocessorDefinitions>
+        </ClCompile>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ClInclude Include="Admin\Export.h" />
+        <ClInclude Include="Admin\Import.h" />
+        <ClCompile Include="Admin\Import.cpp">
+            <PrecompiledHeader>Create</PrecompiledHeader>
+        </ClCompile>
+    </ItemGroup>
+
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+    <ImportGroup Label="ExtensionTargets">
+    </ImportGroup>
+</Project>

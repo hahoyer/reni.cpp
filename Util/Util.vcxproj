@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{396A6A68-D493-45FD-B1EF-69D229C85225}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HWLib\HWLib.vcxproj">
+      <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="bigInt.cpp" />
+    <ClCompile Include="BitsConst.cpp" />
+    <ClCompile Include="CppCompilerScripting.cpp" />
+    <ClCompile Include="Scanner.cpp" />
+    <ClCompile Include="Size.cpp" />
+    <ClCompile Include="Category.cpp" />
+    <ClInclude Include="CppCompilerScripting.h" />
+    <ClInclude Include="Scanner.h" />
+    <ClInclude Include="Size.h" />
+    <ClInclude Include="bigInt.h" />
+    <ClInclude Include="BitsConst.h" />
+    <ClInclude Include="Category.h" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)sys.targets" />
+</Project>

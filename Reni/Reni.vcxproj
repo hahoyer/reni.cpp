@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HWLang\HWLang.vcxproj">
+      <Project>{77c95811-31db-44f1-a4a9-a9b5c29aaa42}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HWLib\HWLib.vcxproj">
+      <Project>{90a37787-7696-487c-bf22-8987ce007cad}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Runtime\Runtime.vcxproj">
+      <Project>{50aed5d9-37c7-4a6e-8e77-f7bc6f144c50}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.vcxproj">
+      <Project>{396a6a68-d493-45fd-b1ef-69d229c85225}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="AccessData.cpp" />
+    <ClCompile Include="AccessResultCache.cpp" />
+    <ClCompile Include="AccessType.cpp" />
+    <ClCompile Include="Address.cpp" />
+    <ClCompile Include="FunctionCallContext.cpp" />
+    <ClCompile Include="ArrayType.cpp" />
+    <ClCompile Include="CodeVisitor.cpp" />
+    <ClCompile Include="ExpressionSyntax.cpp" />
+    <ClCompile Include="Feature.cpp" />
+    <ClCompile Include="Fiber.cpp" />
+    <ClCompile Include="ReferenceCode.cpp" />
+    <ClCompile Include="ReplaceVisitor.cpp" />
+    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="ConditionalSyntax.cpp" />
+    <ClCompile Include="FunctionToken.cpp" />
+    <ClCompile Include="FunctionSyntax.cpp" />
+    <ClCompile Include="Externals.cpp" />
+    <ClCompile Include="SyntaxContainer.cpp" />
+    <ClCompile Include="NumberType.cpp" />
+    <ClCompile Include="Type.cpp" />
+    <ClCompile Include="RootContext.cpp" />
+    <ClCompile Include="NumberToken.cpp" />
+    <ClCompile Include="Result.cpp" />
+    <ClCompile Include="Context.cpp" />
+    <ClCompile Include="CodeItem.cpp" />
+    <ClCompile Include="Syntax.cpp" />
+    <ClCompile Include="TokenClass.cpp" />
+    <ClCompile Include="MainTokenFactory.cpp" />
+    <ClInclude Include="AccessData.h" />
+    <ClInclude Include="AccessResultCache.h" />
+    <ClInclude Include="AccessType.h" />
+    <ClInclude Include="Address.h" />
+    <ClInclude Include="Compiler.internal.h" />
+    <ClInclude Include="EmptySyntax.h" />
+    <ClInclude Include="FunctionCallResultCache.h" />
+    <ClInclude Include="ContainerContext.h" />
+    <ClInclude Include="Externals.h" />
+    <ClInclude Include="FunctionCallContext.h" />
+    <ClInclude Include="ArrayType.h" />
+    <ClInclude Include="CodeItems.h" />
+    <ClInclude Include="CodeVisitor.h" />
+    <ClInclude Include="ExpressionSyntax.h" />
+    <ClInclude Include="Feature.h" />
+    <ClInclude Include="DefinitionPoint.h" />
+    <ClInclude Include="DumpPrintToken.h" />
+    <ClInclude Include="DefineableToken.h" />
+    <ClInclude Include="AccessFeature.h" />
+    <ClInclude Include="Fiber.h" />
+    <ClInclude Include="FunctionResultCache.h" />
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="ConditionalSyntax.h" />
+    <ClInclude Include="FunctionToken.h" />
+    <ClInclude Include="FunctionSyntax.h" />
+    <ClInclude Include="ContextIncludes.h" />
+    <ClInclude Include="AddressType.h" />
+    <ClInclude Include="External.h" />
+    <ClInclude Include="CodeFunction.h" />
+    <ClInclude Include="ReferenceCode.h" />
+    <ClInclude Include="ResultData.h" />
+    <ClInclude Include="ResultDataDirect.h" />
+    <ClInclude Include="NumberTypeIncludes.h" />
+    <ClInclude Include="RecursionContext.h" />
+    <ClInclude Include="SearchTarget.h" />
+    <ClInclude Include="TypeType.h" />
+    <ClInclude Include="SyntaxContainer.h" />
+    <ClInclude Include="UserDefinedToken.h" />
+    <ClInclude Include="NumberType.h" />
+    <ClInclude Include="PrioTable.h" />
+    <ClInclude Include="SyntaxVisitor.h" />
+    <ClInclude Include="ParenthesisToken.h" />
+    <ClInclude Include="SyntaxErrorToken .h" />
+    <ClInclude Include="ReplaceVisitor.h" />
+    <ClInclude Include="VoidType.h" />
+    <ClInclude Include="SearchResult.h" />
+    <ClInclude Include="BitType.h" />
+    <ClInclude Include="Type.h" />
+    <ClInclude Include="RootContext.h" />
+    <ClInclude Include="NumberToken.h" />
+    <ClInclude Include="Result.h" />
+    <ClInclude Include="Context.h" />
+    <ClInclude Include="Compiler.h" />
+    <ClCompile Include="Compiler.cpp" />
+    <ClInclude Include="CodeBase.h" />
+    <ClInclude Include="Admin\Export.Test.h" />
+    <ClInclude Include="CodeItem.h" />
+    <ClInclude Include="MainTokenFactory.h" />
+    <ClInclude Include="Syntax.h" />
+    <ClInclude Include="TokenClass.h" />
+    <ClInclude Include="Terminal.h" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)sys.targets" />
+</Project>
