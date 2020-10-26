@@ -1,8 +1,12 @@
 #include "Import.h"
 #include "System.h"
 
+#include <cassert>
+
+
 #include "String.h"
 #include "TemplateInstances.h"
+#include <stdexcept>
 
 static bool Trace = true;
 using namespace HWLib;
@@ -45,11 +49,11 @@ void System::Sleep(int milliseconds)
 
 String const System::ModuleName(unsigned __int64 instructionPointer)
 {
-    PVOID instructionAddress = reinterpret_cast<LPVOID>(instructionPointer);
+	const auto instructionAddress = reinterpret_cast<LPVOID>(instructionPointer);
     MEMORY_BASIC_INFORMATION information;
     int rc = ::VirtualQuery(instructionAddress, &information, sizeof(information));
     assert(rc);
-    HMODULE hMod = reinterpret_cast<HMODULE>(information.AllocationBase);
+	auto* const hMod = static_cast<HMODULE>(information.AllocationBase);
     char ModuleName[MAX_PATH];
     if(GetModuleFileName(hMod, ModuleName, sizeof(ModuleName)))
         return ModuleName;
