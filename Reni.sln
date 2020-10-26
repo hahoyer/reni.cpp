@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reni", "Reni\Reni.vcxproj", "{BFCCA11E-FCD1-483C-828C-7DF6CDE5AA85}"
 EndProject
@@ -19,6 +19,18 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Util", "Util\Util.vcxproj", "{396A6A68-D493-45FD-B1EF-69D229C85225}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HWAnalyse", "HWAnalyse\HWAnalyse.vcxproj", "{2ADA25BD-56A2-4432-B4EA-23643DB12004}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sys", "Sys", "{DC0310B2-CD1D-480D-BCD9-A88C30167E9E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		sys\CPP.vcxproj = sys\CPP.vcxproj
+		sys\hw.natvis = sys\hw.natvis
+		README.md = README.md
+		sys\sys.targets = sys\sys.targets
+		sys.targets = sys.targets
+		vld.ini = vld.ini
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +69,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E3268BED-C39C-4738-990C-9D527F0B6DC2}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 878793f1-abcc-45e1-8da7-e950c0bb39f3

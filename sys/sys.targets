@@ -46,7 +46,7 @@
     </ItemDefinitionGroup>
 
     <PropertyGroup>
-        <Boost>$(ProgramFiles)\boost_1_57_0</Boost>
+        <Boost>$(ProgramFiles)\boost\boost_1_74_0</Boost>
         <VLD>$(ProgramFiles)\Visual Leak Detector</VLD>
         <ProjectName>$(MSBuildProjectName)</ProjectName>
         <TargetName>$(MSBuildProjectName)</TargetName>
