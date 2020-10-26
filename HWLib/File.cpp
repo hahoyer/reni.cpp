@@ -14,6 +14,7 @@
 #include <direct.h>
 #include <fcntl.h>
 #include <io.h>
+#include <stdexcept>
 #include <sys/stat.h>
 
 #undef DeleteFile
