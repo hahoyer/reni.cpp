@@ -75,7 +75,7 @@ PrioTable const PrioTable::ThenElseLevel(Array<String> leftToken, Array<String> 
 }
 
 PrioTable const PrioTable::Level(TagTable const& subTable, Array<String> const&leftToken, Array<String>const&rightToken)const {
-    return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, leftToken.Count);
+    return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, static_cast<int>(leftToken.Count));
 }
 
 PrioTableConst::Tag const PrioTable::Relation(String const&newTokenName, String const&recentTokenName)const{
@@ -182,7 +182,7 @@ Array<String> const PrioTable::AllocTokens(Array<Array<String>> const &tokens)
     return tokens.ConvertMany<String>()->ToArray;
 }
 
-Array<Array<Tag>> const PrioTable::AllocData(int count, function<Tag(int, int)> getData)
+Array<Array<Tag>> const PrioTable::AllocData(size_t count, function<Tag(int, int)> getData)
 {
     return Numbers(count)
         ->Select<Array<Tag>>
@@ -206,7 +206,7 @@ Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subT
     d_here;
     fd(base, subTable, leftCount, i, j);
 
-    auto baseCount = base.Count;
+    auto baseCount = static_cast<int>(base.Count);
     auto iGroup = FindGroup(i, { leftCount, baseCount });
     auto jGroup = FindGroup(j, { leftCount, baseCount });
 

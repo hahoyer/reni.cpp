@@ -89,11 +89,11 @@ StackTrace::StackTrace(Thread const& thread){
     context->ContextFlags = CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_SEGMENTS | CONTEXT_DEBUG_REGISTERS;
     WinApiCall(::GetThreadContext(thread.Handle, context));
 
-    data->AddrPC.Offset = context->Eip;
+    data->AddrPC.Offset = context->Rip;
     data->AddrPC.Mode = AddrModeFlat;
-    data->AddrStack.Offset = context->Esp;
+    data->AddrStack.Offset = context->Rsp;
     data->AddrStack.Mode = AddrModeFlat;
-    data->AddrFrame.Offset = context->Ebp;
+    data->AddrFrame.Offset = context->Rbp;
     data->AddrFrame.Mode = AddrModeFlat;
 
     auto isValid = GetFrame(data);

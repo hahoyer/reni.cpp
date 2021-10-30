@@ -72,13 +72,13 @@ namespace HWLang
         Array<String> const tokens;
         Array<Array<Tag>> const data;
 
-        p(int, Count){ return tokens.Count; };
+        p(size_t, Count){ return tokens.Count; };
 
         int const Index(String const&name)const;
         Tag const Relation(int newIndex, int recentIndex)const;
         
         static Array<String>const AllocTokens(Array<Array<String>> const &tokens);
-        static Array<Array<Tag>> const AllocData(int count, function<Tag(int, int)> getData);
+        static Array<Array<Tag>> const AllocData(size_t count, function<Tag(int, int)> getData);
         static Tag const PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, int leftCount, int i, int j);
         static int FindGroup(int i, Array<int>const&counts);
     };

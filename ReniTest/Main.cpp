@@ -5,12 +5,18 @@
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWAnalyse/TestFixture.h"
 
-int main()
-{       
+void MainEntry()
+{
     DumpableObject::EnableSetDumpString = true;
     DumpableObject::EnableSetDumpStringAsync = true;
     test_item(_Reni::Negative).isLowPriority = true;
     test_item(_Reni::Function).WatchedRun();
     HWAnalyse::TestFixture::RunAll();
+}
+
+
+int main()
+{
+    MainEntry();
     return 0;
 }

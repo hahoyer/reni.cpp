@@ -35,9 +35,10 @@ namespace Reni
     protected:
         SourcePart const part;
         Syntax(SourcePart const& part);
-        Syntax(Syntax const& ) = delete;
     public:
-        virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
+        Syntax(Syntax const& ) = delete;
+
+    	virtual Ref<Syntax > const ParenthesisMatch(int level, SourcePart const&part)const {
             bool Trace = true;
             md(level, part);
             mb;

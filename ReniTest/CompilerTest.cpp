@@ -9,7 +9,7 @@ static bool Trace = true;
 void CompilerTest::Check(String const& text, String const expectedResult){
     CompilerTest ct = text;
     Compiler& co = ct.compiler;
-    auto result = co.Execute();
+    const auto result = co.Execute();
     if(result.data == expectedResult)
         return;
     

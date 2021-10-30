@@ -24,8 +24,8 @@ namespace HWLib
 
         DefaultAssignmentOperator;
 
-        p(int,          Count      ){ return _data.length(); }
-        p(std::size_t,   HashCode   );
+        p(size_t,       Count      ){ return _data.length(); }
+        p(size_t,        HashCode   );
         p(String,         Quote      );
         p(char const*,     RawData    );
         p(char *,           RawDataCopy);

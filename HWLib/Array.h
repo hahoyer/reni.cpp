@@ -15,7 +15,7 @@ namespace HWLib
         using baseType = Enumerable<T>;
         using thisType = Array<T>;
 
-        int const _count;
+        size_t const _count;
         T * const _data;
     public:
         Array() : _count(0), _data(0){ }
@@ -85,7 +85,11 @@ namespace HWLib
 
         DefaultAssignmentOperator;
 
-        p(int, Count){ return _count; }
+        p(size_t
+          
+          
+          
+          , Count){ return _count; }
         p(T const*, RawData){ return _data; }
 
         T const& operator[](int Index)const{ return _data[Index]; }

@@ -51,7 +51,7 @@ String const System::ModuleName(unsigned __int64 instructionPointer)
 {
 	const auto instructionAddress = reinterpret_cast<LPVOID>(instructionPointer);
     MEMORY_BASIC_INFORMATION information;
-    int rc = ::VirtualQuery(instructionAddress, &information, sizeof(information));
+    auto rc = ::VirtualQuery(instructionAddress, &information, sizeof(information));
     assert(rc);
 	auto* const hMod = static_cast<HMODULE>(information.AllocationBase);
     char ModuleName[MAX_PATH];

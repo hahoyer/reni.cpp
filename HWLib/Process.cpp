@@ -89,7 +89,7 @@ p_implementation(Process::internal::Pipe, String, Data)
 p_mutator_implementation(Process::internal::Pipe, String, Data)
 {
     DWORD bytesWritten;
-    ::WriteFile(WriteHandle, value.RawData, value.Count, &bytesWritten, NULL);
+    ::WriteFile(WriteHandle, value.RawData, static_cast<DWORD>(value.Count), &bytesWritten, NULL);
     CloseHandle(WriteHandle);
     CloseHandle(ReadHandle);
 }

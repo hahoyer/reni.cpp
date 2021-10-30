@@ -10,7 +10,7 @@
 using namespace HWLib;
 using namespace std;
 
-inline String const HWLib::Dump(unsigned __int64 target, int radix) { return String::Convert(target, radix); };
+inline String const HWLib::Dump(__int64 target, int radix) { return String::Convert(target, radix); };
 inline String const HWLib::Dump(int target, int radix) { return String::Convert(target, radix); };
 inline String const HWLib::Dump(size_t target, int radix) { return String::Convert(target, radix); };
 inline String const HWLib::Dump(bool target) { return String::Convert(target); };
@@ -667,7 +667,7 @@ private:
     int const Step() override{ return index++; }
 };
 
-inline CtrlRef<Enumerable<int>> const HWLib::Numbers(int count)
+inline CtrlRef<Enumerable<int>> const HWLib::Numbers(size_t count)
 {
     return new Enumerable<int>::Container(new NumbersIterator(count));
 }

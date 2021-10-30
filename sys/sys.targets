@@ -4,9 +4,17 @@
             <Configuration>Debug</Configuration>
             <Platform>Win32</Platform>
         </ProjectConfiguration>
+        <ProjectConfiguration Include="Debug|x64">
+            <Configuration>Debug</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
         <ProjectConfiguration Include="Release|Win32">
             <Configuration>Release</Configuration>
             <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|x64">
+            <Configuration>Release</Configuration>
+            <Platform>x64</Platform>
         </ProjectConfiguration>
     </ItemGroup>
 
@@ -94,17 +102,18 @@
         <Link>
             <GenerateDebugInformation>true</GenerateDebugInformation>
             <OptimizeReferences>false</OptimizeReferences>
+            <SubSystem>Windows</SubSystem>
         </Link>
     </ItemDefinitionGroup>
 
-    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
         <ClCompile>
             <Optimization>Disabled</Optimization>
             <PreprocessorDefinitions>_DEBUG;$(PreprocessorDefinitions)</PreprocessorDefinitions>
         </ClCompile>
     </ItemDefinitionGroup>
 
-    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
         <ClCompile>
             <Optimization>MaxSpeed</Optimization>
             <PreprocessorDefinitions>NDEBUG;$(PreprocessorDefinitions)</PreprocessorDefinitions>
