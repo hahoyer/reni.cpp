@@ -18,16 +18,29 @@
         </ProjectConfiguration>
     </ItemGroup>
 
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Label="Globals">
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-  </PropertyGroup>
+    <PropertyGroup Label="Globals">
+        <VCProjectVersion>16.0</VCProjectVersion>
+        <Keyword>Win32Proj</Keyword>
+        <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    </PropertyGroup>
 
-  <PropertyGroup Label="Configuration">
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
+    <PropertyGroup Label="Configuration">
+        <PlatformToolset>v142</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+        <UseDebugLibraries>true</UseDebugLibraries>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+    </PropertyGroup>
+
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
     <PropertyGroup Condition="'$(ConfigurationType)'=='StaticLibrary'">
         <TargetExt>.lib</TargetExt>
@@ -55,23 +68,13 @@
 
     <PropertyGroup>
         <Boost>$(ProgramFiles)\boost\boost_1_77_0</Boost>
-        <VLD>$(ProgramFiles)\Visual Leak Detector</VLD>
         <ProjectName>$(MSBuildProjectName)</ProjectName>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <ShowAllFiles>true</ShowAllFiles>
         <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
         <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
-        <IncludePath>$(VLD)\include;$(Boost);$(IncludePath)</IncludePath>
-        <LibraryPath>$(VLD)\lib\Win32;$(Boost)\libs;$(LibraryPath)</LibraryPath>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-        <UseDebugLibraries>true</UseDebugLibraries>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-        <UseDebugLibraries>false</UseDebugLibraries>
-        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <IncludePath>$(Boost);$(IncludePath)</IncludePath>
+        <LibraryPath>$(Boost)\libs;$(LibraryPath)</LibraryPath>
     </PropertyGroup>
 
     <ImportGroup Label="ExtensionSettings" />
@@ -84,6 +87,7 @@
 
     <ItemDefinitionGroup>
         <ClCompile>
+            <PreprocessToFile>false</PreprocessToFile>
             <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
             <FunctionLevelLinking>false</FunctionLevelLinking>
             <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
@@ -102,7 +106,6 @@
         <Link>
             <GenerateDebugInformation>true</GenerateDebugInformation>
             <OptimizeReferences>false</OptimizeReferences>
-            <SubSystem>Windows</SubSystem>
         </Link>
     </ItemDefinitionGroup>
 
