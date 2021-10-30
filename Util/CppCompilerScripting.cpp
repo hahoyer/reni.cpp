@@ -6,94 +6,101 @@ using namespace Util;
 using namespace HWLib;
 static bool Trace = true;
 
-CppCompilerScripting::CppCompilerScripting(String const& program)
-    : program(program)
+CppCompilerScripting::CppCompilerScripting(const String& program)
+  : program(program)
     , currentProcess("echo none")
-{
-}
+{}
 
 
 p_implementation(CppCompilerScripting, String, fullFileName)
 {
-    auto temp = System::EnvironmentVariable("TEMP");
-    File tempDir = temp + "\\reni";
-    tempDir.IsValidFolder = true;
-    return tempDir.FullName + "\\" + fileName;
+  const auto temp = System::EnvironmentVariable("TEMP");
+  File tempDir = temp + "\\reni";
+  tempDir.IsValidFolder = true;
+  return tempDir.FullName + "\\" + fileName;
 };
 
-void CppCompilerScripting::InitializeFile()
+void CppCompilerScripting::InitializeFile() const
 {
-    File f = fullFileName + ".cpp";
-    f.Data = program;
+  File f = fullFileName + ".cpp";
+  f.Data = program;
 };
 
 void CppCompilerScripting::Execute()
 {
-    bool Trace = false;
-    InitializeFile();
-    auto cpp = fullFileName + ".cpp";
-    auto exe = fullFileName + ".exe";
-    d(cpp);
-    d(exe);
+  const bool Trace = true;
+  InitializeFile();
+  const auto cpp = fullFileName + ".cpp";
+  const auto exe = fullFileName + ".exe";
+  d(cpp);
+  d(exe);
 
-    dd(CompileCommand + "\n");
-    currentProcess = Process(CompileCommand);
-    if (currentProcess.result == 0)
-    {
-        currentProcess = Process(exe);
-        currentProcess.Execute();
-    }
+  d(CppCompilerExecutable);
+  dd(CompileCommand + "\n");
+  currentProcess = Process(CppCompilerExecutable, CompileCommand);
+  if(currentProcess.result == 0)
+  {
+    currentProcess = Process(exe,"");
+    currentProcess.Execute();
+  }
 
-    d(currentProcess.result);
-    d(currentProcess.data);
-    d(currentProcess.errorData);
-    if (currentProcess.errorData != "")
-        throw *this;
+  d(currentProcess.result);
+  d(currentProcess.data);
+  d(currentProcess.errorData);
+  if(currentProcess.errorData != "")
+  {
+    auto error = currentProcess.errorData;
+    throw *this;
+  }
 };
 
 
-p_implementation(CppCompilerScripting, int, result){
-    return currentProcess.result;
+p_implementation(CppCompilerScripting, int, result)
+{
+  return currentProcess.result;
 };
 
-p_implementation(CppCompilerScripting, String, output){
-    return currentProcess.data;
+p_implementation(CppCompilerScripting, String, output)
+{
+  return currentProcess.data;
 };
 
-p_implementation(CppCompilerScripting, String, LibPath){
-    Array<String>list{
-        VCInstallDir + R"(\lib)",
-        ProgramFiles86 + R"(\Windows Kits\8.1\lib\winv6.3\um\x86)",
-        Boost + "\\libs",
-    };
+p_implementation(CppCompilerScripting, String, LibPath)
+{
+  const Array<String> list{
+    VCInstallDir + R"(\lib\)" + Platform,
+    WindowsKits + R"(\lib\)" + CrtVersion + R"(\um\)" + Platform,
+    WindowsKits + R"(\lib\)" + CrtVersion + R"(\ucrt\)" + Platform,
+    Boost + "\\libs",
+  };
 
-    return list
-        .Select<String>([&](String name){return "/LIBPATH:\"" + name + "\""; })
-        ->Stringify(" ");
+  return list
+         .Select<String>([&](String name) { return "/LIBPATH:\"" + name + "\""; })
+         ->Stringify(" ");
 };
 
-p_implementation(CppCompilerScripting, String, CompileCommand){
-    return
-        String()
-        + R"(cl.exe )"
-        + R"(/Zi /Zl /nologo /W4 /WX- /sdl /MP8 /Od /Oi /Oy- /D _DEBUG /Gm- /EHsc /MDd /GS /Gy- /fp:precise /Zc:wchar_t /Zc:forScope /GR /TP /analyze- /FC )"
-        + fullFileName + ".cpp "
-        + IncludePath + " "
-        + R"(/link /NOLOGO /DEBUG /OPT:NOREF /MACHINE:X86 )"
-        + LibPath + " "
-        + R"(MSVCRTD.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib )"
-        + "/OUT:\"" + fullFileName + ".exe\" "
-        ;
+p_implementation(CppCompilerScripting, String, CompileCommand)
+{
+  return
+    R"(/Zi /Zl /nologo /W4 /WX- /sdl /MP8 /Od /Oi /Oy- /D _DEBUG /Gm- /EHsc /MDd /GS /Gy- /fp:precise /Zc:wchar_t /Zc:forScope /GR /TP /analyze- /FC )"
+    + fullFileName + ".cpp "
+    + IncludePath + " "
+    + R"(/link /NOLOGO /DEBUG /OPT:NOREF /MACHINE:)" + Platform + " "
+    + LibPath + " "
+    + "MSVCRTD.lib "
+    + "/OUT:\"" + fullFileName + ".exe\" ";
 };
 
-p_implementation(CppCompilerScripting, String, IncludePath){
-    Array<String>list{
-        get_VCInstallDir() + "\\include",
-        get_Boost(),
-        get_RuntimeDir()
-    };
+p_implementation(CppCompilerScripting, String, IncludePath)
+{
+  const Array<String> list{
+    VCInstallDir + "\\include",
+    WindowsKits + R"(\include\)" + CrtVersion + R"(\ucrt)",
+    Boost,
+    RuntimeDir
+  };
 
-    return list
-        .Select<String>([](String dir){return "/I\"" + dir + "\""; })
-        ->Stringify(" ");
+  return list
+         .Select<String>([](String dir) { return "/I\"" + dir + "\""; })
+         ->Stringify(" ");
 };

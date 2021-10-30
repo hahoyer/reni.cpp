@@ -8,6 +8,7 @@ namespace HWLib{
         CtrlRef<internal> _internal;
     public:
         Process(String const& command);
+        Process(const String& applicationName, const String& command);
         p(String, data);
         p(String, errorData);
         p(int, result);

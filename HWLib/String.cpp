@@ -236,7 +236,7 @@ protected:
         if (!newEnd.IsValid)
             newEnd = _parent.Count;
         _index = newEnd + _delimiter.Count;
-        return _parent.Part(start);
+        return _parent.Part(start, newEnd - start);
     }
 
 };
