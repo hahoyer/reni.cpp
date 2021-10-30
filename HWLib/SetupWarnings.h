@@ -6,6 +6,7 @@
 #pragma warning (disable : 4099) // C4099 'identifier' : type name first seen using 'objecttype1' now seen using 'objecttype2'
 #pragma warning (disable : 4100) 
 #pragma warning (disable : 4127) // C4127 conditional expression is constant
+#pragma warning (error   : 4129) // C4129 'character' : unrecognized character escape sequence
 #pragma warning (disable : 4189) // C4189 'rc' : local variable is initialized but not referenced
 #pragma warning (disable : 4227) // C4227 anachronism used : qualifiers on reference are ignored
 #pragma warning (disable : 4237) // C4237 nonstandard extension used : 'keyword' keyword is reserved for future use

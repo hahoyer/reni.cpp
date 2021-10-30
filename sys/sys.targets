@@ -73,8 +73,6 @@
         <ShowAllFiles>true</ShowAllFiles>
         <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
         <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
-        <IncludePath>$(Boost);$(IncludePath)</IncludePath>
-        <LibraryPath>$(Boost)\libs;$(LibraryPath)</LibraryPath>
     </PropertyGroup>
 
     <ImportGroup Label="ExtensionSettings" />
