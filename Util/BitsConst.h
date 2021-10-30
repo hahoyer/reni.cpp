@@ -22,9 +22,9 @@ namespace Util{
     public:
         static BitsConst const Empty();
         static BitsConst const Convert(String const&text);
-        static int const MinusSize(int left, int right){ return max(left, right) + 1; }
-        static int const PlusSize(int left, int right){ return max(left, right) + 1; }
-        static int const TimesSize(int left, int right){
+        static size_t const MinusSize(size_t left, size_t right){ return max(left, right) + 1; }
+        static size_t const PlusSize(size_t left, size_t right){ return max(left, right) + 1; }
+        static size_t const TimesSize(size_t left, size_t right){
             if(left < right)
                 return TimesSize(right, left);
             a_if_(left >= right);
@@ -35,7 +35,7 @@ namespace Util{
                 return 1;
             return left + right;
         }
-        operator int const()const;
+        operator size_t const()const;
 
         p(Size, size);
         p(bool, isEmpty){ return !size.value; }

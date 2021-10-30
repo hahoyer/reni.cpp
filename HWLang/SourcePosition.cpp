@@ -9,13 +9,13 @@
 using namespace HWLang;
 using namespace HWLib;
 
-SourcePosition::SourcePosition(Ref<Source> source, int position)
+SourcePosition::SourcePosition(Ref<Source> source, size_t position)
     : _source(source)
       , _position(position){
     SetDumpString();
 }
 
-SourcePosition::SourcePosition(Source const& source, int position)
+SourcePosition::SourcePosition(Source const& source, size_t position)
     : _source(new Source(source))
       , _position(position){
     SetDumpString();
@@ -26,10 +26,10 @@ p_implementation(SourcePosition, bool, IsEnd){
     return _source->IsEnd(_position);
 }
 
-p_implementation(SourcePosition, Optional<int>, End){
+p_implementation(SourcePosition, Optional<size_t>, End){
     if (IsEnd)
         return 0;
-    return Optional<int>(
+    return Optional<size_t>(
     )
     ;
 }
@@ -40,11 +40,11 @@ p_implementation(SourcePosition, char, First){
     return Part(1)[0];
 }
 
-SourcePart const SourcePosition::Span(int count)const{
+SourcePart const SourcePosition::Span(size_t count)const{
     return SourcePart(_source, _position, count);
 }
 
-String const SourcePosition::Part(int count)const{
+String const SourcePosition::Part(size_t count)const{
     return _source->Part(_position, count);
 }
 
@@ -56,7 +56,7 @@ p_implementation(SourcePosition, String, DumpCurrent){
     return IsEnd ? String() : String(First);
 }
 
-const int DumpWidth = 100;
+const size_t DumpWidth = 100;
 
 p_implementation(SourcePosition, String, DumpAfterCurrent){
     return _source->DumpAfterCurrent(_position, 1, DumpWidth);

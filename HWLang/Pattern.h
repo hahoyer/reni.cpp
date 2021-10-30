@@ -6,7 +6,7 @@ namespace HWLang
 {
     class SourcePosition;
     class Pattern;
-    using MatchResult = Optional<int> const;
+    using MatchResult = Optional<size_t> const;
 
     class IPattern
     {
@@ -50,7 +50,7 @@ namespace HWLang
         p(Pattern, Find);
         Pattern const Else(Pattern const& right)const;
         Pattern const Else(String right)const;
-        Pattern const Repeat(int minCount = 0, Optional<int> maxCount = {})const;
+        Pattern const Repeat(size_t minCount = 0, Optional<size_t> maxCount = {})const;
         Pattern const Value(function<Pattern const(String)> func)const;
 
         Pattern const operator+(Pattern right)const;

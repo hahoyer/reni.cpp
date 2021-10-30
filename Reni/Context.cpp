@@ -40,12 +40,12 @@ ResultData const ExtendedFeature::Result(Context const&, Category category, Type
 
 struct RegularContext::internal final
 {
-    FunctionCache<WeakRef<ContainerContext>, SyntaxContainer const*, int> container;
+    FunctionCache<WeakRef<ContainerContext>, SyntaxContainer const*, size_t> container;
     FunctionCache<WeakRef<FunctionBodyType>, FunctionSyntax const*> functionType;
     ValueCache<WeakRef<RecursionContext>> recursionContext;
 
     explicit internal(RegularContext const&context)
-        : container([&](SyntaxContainer const*statements, int viewIndex)
+        : container([&](SyntaxContainer const*statements, size_t viewIndex)
               {
                   return new ContainerContext(context, *statements, viewIndex);
               })
@@ -86,7 +86,7 @@ RegularContext::operator Optional<Ref<ContextFeatureProvider<DefineableToken>>>(
     mb;
 }
 
-WeakRef<ContainerContext> const RegularContext::Container(SyntaxContainer const& statements, int viewIndex) const
+WeakRef<ContainerContext> const RegularContext::Container(SyntaxContainer const& statements, size_t viewIndex) const
 {
     return _internal->container(&statements, viewIndex)->thisRef;
 }
@@ -109,10 +109,10 @@ ResultData const Context::ReferenceResult(Category category, External::Function 
 }
 
 
-ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer const& containerData, int viewIndex)
+ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer const& containerData, size_t viewIndex)
     : baseType(parent)
     , containerData(containerData.thisRef)
-    , accessData([&](int statementIndex)
+    , accessData([&](size_t statementIndex)
         {
             return new AccessData(*this, statementIndex);
         })
@@ -133,7 +133,7 @@ ContainerContext::ContainerContext(RegularContext const& parent, SyntaxContainer
 
 p_implementation(ContainerContext, Size, dataSize){return containerData->Size(parent);}
 
-Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, int statementIndex) const
+Ref<ResultCache> const ContainerContext::AccessResult(Type const& argsType, size_t statementIndex) const
 {
     return functionCallContext(&argsType)->functionCallResultCache(statementIndex)->thisRef;
 }
@@ -148,18 +148,18 @@ SearchResult<AccessFeature> const ContainerContext::DeclarationsForType(Defineab
     return baseType::DeclarationsForType(token);
 }
 
-Size const ContainerContext::AlignedPartSize(int position) const
+Size const ContainerContext::AlignedPartSize(size_t position) const
 {
     return PartSize(position).Align(alignBits);
 }
 
-Size const ContainerContext::PartSize(int position) const
+Size const ContainerContext::PartSize(size_t position) const
 {
     return accessData(position)->dataResultCache->size;
 }
 
 
-FunctionCallResultCache::FunctionCallResultCache(FunctionCallContext const& context, int bodyIndex) : context(context)
+FunctionCallResultCache::FunctionCallResultCache(FunctionCallContext const& context, size_t bodyIndex) : context(context)
 , bodyIndex(bodyIndex)
 {
     SetDumpString();
@@ -176,7 +176,7 @@ ResultData const FunctionCallResultCache::GetResultData(Category category) const
     return ResultData::GetSmartHllwSize(category, l_(codeGet), l_(valueType), l_(extsGet));
 }
 
-p_implementation(FunctionCallResultCache, int, codeIndex){ return context.global->FunctionIndex(*this); };
+p_implementation(FunctionCallResultCache, size_t, codeIndex){ return context.global->FunctionIndex(*this); };
 
 p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
 {
@@ -278,7 +278,7 @@ Optional<WeakRef<Type>> const RecursionContext::CachedType(Syntax const& target)
     return target.CachedType(parent);
 }
 
-WeakRef<ContainerContext> const RecursionContext::Container(SyntaxContainer const& statements, int viewIndex) const
+WeakRef<ContainerContext> const RecursionContext::Container(SyntaxContainer const& statements, size_t viewIndex) const
 {
     return parent.Container(statements, viewIndex);
 }

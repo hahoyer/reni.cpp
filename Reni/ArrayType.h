@@ -13,9 +13,9 @@ namespace Reni{
         using thisType = ArrayType;
     public:
         Type const& elementType;
-        int const count;
+        size_t const count;
 
-        ArrayType(Type const& elementType, int count)
+        ArrayType(Type const& elementType, size_t count)
             : elementType(elementType)
               , count(count){
             SetDumpString();

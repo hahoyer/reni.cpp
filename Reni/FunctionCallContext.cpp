@@ -55,7 +55,7 @@ FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef
     : baseType(static_cast<RegularContext const&>(parent))
       , container(parent)
       , arg(arg)
-      , functionCallResultCache([&](int bodyIndex)
+      , functionCallResultCache([&](size_t bodyIndex)
           {
               return new FunctionCallResultCache(*this, bodyIndex);
           })

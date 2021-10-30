@@ -16,8 +16,8 @@ namespace HWLang{
         using thisType = SourcePart;
 
         Ref<Source> const _source;
-        int const _position;
-        int const _count;
+        size_t const _position;
+        size_t const _count;
     public:
         SourcePart(SourcePart const&other)
             : _source(other._source)
@@ -27,7 +27,7 @@ namespace HWLang{
             SetDumpString();
         };
 
-        SourcePart(Ref<Source> source, int position, int count)
+        SourcePart(Ref<Source> source, size_t position, size_t count)
             : _source(source)
             , _position(position)
             , _count(count)

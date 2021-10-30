@@ -97,7 +97,7 @@ void Profiler::internal::dumpprint(int Hide)const{
         ShowTime -= All / Hide;
     else if(-Hide > 0 && -Hide < count)
         ShowCount = -Hide;
-    int LFileName = 0;
+    size_t LFileName = 0;
 
     int i = 0;
     for(; i < ShowCount && ShowTime > 0; i++){
@@ -106,7 +106,7 @@ void Profiler::internal::dumpprint(int Hide)const{
         if(ticks < 0) ticks = 0;
         ShowTime -= ticks;
         TimeNotShown -= ticks;
-        int iLFileName = ::strlen(That->FileName);
+        size_t iLFileName = ::strlen(That->FileName);
 
         if(LFileName < iLFileName)
             LFileName = iLFileName;
@@ -119,10 +119,10 @@ void Profiler::internal::dumpprint(int Hide)const{
         if(ticks < 0) ticks = 0;
         ::dumpprint(That->FileName);
         ::dumpprint("(");
-        int LLine = ::dumpprint(That->Line);
+        size_t LLine = ::dumpprint(That->Line);
         ::dumpprint("):");
 
-        int Spaces = LFileName + 6 - ::strlen(That->FileName) - LLine;
+        size_t Spaces = LFileName + 6 - ::strlen(That->FileName) - LLine;
         while(Spaces > 0){
             ::dumpprint(" ");
             --Spaces;
@@ -130,7 +130,7 @@ void Profiler::internal::dumpprint(int Hide)const{
 
         ::dumpprint(i);
         ::dumpprint(":\t");
-        int counter = ::dumpprint(That->counter);
+        size_t counter = ::dumpprint(That->counter);
         ::dumpprint("x");
         while(counter++ < 6) ::dumpprint(" ");
         ::dumpprint("\t");

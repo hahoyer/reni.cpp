@@ -76,7 +76,7 @@ SearchResult<Feature> const NumberType::Declarations(EnableCutType const& ) cons
     return Feature::From<NumberConversionProvider>(*this);
 }
 
-WeakRef<NumberType> const NumberType::Resize(int newSize)const
+WeakRef<NumberType> const NumberType::Resize(size_t newSize)const
 {
     return parent
         .elementType

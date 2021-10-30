@@ -25,7 +25,7 @@ namespace Reni
         p_function(WeakRef<RecursionContext>, recursionContext) override;
 
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
-        WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, int index) const override;
+        WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, size_t index) const override;
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const& token) const override;
     };
 

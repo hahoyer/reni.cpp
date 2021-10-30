@@ -133,7 +133,7 @@ class SkipIterator final : public Enumerable<T>::Iterator
 {
     CtrlRef<typename Enumerable<T>::Iterator> _parent;
 public:
-    SkipIterator(Enumerable<T> const& parent, int count)
+    SkipIterator(Enumerable<T> const& parent, size_t count)
         : _parent(parent.ToIterator)
     {
         while (count > 0 && _parent->IsValid)
@@ -156,9 +156,9 @@ class TakeIterator final : public Enumerable<T>::Iterator
 {
     using thisType = TakeIterator;
     CtrlRef<typename Enumerable<T>::Iterator> _parent;
-    int _count;
+    size_t _count;
 public:
-    TakeIterator(Enumerable<T> const& parent, int count)
+    TakeIterator(Enumerable<T> const& parent, size_t count)
         : _parent(parent.ToIterator)
         , _count(count)
     {
@@ -408,13 +408,13 @@ inline p_implementation(Enumerable<T>, T, Last){
 
 
 template<typename T>
-CtrlRef<Enumerable<T>> const Enumerable<T>::Skip(int count) const
+CtrlRef<Enumerable<T>> const Enumerable<T>::Skip(size_t count) const
 {
     return new Container(new SkipIterator<T>(*this, count));
 }
 
 template<typename T>
-CtrlRef<Enumerable<T>> const Enumerable<T>::Take(int count) const
+CtrlRef<Enumerable<T>> const Enumerable<T>::Take(size_t count) const
 {
     return new Container(new TakeIterator<T>(*this, count));
 }
@@ -438,7 +438,7 @@ CtrlRef<Enumerable<T>> const Enumerable<T>::Where(function<bool(T)> selector)con
 }
 
 template<typename T>
-Optional<int> const Enumerable<T>::FirstIndex(function<bool(T)> selector)const
+Optional<size_t> const Enumerable<T>::FirstIndex(function<bool(T)> selector) const
 {
     auto i = ToIterator;
     for(auto result = 0; i->IsValid; result++)
@@ -485,7 +485,7 @@ inline String const Enumerable<String>::Stringify(String const&delimiter)const
 }
 
 template<typename T>
-inline p_implementation(Enumerable<T>, int, Count){
+inline p_implementation(Enumerable<T>, size_t, Count){
     auto result = 0;
     for (auto element : *this)
             result++;
@@ -650,26 +650,26 @@ CtrlRef<Enumerable<T>> const Enumerable<T>::Sort(function<bool(T, T)>isLeftSmall
     return new Array<T>(result);
 }
 
-class NumbersIterator final : public Enumerable<int>::Iterator
+class NumbersIterator final : public Enumerable<size_t>::Iterator
 {
-    using baseType = Enumerable<int>::Iterator;
+    using baseType = Enumerable<size_t>::Iterator;
     using thisType = NumbersIterator;
 
-    int const count;
-    int index;
+    size_t const count;
+    size_t index;
 public:
-    explicit NumbersIterator(int count)
+    explicit NumbersIterator(size_t count)
         : count(count)
         , index(0)
     {}
 private:
     p_function(bool, IsValid) override{ return index < count; }
-    int const Step() override{ return index++; }
+    size_t const Step() override{ return index++; }
 };
 
-inline CtrlRef<Enumerable<int>> const HWLib::Numbers(size_t count)
+inline CtrlRef<Enumerable<size_t>> const HWLib::Numbers(size_t count)
 {
-    return new Enumerable<int>::Container(new NumbersIterator(count));
+    return new Enumerable<size_t>::Container(new NumbersIterator(count));
 }
 
 

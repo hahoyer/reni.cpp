@@ -112,7 +112,7 @@ p_mutator_implementation(File::internal, bool, IsValid){
 }
 
 p_mutator_implementation(File::internal, String, Data){
-    auto Count = value.Count;
+    const auto Count = static_cast<int>(value.Count);
 
     int Handle;
     do Handle = OpenFile(_O_CREAT | _O_TRUNC | _O_WRONLY | _O_BINARY);

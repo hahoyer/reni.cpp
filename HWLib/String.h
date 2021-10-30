@@ -18,7 +18,7 @@ namespace HWLib
         String();
         String(char const data);
         String(char const* data);
-        String(int count, char const* data);
+        String(size_t count, char const* data);
         String(std::string const & other);
         String(Array<char const> const& other);
 
@@ -31,31 +31,31 @@ namespace HWLib
         p(char *,           RawDataCopy);
         p(Array<char const>, ToArray  );
 
-        bool    const BeginsWith(String const& target, int start = 0)const;
-        String   const CastLeft  (int           count, char padChar = ' ')const;
-        String    const CastRight (int           count, char padChar = ' ')const;
-        bool       const Contains  (char const&   target, int start = 0)const;
-        bool        const Contains  (String const& target, int start = 0)const;
+        bool    const BeginsWith(String const& target, size_t start = 0)const;
+        String   const CastLeft  (size_t count, char padChar = ' ')const;
+        String    const CastRight (size_t           count, char padChar = ' ')const;
+        bool       const Contains  (char const&   target, size_t start = 0)const;
+        bool        const Contains  (String const& target, size_t start = 0)const;
         bool         const EndsWith  (String const& target)const;
-        Optional<int> const Find      (String const& target, int start = 0)const;
-        String         const Indent    (bool          isLineStart = false, int count = 1, String const &tabString = "    ")const;
+        Optional<size_t> const Find      (String const& target, size_t start = 0)const;
+        String         const Indent    (bool          isLineStart = false, size_t count = 1, String const &tabString = "    ")const;
         String          const operator+ (String const& other)const;
-        String           const operator* (int           count)const;
-        char              const operator[](int           count)const;
+        String           const operator* (size_t           count)const;
+        char              const operator[](size_t           count)const;
         bool               const operator==(String const& other)const;
         bool                const operator< (String const& other)const;
         void                       operator+=(String const& other);
-        String                const Part    (int           start, int length)const;
-        String                 const Part   (int           start)const;
+        String                const Part    (size_t           start, size_t length)const;
+        String                 const Part   (size_t           start)const;
         String                  const Replace(String const& oldValue, String const&newValue)const;
         CtrlRef<Enumerable<String> > const Split(String const& delimiter)const;
 
         static String const Convert(bool             value);
-        static String const Convert(int              value, int radix = 10);
-        static String const Convert(unsigned __int32 value, int radix = 10);
+        static String const Convert(int              value, int radix = 10){return Convert(static_cast<long long>(value), radix);};
+        static String const Convert(unsigned __int32 value, int radix = 10){return Convert(static_cast<long long>(value), radix);};
         static String const Convert   (unsigned __int64 value, int radix = 10);
         static String const Convert    (__int64         value, int radix = 10);
-        static String const FilePosition(String const&  fileName, int line, int column, String const&flag);
+        static String const FilePosition(String const&  fileName, size_t line, size_t column, String const&flag);
         static String const Surround   (String const&  left, Array<String> const&list, String const&right, int maxCount = 100);
         static String const Stringify(Enumerable<String> const&list, String const&delimiter);
     };

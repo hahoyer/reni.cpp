@@ -48,7 +48,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
 template <class Token, class TokenFactory, class Scanner>
 Token const
 ScannerInstance<Token, TokenFactory, Scanner>
-::Step(int count, TokenClass const& tokenClass){
+::Step(size_t count, TokenClass const& tokenClass){
     auto part = position.Span(count);
     position += count;
     SetDumpString();

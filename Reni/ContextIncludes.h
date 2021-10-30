@@ -41,10 +41,10 @@ namespace Reni
         typedef ExtendedFeature thisType;
 
         ContainerContext const&parent;
-        int const tokenIndex;
+        size_t const tokenIndex;
 
     public:
-        ExtendedFeature(ContainerContext const& parent, int const tokenIndex)
+        ExtendedFeature(ContainerContext const& parent, size_t const tokenIndex)
             : parent(parent), tokenIndex(tokenIndex) {}
         ThisRef;
     private:

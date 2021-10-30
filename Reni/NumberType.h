@@ -26,7 +26,7 @@ namespace Reni
         SearchResult<Feature> const DeclarationsForType() const;
         SearchResult<Feature> const Declarations(NumberType const& provider) const override;
         SearchResult<Feature> const Declarations(EnableCutType const& provider) const override;
-        WeakRef<NumberType> const Resize(int newSize)const;
+        WeakRef<NumberType> const Resize(size_t newSize)const;
     private:
         p_function(bool, hllw) { return false; };
         p_function(Size, size) override;
@@ -40,7 +40,7 @@ namespace Reni
         template<class TTokenClass>
         class OperationFeature;
         template<class TTokenClass>
-        WeakRef<Type> const ResultType(int other)const;
+        WeakRef<Type> const ResultType(size_t other)const;
 
     };
 };

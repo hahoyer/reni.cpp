@@ -6,7 +6,7 @@ using namespace HWLib;
 
 Size const Size::Address = 64;
 
-Size const Size::Align(int alignBits) const
+Size const Size::Align(size_t alignBits) const
 {
     auto result = value - 1;
     auto bit = 1;

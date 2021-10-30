@@ -97,7 +97,7 @@ namespace _String
     test_(Part)
     {
         String a = "Hallo";
-        String b = a.Part(1, 2);
+        String b = a.Part(1);
         a_is(b, == , "al");
     }
 
@@ -321,7 +321,7 @@ namespace _FunctionCache{
 
     test(Multiple, Simple){
         int value = 1;
-        FunctionCache<int, String, int> c([&](String x, int y){return value + x.Count + y;});
+        FunctionCache<size_t, String, size_t> c([&](String x, size_t y){return value + x.Count + y;});
         a_if_(c("ss",1) == 4);
         value = 2;
         a_if_(c("ss", 1) == 4);

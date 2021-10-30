@@ -106,9 +106,9 @@ StackTrace::StackTrace(Thread const& thread){
 };
 
 
-String const StackTrace::Format(int StartLevel)const{
+String const StackTrace::Format(size_t StartLevel)const{
     String Return;;
-    for(int i = StartLevel, n = frames.Count - 1; i<n; i++){
+    for(size_t i = StartLevel, n = frames.Count - 1; i<n; i++){
         Return += frames[i].Format();
         Return += "\n";
     };

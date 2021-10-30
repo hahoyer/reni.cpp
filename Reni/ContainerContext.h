@@ -20,13 +20,13 @@ namespace Reni
         FunctionCache<WeakRef<FunctionCallContext>, Type const*> const functionCallContext;
         ValueCache<WeakRef<Type>> const dataTypeCache;
     public:
-        FunctionCache<Ref<AccessData>, int> const accessData;
+        FunctionCache<Ref<AccessData>, size_t> const accessData;
         Ref<SyntaxContainer> const containerData;
         External const& asExternal;
     private:
-        int const viewIndex;
+        size_t const viewIndex;
     public:
-        ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, int index);
+        ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, size_t index);
 
         ContainerContext(ContainerContext const&) = delete;
         ThisRef;
@@ -35,10 +35,10 @@ namespace Reni
         p(Size, dataSize);
         p(WeakRef<External>, asExternal);
 
-        Ref<ResultCache> const AccessResult(Type const& argsType, int tokenIndex) const;
+        Ref<ResultCache> const AccessResult(Type const& argsType, size_t tokenIndex) const;
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token) const override;
-        Size const AlignedPartSize(int position) const;
-        Size const PartSize(int position) const;
+        Size const AlignedPartSize(size_t position) const;
+        Size const PartSize(size_t position) const;
     private:
         p_function(Array<String>, DumpData) override
         {

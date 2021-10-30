@@ -13,25 +13,17 @@ namespace Reni
     public:
         class CodeVisitor;
     private:
-        int const index;
+        size_t const index;
         bool const isSetter;
         Ref<CodeItem> const body;
     public:
-        CodeFunction()
-            : index(-1)
-              , isSetter(false)
-              , body(CodeItem::Empty())
-        {
-            SetDumpString();
-        }
-
-        static thisType const Getter(int index, Ref<CodeItem> const& body)
+        static thisType const Getter(size_t index, Ref<CodeItem> const& body)
         {
             return thisType(false, index, body);
         }
 
     private:
-        CodeFunction(bool isSetter, int index, Ref<CodeItem> const& body);
+        CodeFunction(bool isSetter, size_t index, Ref<CodeItem> const& body);
     public:
         bool const operator==(thisType const&other)const
         {

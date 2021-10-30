@@ -9,28 +9,28 @@ namespace HWLang
     class SourcePosition final : public DumpableObject
     {
         Ref<Source> const _source;
-        int _position;
+        size_t _position;
     public:
-        SourcePosition(Ref<Source> source, int position = 0);
-        SourcePosition(Source const& source, int position = 0);
+        SourcePosition(Ref<Source> source, size_t position = 0);
+        SourcePosition(Source const& source, size_t position = 0);
         virtual ~SourcePosition(){};
 
-        p(Optional<int>, End);
+        p(Optional<size_t>, End);
         p(bool, IsEnd);
         p(char, First);
 
-        void operator+=(int index)
+        void operator+=(size_t index)
         {
             _position += index;
             SetDumpString();
         }
 
-        SourcePosition const operator+(int other)const
+        SourcePosition const operator+(size_t other)const
         {
             return SourcePosition(_source, _position + other);
         }
 
-        int const operator-(SourcePosition const&other)const
+        size_t const operator-(SourcePosition const&other)const
         {
             a_is(&*_source, ==, &*other._source);
             return _position - other._position;
@@ -38,8 +38,8 @@ namespace HWLang
 
         bool const operator==(SourcePosition constother)const;
 
-        SourcePart const Span(int count)const;
-        String const Part(int count)const;
+        SourcePart const Span(size_t count)const;
+        String const Part(size_t count)const;
 
         bool const BeginsWith(String value)const;
     private:

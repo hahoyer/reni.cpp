@@ -26,7 +26,7 @@ namespace HWLang{
         p_function(bool,IsValid) override{ return !endTokenReturned; };
         TToken const Step() override;
     private:
-        TToken const Step(int count, TokenClass const& tokenClass);
+        TToken const Step(size_t count, TokenClass const& tokenClass);
         p_function(Array<String>,DumpData) override;
     };
 }

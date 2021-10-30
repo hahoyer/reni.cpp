@@ -54,7 +54,7 @@
     </ItemDefinitionGroup>
 
     <PropertyGroup>
-        <Boost>$(ProgramFiles)\boost\boost_1_74_0</Boost>
+        <Boost>$(ProgramFiles)\boost\boost_1_77_0</Boost>
         <VLD>$(ProgramFiles)\Visual Leak Detector</VLD>
         <ProjectName>$(MSBuildProjectName)</ProjectName>
         <TargetName>$(MSBuildProjectName)</TargetName>
@@ -78,7 +78,7 @@
     <ImportGroup Label="PropertySheets">
         <Import
             Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" 
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
             Label="LocalAppDataPlatform" />
     </ImportGroup>
 

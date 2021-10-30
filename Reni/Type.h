@@ -61,7 +61,7 @@ namespace Reni
         virtual_p(Address, toAddress);
         virtual_p(bool, isCopyable) { return true; };
 
-        WeakRef<Type> const array(int count)const;
+        WeakRef<Type> const array(size_t count)const;
         p(WeakRef<NumberType>, numberType);
         p_definition(WeakRef<TypeType>,typeType); WeakRef<TypeType> const get_typeType()const;
         p(WeakRef<Type>, indirectType);

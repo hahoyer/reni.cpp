@@ -14,7 +14,7 @@ using namespace Reni;
 static bool Trace = true;
 
 
-AccessData::AccessData(ContainerContext const& container, int statementIndex)
+AccessData::AccessData(ContainerContext const& container, size_t statementIndex)
     : statementIndex(statementIndex)
     , container(container)
     , dataResultCache

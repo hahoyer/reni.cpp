@@ -32,20 +32,20 @@ namespace HWLang
         operator Source& ()const{ return const_cast<Source&>(*this); }
 
         p(String, Text);
-        p(int, Count);
+        p(size_t, Count);
 
-        bool const IsEnd(int position)const;
-        String const Part(int start, int count)const;
-        String const FilePosition(int position, String flagText, String tag = "")const;
-        int const LineNr(int position)const;
-        int const ColNr(int position)const;
-        friend SourcePosition const operator +(Ref<Source> const& source, int position);
-        SourcePosition const operator +(int position)const;
-        bool const BeginsWith(int position, String value)const;
-        String const DumpAfterCurrent(int position, int count, int dumpWidth)const;
-        String const DumpCurrent(int position, int count)const;
-        String const DumpBeforeCurrent(int position, int dumpWidth)const;
-        String const DumpAroundCurrent(int position, int count, int dumpWidth)const;
+        bool const IsEnd(size_t position)const;
+        String const Part(size_t start, size_t count)const;
+        String const FilePosition(size_t position, String flagText, String tag = "")const;
+        size_t const LineNr(size_t position)const;
+        size_t const ColNr(size_t position)const;
+        friend SourcePosition const operator +(Ref<Source> const& source, size_t position);
+        SourcePosition const operator +(size_t position)const;
+        bool const BeginsWith(size_t position, String value)const;
+        String const DumpAfterCurrent(size_t position, size_t count, size_t dumpWidth)const;
+        String const DumpCurrent(size_t position, size_t count)const;
+        String const DumpBeforeCurrent(size_t position, size_t dumpWidth)const;
+        String const DumpAroundCurrent(size_t position, size_t count, size_t dumpWidth)const;
     private:
         p_function(Array<String>,DumpData) override;
     };

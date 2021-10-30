@@ -20,6 +20,8 @@ namespace HWLib
         Enumerable() = default;
         Enumerable(thisType const&) = delete;
 
+        virtual ~Enumerable() = default;
+
         typedef T targetType;
         template<typename TResult>
         using AggregateFunction = function<TResult const(TResult, T)>;
@@ -34,7 +36,7 @@ namespace HWLib
         CtrlRef<Enumerable<TResult>>      const Convert    () const;
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>       const ConvertMany() const;
-        Optional<int>                       const FirstIndex(function<bool(T)> selector)const;
+        Optional<size_t> const FirstIndex(function<bool(T)> selector) const;
         Optional<T>                          const Max()const;
         Optional<T>                           const Max(function<bool(T)> selector)const;
         Optional<T>                            const Max(function<bool(T, T)> isLess)const;
@@ -44,15 +46,15 @@ namespace HWLib
         CtrlRef<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
         template<typename TResult>
         CtrlRef<Enumerable<TResult>>             const Select   (function<TResult(T)> selector) const;
-        CtrlRef<thisType>                       const Skip       (int count) const;
+        CtrlRef<thisType>                       const Skip       (size_t count) const;
         CtrlRef<Enumerable>                    const Sort       (function<bool(T,T)>isLeftSmaller) const;
         T                                     const Stringify  (T const&delimiter)const;
         T                                    const Sum        ()const;
-        CtrlRef<thisType>                   const Take       (int count) const;
+        CtrlRef<thisType>                   const Take       (size_t count) const;
         CtrlRef<thisType>                  const Where      (function<bool(T)> selector)const;
 
         p(bool,    Any           );
-        p(int,      Count         );
+        p(size_t,   Count         );
         p(T,         First         );
         p(Optional<T>, FirstOrDefault);
         p(T, Last);
@@ -80,7 +82,7 @@ namespace HWLib
             mutable_p_function(CtrlRef<Iterator>, ToIterator) const override{ return _iterator; }
         };
 
-        virtual_p_definition(CtrlRef<Iterator>,ToIterator); 
+        virtual_p_definition(CtrlRef<Iterator>,ToIterator);
         CtrlRef<Iterator> virtual_p_name(ToIterator)()const { return p_name(ToIterator)(); }
         virtual mutable_p_function(CtrlRef<Iterator>, ToIterator)const = 0;
 
@@ -101,7 +103,7 @@ namespace HWLib
     };
 
 
-    CtrlRef<Enumerable<int>> const Numbers(int count);
+    CtrlRef<Enumerable<size_t>> const Numbers(size_t count);
 
 }
 

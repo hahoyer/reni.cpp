@@ -46,7 +46,7 @@ namespace Reni
         BitType const bitType;
         VoidType const voidType;
 
-        int const FunctionIndex(FunctionCallResultCache const& target)const;
+        size_t const FunctionIndex(FunctionCallResultCache const& target)const;
         p(Array<Function>, functions);
     private:
         p_function(Array<String>, DumpData) override;

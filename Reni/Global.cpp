@@ -58,14 +58,14 @@ Global::Global()
 {
 }
 
-int const Global::FunctionIndex(FunctionCallResultCache const& target) const
+size_t const Global::FunctionIndex(FunctionCallResultCache const& target) const
 {
     auto result =_internal
         ->functionIndexCache
         .FirstIndex([&](FunctionCallResultCache const*item)
-            {
-                return item == &target;
-            });
+        {
+          return item == &target;
+        });
     if(result.IsValid)
         return result.Value;
 
@@ -135,7 +135,7 @@ bool Global::Function::Xetter::Ensure(function<CodeFunction()> getCode) const
 
 CodeFunction::CodeFunction(
     bool isSetter,
-    int index,
+    size_t index,
     Ref<CodeItem> const& body)
     : isSetter(isSetter)
       ,index(index)

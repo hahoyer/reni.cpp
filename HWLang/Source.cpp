@@ -50,23 +50,23 @@ p_implementation(Source, String, Text)
 }
 
 
-p_implementation(Source, int, Count)
+p_implementation(Source, size_t, Count)
 {
     return Text.Count;
 }
 
 
-bool const Source::IsEnd(int position)const
+bool const Source::IsEnd(size_t position)const
 {
     return Count <= position;
 }
 
-String const Source::Part(int start, int count)const
+String const Source::Part(size_t start, size_t count)const
 {
-    return Text.Part(start, count);
+    return Text.Part(start);
 }
 
-String const Source::FilePosition(int position, String flagText, String tag)const
+String const Source::FilePosition(size_t position, String flagText, String tag)const
 {
     if (fileName == "")
         return "????";
@@ -80,7 +80,7 @@ String const Source::FilePosition(int position, String flagText, String tag)cons
 }
 
 
-int const Source::LineNr(int iEnd)const
+size_t const Source::LineNr(size_t iEnd)const
 {
     return Text
         .ToArray
@@ -90,24 +90,24 @@ int const Source::LineNr(int iEnd)const
 }
 
 
-int const Source::ColNr(int position)const
+size_t const Source::ColNr(size_t position)const
 {
     return Text
         .ToArray
         .Take(position)
-        ->Aggregate<int>(0, [](int current, char const c)
+        ->Aggregate<size_t>(0, [](size_t current, char const c)
     {return c == '\n' ? 0 : current + 1; });
 }
 
-SourcePosition const Source::operator +(int position)const{
+SourcePosition const Source::operator +(size_t position)const{
     return SourcePosition(*this, position);
 }
 
-SourcePosition const HWLang::operator +(Ref<Source> const& source, int position){
+SourcePosition const HWLang::operator +(Ref<Source> const& source, size_t position){
     return SourcePosition(source, position);
 }
 
-bool const Source::BeginsWith(int position, String value)const
+bool const Source::BeginsWith(size_t position, String value)const
 {
     return Text.BeginsWith(value, position);
 }
@@ -116,7 +116,7 @@ p_implementation(Source, Array<String>, DumpData){
     return Array<String>{ FilePosition(0, "", "")};
 }
 
-String const Source::DumpAfterCurrent(int position, int count, int dumpWidth)const{
+String const Source::DumpAfterCurrent(size_t position, size_t count, size_t dumpWidth)const{
     if(IsEnd(position + count))
         return "";
     auto length = min(dumpWidth, Count - position - count);
@@ -126,19 +126,19 @@ String const Source::DumpAfterCurrent(int position, int count, int dumpWidth)con
     return result;
 };
 
-String const Source::DumpCurrent(int position, int count)const{
+String const Source::DumpCurrent(size_t position, size_t count)const{
     return Part(position,count);
 }
 
-String const Source::DumpBeforeCurrent(int position, int dumpWidth)const{
-    auto start = max(0, position - dumpWidth);
+String const Source::DumpBeforeCurrent(size_t position, size_t dumpWidth)const{
+    auto start = max<size_t>(0, position - dumpWidth);
     auto result = Part(start, position - start);
     if(position >= dumpWidth)
         result = "..." + result;
     return result;
 }
 
-String const Source::DumpAroundCurrent(int position, int count, int dumpWidth)const{
+String const Source::DumpAroundCurrent(size_t position, size_t count, size_t dumpWidth)const{
     return DumpBeforeCurrent(position,dumpWidth) 
         + "[" + DumpCurrent(position, count) + "]" 
         + DumpAfterCurrent(position,count,dumpWidth);

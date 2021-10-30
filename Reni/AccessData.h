@@ -33,11 +33,11 @@ namespace Reni
         Ref<ResultCache> const dataResultCache;
         CtrlRef<AccessFeature> const feature;
 
-        int const statementIndex;
+        size_t const statementIndex;
         ContainerContext const& container;
 
         AccessData(AccessData const&) = delete;
-        AccessData(ContainerContext const& container, int statementIndex);
+        AccessData(ContainerContext const& container, size_t statementIndex);
 
         ThisRef;
 

@@ -16,7 +16,7 @@ String::String(char const data)
 String::String(char const* data)
     : _data(data){}
 
-String::String(int count, char const* data)
+String::String(size_t count, char const* data)
     : _data(data,count){}
 
 String::String(std::string const& data)
@@ -27,7 +27,7 @@ String::String(Array<char const> const& other)
 
 String::String(){}
 
-String const String::FilePosition(String const&fileName, int line, int column, String const&flag){
+String const String::FilePosition(String const&fileName, size_t line, size_t column, String const&flag){
     return fileName
         + "("
         + Dump(line)
@@ -40,7 +40,7 @@ String const String::FilePosition(String const&fileName, int line, int column, S
 p_implementation(String, Array<char const>, ToArray){
     char const* d = _data.c_str();
     return Numbers(Count)
-        ->Select<char const>([&](int i){return d[i]; })
+        ->Select<char const>([&](size_t i){return d[i]; })
         ->ToArray;
 }
 
@@ -102,14 +102,14 @@ String const String::operator+ (String const& other)const{
     return _data + other._data;
 }
 
-String const String::operator* (int count)const{
+String const String::operator* (size_t count)const{
     String result;
     for (auto i = 0; i < count; i++)
         result += *this;
     return result;
 }
 
-String const String::CastLeft(int count, char padChar)const{
+String const String::CastLeft(size_t count, char padChar)const{
     if (count == Count)
         return *this;
     if (count < Count)
@@ -117,17 +117,17 @@ String const String::CastLeft(int count, char padChar)const{
     return String(padChar) * (count - Count) + *this;
 }
 
-String const String::CastRight(int count, char padChar)const{
+String const String::CastRight(size_t count, char padChar)const{
     if (count == Count)
         return *this;
     if (count < Count)
-        return Part(0,count);
+        return Part(0);
     return *this + String(padChar) * (count - Count);
 }
 
-char const String::operator[] (int index)const{return _data[index];}
+char const String::operator[] (size_t index)const{return _data[index];}
 
-String const String::Indent(bool isLineStart, int count, String const &tabString)const{
+String const String::Indent(bool isLineStart, size_t count, String const &tabString)const{
     if (count == 0)
         return *this;
 
@@ -135,16 +135,16 @@ String const String::Indent(bool isLineStart, int count, String const &tabString
     return (isLineStart ? effectiveTabString : "") + Replace("\n", "\n" + effectiveTabString);
 }
 
-bool const String::Contains(String const &target, int start)const{return Find(target, start).IsValid;}
+bool const String::Contains(String const &target, size_t start)const{return Find(target, start).IsValid;}
 
-Optional<int> const String::Find(String const &target, int start)const{
+Optional<size_t> const String::Find(String const &target, size_t start)const{
     for (auto end = Count - target.Count; start < end; start++)
         if (BeginsWith(target, start))
-            return Optional<int>(start);
+            return Optional<size_t>(start);
     return {};
 }
 
-bool const String::Contains(char const &target, int start)const{
+bool const String::Contains(char const &target, size_t start)const{
     for (; start < Count; start++)
         if ((*this)[start] == target)
             return true;
@@ -162,7 +162,7 @@ String const String::Stringify(Enumerable<String> const& list, String const& del
 
     auto counts =
         array
-        .Select<int>([](String const&element){return element.Count; })
+        .Select<size_t>([](String const&element){return element.Count; })
         ->ToArray;
     auto length = counts.Sum();
     result.reserve(length + (count - 1) * delimiter.Count);
@@ -183,7 +183,7 @@ void String::operator+=(String const& other)
     _data += other._data;
 }
 
-bool const String::BeginsWith(String const &target, int start)const{
+bool const String::BeginsWith(String const &target, size_t start)const{
     for (auto i = 0; i < target.Count; i++)
         if ((*this)[start + i] != target[i])
             return false;
@@ -205,9 +205,9 @@ String const String::Replace(String const &oldValue, String const&newValue)const
     return split->Stringify(newValue);
 }
 
-String const String::Part(int start)const{return ToArray.Skip(start)->ToArray;}
+String const String::Part(size_t start)const{return ToArray.Skip(start)->ToArray;}
 
-String const String::Part(int start, int count)const{return ToArray.Skip(start)->Take(count)->ToArray;}
+String const String::Part(size_t start, size_t count)const{return ToArray.Skip(start)->Take(count)->ToArray;}
 
 class SplitIterator final : public Enumerable<String>::Iterator{
     using baseType = Enumerable<String>::Iterator;
@@ -215,7 +215,7 @@ class SplitIterator final : public Enumerable<String>::Iterator{
     using parentType = Enumerable<char>::Iterator;
     String const _parent;
     String const _delimiter;
-    int _index;
+    size_t _index;
 
 public:
 
@@ -236,7 +236,7 @@ protected:
         if (!newEnd.IsValid)
             newEnd = _parent.Count;
         _index = newEnd + _delimiter.Count;
-        return _parent.Part(start, newEnd - start);
+        return _parent.Part(start);
     }
 
 };
@@ -245,16 +245,6 @@ CtrlRef<Enumerable<String>> const String::Split(String const& delimiter)const{
     a_is(delimiter, !=, "");
     return new Enumerable<String>::Container(new SplitIterator(*this, delimiter));
 }
-
-String const String::Convert(int value, int radix){
-    return Convert((__int64)(value), radix);
-};
-
-
-String const String::Convert(unsigned __int32 value, int radix){
-    return Convert((unsigned __int64)(value), radix);
-};
-
 
 String const String::Convert(unsigned __int64 value, int radix){
     char const*digits = "0123456789abcdefghijklmnopqrstuvwxyz";

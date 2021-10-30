@@ -10,9 +10,9 @@ namespace Util{
         using baseType = DumpableObject;
         using thisType = Size;
     public:
-        int const value;
+        size_t const value;
 
-        Size(int value) : value(value)
+        Size(size_t value) : value(value)
         {
             SetDumpString();
         }
@@ -20,7 +20,7 @@ namespace Util{
         DefaultAssignmentOperator;
         Size const operator+(Size const&other)const{return value + other.value;};
         Size const operator-(Size const&other)const{ return value - other.value; };
-        Size const operator*(int other)const{ return value * other; };
+        Size const operator*(size_t other)const{ return value * other; };
         bool const operator==(Size const&other)const{ return value == other.value; };
         bool const operator<(Size const&other)const{return value < other.value;};
         bool const operator<=(Size const&other)const{return value <= other.value;};
@@ -28,7 +28,7 @@ namespace Util{
         void operator+=(Size const&other){ *this = *this + other; };
         void operator-=(Size const&other){ *this = *this - other; };
 
-        Size const Align(int alignBits) const;
+        Size const Align(size_t alignBits) const;
 
         p(String, format){ return String::Convert(value); }
         static thisType const Address;

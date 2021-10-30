@@ -36,11 +36,11 @@ namespace Reni{
         typedef CallGetterFiber thisType;
 
         Size const result;
-        int const index;
+        size_t const index;
         Size const arg;
     public:
 
-        CallGetterFiber(Size const&result, int index, Size const&arg)
+        CallGetterFiber(Size const&result, size_t index, Size const&arg)
             : result(result)
             , index(index)
             , arg(arg)

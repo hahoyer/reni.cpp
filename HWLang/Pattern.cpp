@@ -59,11 +59,11 @@ Pattern const Pattern::Else(String right)const{ return Else(Box(right)); }
 class RepeatMatch final : public IPattern
 {
     CtrlRef<IPattern  const> const _data;
-    int  const _minCount;
-    Optional<int> const _maxCount;
+    size_t  const _minCount;
+    Optional<size_t> const _maxCount;
 
 public:
-    RepeatMatch(CtrlRef<IPattern  const> data, int minCount, Optional<int> maxCount)
+    RepeatMatch(CtrlRef<IPattern  const> data, size_t minCount, Optional<size_t> maxCount)
         :_data(data)
         , _minCount(minCount)
         , _maxCount(maxCount)
@@ -92,7 +92,7 @@ private:
     }
 };
 
-Pattern const Pattern::Repeat(int minCount, Optional<int> maxCount)const{ return new RepeatMatch(_value, minCount, maxCount); }
+Pattern const Pattern::Repeat(size_t minCount, Optional<size_t> maxCount)const{ return new RepeatMatch(_value, minCount, maxCount); }
 
 class ValueMatch final : public IPattern
 {

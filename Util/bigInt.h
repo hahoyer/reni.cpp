@@ -325,7 +325,7 @@ public:
 protected :
     // --- Protected Data Members ---
     std::vector<Ulong>                  m_units;
-    static std::map<char, std::size_t>  ms_hex2dec;
+    static std::map<char, int>  ms_hex2dec;
 
     // --- Protected Methods 
     void showUnits (std::ostream& o_stream) const;

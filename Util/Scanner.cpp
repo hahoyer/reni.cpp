@@ -12,7 +12,7 @@ using namespace HWLang;
 using namespace HWLib;
 
 
-Optional<int> const ExceptionGuard(SourcePosition const&position, Pattern pattern)
+Optional<size_t> const ExceptionGuard(SourcePosition const&position, Pattern pattern)
 {
     try
     {
@@ -94,7 +94,7 @@ Scanner::Scanner()
 
 static Scanner instance;
 
-int const Scanner::WhiteSpace(SourcePosition const&position)
+size_t const Scanner::WhiteSpace(SourcePosition const&position)
 {
     auto result = ExceptionGuard(position, instance._internal->_whiteSpaces);
     a_if_(result.IsValid);
@@ -102,7 +102,7 @@ int const Scanner::WhiteSpace(SourcePosition const&position)
 };
 
 
-Optional<int> const Scanner::Number(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_number); };
-Optional<int> const Scanner::Any(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_any); };
-Optional<int> const Scanner::Text(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_text); };
+Optional<size_t> const Scanner::Number(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_number); };
+Optional<size_t> const Scanner::Any(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_any); };
+Optional<size_t> const Scanner::Text(SourcePosition const&position) { return ExceptionGuard(position, instance._internal->_text); };
 

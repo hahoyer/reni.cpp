@@ -28,7 +28,7 @@ namespace HWLang
             Array<String>const& tokens,
             Array<Array<Tag>> const&base,
             TagTable const& subTable,
-            int leftCount);
+            size_t leftCount);
     public:
         DefaultAssignmentOperator;
 
@@ -74,13 +74,13 @@ namespace HWLang
 
         p(size_t, Count){ return tokens.Count; };
 
-        int const Index(String const&name)const;
-        Tag const Relation(int newIndex, int recentIndex)const;
+        size_t const Index(String const&name)const;
+        Tag const Relation(size_t newIndex, size_t recentIndex)const;
         
         static Array<String>const AllocTokens(Array<Array<String>> const &tokens);
-        static Array<Array<Tag>> const AllocData(size_t count, function<Tag(int, int)> getData);
-        static Tag const PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, int leftCount, int i, int j);
-        static int FindGroup(int i, Array<int>const&counts);
+        static Array<Array<Tag>> const AllocData(size_t count, function<Tag(size_t, size_t)> getData);
+        static Tag const PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, size_t leftCount, size_t i, size_t j);
+        static size_t FindGroup(size_t i, Array<size_t>const&counts);
     };
 
 }

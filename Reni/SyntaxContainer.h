@@ -16,7 +16,7 @@ namespace Reni
         Ref<Syntax> const emptySyntax;
     public:
         Array<Ref<Syntax>> statements;
-        Map<DefineableToken const*, int> names;
+        Map<DefineableToken const*, size_t> names;
 
         explicit SyntaxContainer(SourcePart const&part);
         SyntaxContainer(SyntaxContainer const&) = delete;
@@ -33,8 +33,8 @@ namespace Reni
         ResultData const GetResultData(Context const& context, Category category) const override;
         WeakRef<Reni::Type> const GetType(Context const& context) const;
         Ref<CodeItem> const GetCode(Context const& context) const;
-        Ref<CodeItem> const GetCode(Context const& context, int index) const;
+        Ref<CodeItem> const GetCode(Context const& context, size_t index) const;
         Externals const GetExts(Context const& context) const;
-        Externals const GetExts(Context const& context, int index) const;
+        Externals const GetExts(Context const& context, size_t index) const;
     };
 }

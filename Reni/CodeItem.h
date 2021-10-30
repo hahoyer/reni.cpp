@@ -46,8 +46,8 @@ namespace Reni
         static Ref<CodeItem> const DumpPrint(NumberType const&value);
         static Ref<CodeItem> const This(Type const&type);
         static Ref<CodeItem> const Reference(ContainerContext const&value);
-        static Ref<CodeItem> const CallGetter(Size const& size, int const index, Type const&arg);
-        static Ref<CodeItem> const CallGetter(Size const& size, int const index);
+        static Ref<CodeItem> const CallGetter(Size const& size, size_t const index, Type const&arg);
+        static Ref<CodeItem> const CallGetter(Size const& size, size_t const index);
         static Ref<CodeItem> const SmartList(Array<Optional<Ref<CodeItem>>> const&items);
         static Ref<CodeItem> const List(Array<Ref<CodeItem>> const&items);
         static Ref<CodeItem> const NumberConversion(Address const&result, Type const& arg);

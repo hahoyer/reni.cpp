@@ -30,7 +30,7 @@ namespace HWLib
         Array<StackFrameData> frames;
     public:
         StackTrace(Thread const& thread);
-        String const Format(int StartLevel = 0)const;
+        String const Format(size_t StartLevel = 0)const;
     private:
         p(HANDLE, Process){ return GetCurrentProcess(); };
     };

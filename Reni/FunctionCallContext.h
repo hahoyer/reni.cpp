@@ -15,7 +15,7 @@ namespace Reni
         using baseType = ChildContext;
         using thisType = FunctionCallContext;
         friend class ContainerContext;
-        FunctionCache<Ref<FunctionCallResultCache>, int> functionCallResultCache;
+        FunctionCache<Ref<FunctionCallResultCache>, size_t> functionCallResultCache;
     public:
         ContainerContext const& container;
         WeakRef<Type const> const arg;

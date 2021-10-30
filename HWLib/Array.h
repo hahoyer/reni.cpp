@@ -25,7 +25,7 @@ namespace HWLib
             , _data(other._data)
         {
             const_cast<T const *&> (other._data) = nullptr;
-            const_cast<int&> (other._count) = 0;
+            const_cast<size_t&> (other._count) = 0;
         };
 
         Array(Array<T> const& other)
@@ -92,8 +92,8 @@ namespace HWLib
           , Count){ return _count; }
         p(T const*, RawData){ return _data; }
 
-        T const& operator[](int Index)const{ return _data[Index]; }
-        T& operator[](int Index){ return _data[Index]; }
+        T const& operator[](size_t Index)const{ return _data[Index]; }
+        T& operator[](size_t Index){ return _data[Index]; }
         thisType const operator+(thisType const& other)const{ return baseType::operator+(other)->ToArray; }
         thisType const operator+(T const& other)const{ return (*this) + _({ other }); }
         void operator+=(T const& other){ *this = *this + other; }
@@ -106,7 +106,7 @@ namespace HWLib
             using baseType = Iterator;
             using thisType = LocalIterator;
             Array<T> const& _parent;
-            int _index;
+            size_t _index;
         public:
             LocalIterator(Array<T> const& parent)
                 : _parent(parent)

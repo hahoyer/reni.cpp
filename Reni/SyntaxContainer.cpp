@@ -83,7 +83,7 @@ void SyntaxContainer::Add(Optional<Ref<Syntax>> const& value)
 Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const
 {
     auto result = Numbers(statements.Count)
-        ->Select<Ref<CodeItem>>([&](int index){return GetCode(context, index);})
+        ->Select<Ref<CodeItem>>([&](size_t index){return GetCode(context, index);})
         ->Where([&](Ref<CodeItem> item){return !item->isEmpty; })
         ->ToArray;
 
@@ -94,7 +94,7 @@ Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const
     mb;
 };
 
-Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context, int index) const
+Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context, size_t index) const
 {
     auto container = context.Container(*this, index);
     return statements[index]->Code(*container);
@@ -103,11 +103,11 @@ Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context, int index) 
 Externals const SyntaxContainer::GetExts(Context const& context) const
 {
     return Numbers(statements.Count)
-        ->Select<Externals>([&](int index){return GetExts(context, index); })
+        ->Select<Externals>([&](size_t index){return GetExts(context, index); })
         ->Aggregate<Externals>();
 }
 
-Externals const SyntaxContainer::GetExts(Context const& context, int index) const
+Externals const SyntaxContainer::GetExts(Context const& context, size_t index) const
 {
     auto container = context.Container(*this, index);
     return statements[index]->Exts(*container);

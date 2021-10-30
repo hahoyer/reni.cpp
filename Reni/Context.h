@@ -46,7 +46,7 @@ namespace Reni
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
         virtual ResultData const ReferenceResult(Category category, External::Function const& external) const;
         virtual SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token)const;
-        virtual WeakRef<ContainerContext> const Container(SyntaxContainer const& statements, int viewIndex) const = 0;
+        virtual WeakRef<ContainerContext> const Container(SyntaxContainer const& statements, size_t viewIndex) const = 0;
     };
 
     class RegularContext: public Context
@@ -63,7 +63,7 @@ namespace Reni
 
     public:
 
-        WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, int index) const override;
+        WeakRef<ContainerContext> const Container(SyntaxContainer const& syntax, size_t index) const override;
         WeakRef<Type> const FunctionType(FunctionSyntax const& body) const override;
 
         virtual operator Optional<Ref<ContextFeatureProvider<MinusToken>>>()const;

@@ -18,12 +18,12 @@ namespace Reni
     {
         typedef ResultCache baseType;
         typedef FunctionCallResultCache thisType;
-        int const bodyIndex;
+        size_t const bodyIndex;
         FunctionCallContext const& context;
     public:
         Global::Function function;
 
-        FunctionCallResultCache(FunctionCallContext const& context, int bodyIndex);
+        FunctionCallResultCache(FunctionCallContext const& context, size_t bodyIndex);
 
         p(CodeFunction, getter);
         p(CodeFunction, setter);
@@ -38,7 +38,7 @@ namespace Reni
         p(Externals, extsGet);
         p(Ref<CodeItem>, CodeSet);
         p(WeakRef<Type>, valueType);
-        p(int, codeIndex);
+        p(size_t, codeIndex);
         p(FunctionSyntax const&, body);
     };
 };

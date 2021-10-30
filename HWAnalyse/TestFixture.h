@@ -33,6 +33,8 @@ namespace HWAnalyse
             {
             };
 
+            virtual ~Data() = default;
+
             virtual void Run()const = 0;
             virtual String const location()const = 0;
             bool CheckedRun(bool skipLowPriority);

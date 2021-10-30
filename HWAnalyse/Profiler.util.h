@@ -11,7 +11,7 @@ void dumpprint(const char*Text){
     ::OutputDebugString(Text);
 };
 
-int dumpprint(__int64 x){
+size_t dumpprint(__int64 x){
     char Text[100];
     _ltoa_s(int(x), Text, sizeof(Text), 10);
     dumpprint(Text);

@@ -22,7 +22,7 @@ PrioTable::PrioTable(PrioTable const&other)
 
 PrioTable::PrioTable(Tag tag, Array<String> const&tokens)
 : tokens(tokens)
-, data(AllocData(tokens.Count, [=](int, int){return tag; }))
+, data(AllocData(tokens.Count, [=](size_t, size_t){return tag; }))
 {
     SetDumpString();
 }
@@ -31,9 +31,9 @@ PrioTable::PrioTable(
     Array<String>const& tokens,
     Array<Array<Tag>> const&base,
     TagTable const& subTable,
-    int leftCount)
+    size_t leftCount)
     : tokens(tokens)
-    , data(AllocData(tokens.Count, [=,&base,&subTable](int i, int j){return PrioChar(base, subTable, leftCount, i, j); }))
+    , data(AllocData(tokens.Count, [=,&base,&subTable](size_t i, size_t j){return PrioChar(base, subTable, leftCount, i, j); }))
 {
     SetDumpString();
 };
@@ -75,7 +75,7 @@ PrioTable const PrioTable::ThenElseLevel(Array<String> leftToken, Array<String> 
 }
 
 PrioTable const PrioTable::Level(TagTable const& subTable, Array<String> const&leftToken, Array<String>const&rightToken)const {
-    return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, static_cast<int>(leftToken.Count));
+    return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, static_cast<size_t>(leftToken.Count));
 }
 
 PrioTableConst::Tag const PrioTable::Relation(String const&newTokenName, String const&recentTokenName)const{
@@ -86,7 +86,7 @@ p_implementation(PrioTable, Array<String>, DumpData){
     if (Count == 0)
         return{nd(Count)};
 
-    auto maxlen = tokens.Select<int>([](String const&t){return t.Count; })->Max().Value;
+    auto maxlen = tokens.Select<size_t>([](String const&t){return t.Count; })->Max().Value;
     auto head0 = String().CastLeft(maxlen);
     head0 += "    ";
     auto head1 = head0;
@@ -95,7 +95,7 @@ p_implementation(PrioTable, Array<String>, DumpData){
         auto ii = HWLib::Dump(i + 10000);
         head0 += ii[3];
         head1 += ii[4];
-        result += tokens[i].CastLeft(maxlen) + " " + ii.Part(3, 2) + " ";
+        result += tokens[i].CastLeft(maxlen) + " " + ii.Part(3) + " ";
         for (auto j = 0; j < Count; j++)
             result += String(data[i][j].value);
         result += "\n";
@@ -114,7 +114,7 @@ String const HWLib::Dump(Array<Array<Tag const>const> data){
         auto ii = HWLib::Dump(i + 10000);
         head0 += ii[3];
         head1 += ii[4];
-        result += String(" ") + ii.Part(3, 2) + " ";
+        result += String(" ") + ii.Part(3) + " ";
         for (auto j = 0; j < data.Count; j++)
             result += String(data[i][j].value);
         result += "\n";
@@ -124,7 +124,7 @@ String const HWLib::Dump(Array<Array<Tag const>const> data){
 
 
 String const HWLib::Dump(TagTable const&data){
-    auto count = int(data.size());
+    auto count = size_t(data.size());
     a_is(count, == , 3);
 
     char * * d = new char*[3];
@@ -146,7 +146,7 @@ String const HWLib::Dump(TagTable const&data){
         auto ii = HWLib::Dump(i + 10000);
         head0 += ii[3];
         head1 += ii[4];
-        result += String(" ") + ii.Part(3, 2) + " ";
+        result += String(" ") + ii.Part(3) + " ";
         for (auto j = 0; j < count; j++)
             result += String(d[i][j]);
         result += "\n";
@@ -156,7 +156,7 @@ String const HWLib::Dump(TagTable const&data){
 };
 
 
-int const PrioTable::Index(String const&name)const
+size_t const PrioTable::Index(String const&name)const
 {
     for (auto i = 0; i < Count; i++)
         if (tokens[i] == name)
@@ -170,7 +170,7 @@ int const PrioTable::Index(String const&name)const
 
 }
 
-PrioTableConst::Tag const PrioTable::Relation(int newIndex, int recentIndex)const
+PrioTableConst::Tag const PrioTable::Relation(size_t newIndex, size_t recentIndex)const
 {
     a_is(tokens[newIndex], != , PrioTableConst::Start);
     a_is(tokens[recentIndex], != , PrioTableConst::End);
@@ -182,15 +182,15 @@ Array<String> const PrioTable::AllocTokens(Array<Array<String>> const &tokens)
     return tokens.ConvertMany<String>()->ToArray;
 }
 
-Array<Array<Tag>> const PrioTable::AllocData(size_t count, function<Tag(int, int)> getData)
+Array<Array<Tag>> const PrioTable::AllocData(size_t count, function<Tag(size_t, size_t)> getData)
 {
     return Numbers(count)
         ->Select<Array<Tag>>
-        ([=](int i)
+        ([=](size_t i)
             {
                 return Numbers(count)
                     ->Select<Tag>
-                    ([=](int j)
+                    ([=](size_t j)
                         {
                             return getData(i, j);
                         }
@@ -201,12 +201,12 @@ Array<Array<Tag>> const PrioTable::AllocData(size_t count, function<Tag(int, int
         ->ToArray;
 }
 
-Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, int leftCount, int i, int j)
+Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, size_t leftCount, size_t i, size_t j)
 {
     d_here;
     fd(base, subTable, leftCount, i, j);
 
-    auto baseCount = static_cast<int>(base.Count);
+    auto baseCount = base.Count;
     auto iGroup = FindGroup(i, { leftCount, baseCount });
     auto jGroup = FindGroup(j, { leftCount, baseCount });
 
@@ -224,7 +224,7 @@ Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subT
     return_d((subTable.begin()[iGroup]).begin()[jGroup]);
 };
 
-int PrioTable::FindGroup(int i, Array<int>const&counts)
+size_t PrioTable::FindGroup(size_t i, Array<size_t>const&counts)
 {
     auto result = 0;
     for (auto count : counts)

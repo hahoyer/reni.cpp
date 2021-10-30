@@ -36,8 +36,8 @@ class NumberType::OperationFeature final : public Feature::Extended
         return{};
     }
 
-    static int const ResultSize(int target, int arg);
-    static WeakRef<Type> const ResultType(NumberType const& target, int arg);
+    static size_t const ResultSize(size_t target, size_t arg);
+    static WeakRef<Type> const ResultType(NumberType const& target, size_t arg);
 };
 
 
@@ -63,25 +63,25 @@ SearchResult<Feature> const NumberType::DeclarationsForType() const
 };
 
 template<>
-inline WeakRef<Type> const NumberType::ResultType<MinusToken>(int other)const
+inline WeakRef<Type> const NumberType::ResultType<MinusToken>(size_t other)const
 {
     return Resize(BitsConst::MinusSize(size.value, other));
 }
 
 template<>
-inline WeakRef<Type> const NumberType::ResultType<PlusToken>(int other)const
+inline WeakRef<Type> const NumberType::ResultType<PlusToken>(size_t other)const
 {
     return Resize(BitsConst::PlusSize(size.value, other));
 }
 
 template<>
-inline WeakRef<Type> const NumberType::ResultType<StarToken>(int other)const
+inline WeakRef<Type> const NumberType::ResultType<StarToken>(size_t other)const
 {
     return Resize(BitsConst::TimesSize(size.value, other));
 }
 
 template<>
-inline WeakRef<Type> const NumberType::ResultType<EqualToken>(int)const{return global->boolType.thisRef;}
+inline WeakRef<Type> const NumberType::ResultType<EqualToken>(size_t)const{return global->boolType.thisRef;}
 template<>
-inline WeakRef<Type> const NumberType::ResultType<GreaterToken>(int)const {return global->boolType.thisRef;}
+inline WeakRef<Type> const NumberType::ResultType<GreaterToken>(size_t)const {return global->boolType.thisRef;}
 

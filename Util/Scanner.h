@@ -16,19 +16,19 @@ namespace Util
     public:
         Scanner();
 
-        static int const WhiteSpace(SourcePosition const&position);
-        static Optional<int> const Number(SourcePosition const&position);
-        static Optional<int> const Text(SourcePosition const&position);
-        static Optional<int> const Any(SourcePosition const&position);
+        static size_t const WhiteSpace(SourcePosition const&position);
+        static Optional<size_t> const Number(SourcePosition const&position);
+        static Optional<size_t> const Text(SourcePosition const&position);
+        static Optional<size_t> const Any(SourcePosition const&position);
 
         class Error final: public exception
         {
         public:
-            Error(int const count, String const& id)
+            Error(size_t const count, String const& id)
                 : Count(count)
                 , Id(id)
             {}
-            int const Count;
+            size_t const Count;
             String const Id;
         };
     };

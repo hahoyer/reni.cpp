@@ -88,13 +88,13 @@ Ref<CodeItem> const CodeItem::IfThenElse(Ref<CodeItem> const condition, Ref<Code
     return Empty();
 }
 
-Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index, Type const& arg)
+Ref<CodeItem> const CodeItem::CallGetter(Size const &size, size_t const index, Type const& arg)
 {
     return (*Arg(arg) + *new CallGetterFiber(size, index, arg.size))
         ->thisRef;
 }
 
-Ref<CodeItem> const CodeItem::CallGetter(Size const &size, int const index)
+Ref<CodeItem> const CodeItem::CallGetter(Size const &size, size_t const index)
 {
     return (*Empty() + *new CallGetterFiber(size, index, Size(0)))
         ->thisRef;

@@ -11,7 +11,7 @@ using namespace HWLib;
 static bool Trace = true;
 
 
-String const CodeVisitor::InName(String const& prefix, int index) 
+String const CodeVisitor::InName(String const& prefix, size_t index) 
 {
     return
         "$("
@@ -28,16 +28,16 @@ String const CodeVisitor::Const(Size const size, BitsConst const& value) const
     return "";
 }
 
-String const CodeVisitor::CallGetter(Size const& result, int const index, Size const& args) const
+String const CodeVisitor::CallGetter(Size const& result, size_t const index, Size const& args) const
 {
     md(result, index,args)      ;
     b_;
     return "";
 }
 
-String const CodeVisitor::GetterFunctionDeclaration(int const index)
+String const CodeVisitor::GetterFunctionDeclaration(size_t const index)
 {
-    return "int " + GetterName(index) + "(int arg)";
+    return "size_t " + GetterName(index) + "(size_t arg)";
 }
 
 String const CodeVisitor::DumpPrintNumber(Size const size) const
@@ -90,7 +90,7 @@ String const MainCodeVisitor::Visit(Ref<CodeItem> target)const
     return "return " + result + ";";
 }
 
-String const MainCodeVisitor::GetterVisit(int index, Ref<CodeItem> target)
+String const MainCodeVisitor::GetterVisit(size_t index, Ref<CodeItem> target)
 {
     MainCodeVisitor visitor;
     auto body = visitor.Visit(target);
@@ -104,7 +104,7 @@ String const MainCodeVisitor::Const(Size const size, BitsConst const& value) con
     return value.format;
 }
 
-String const MainCodeVisitor::CallGetter(Size const&, int const index, Size const&) const
+String const MainCodeVisitor::CallGetter(Size const&, size_t const index, Size const&) const
 {
     return GetterName(index) + "($(arg))";
 }

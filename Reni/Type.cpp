@@ -29,14 +29,14 @@ static bool Trace = true;
 
 struct Type::internal
 {
-    FunctionCache<WeakRef<ArrayType>, int> array;
+    FunctionCache<WeakRef<ArrayType>, size_t> array;
     ValueCache<WeakRef<NumberType>> number;
     ValueCache<WeakRef<TypeType>> type;
     ValueCache<WeakRef<AddressType>> indirect;
     ValueCache<WeakRef<EnableCutType>> enableCut;
 
     explicit internal(Type const&parent)
-        : array([&](int count)
+        : array([&](size_t count)
               {
                   return new ArrayType(parent, count);
               })
@@ -120,7 +120,7 @@ ResultData const Type::GetResultDataEmpty(Category category) const
     return ResultData::GetSmartHllwExts(category, l_(size), l_(CodeItem::Const(BitsConst::Empty())), l_(&thisRef));
 }
 
-WeakRef<Type> const Type::array(int count)const
+WeakRef<Type> const Type::array(size_t count)const
 {
     return _internal->array(count)->thisRef;
 };
