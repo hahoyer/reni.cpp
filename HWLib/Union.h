@@ -31,7 +31,7 @@ namespace HWLib
             static typeIdType const typeId()
             {
                 static_assert(sizeof...(TItems) < maxTypeId, "too much items for union");
-                return UnionHelper<TItems...>::typeId<T>() + 1;
+                return UnionHelper<TItems...>::template typeId<T>() + 1;
             };
             template<> static typeIdType const typeId<TItem>(){ return 0; };
 
@@ -70,7 +70,7 @@ namespace HWLib
         };
 
         template<class T> Union(T const&data)
-            : typeId(internal::UnionHelper<TItems...>::typeId<T>())
+            : typeId(internal::UnionHelper<TItems...>::template typeId<T>())
         {
             new (&rawData) T(data);
         };
@@ -78,7 +78,7 @@ namespace HWLib
         DefaultAssignmentOperator;
         ~Union(){ internal::UnionHelper<TItems...>::Dispose(typeId, &rawData); }
 
-        template<class T> bool const is()const{ return internal::UnionHelper<TItems...>::typeId<T>() == typeId; };
+        template<class T> bool const is()const{ return internal::UnionHelper<TItems...>::template typeId<T>() == typeId; };
         template<class T> T const get()const
         {
             if(is<T>())

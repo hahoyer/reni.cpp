@@ -87,6 +87,7 @@
 
     <ItemDefinitionGroup>
         <ClCompile>
+            <LanguageStandard>stdcpp17</LanguageStandard>
             <PreprocessToFile>false</PreprocessToFile>
             <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
             <FunctionLevelLinking>false</FunctionLevelLinking>
