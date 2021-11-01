@@ -1,3 +1,5 @@
+#pragma once
+
 #define p_name(NAME) get_##NAME
 #define p_mutator_name(NAME) set_##NAME
 
@@ -41,9 +43,9 @@
     virtual_p_mutator_function(TYPE,NAME)\
     virtual p_function(TYPE,NAME)
 
-#define p_virtual_header_implementation_header(CLASS, TYPE, NAME) TYPE const CLASS::virtual_p_name(NAME)()const 
-#define p_virtual_header_implementation(CLASS, TYPE, NAME) p_virtual_header_implementation_header(CLASS, TYPE, NAME) { return p_name(NAME)(); }; 
-#define p_virtual_mutator_header_implementation(CLASS, TYPE, NAME) void CLASS::virtual_p_mutator_name(NAME)(TYPE const&value){p_mutator_name(NAME)(value);} 
+#define p_virtual_header_implementation_header(CLASS, TYPE, NAME) TYPE const CLASS::virtual_p_name(NAME)()const
+#define p_virtual_header_implementation(CLASS, TYPE, NAME) p_virtual_header_implementation_header(CLASS, TYPE, NAME) { return p_name(NAME)(); };
+#define p_virtual_mutator_header_implementation(CLASS, TYPE, NAME) void CLASS::virtual_p_mutator_name(NAME)(TYPE const&value){p_mutator_name(NAME)(value);}
 
 #define p_virtual_implementation(CLASS, TYPE, NAME) \
     p_virtual_header_implementation(CLASS, TYPE, NAME);\
@@ -51,7 +53,7 @@
 
 #define virtual_p_mutator_implementation(CLASS, TYPE, NAME) \
     p_virtual_mutator_header_implementation(CLASS,TYPE,NAME);\
-    p_mutator_implementation(CLASS, TYPE, NAME) 
+    p_mutator_implementation(CLASS, TYPE, NAME)
 
 #define base_p_name(NAME) baseType::get_##NAME()
 
