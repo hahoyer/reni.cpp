@@ -14,6 +14,7 @@
     <ClInclude Include="SetDumpStringQueueEntry.h" />
     <ClInclude Include="MemBox.h" />
     <ClInclude Include="RuntimeChain.h" />
+    <ClInclude Include="ExtensionMethodBase.h" />
     <ClInclude Include="StackTrace.h" />
     <ClInclude Include="Union.h" />
     <ClInclude Include="_EditorTemplates.h" />
