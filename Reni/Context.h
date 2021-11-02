@@ -37,10 +37,10 @@ namespace Reni
         using thisType = Context;
 
     public:
-        virtual_p(bool, isRecursion) { return false; };
-        virtual_p(WeakRef<Global>, global) = 0;
-        virtual_p(WeakRef<FunctionCallContext>, functionContext) = 0;
-        virtual_p(WeakRef<RecursionContext>, recursionContext) = 0;
+        p_virtual(bool, isRecursion) { return false; };
+        p_virtual(WeakRef<Global>, global) = 0;
+        p_virtual(WeakRef<FunctionCallContext>, functionContext) = 0;
+        p_virtual(WeakRef<RecursionContext>, recursionContext) = 0;
         p(int, alignBits) { return 3; };
 
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;

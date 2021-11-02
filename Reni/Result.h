@@ -37,7 +37,7 @@ namespace Reni
         void Ensure(Category category)const;
     protected:
         p_function(Array<String>,DumpData) override;
-        virtual_p(bool, isRecursion) { return false; };
+        p_virtual(bool, isRecursion) { return false; };
         virtual ResultData const GetResultData(Category category)const = 0;
         virtual ResultData const GetResultDataRecursive(Category category) const;
     private:

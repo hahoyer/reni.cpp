@@ -52,23 +52,23 @@ namespace Reni
 
         bool operator==(Type const& other)const{return this == &other;}
 
-        virtual_p(bool, hllw) = 0;
-        virtual_p(Size, size) = 0;
-        virtual_p(WeakRef<Global>, global) = 0;
-        virtual_p_definition(WeakRef<Type>,toTypeTarget);
-        virtual_p_function(WeakRef<Type>,toTypeTarget);
+        p_virtual(bool, hllw) = 0;
+        p_virtual(Size, size) = 0;
+        p_virtual(WeakRef<Global>, global) = 0;
+        p_virtual_definition(WeakRef<Type>,toTypeTarget);
+        p_virtual_function(WeakRef<Type>,toTypeTarget);
         virtual WeakRef<Type> const get_toTypeTarget()const{return thisRef;};
-        virtual_p(Address, toAddress);
-        virtual_p(bool, isCopyable) { return true; };
+        p_virtual(Address, toAddress);
+        p_virtual(bool, isCopyable) { return true; };
 
         WeakRef<Type> const array(size_t count)const;
         p(WeakRef<NumberType>, numberType);
         p_definition(WeakRef<TypeType>,typeType); WeakRef<TypeType> const get_typeType()const;
         p(WeakRef<Type>, indirectType);
         p(WeakRef<EnableCutType>, enableCutType);
-        virtual_p(WeakRef<Type>, asFunctionResult);
+        p_virtual(WeakRef<Type>, asFunctionResult);
     protected:
-        virtual_p(Optional<WeakRef<NumberType>>, asNumberType){ return{}; };
+        p_virtual(Optional<WeakRef<NumberType>>, asNumberType){ return{}; };
     public:
         template <class TDestination>
         Optional<WeakRef<TDestination>> const As()const;

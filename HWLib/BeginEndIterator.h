@@ -32,7 +32,7 @@ namespace HWLib{
     public:
         Enumerable_(TContainer const&container) : container(container){ };
     private:
-        mutable_p_function(CtrlRef<Iterator>, ToIterator) const override{
+        p_nonconst_function(CtrlRef<Iterator>, ToIterator) const override{
             return new BeginEndIterator<T,TContainer>(container);
         }
     };

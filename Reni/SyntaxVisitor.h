@@ -11,7 +11,7 @@ namespace Reni
         typedef DumpableObject baseType;
         typedef ReplaceSyntaxVisitor thisType;
     public:
-        virtual_p(Ref<Syntax>, arg) = 0;
+        p_virtual(Ref<Syntax>, arg) = 0;
     private:
         p_function(Array<String>,DumpData) override{ return{}; };
     };

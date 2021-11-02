@@ -454,7 +454,7 @@ inline p_implementation(Enumerable<T>, Array<T>, ToArray)
 }
 
 template<typename T>
-inline mutable_p_implementation(Enumerable<T>::Iterator, Array<T>const, ToArray){
+inline p_nonconst_implementation(Enumerable<T>::Iterator, Array<T>const, ToArray){
     auto result = queue<unique_ptr<T>>();
     while (IsValid)
         result.push(unique_ptr<T>(new T(Step())));
@@ -578,7 +578,7 @@ CtrlRef<Enumerable<TResult>> const Enumerable<T>::Convert() const{
 template<typename TBase, typename TRealm>
 inline p_implementation(WithId<TBase COMMA TRealm>, String, DumpHeader){
     auto objectId = HWLib::Dump(ObjectId);
-    return base_p_name(DumpHeader) + ".Id" + objectId;
+    return p_base_name(DumpHeader) + ".Id" + objectId;
 };
 
 

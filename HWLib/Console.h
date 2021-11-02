@@ -18,7 +18,7 @@ namespace HWLib
         template <typename T>
         void FunctionTrace(String const&function, T const& object);
 
-        mutable_p(LevelValue<int>, IndentLevel);
+        p_nonconst(LevelValue<int>, IndentLevel);
         p(bool, IsDebuggerPresent);
         static Console Instance;
     };

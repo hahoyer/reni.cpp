@@ -18,7 +18,7 @@ Console::Console()
 }
 
 p_implementation(Console, bool, IsDebuggerPresent){return !!::IsDebuggerPresent();};
-mutable_p_implementation(Console, LevelValue<int>, IndentLevel){return IndentCount;};
+p_nonconst_implementation(Console, LevelValue<int>, IndentLevel){return IndentCount;};
 
 static void OutputDebug(const String&text)
 {

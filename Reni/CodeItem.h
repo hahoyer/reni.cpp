@@ -56,10 +56,10 @@ namespace Reni
         bool const operator==(thisType const&other)const;
 
         virtual String const ToCpp(CodeVisitor const& visitor)const;
-        virtual_p(bool, isReference){ return false; };
-        virtual_p(Size, size) = 0;
-        virtual_p(Externals, exts) = 0;
-        virtual_p(bool, isEmpty){ return false; };
+        p_virtual(bool, isReference){ return false; };
+        p_virtual(Size, size) = 0;
+        p_virtual(Externals, exts) = 0;
+        p_virtual(bool, isEmpty){ return false; };
         ThisRef;
         Optional<Ref<CodeItem>> const Replace(ReplaceVisitor const&arg) const;
         Ref<FiberCode> const operator+(FiberItem const&item)const;

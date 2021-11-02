@@ -24,7 +24,7 @@ namespace HWLib
         p_mutable(bool, IsValid){ return value.IsValid; }
         p(bool, IsBusy){ return isBusy; }
 
-        mutable_p(T, Value)const
+        p_nonconst(T, Value)const
         {
             Ensure();
             return value.Value;

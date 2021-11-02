@@ -60,11 +60,11 @@ namespace Reni
         virtual void AddTo(SyntaxContainer& syntaxContainer) const;
         Ref<Syntax> const TypeOperator(SourcePart const part) const;
 
-        virtual_p(int, priority) = 0;
+        p_virtual(int, priority) = 0;
         String const SmartDumpFrame(int priority)const;
     protected:
         virtual ResultData const GetResultData(Context const&context, Category category)const;
-        virtual_p(String, SmartDump) = 0;
+        p_virtual(String, SmartDump) = 0;
         friend class ResultFromSyntaxAndContext;
     private: 
         p_function(Array<String>, DumpData) override final;

@@ -36,12 +36,12 @@ namespace HWLib{
         DumpableObject();                     
         DumpableObject(DumpableObject const&);
         virtual ~DumpableObject();
-        virtual_p(Array<String>, DumpData) = 0;
-        virtual_p(String, DumpHeader);
+        p_virtual(Array<String>, DumpData) = 0;
+        p_virtual(String, DumpHeader);
     public:
         void SetDumpString();
         p(String, Dump);
-        virtual_p(String, DumpShort);
+        p_virtual(String, DumpShort);
         p(bool, IsInDump){return isInDump;}
         p(String, DumpLong);
         static bool EnableSetDumpString;

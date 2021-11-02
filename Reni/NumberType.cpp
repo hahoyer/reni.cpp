@@ -56,7 +56,7 @@ p_implementation(NumberType, Array<String>, DumpData){ return{nd(parent)}; };
 
 p_implementation(NumberType, String, DumpShort)
 {
-    return base_p_name(DumpShort) + " size=" + size.DumpShort;
+    return p_base_name(DumpShort) + " size=" + size.DumpShort;
 }
 
 SearchResult<Feature> const NumberType::DeclarationsForType(DeclarationType const& target) const

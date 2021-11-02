@@ -18,9 +18,9 @@ namespace Reni{
         typedef FiberItem thisType;
     public:
         ThisRef;
-        virtual_p(Size, argSize) { return 0; };
-        virtual_p(Size, size) { return 0; };
-        virtual_p(Externals, exts){ return{}; };
+        p_virtual(Size, argSize) { return 0; };
+        p_virtual(Size, size) { return 0; };
+        p_virtual(Externals, exts){ return{}; };
         virtual String const ToCpp(CodeVisitor const& visitor)const;
         virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const;
         static Array<Ref<FiberItem>> const CopyFromAddress(Type const& target);
@@ -59,10 +59,10 @@ namespace Reni{
 
     public:
         ThisRef;
-        virtual_p(int, inCount) = 0;
-        virtual_p(Size, size) = 0;
-        virtual_p(Externals, exts){ return{}; };
-        virtual_p(String, prefix) = 0;
+        p_virtual(int, inCount) = 0;
+        p_virtual(Size, size) = 0;
+        p_virtual(Externals, exts){ return{}; };
+        p_virtual(String, prefix) = 0;
         virtual Size const InSize(int index)const = 0;
         virtual String const ToCpp(CodeVisitor const& visitor)const = 0;
         virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const = 0;

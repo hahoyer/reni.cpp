@@ -124,7 +124,7 @@ ResultData const ResultFromSyntaxAndContext::GetResultDataRecursive(Category cat
 
 p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)
 {
-    auto baseDump = base_p_name(DumpData);
+    auto baseDump = p_base_name(DumpData);
     auto thisDump = Array<String>({
         nd(context),
         nd(syntax)

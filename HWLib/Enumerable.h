@@ -67,9 +67,9 @@ namespace HWLib
         {
         public:
             virtual ~Iterator(){};
-            virtual_p_inline(bool, IsValid) = 0;
+            p_virtual_inline(bool, IsValid) = 0;
             virtual T const Step() = 0;
-            mutable_p(Array<T> const, ToArray);
+            p_nonconst(Array<T> const, ToArray);
         };
 
         class RangeBasedForLoopSimulator;
@@ -79,12 +79,12 @@ namespace HWLib
             CtrlRef<Iterator> _iterator;
         public:
             Container(Iterator* iterator) : _iterator(iterator){}
-            mutable_p_function(CtrlRef<Iterator>, ToIterator) const override{ return _iterator; }
+            p_nonconst_function(CtrlRef<Iterator>, ToIterator) const override{ return _iterator; }
         };
 
-        virtual_p_definition(CtrlRef<Iterator>,ToIterator);
-        CtrlRef<Iterator> virtual_p_name(ToIterator)()const { return p_name(ToIterator)(); }
-        virtual mutable_p_function(CtrlRef<Iterator>, ToIterator)const = 0;
+        p_virtual_definition(CtrlRef<Iterator>,ToIterator);
+        CtrlRef<Iterator> p_virtual_name(ToIterator)()const { return p_name(ToIterator)(); }
+        virtual p_nonconst_function(CtrlRef<Iterator>, ToIterator)const = 0;
 
         RangeBasedForLoopSimulator const begin()const{ return ToIterator; }
         RangeBasedForLoopSimulator const end()const;

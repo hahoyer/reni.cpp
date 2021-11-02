@@ -40,7 +40,7 @@ namespace HWLang{
             };
         };
         p_function(String,DumpShort) override{
-            return base_p_name(DumpShort) + "{" + Name + "}";
+            return p_base_name(DumpShort) + "{" + Name + "}";
         };
     };
 }   

@@ -23,7 +23,7 @@ namespace HWLib
         Box_(thisType const& data) = delete;
 
         p_definition(T&, Data);
-        mutable_p_function(T&, Data){ return _data; }
+        p_nonconst_function(T&, Data){ return _data; }
 
         void Delete() { delete &_data; };
         template<typename TDestination>
@@ -46,7 +46,7 @@ namespace HWLib
         Box_(thisType const& data) = delete;
 
         p_definition(T&, Data);
-        mutable_p_function(T&, Data){ return _data; }
+        p_nonconst_function(T&, Data){ return _data; }
 
         void SaveDelete() { a_if_(_data); delete _data; _data = null; };
         void SmartDelete() { if (_data) delete _data; _data = null; };
@@ -68,7 +68,7 @@ namespace HWLib
         thisType& operator=(thisType const&x) = delete;
 
         p_definition(T&, Data);
-        mutable_p_function(T&, Data){ return _data; }
+        p_nonconst_function(T&, Data){ return _data; }
 
         void SaveDelete() { a_if_(_data); delete _data; };
         void SmartDelete() { if (_data) delete _data; };
