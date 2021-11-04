@@ -14,13 +14,13 @@ namespace Reni
     public:
         LeftParenthesisToken(int level) : level(level){}
 
-        p(String, name){
+        p(string, name){
             a_is(level, > , 0);
             a_is(level, < , 4);
-            return level[" {[("];
+            return string(1,level[" {[("]);
         }
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(level)}; };
+        p_function(Array<string>,DumpData) override{ return{nd(level)}; };
 
         class OpenSyntax final : public Syntax
         {
@@ -43,7 +43,7 @@ namespace Reni
                     return baseType::ParenthesisMatch(level, part);
                 return right || Ref<Syntax>(new EmptySyntax(part));
             };
-            p_function(String, SmartDump) override{return nd(right);}
+            p_function(string, SmartDump) override{return nd(right);}
             p_function(int, priority) override{ return 0; }
         };
 
@@ -63,11 +63,11 @@ namespace Reni
     public:
         RightParenthesisToken(int level) : level(level){}
 
-        p(String, name)
+        p(string, name)
         {
             a_is(level, >, 0);
             a_is(level, <, 4);
-            return level[" }])"];
+            return string(1,level[" }])"]);
         }
     private:
         Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const& part)const override final
@@ -75,7 +75,7 @@ namespace Reni
             return left->ParenthesisMatch(level, part);
         };
 
-        p_function(Array<String>,DumpData) override
+        p_function(Array<string>,DumpData) override
         {
             return{nd(level)};
         };

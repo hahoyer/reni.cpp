@@ -24,9 +24,9 @@ namespace HWLang{
         DefaultAssignmentOperator;
 
         p_function(bool,IsValid) override{ return !endTokenReturned; };
-        TToken const Step() override;
+        TToken Step() override;
     private:
-        TToken const Step(size_t count, TokenClass const& tokenClass);
-        p_function(Array<String>,DumpData) override;
+        TToken Step(size_t count, TokenClass const& tokenClass);
+        p_function(Array<string>,DumpData) override;
     };
 }

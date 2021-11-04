@@ -6,13 +6,13 @@ using namespace Util;
 using namespace HWLib;
 static bool Trace = true;
 
-CppCompilerScripting::CppCompilerScripting(const String& program)
+CppCompilerScripting::CppCompilerScripting(const string& program)
   : program(program)
     , currentProcess("echo none")
 {}
 
 
-p_implementation(CppCompilerScripting, String, fullFileName)
+p_implementation(CppCompilerScripting, string, fullFileName)
 {
   const auto temp = System::EnvironmentVariable("TEMP");
   File tempDir = temp + "\\reni";
@@ -60,14 +60,14 @@ p_implementation(CppCompilerScripting, int, result)
   return currentProcess.result;
 };
 
-p_implementation(CppCompilerScripting, String, output)
+p_implementation(CppCompilerScripting, string, output)
 {
   return currentProcess.data;
 };
 
-p_implementation(CppCompilerScripting, String, LibPath)
+p_implementation(CppCompilerScripting, string, LibPath)
 {
-  const Array<String> list{
+  const Array<string> list{
     VCInstallDir + R"(\lib\)" + Platform,
     WindowsKits + R"(\lib\)" + CrtVersion + R"(\um\)" + Platform,
     WindowsKits + R"(\lib\)" + CrtVersion + R"(\ucrt\)" + Platform,
@@ -75,11 +75,11 @@ p_implementation(CppCompilerScripting, String, LibPath)
   };
 
   return list
-         .Select<String>([&](String name) { return "/LIBPATH:\"" + name + "\""; })
+         .Select<string>([&](string name) { return "/LIBPATH:\"" + name + "\""; })
          ->Stringify(" ");
 };
 
-p_implementation(CppCompilerScripting, String, CompileCommand)
+p_implementation(CppCompilerScripting, string, CompileCommand)
 {
   return
     R"(/Zi /Zl /nologo /W4 /WX- /sdl /MP8 /Od /Oi /Oy- /D _DEBUG /Gm- /EHsc /MDd /GS /Gy- /fp:precise /Zc:wchar_t /Zc:forScope /GR /TP /analyze- /FC )"
@@ -91,9 +91,9 @@ p_implementation(CppCompilerScripting, String, CompileCommand)
     + "/OUT:\"" + fullFileName + ".exe\" ";
 };
 
-p_implementation(CppCompilerScripting, String, IncludePath)
+p_implementation(CppCompilerScripting, string, IncludePath)
 {
-  const Array<String> list{
+  const Array<string> list{
     VCInstallDir + "\\include",
     WindowsKits + R"(\include\)" + CrtVersion + R"(\ucrt)",
     Boost,
@@ -101,6 +101,6 @@ p_implementation(CppCompilerScripting, String, IncludePath)
   };
 
   return list
-         .Select<String>([](String dir) { return "/I\"" + dir + "\""; })
+         .Select<string>([](string dir) { return "/I\"" + dir + "\""; })
          ->Stringify(" ");
 };

@@ -34,7 +34,7 @@ namespace HWLib
             {
                 b(Message);
             };
-            p(String, Message){ return "Key not found: " + ::dump(_key); }
+            p(std::string, Message){ return "Key not found: " + ::dump(_key); }
         };
 
         static TValue ThrowKeyNotFoundException(TKeys key){ throw KeyNotFoundException(key); };

@@ -28,12 +28,12 @@ namespace Reni
         public:
             Function();
 
-            p(String, cppCode);
-            p(String, cppDeclarations);
+            p(string, cppCode);
+            p(string, cppDeclarations);
             void GetterIsUsed()const;
             void SetterIsUsed()const;
         private:
-            p_function(Array<String>, DumpData) override;
+            p_function(Array<string>, DumpData) override;
             bool Ensure(FunctionCallResultCache const& source) const;
         };
     private:
@@ -49,6 +49,6 @@ namespace Reni
         size_t const FunctionIndex(FunctionCallResultCache const& target)const;
         p(Array<Function>, functions);
     private:
-        p_function(Array<String>, DumpData) override;
+        p_function(Array<string>, DumpData) override;
     };
 }

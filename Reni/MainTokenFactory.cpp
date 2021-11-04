@@ -42,7 +42,7 @@ class ArgToken final : public TerminalTokenClass {
     using baseType = TerminalTokenClass;
     using thisType = ArgToken;
 public:
-    p(String, name){ return "^"; };
+    p(string, name){ return "^"; };
 
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const;
 
@@ -58,7 +58,7 @@ class NewValueToken final : public TerminalTokenClass {
     using baseType = TerminalTokenClass;
     using thisType = NewValueToken;
 public:
-    p(String, name){ return "new_value"; };
+    p(string, name){ return "new_value"; };
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
         return context.ReferenceResult(category, External::Function::NewValue::Instance);
     }
@@ -73,7 +73,7 @@ class ElseToken final : public InfixTokenClass {
     using baseType = InfixTokenClass;
     using thisType = ElseToken;
 public:
-    p(String, name){ return "else"; };
+    p(string, name){ return "else"; };
 
 private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const& part, Ref<Syntax>const right)const override final
@@ -88,7 +88,7 @@ class ThenToken final : public InfixTokenClass {
     using baseType = InfixTokenClass;
     using thisType = ThenToken;
 public:
-    p(String, name){ return "then"; };
+    p(string, name){ return "then"; };
 
 private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
@@ -101,7 +101,7 @@ class Colon final : public InfixTokenClass{
     typedef InfixTokenClass baseType;
     typedef Colon thisType;
 public:
-    p(String, name){return ":";}
+    p(string, name){return ":";}
 private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         Ref<SyntaxContainer> result = new SyntaxContainer(part);
@@ -115,8 +115,8 @@ class List final : public TokenClass{
     typedef TokenClass baseType;
     typedef List thisType;
 public:
-    String const name;
-    List(String const&name) : name(name){}
+    string const name;
+    List(string const&name) : name(name){}
 private:
     Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final
     {
@@ -131,7 +131,7 @@ private:
 class TypeToken final : public SuffixTokenClass{
     typedef SuffixTokenClass baseType; typedef TypeToken thisType;
 public:
-    p(String, name){ return "type"; }
+    p(string, name){ return "type"; }
 private:
     Ref<Syntax > const Create(Ref<Syntax >const left, SourcePart const&part)const  override final{
         return left->TypeOperator(part);
@@ -154,8 +154,8 @@ void MainTokenFactory::AddTokenClass(TTokenClass const*tokenClass){
 }
 
 MainTokenFactory::MainTokenFactory()
-:tokenClasses([](String const& key){return new UserDefinedToken(key);})
-, errorClasses([](String const& key){return new SyntaxErrorToken(key); })
+:tokenClasses([](string const& key){return new UserDefinedToken(key);})
+, errorClasses([](string const& key){return new SyntaxErrorToken(key); })
 {
     AddTokenClass(new ArgToken);
     AddTokenClass(new Colon);
@@ -184,15 +184,15 @@ MainTokenFactory::MainTokenFactory()
     AddTokenClass(new TypeToken);
 }
 
-TokenClass const& MainTokenFactory::GetTokenClass(String const&name){
+TokenClass const& MainTokenFactory::GetTokenClass(string const&name){
     return Instance.InternalGetTokenClass(name);
 }
 
-TokenClass const& MainTokenFactory::GetErrorClass(String const&name){
+TokenClass const& MainTokenFactory::GetErrorClass(string const&name){
     return *Instance.errorClasses(name);
 }
 
-TokenClass const& MainTokenFactory::InternalGetTokenClass(String const&name) const
+TokenClass const& MainTokenFactory::InternalGetTokenClass(string const&name) const
 {
     auto result = predefinedTokenClasses.Find(name);
     if(result.IsEmpty)

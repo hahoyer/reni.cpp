@@ -9,20 +9,20 @@ namespace HWLib
 {
     class StackTrace;
     class Thread;
-    class StackFrameData;
-    String const FormatStackTraceOfCurrentThread(int levelToIgnore);
+    struct StackFrameData;
+    std::string FormatStackTraceOfCurrentThread(int levelToIgnore);
 
     struct StackFrameData{
-        DWORD64 const instructionPointer;
-        String fileName;
+        DWORD64 const instructionPointer{};
+        std::string fileName{};
         int lineNumber;
-        int lineOffset;
-        String modulName;
-        String errorMessage;
+        int lineOffset{};
+        std::string moduleName{};
+        std::string errorMessage{};
 
         StackFrameData(DWORD64 pcOffset);
 
-        String const Format()const;
+        std::string Format()const;
     };
 
     class StackTrace
@@ -30,7 +30,7 @@ namespace HWLib
         Array<StackFrameData> frames;
     public:
         StackTrace(Thread const& thread);
-        String const Format(size_t StartLevel = 0)const;
+        std::string Format(size_t StartLevel = 0)const;
     private:
         p(HANDLE, Process){ return GetCurrentProcess(); };
     };
@@ -55,16 +55,16 @@ namespace HWLib
 
         DefaultAssignmentOperator;
 
-        bool const operator ==(Thread const&x)const{ return handle == x.handle; };
-        bool const operator !=(Thread const&x)const{ return !(*this == x); };
+        bool operator ==(Thread const& x) const { return handle == x.handle; };
+        bool operator !=(Thread const& x) const { return !(*this == x); };
 
         p(HANDLE, Handle){ return handle; };
 
-        void Suspend();
-        void Resume();
+        void Suspend() const;
+        void Resume() const;
 
         static Thread get_Current(); // returns a real handle (not a pseudohandle, as GetCurrentThread() does)
-        static String const FormatStackTraceOfCurrentThread(int levelToIgnore);
+        static std::string FormatStackTraceOfCurrentThread(int levelToIgnore);
     };
 
 

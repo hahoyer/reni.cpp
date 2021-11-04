@@ -12,7 +12,7 @@ namespace Reni {
         using baseType = DefineableToken;
         using thisType = UserDefinedToken;
     public:
-        UserDefinedToken(String const&name) : baseType(name) {
+        UserDefinedToken(string const&name) : baseType(name) {
             SetDumpString();
         };
     };

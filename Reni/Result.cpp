@@ -4,11 +4,10 @@
 #include "CodeItem.h"
 #include "Context.h"
 #include "ContainerContext.h"
-#include "Externals.h"
+#include "Closure.h"
 #include "RecursionContext.h"
 #include "ReplaceVisitor.h"
 #include "Syntax.h"
-#include "SyntaxContainer.h"
 
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/LevelValue.h"
@@ -24,24 +23,24 @@ ResultCache::ResultCache()
 {
 }
 
-ResultData const ResultCache::Get(Category category) const
+ResultData ResultCache::Get(const Category& category) const
 {
     Ensure(category);
-    auto pendingCategory = category - data.complete;
+    const auto pendingCategory = category - data.complete;
     if (pendingCategory == Category::None)
         return data;
 
-    auto recursive = GetResultDataRecursive(pendingCategory);
+    const auto recursive = GetResultDataRecursive(pendingCategory);
     a_if(recursive.IsConsistent(data), nd(thisRef) + nd(recursive) + nd(pendingCategory));
     return recursive | data;
 }
 
-void ResultCache::Ensure(Category category)const
+void ResultCache::Ensure(const Category& category)const
 {
     auto todo = category - complete;
     if(todo == Category::None)
         return;
-    bool Trace = this->Trace && category.hasExts;
+    bool Trace = this->Trace && category.hasClosure;
     md(category);
     auto newTodo = todo - pending;
     if (newTodo != Category::None)
@@ -67,15 +66,15 @@ void ResultCache::Ensure(Category category)const
 p_virtual_header_implementation(ResultCache, bool, isRecursion) ;
 
 p_implementation(ResultCache, Category, complete){ return data.complete; };
-p_implementation(ResultCache, bool, hllw){ return Get(Category::Hllw).hllw; };
+p_implementation(ResultCache, bool, hollow){ return Get(Category::Hollow).hollow; };
 p_implementation(ResultCache, Size, size){ return Get(Category::Size).size; };
 p_implementation(ResultCache, Ref<CodeItem>, code){ return Get(Category::Code).code; };
 p_implementation(ResultCache, WeakRef<Type>, type){ return Get(Category::Type).type; };
-p_implementation(ResultCache, Externals, exts){ return Get(Category::Exts).exts; };
+p_implementation(ResultCache, Closure, closure){ return Get(Category::Closure).closure; };
 
 p_implementation(ResultCache, Optional<WeakRef<Type>>, cachedType){return data.type;}
 
-p_implementation(ResultCache, Array<String>, DumpData)
+p_implementation(ResultCache, Array<string>,DumpData)
 {
     return{
         nd(pending),
@@ -83,7 +82,7 @@ p_implementation(ResultCache, Array<String>, DumpData)
     };
 };
 
-ResultData const ResultCache::GetResultDataRecursive(Category category) const
+ResultData ResultCache::GetResultDataRecursive(Category const& category) const
 {
     bool Trace = true;
     md(category);
@@ -99,10 +98,10 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
     SetDumpString();
 }
 
-ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)const
+ResultData ResultFromSyntaxAndContext::GetResultData(Category const&category) const
 {
     a_if_(category != Category::None || context.isRecursion);
-    bool Trace = false;// this->Trace && category.hasExts;
+    bool Trace = false;// this->Trace && category.hasClosure;
     md(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
@@ -110,22 +109,22 @@ ResultData const ResultFromSyntaxAndContext::GetResultData(Category category)con
     return_db(result);
 }
 
-ResultData const ResultFromSyntaxAndContext::GetResultDataRecursive(Category category) const
+ResultData ResultFromSyntaxAndContext::GetResultDataRecursive(Category const& category) const
 {
     if (!isRecursion)
         return syntax.GetResultCache(*context.recursionContext)->Get(category);
     
-    if (category == Category::Exts)
-        return Externals();
+    if (category == Category::Closure)
+        return Closure();
     auto Trace = true;
     md(category);
     mb;
 }
 
-p_implementation(ResultFromSyntaxAndContext, Array<String>, DumpData)
+p_implementation(ResultFromSyntaxAndContext, Array<string>,DumpData)
 {
-    auto baseDump = p_base_name(DumpData);
-    auto thisDump = Array<String>({
+  const auto baseDump = p_base_name(DumpData);
+    const auto thisDump = Array<string>({
         nd(context),
         nd(syntax)
     });
@@ -137,30 +136,30 @@ p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
     return !!dynamic_cast<RecursionContext const*>(&context);
 }
 
-ResultData const ResultData::operator|(ResultData const& other) const
+ResultData ResultData::operator|(ResultData const& other) const
 {
     return ResultData(
-        hllw || other.hllw,
+        hollow || other.hollow,
         size || other.size,
         code || other.code,
         type || other.type,
-        exts || other.exts
+        closure || other.closure
         );
 }
 
-bool const ResultData::IsConsistent(ResultData const& other) const
+bool ResultData::IsConsistent(ResultData const& other) const
 {
     return (*this & other.complete) == (other & complete);
 }
 
-ResultData const ResultData::operator&(Category const& other) const
+ResultData ResultData::operator&(Category const& other) const
 {
     return ResultData(
-        other.hasHllw ? hllw : Optional<bool>(),
+        other.hasHollow ? hollow : Optional<bool>(),
         other.hasSize ? size : Optional<Size>(),
         other.hasCode ? code : Optional<Ref<CodeItem>>(),
         other.hasType ? type : Optional<WeakRef<Type>>(),
-        other.hasExts ? exts : Optional<Externals>()
+        other.hasClosure ? closure : Optional<Closure>()
         );
 }
 
@@ -172,18 +171,19 @@ ResultData::ResultData(Ref<CodeItem> code)
     AssertValid();
 }
 
-bool const ResultData::operator==(ResultData const& other) const
+bool ResultData::operator==(ResultData const& other) const
 {
-    return hllw == other.hllw
+    return hollow == other.hollow
         && size == other.size
         && type == other.type
         && code == other.code
-        && exts == other.exts;
+        && closure == other.closure;
 }
 
-Optional<bool> const ResultData::ReplenishHllw(Category const& category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
+Optional<bool> ResultData::ReplenishHollow(Category const& category, function<Ref<CodeItem>()> getCode,
+                                         function<WeakRef<Type>()> getType)
 {
-    if(!category.hasHllw)
+    if(!category.hasHollow)
         return{};
 
     if(category.hasCode)
@@ -196,7 +196,8 @@ Optional<bool> const ResultData::ReplenishHllw(Category const& category, functio
     return{};
 }
 
-Optional<Size> const ResultData::ReplenishSize(Category const& category, function<Ref<CodeItem>()> getCode, function<WeakRef<Type>()> getType)
+Optional<Size> ResultData::ReplenishSize(Category const& category, function<Ref<CodeItem>()> getCode,
+                                         function<WeakRef<Type>()> getType)
 {
     if(category.hasSize)
     {
@@ -210,7 +211,7 @@ Optional<Size> const ResultData::ReplenishSize(Category const& category, functio
     return {};
 }
 
-ResultData const ResultData::Convert(Type const& destination) const
+ResultData ResultData::Convert(Type const& destination) const
 {
     if(complete == Category::None)
         return *this;
@@ -220,62 +221,62 @@ ResultData const ResultData::Convert(Type const& destination) const
     mb;
 }
 
-Optional<Externals> const ResultData::ReplenishExternals(Category const& category, function<Ref<CodeItem>()> getCode)
+Optional<Closure> ResultData::ReplenishExternals(Category const& category, function<Ref<CodeItem>()> getCode)
 {
-    if(category.hasExts)
-        return getCode()->exts;
+    if(category.hasClosure)
+        return getCode()->closure;
     return {};
 }
 
-ResultData const ResultData::Get(
-    Category category, 
-    function<bool()> const&getHllw,
-    function<Size()> getSize,
-    function<Ref<CodeItem>()> getCode,
-    function<WeakRef<Type>()> getType, 
-    function<Externals()> getExts
-    )
+ResultData ResultData::Get(
+  const Category& category,
+  function<bool()> const& getHollow,
+  function<Size()> getSize,
+  function<Ref<CodeItem>()> getCode,
+  function<WeakRef<Type>()> getType,
+  function<Closure()> getClosure
+)
 {
-    auto hllw = category.hasHllw? Optional<bool>(getHllw()) : Optional<bool>();
-    auto size = category.hasSize ? Optional<Size>(getSize()) : Optional<Size>();
+  const auto hollow = category.hasHollow? Optional<bool>(getHollow()) : Optional<bool>();
+  const auto size = category.hasSize ? Optional<Size>(getSize()) : Optional<Size>();
+  const auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
+  const auto type = category.hasType ? Optional<WeakRef<Type>>(getType()) : Optional<WeakRef<Type>>();
+  const auto closure = category.hasClosure ? Optional<Closure>(getClosure()) : Optional<Closure>();
+    return FullGet(category, hollow, size, code, type, closure);
+}
+
+ResultData ResultData::GetSmartHollowSize(
+  const Category& category,
+  function<Ref<CodeItem>()> getCode,
+  function<WeakRef<Type>()> getType,
+  function<Closure()> getClosure
+)
+{
     auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
     auto type = category.hasType ? Optional<WeakRef<Type>>(getType()) : Optional<WeakRef<Type>>();
-    auto exts = category.hasExts ? Optional<Externals>(getExts()) : Optional<Externals>();
-    return FullGet(category, hllw, size, code, type, exts);
+    const auto closure = category.hasClosure ? Optional<Closure>(getClosure()) : Optional<Closure>();
+    const auto size = ReplenishSize(category, l_(code), l_(type));
+    const auto hollow = ReplenishHollow(category, l_(code), l_(type));
+    return FullGet(category, hollow, size, code, type, closure);
 }
 
-ResultData const ResultData::GetSmartHllwSize(
-    Category category,
-    function<Ref<CodeItem>()> getCode,
-    function<WeakRef<Type>()> getType,
-    function<Externals()> getExts
-    )
+ResultData ResultData::GetSmartHollowClosure(
+  const Category& category,
+  function<Size()> getSize,
+  function<Ref<CodeItem>()> getCode,
+  function<WeakRef<Type>()> getType
+)
 {
-    auto code = category.hasCode ? Optional<Ref<CodeItem>>(getCode()) : Optional<Ref<CodeItem>>();
-    auto type = category.hasType ? Optional<WeakRef<Type>>(getType()) : Optional<WeakRef<Type>>();
-    auto exts = category.hasExts ? Optional<Externals>(getExts()) : Optional<Externals>();
-    auto size = ReplenishSize(category, l_(code), l_(type));
-    auto hllw = ReplenishHllw(category, l_(code), l_(type));
-    return FullGet(category, hllw, size, code, type, exts);
+    return Get(category, l_(ReplenishHollow(category, getCode, getType)), getSize, getCode, getType, l_(getCode()->closure));
 }
 
-ResultData const ResultData::GetSmartHllwExts(
-    Category category,
-    function<Size()> getSize,
-    function<Ref<CodeItem>()> getCode,
-    function<WeakRef<Type>()> getType
-    )
+ResultData ResultData::GetSmartHollowSizeClosure(
+  const Category& category,
+  function<Ref<CodeItem>()> getCode,
+  function<WeakRef<Type>()> getType
+)
 {
-    return Get(category, l_(ReplenishHllw(category, getCode, getType)), getSize, getCode, getType, l_(getCode()->exts));
-}
-
-ResultData const ResultData::GetSmartHllwSizeExts(
-    Category category,
-    function<Ref<CodeItem>()> getCode,
-    function<WeakRef<Type>()> getType
-    )
-{
-    return GetSmartHllwSize(category, getCode, getType, l_(getCode()->exts));
+    return GetSmartHollowSize(category, getCode, getType, l_(getCode()->closure));
 }
 
 ResultData::ResultData(Type const& type)
@@ -286,63 +287,63 @@ ResultData::ResultData(Type const& type)
     AssertValid();
 }
 
-ResultData::ResultData(Externals exts)
-    : exts(exts)
+ResultData::ResultData(const Closure &closure)
+    : closure(closure)
 {
     SetDumpString();
     AssertValid();
 }
 
-ResultData const ResultData::Replace(ReplaceVisitor const& arg) const
+ResultData ResultData::Replace(ReplaceVisitor const& arg) const
 {
     return Get(
         complete, 
-        l_(hllw),
+        l_(hollow),
         l_(size),
         l_(code.Value->Replace(arg) || code), 
         l_(type), 
-        l_(exts.Value.Replace(arg) || exts));
+        l_(closure.Value.Replace(arg) || closure));
 }
 
-ResultData const ResultData::Replace(External const& tag, ResultCache const& result) const
+ResultData ResultData::Replace(External const& tag, ResultCache const& result) const
 {
     auto visitor = ReplaceVisitor(tag, result);
     visitor.Trace = result.Trace;
     return Replace(visitor);
 }
 
-p_implementation(ResultData, Array<String>, DumpData)
+p_implementation(ResultData, Array<string>,DumpData)
 {
     return{
-        nd(hllw),
+        nd(hollow),
         nd(size),
         nd(type),
         nd(code),
-        nd(exts)
+        nd(closure)
     };
 }
 
 p_implementation(ResultData, ResultData, asFunctionResult)
 {
-    return GetSmartHllwSize
+    return GetSmartHollowSize
         (
         complete, 
         l_(code.Value),
         l_(type.Value->asFunctionResult),
-        l_(exts.Value)
+        l_(closure.Value)
         );
 }
 
-void ResultData::AssertValid()
+void ResultData::AssertValid() const
 {
-    if (complete.hasHllw)
+    if (complete.hasHollow)
     {
         if (complete.hasSize)
-            a_if(hllw.Value == (size.Value == 0), nd(hllw) + nd(size));
+            a_if(hollow.Value == (size.Value == 0), nd(hollow) + nd(size));
         if (complete.hasCode)
-            a_if(hllw.Value == (code.Value->size == 0), nd(hllw) + nd(code));
+            a_if(hollow.Value == (code.Value->size == 0), nd(hollow) + nd(code));
         if (complete.hasType)
-            a_if(hllw.Value == (type.Value->size == 0), nd(hllw) + nd(type));
+            a_if(hollow.Value == (type.Value->size == 0), nd(hollow) + nd(type));
     }
 
     if(complete.hasSize)
@@ -354,21 +355,21 @@ void ResultData::AssertValid()
     }
     else if(complete.hasCode && complete.hasType)
         a_is(code.Value->size, == , type.Value->size);
-    if(complete.hasCode && complete.hasExts)
-        a_is(code.Value->exts, == , exts.Value);
+    if(complete.hasCode && complete.hasClosure)
+        a_is(code.Value->closure, == , closure.Value);
 }
 
-void ResultData::AssertValid(Category category, Optional<bool> const& hllw, Optional<Size> const size, Optional<Ref<CodeItem>> code, Optional<WeakRef<Type>> type, Optional<Externals> const& exts)
+void ResultData::AssertValid(const Category& category, Optional<bool> const& hollow, Optional<Size> const size, Optional<Ref<CodeItem>> code, Optional<WeakRef<Type>> type, Optional<Closure> const& closure)
 {
-    if(category.hasHllw)
-        a_if(hllw.IsValid, nd(category) + nd(hllw));
+    if(category.hasHollow)
+        a_if(hollow.IsValid, nd(category) + nd(hollow));
     if(category.hasSize)
         a_if(size.IsValid, nd(category) + nd(size));
     if(category.hasCode)
         a_if(code.IsValid, nd(category) + nd(code));
     if(category.hasType)
         a_if(type.IsValid, nd(category) + nd(type));
-    if(category.hasExts)
-        a_if(exts.IsValid, nd(category) + nd(exts));
+    if(category.hasClosure)
+        a_if(closure.IsValid, nd(category) + nd(closure));
 }
 

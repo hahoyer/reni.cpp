@@ -23,6 +23,6 @@ namespace Reni
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ mb; };
         p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(Array<String>,DumpData) override;
+        p_function(Array<string>,DumpData) override;
     };
 }

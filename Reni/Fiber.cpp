@@ -26,18 +26,18 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(target)}; };
+        p_function(Array<string>, DumpData) override{ return{nd(target)}; };
         p_function(Size, argSize) override{ return Size::Address; };
         p_function(Size, size) override{ return target.size; };
-        Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&) const override { return{}; }
+        Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override { return{}; }
     };
 }
 
 p_virtual_header_implementation(FiberItem, Size, argSize); 
 p_virtual_header_implementation(FiberItem, Size, size); 
-p_virtual_header_implementation(FiberItem, Externals, exts);
+p_virtual_header_implementation(FiberItem, Closure, closure);
 
-Optional<Ref<FiberItem>> const FiberItem::Replace(ReplaceVisitor const&visitor) const
+Optional<Ref<FiberItem>> FiberItem::Replace(ReplaceVisitor const& visitor) const
 {
     md(visitor);
     mb;
@@ -49,7 +49,7 @@ Array<Ref<FiberItem>> const FiberItem::CopyFromAddress(Type const& target)
     return{new CopyFromAddressFiber(target)};
 };
 
-String const FiberItem::ToCpp(CodeVisitor const& visitor)const
+string FiberItem::ToCpp(CodeVisitor const& visitor) const
 {
     md(visitor);
     mb;
@@ -66,18 +66,18 @@ FiberCode::FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&item
 
 p_implementation(FiberCode, Size, size){ return items.Last->size; };
 
-p_implementation(FiberCode, Externals, exts)
+p_implementation(FiberCode, Closure, closure)
 {
-    auto itemExts = items
-        .Select<Externals>([&](Ref<FiberItem> item)
+    auto itemClosure = items
+        .Select<Closure>([&](Ref<FiberItem> item)
             {
-                return item->exts;
+                return item->closure;
             });
-    return head->exts + Externals::Aggregate(itemExts);
+    return head->closure + Closure::Aggregate(itemClosure);
 };
 
 
-Ref<FiberCode> const FiberCode::operator+(Array<Ref<FiberItem>> const&items) const
+Ref<FiberCode> FiberCode::operator+(Array<Ref<FiberItem>> const&items) const
 {
     return *head + (this->items + items);
 }
@@ -96,7 +96,7 @@ p_implementation(FiberCode, bool, IsValid) {
     return true;
 };
 
-Optional<Ref<CodeItem>> const FiberCode::ReplaceImpl(ReplaceVisitor const&visitor) const
+Optional<Ref<CodeItem>> FiberCode::ReplaceImpl(ReplaceVisitor const& visitor) const
 {
     auto newHead = head->Replace(visitor);
     Array<Optional<Ref<FiberItem>>> newItems = items
@@ -124,10 +124,10 @@ Optional<Ref<FiberCode>> FiberCode::ReCreate(Optional<Ref<CodeItem>> const&head,
     return *newHead + newItems;
 }
 
-String const FiberCode::ToCpp(CodeVisitor const&visitor) const{
+string FiberCode::ToCpp(CodeVisitor const& visitor) const{
     auto result = head->ToCpp(visitor);
     for(auto item :  items) 
-        result = item->ToCpp(visitor).Replace("$(arg)", result);
+        result = item->ToCpp(visitor)|HWLib::Replace(string("$(arg)"), result);
     return result;
 }
 
@@ -136,6 +136,6 @@ int FiberConnectorItem::nextObjectId = 0;
 
 p_virtual_header_implementation(FiberConnectorItem, int, inCount);
 p_virtual_header_implementation(FiberConnectorItem, Size, size);
-p_virtual_header_implementation(FiberConnectorItem, Externals, exts);
-p_virtual_header_implementation(FiberConnectorItem, String, prefix);
+p_virtual_header_implementation(FiberConnectorItem, Closure, closure);
+p_virtual_header_implementation(FiberConnectorItem, string, prefix);
 

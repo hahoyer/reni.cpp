@@ -28,11 +28,11 @@ namespace _HWLang{
 
             Optional<Ref<thisType>> const left;
             TokenClass const& tokenClass;
-            String const name;
+            string const name;
             Optional<Ref<thisType>> const right;
             bool const isMatch;
 
-            SimpleSyntax(Optional<Ref<thisType>> const left, TokenClass const& tokenClass, String const&name, Optional<Ref<thisType>> const right, bool isMatch)
+            SimpleSyntax(Optional<Ref<thisType>> const left, TokenClass const& tokenClass, string const&name, Optional<Ref<thisType>> const right, bool isMatch)
                 : left(left)
                   , tokenClass(tokenClass)
                   , name(name)
@@ -42,7 +42,7 @@ namespace _HWLang{
             }
 
         private:
-            p_function(Array<String>,DumpData) override{
+            p_function(Array<string>,DumpData) override{
                 return{
                     nd(left),
                     nd(tokenClass),
@@ -52,7 +52,7 @@ namespace _HWLang{
                 };
             }
 
-            p_function(String,DumpShort) override{
+            p_function(string,DumpShort) override{
                 auto result = name;
                 if(!left.IsEmpty)
                     result = "<" + HWLib::DumpShort(left) + ">" + result;
@@ -87,7 +87,7 @@ namespace _HWLang{
             };
 
         private:
-            p_function(Array<String>,DumpData) override{
+            p_function(Array<string>,DumpData) override{
                 return{};
             };
         };
@@ -96,15 +96,15 @@ namespace _HWLang{
         static TokenClass const& End;
         static TokenClass const& Number;
         static TokenClass const& Text;
-        static TokenClass const& GetTokenClass(String const&name);
-        static TokenClass const& GetErrorClass(String const&name);
+        static TokenClass const& GetTokenClass(string const&name);
+        static TokenClass const& GetErrorClass(string const&name);
 
         class ScannerInstance final : public HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Util::Scanner>{
             using baseType = HWLang::ScannerInstance<HWLang::Token<TokenClass>, SimpleTokenFactory, Util::Scanner>;
             using thisType = ScannerInstance;
         public:
 
-            ScannerInstance(String const&text)
+            ScannerInstance(string const&text)
                 :baseType(Source::FromText(text)){
                 SetDumpString();
             };

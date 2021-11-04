@@ -31,10 +31,10 @@ namespace Reni
                 && isSetter == other.isSetter;
         };
 
-        p(String,cppCode);
-        p(String, cppDeclaration);
+        p(string,cppCode);
+        p(string, cppDeclaration);
     private:
-        p_function(Array<String>, DumpData) override
+        p_function(Array<string>, DumpData) override
         {
             return
                 {

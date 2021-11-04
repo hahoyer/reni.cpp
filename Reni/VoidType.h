@@ -19,6 +19,6 @@ namespace Reni{
     private:
         p_function(Size,size) override { return 0; };
         p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(bool, hllw) { return true; };
+        p_function(bool, hollow) { return true; };
     };
 }

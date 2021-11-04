@@ -1,7 +1,7 @@
 #include "Import.h"
 #include "PrioTable.h"
 #include "PrioTableConst.h"
-#include "../HWLib/String.h"
+#include "../HWLib/string.h"
 
 using namespace HWLang;
 using namespace HWLib;
@@ -9,230 +9,248 @@ using namespace HWLib;
 
 PrioTable::PrioTable()
 {
-    SetDumpString();
+  SetDumpString();
 }
 
 
-PrioTable::PrioTable(PrioTable const&other)
-: tokens(other.tokens)
-, data(other.data)
+PrioTable::PrioTable(const PrioTable& other)
+  : tokens(other.tokens)
+    , data(other.data)
 {
-    SetDumpString();
+  SetDumpString();
 };
 
-PrioTable::PrioTable(Tag tag, Array<String> const&tokens)
-: tokens(tokens)
-, data(AllocData(tokens.Count, [=](size_t, size_t){return tag; }))
+PrioTable::PrioTable(Tag tag, const Array<string>& tokens)
+  : tokens(tokens)
+    , data(AllocData(tokens.Count, [=](size_t, size_t) { return tag; }))
 {
-    SetDumpString();
+  SetDumpString();
 }
 
 PrioTable::PrioTable(
-    Array<String>const& tokens,
-    Array<Array<Tag>> const&base,
-    TagTable const& subTable,
-    size_t leftCount)
-    : tokens(tokens)
-    , data(AllocData(tokens.Count, [=,&base,&subTable](size_t i, size_t j){return PrioChar(base, subTable, leftCount, i, j); }))
+  const Array<string>& tokens,
+  const Array<Array<Tag>>& base,
+  const TagTable& subTable,
+  size_t leftCount)
+  : tokens(tokens)
+    , data(AllocData(tokens.Count, [=,&base,&subTable](size_t i, size_t j) { return PrioChar(base, subTable, leftCount, i, j); }))
 {
-    SetDumpString();
+  SetDumpString();
 };
 
-PrioTable const PrioTable::Left(Array<String> const& tokens)const {
-    return PrioTable(
-        AllocTokens({ this->tokens, tokens }),
-        data,
-        LeftTable,
-        0);
+PrioTable PrioTable::Left(const Array<string>& tokens) const
+{
+  return PrioTable(
+    AllocTokens({this->tokens, tokens}),
+    data,
+    LeftTable,
+    0);
 }
 
-PrioTable const PrioTable::Right(Array<String> const& tokens)const {
-    return PrioTable(
-        AllocTokens({ this->tokens, tokens }),
-        data,
-        RightTable,
-        0);
+PrioTable PrioTable::Right(const Array<string>& tokens) const
+{
+  return PrioTable(
+    AllocTokens({this->tokens, tokens}),
+    data,
+    RightTable,
+    0);
 }
 
-PrioTable const PrioTable::CreateLeft(Array<String> const& tokens){
-    return PrioTable(LowerTag, tokens);
+PrioTable PrioTable::CreateLeft(const Array<string>& tokens)
+{
+  return PrioTable(LowerTag, tokens);
 }
 
-PrioTable const PrioTable::CreateRight(Array<String> const& tokens){
-    return PrioTable(HigherTag, tokens);
+PrioTable PrioTable::CreateRight(const Array<string>& tokens)
+{
+  return PrioTable(HigherTag, tokens);
 }
 
-PrioTable const PrioTable::ParenthesisLevelLeft(Array<String> leftToken, Array<String> rightToken)const{
-    return Level(ParenthesisTableLeft, leftToken, rightToken);
+PrioTable PrioTable::ParenthesisLevelLeft(Array<string> leftToken, Array<string> rightToken) const
+{
+  return Level(ParenthesisTableLeft, leftToken, rightToken);
 }
 
-PrioTable const PrioTable::ParenthesisLevelRight(Array<String> leftToken, Array<String> rightToken)const{
-    return Level(ParenthesisTableRight, leftToken, rightToken);
+PrioTable PrioTable::ParenthesisLevelRight(Array<string> leftToken, Array<string> rightToken) const
+{
+  return Level(ParenthesisTableRight, leftToken, rightToken);
 }
 
-PrioTable const PrioTable::ThenElseLevel(Array<String> leftToken, Array<String> rightToken)const{
-    return Level(ThenElseTable, leftToken, rightToken);
+PrioTable PrioTable::ThenElseLevel(Array<string> leftToken, Array<string> rightToken) const
+{
+  return Level(ThenElseTable, leftToken, rightToken);
 }
 
-PrioTable const PrioTable::Level(TagTable const& subTable, Array<String> const&leftToken, Array<String>const&rightToken)const {
-    return PrioTable(AllocTokens({ leftToken, tokens, rightToken }), data, subTable, static_cast<size_t>(leftToken.Count));
+PrioTable PrioTable::Level(const TagTable& subTable, const Array<string>& leftToken,
+                           const Array<string>& rightToken) const
+{
+  return PrioTable(AllocTokens({leftToken, tokens, rightToken}), data, subTable, static_cast<size_t>(leftToken.Count));
 }
 
-PrioTableConst::Tag const PrioTable::Relation(String const&newTokenName, String const&recentTokenName)const{
-    return Relation(Index(newTokenName), Index(recentTokenName));
+Tag PrioTable::Relation(const string& newTokenName, const string& recentTokenName) const
+{
+  return Relation(Index(newTokenName), Index(recentTokenName));
 }
 
-p_implementation(PrioTable, Array<String>, DumpData){
-    if (Count == 0)
-        return{nd(Count)};
+p_implementation(PrioTable, Array<string>, DumpData)
+{
+  if(Count == 0)
+    return {nd(Count)};
 
-    auto maxlen = tokens.Select<size_t>([](String const&t){return t.Count; })->Max().Value;
-    auto head0 = String().CastLeft(maxlen);
-    head0 += "    ";
-    auto head1 = head0;
-    String result;
-    for (auto i = 0; i < Count; i++){
-        auto ii = HWLib::Dump(i + 10000);
-        head0 += ii[3];
-        head1 += ii[4];
-        result += tokens[i].CastLeft(maxlen) + " " + ii.Part(3) + " ";
-        for (auto j = 0; j < Count; j++)
-            result += String(data[i][j].value);
-        result += "\n";
-    }
-    return{ "\n" + head0 + "\n" + head1 + "\n" + result };
+  const auto maxlength = tokens.Select<size_t>([](const string& t) { return t.size(); })->Max().Value;
+  auto head0 = string() | CastLeft(maxlength);
+  head0 += "    ";
+  auto head1 = head0;
+  string result;
+  for(auto i = 0; i < Count; i++)
+  {
+    auto ii = HWLib::Dump(i + 10000);
+    head0 += ii[3];
+    head1 += ii[4];
+    result += (tokens[i] | CastLeft(maxlength)) + " " + ii.substr(3) + " ";
+    for(auto j = 0; j < Count; j++)
+      result += string(1, data[i][j].value);
+    result += "\n";
+  }
+  return {"\n" + head0 + "\n" + head1 + "\n" + result};
 }
 
 bool PrioTable::Trace = false;
 
 
-String const HWLib::Dump(Array<Array<Tag const>const> data){
-    String head0 = "\n .- ";
-    String head1 = "\n |  ";
-    String result;
-    for (auto i = 0; i < data.Count; i++){
-        auto ii = HWLib::Dump(i + 10000);
-        head0 += ii[3];
-        head1 += ii[4];
-        result += String(" ") + ii.Part(3) + " ";
-        for (auto j = 0; j < data.Count; j++)
-            result += String(data[i][j].value);
-        result += "\n";
-    }
-    return (head0 + head1 + "\n" + result).Indent();
+string HWLib::Dump(Array<const Array<const Tag>> data)
+{
+  string head0 = "\n .- ";
+  string head1 = "\n |  ";
+  string result;
+  for(auto i = 0; i < data.Count; i++)
+  {
+    auto ii = Dump(i + 10000);
+    head0 += ii[3];
+    head1 += ii[4];
+    result += string(" ") + (ii.substr(3)) + " ";
+    for(auto j = 0; j < data.Count; j++)
+      result += string(1, data[i][j].value);
+    result += "\n";
+  }
+  return head0 + head1 + "\n" + result | Indent();
 };
 
 
-String const HWLib::Dump(TagTable const&data){
-    auto count = size_t(data.size());
-    a_is(count, == , 3);
+string HWLib::Dump(const TagTable& data)
+{
+  const auto count = data.size();
+  a_is(count, ==, 3);
 
-    char * * d = new char*[3];
-    auto i = 0;
-    for (auto l : data){
-        d[i] = new char[3];
-        auto j = 0;
-        for (auto ll : l){
-            d[i][j] = ll.value;
-            j++;
-        };
-        i++;
+  char* * d = new char*[3];
+  auto i = 0;
+  for(auto l : data)
+  {
+    d[i] = new char[3];
+    auto j = 0;
+    for(const auto ll : l)
+    {
+      d[i][j] = ll.value;
+      j++;
     };
+    i++;
+  };
 
-    String head0 = "\n .- ";
-    String head1 = "\n |  ";
-    String result;
-    for (auto i = 0; i < count; i++){
-        auto ii = HWLib::Dump(i + 10000);
-        head0 += ii[3];
-        head1 += ii[4];
-        result += String(" ") + ii.Part(3) + " ";
-        for (auto j = 0; j < count; j++)
-            result += String(d[i][j]);
-        result += "\n";
-    };
+  string head0 = "\n .- ";
+  string head1 = "\n |  ";
+  string result;
+  for(auto i = 0; i < count; i++)
+  {
+    auto ii = Dump(i + 10000);
+    head0 += ii[3];
+    head1 += ii[4];
+    result += string(" ") + ii.substr(3) + " ";
+    for(auto j = 0; j < count; j++)
+      result += string(1, d[i][j]);
+    result += "\n";
+  };
 
-    return (head0 + head1 + "\n" + result).Indent();
+  return head0 + head1 + "\n" + result | Indent();
 };
 
 
-size_t const PrioTable::Index(String const&name)const
+size_t PrioTable::Index(const string& name) const
 {
-    for (auto i = 0; i < Count; i++)
-        if (tokens[i] == name)
-            return (i);
+  for(auto i = 0; i < Count; i++)
+    if(tokens[i] == name)
+      return i;
 
-    for (auto i = 0; i < Count; i++)
-        if (tokens[i] == PrioTableConst::Any)
-            return (i);
+  for(auto i = 0; i < Count; i++)
+    if(tokens[i] == Any)
+      return i;
 
-    throw MissingFallbackEntryException();
-
+  throw MissingFallbackEntryException();
 }
 
-PrioTableConst::Tag const PrioTable::Relation(size_t newIndex, size_t recentIndex)const
+Tag PrioTable::Relation(size_t newIndex, size_t recentIndex) const
 {
-    a_is(tokens[newIndex], != , PrioTableConst::Start);
-    a_is(tokens[recentIndex], != , PrioTableConst::End);
-    return data[newIndex][recentIndex];
+  a_is(tokens[newIndex], !=, PrioTableConst::Start);
+  a_is(tokens[recentIndex], !=, PrioTableConst::End);
+  return data[newIndex][recentIndex];
 }
 
-Array<String> const PrioTable::AllocTokens(Array<Array<String>> const &tokens)
+Array<string> PrioTable::AllocTokens(const Array<Array<string>>& tokens)
 {
-    return tokens.ConvertMany<String>()->ToArray;
+  return tokens.ConvertMany<string>()->ToArray;
 }
 
-Array<Array<Tag>> const PrioTable::AllocData(size_t count, function<Tag(size_t, size_t)> getData)
+Array<Array<Tag>> PrioTable::AllocData(size_t count, function<Tag(size_t, size_t)> getData)
 {
-    return Numbers(count)
-        ->Select<Array<Tag>>
-        ([=](size_t i)
-            {
-                return Numbers(count)
+  return Numbers(count)
+         ->Select<Array<Tag>>
+         ([=](size_t i)
+           {
+             return Numbers(count)
                     ->Select<Tag>
                     ([=](size_t j)
-                        {
-                            return getData(i, j);
-                        }
+                      {
+                        return getData(i, j);
+                      }
                     )
                     ->ToArray;
-            }
-        )
-        ->ToArray;
+           }
+         )
+         ->ToArray;
 }
 
-Tag const PrioTable::PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, size_t leftCount, size_t i, size_t j)
+Tag PrioTable::PrioChar(const Array<Array<Tag>>& base, const TagTable& subTable, size_t leftCount, size_t i,
+                        size_t j)
 {
-    d_here;
-    fd(base, subTable, leftCount, i, j);
+  d_here;
+  fd(base, subTable, leftCount, i, j);
 
-    auto baseCount = base.Count;
-    auto iGroup = FindGroup(i, { leftCount, baseCount });
-    auto jGroup = FindGroup(j, { leftCount, baseCount });
+  auto baseCount = base.Count;
+  const auto iGroup = FindGroup(i, {leftCount, baseCount});
+  const auto jGroup = FindGroup(j, {leftCount, baseCount});
 
-    if (iGroup == 1 && jGroup == 1)
-        return_d(base[i - leftCount][j - leftCount]);
+  if(iGroup == 1 && jGroup == 1)
+    return_d(base[i - leftCount][j - leftCount]);
 
-    if (iGroup == 2 && jGroup == 0)
-    {
-        auto result =
-            i - leftCount - baseCount < j ?
-                PrioTableConst::HigherTag :
-                PrioTableConst::LowerTag;
-        return_d(result);
-    }
-    return_d((subTable.begin()[iGroup]).begin()[jGroup]);
+  if(iGroup == 2 && jGroup == 0)
+  {
+    auto result =
+      i - leftCount - baseCount < j
+        ? HigherTag
+        : LowerTag;
+    return_d(result);
+  }
+  return_d((subTable.begin()[iGroup]).begin()[jGroup]);
 };
 
-size_t PrioTable::FindGroup(size_t i, Array<size_t>const&counts)
+size_t PrioTable::FindGroup(size_t i, const Array<size_t>& counts)
 {
-    auto result = 0;
-    for (auto count : counts)
-    {
-        i -= count;
-        if (i < 0)
-            return result;
-        result++;
-    };
-    return result;
+  size_t result = 0;
+  for(const auto count : counts)
+  {
+    i -= count;
+    if(i < 0)
+      return result;
+    result++;
+  };
+  return result;
 }

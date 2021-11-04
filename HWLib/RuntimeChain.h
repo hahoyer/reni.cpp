@@ -21,7 +21,7 @@ namespace HWLib{
                 return !!current;
             };
 
-            dataType const Step() override;
+            dataType Step() override;
         };
 
         static RuntimeChain const* begin;
@@ -47,7 +47,7 @@ namespace HWLib{
     }
 
     template<class T>
-    typename T::dataType const RuntimeChain<T>::Iterator::Step() {
+    typename T::dataType RuntimeChain<T>::Iterator::Step() {
         auto result = current->data;
         current = current->next;
         return result;

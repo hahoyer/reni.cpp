@@ -20,7 +20,7 @@ public:
   { }
 };
 
-void CompilerTest::Check(const String& text, const String expectedResult)
+void CompilerTest::Check(const string& text, const string& expectedResult)
 {
   CompilerTest ct = text;
   Compiler& co = ct.compiler;

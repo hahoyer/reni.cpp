@@ -21,13 +21,13 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(String, SmartDump) override{ return part; };
+        p_function(string, SmartDump) override{ return part; };
         p_function(int, priority) override{ return -2; }
 
-        ResultData const GetResultData(Context const&context, Category category)const override{
+        ResultData GetResultData(const Context& context, Category const& category)const override{
             return tokenClass.GetResultData(context, category, part);
         }
 
-        Optional<Ref<Syntax>> const Replace(SyntaxArgVisitor const&visitor) const override{ return tokenClass.Replace(visitor); };
+        Optional<Ref<Syntax>> Replace(SyntaxArgVisitor const&visitor) const override{ return tokenClass.Replace(visitor); };
     };
 };

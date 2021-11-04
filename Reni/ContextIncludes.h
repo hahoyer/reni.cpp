@@ -71,7 +71,7 @@ namespace Reni
         ThisRef;
 
     private:
-        p_function(Array<String>, DumpData) override
+        p_function(Array<string>, DumpData) override
         {
             return{
                 nd(context),
@@ -79,7 +79,7 @@ namespace Reni
             };
         };
 
-        p_function(bool, hllw) { return true; };
+        p_function(bool, hollow) { return true; };
         p_function(Size, size) override{ return 0; }
         p_function(WeakRef<Global>, global)override;
     };
@@ -97,8 +97,8 @@ namespace Reni
         }
 
     private:
-        p_function(Array<String>, DumpData) override{return{nd(parent)};}
-        p_function(bool, hllw) { return size == 0; };
+        p_function(Array<string>, DumpData) override{return{nd(parent)};}
+        p_function(bool, hollow) { return size == 0; };
         p_function(Size,size) override;
         p_function(WeakRef<Global>, global) override;
     };

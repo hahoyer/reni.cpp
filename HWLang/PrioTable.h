@@ -23,22 +23,22 @@ namespace HWLang
         PrioTable(PrioTable const&other);
 
     private:
-        PrioTable(Tag tag, Array<String> const&tokens);
+        PrioTable(Tag tag, Array<string> const&tokens);
         PrioTable(
-            Array<String>const& tokens,
+            Array<string>const& tokens,
             Array<Array<Tag>> const&base,
             TagTable const& subTable,
             size_t leftCount);
     public:
         DefaultAssignmentOperator;
 
-        PrioTable const Left(Array<String> const& tokens)const;
-        PrioTable const Right(Array<String> const& tokens)const;
-        static PrioTable const CreateLeft(Array<String> const& tokens);
-        static PrioTable const CreateRight(Array<String> const& tokens);
-        PrioTable const ParenthesisLevelRight(Array<String> leftToken, Array<String> rightToken)const;
-        PrioTable const ParenthesisLevelLeft(Array<String> leftToken, Array<String> rightToken)const;
-        PrioTable const ThenElseLevel(Array<String> leftToken, Array<String> rightToken)const;
+        PrioTable Left(Array<string> const& tokens) const;
+        PrioTable Right(Array<string> const& tokens) const;
+        static PrioTable CreateLeft(Array<string> const& tokens);
+        static PrioTable CreateRight(Array<string> const& tokens);
+        PrioTable ParenthesisLevelRight(Array<string> leftToken, Array<string> rightToken) const;
+        PrioTable ParenthesisLevelLeft(Array<string> leftToken, Array<string> rightToken) const;
+        PrioTable ThenElseLevel(Array<string> leftToken, Array<string> rightToken) const;
 
         // <summary>
         //     Define a prio table that adds a parenthesis level.
@@ -62,24 +62,26 @@ namespace HWLang
         // <param name="rToken"> list of strings that play the role of right parenthesis </param>
         // <returns> </returns>
         
-        PrioTable const Level(TagTable const& subTable, Array<String> const&leftToken, Array<String>const&rightToken)const;
-        Tag const Relation(String const&newTokenName, String const&recentTokenName)const;
-        p_function(Array<String>,DumpData) override;
+        PrioTable Level(TagTable const& subTable, Array<string> const& leftToken,
+                        Array<string> const& rightToken) const;
+        Tag Relation(string const& newTokenName, string const& recentTokenName) const;
+        p_function(Array<string>,DumpData) override;
 
         static bool Trace;
 
     private:
-        Array<String> const tokens;
+        Array<string> const tokens{};
         Array<Array<Tag>> const data;
 
         p(size_t, Count){ return tokens.Count; };
 
-        size_t const Index(String const&name)const;
-        Tag const Relation(size_t newIndex, size_t recentIndex)const;
+        size_t Index(string const& name) const;
+        Tag Relation(size_t newIndex, size_t recentIndex) const;
         
-        static Array<String>const AllocTokens(Array<Array<String>> const &tokens);
-        static Array<Array<Tag>> const AllocData(size_t count, function<Tag(size_t, size_t)> getData);
-        static Tag const PrioChar(Array<Array<Tag>> const&base, TagTable const& subTable, size_t leftCount, size_t i, size_t j);
+        static Array<string> AllocTokens(Array<Array<string>> const& tokens);
+        static Array<Array<Tag>> AllocData(size_t count, function<Tag(size_t, size_t)> getData);
+        static Tag PrioChar(Array<Array<Tag>> const& base, TagTable const& subTable, size_t leftCount, size_t i,
+                            size_t j);
         static size_t FindGroup(size_t i, Array<size_t>const&counts);
     };
 

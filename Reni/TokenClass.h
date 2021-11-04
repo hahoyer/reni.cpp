@@ -31,7 +31,7 @@ namespace Reni
 
         virtual Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const = 0;
     private:
-        p_function(Array<String>, DumpData) override{ return{}; };
+        p_function(Array<string>, DumpData) override{ return{}; };
     };
 
     class TerminalTokenClass : public TokenClass{

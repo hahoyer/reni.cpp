@@ -5,77 +5,122 @@
 #include "DefaultAssignmentOperator.h"
 #include "Properties.h"
 #include <string>
+#include "ExtensionMethodBase.h"
 
 namespace HWLib
 {
-    template<typename T> class Optional;
+  template <typename T>
+  class Optional;
 
-    class String final
+  class String final
+  {
+    using thisType = String;
+    std::string _data;
+  public:
+    String();
+    String(char data);
+    String(const char* data);
+    String(size_t count, const char* data);
+    String(const std::string& other);
+    String(const Array<const char>& other);
+
+    DefaultAssignmentOperator;
+
+    p(size_t, Count) { return _data.length(); }
+    p(size_t, HashCode);
+    p(String, Quote) { return GetQuote(Data); };
+    p(std::string, Data) { return _data; };
+    p(char const*, RawData);
+    p(char *, RawDataCopy);
+
+    static bool BeginsWith(const std::string& target, std::string expected);
+    static auto CastLeft(const std::string& target, size_t count, char padChar) -> std::string;
+    static auto CastRight(const std::string& target, size_t count, char padChar) -> std::string;
+    static bool Contains1(const std::string& target, char expected, size_t start);
+    static bool Contains(const std::string& target, std::string expected, size_t start);
+    static bool EndsWith(const std::string& target, std::string expected);
+
+    static Optional<size_t> Find(const std::string& target, std::string expected, size_t start);
+    String operator+(const String& other) const { return String(Data + other.Data); };
+    char operator[](size_t index) const;
+    bool operator==(const String& other) const;
+    bool operator<(const String& other) const;
+    void operator+=(const String& other);
+    static std::string Replace(const std::string& target, std::string oldValue, std::string newValue);
+    static CtrlRef<Enumerable<std::string>> Split(const std::string& target, std::string delimiter);
+
+    static std::string Convert(bool value);
+    static std::string Convert(int value, int radix = 10) { return Convert(static_cast<long long>(value), radix); };
+
+    static std::string Convert(unsigned __int32 value, int radix = 10)
     {
-        using thisType = String;
-        std::string _data;
-    public:
-        String();
-        String(char const data);
-        String(char const* data);
-        String(size_t count, char const* data);
-        String(std::string const & other);
-        String(Array<char const> const& other);
-
-        DefaultAssignmentOperator;
-
-        p(size_t,       Count      ){ return _data.length(); }
-        p(size_t,        HashCode   );
-        p(String,         Quote      );
-        p(char const*,     RawData    );
-        p(char *,           RawDataCopy);
-        p(Array<char const>, ToArray  );
-
-        bool    const BeginsWith(String const& target, size_t start = 0)const;
-        String   const CastLeft  (size_t count, char padChar = ' ')const;
-        String    const CastRight (size_t           count, char padChar = ' ')const;
-        bool       const Contains  (char const&   target, size_t start = 0)const;
-        bool        const Contains  (String const& target, size_t start = 0)const;
-        bool         const EndsWith  (String const& target)const;
-        Optional<size_t> const Find      (String const& target, size_t start = 0)const;
-        String         const Indent    (bool          isLineStart = false, size_t count = 1, String const &tabString = "    ")const;
-        String          const operator+ (String const& other)const;
-        String           const operator* (size_t           count)const;
-        char              const operator[](size_t           count)const;
-        bool               const operator==(String const& other)const;
-        bool                const operator< (String const& other)const;
-        void                       operator+=(String const& other);
-        String                const Part    (size_t           start, size_t length)const;
-        String                 const Part   (size_t           start)const;
-        String                  const Replace(String const& oldValue, String const&newValue)const;
-        CtrlRef<Enumerable<String> > const Split(String const& delimiter)const;
-
-        static String const Convert(bool             value);
-        static String const Convert(int              value, int radix = 10){return Convert(static_cast<long long>(value), radix);};
-        static String const Convert(unsigned __int32 value, int radix = 10){return Convert(static_cast<long long>(value), radix);};
-        static String const Convert   (unsigned __int64 value, int radix = 10);
-        static String const Convert    (__int64         value, int radix = 10);
-        static String const FilePosition(String const&  fileName, size_t line, size_t column, String const&flag);
-        static String const Surround   (String const&  left, Array<String> const&list, String const&right, int maxCount = 100);
-        static String const Stringify(Enumerable<String> const&list, String const&delimiter);
+      return Convert(static_cast<long long>(value), radix);
     };
+    static std::string Convert(unsigned __int64 value, int radix = 10);
+    static std::string Convert(__int64 value, int radix = 10);
+    static std::string Surround(const std::string& left, const Enumerable<std::string>& list, const std::string& right,
+                                int maxCount = 100);
+    static std::string Stringify(const Enumerable<std::string>& list, std::string delimiter);
 
-    static String const operator+ (char const*left, String const& right){ return String(left) + right; };
+    static std::string FilePosition(const std::string& fileName, size_t line, size_t column, std::string flag);
+    static std::string Indent(const std::string& target, bool isLineStart, size_t count, std::string tabString);
+    static std::string GetQuote(const std::string& target);
+    static Array<const char> GetToArray(const std::string& target);
+  };
+
+  static String operator+(const char* left, const String& right) { return String(left) + right; };
+
+  std::string operator*(const std::string&, size_t count);
+
+  inline auto FilePosition(size_t line, size_t column, const std::string& flag)
+  {
+    return Pivot(&String::FilePosition, line, column, flag);
+  }
+
+  inline auto FilePosition(size_t line, size_t column)
+  {
+    return Pivot(&String::FilePosition, line, column, std::string());
+  }
+
+  inline auto Indent(bool isLineStart = false, size_t count = 1, const std::string& tabString = "    ")
+  {
+    return Pivot(&String::Indent, isLineStart, count, tabString);
+  }
+
+  inline auto Split(std::string delimiter) { return Pivot(&String::Split, delimiter); }
+  inline auto Quote() { return Pivot(&String::GetQuote); }
+  inline auto ToArray() { return Pivot(&String::GetToArray); }
+  inline auto BeginsWith(std::string expected) { return Pivot(&String::BeginsWith, expected); }
+  inline auto CastLeft(size_t count, char padChar = ' ') { return Pivot(&String::CastLeft, count, padChar); }
+  inline auto CastRight(size_t count, char padChar = ' ') { return Pivot(&String::CastRight, count, padChar); }
+  inline auto Contains(char expected, size_t start = 0) { return Pivot(&String::Contains1, expected, start); }
+  inline auto Contains(std::string expected, size_t start = 0) { return Pivot(&String::Contains, expected, start); }
+  inline auto EndsWith(std::string expected) { return Pivot(&String::EndsWith, expected); }
+  inline auto Replace(std::string oldValue, std::string newValue) { return Pivot(&String::Replace, oldValue, newValue); }
+  function<Optional<size_t> (const std::string&)> Find(std::string expected, size_t start = 0);
+  inline auto Stringify(std::string delimiter) { return Pivot(&String::Stringify, delimiter); }
 }
 
-namespace std {
-    template <>
-    struct hash<String const>{
-        size_t operator()(String const& key) const{
-            return key.HashCode;
-        }
-    };
+namespace std
+{
+  template <>
+  struct hash<const String>
+  {
+    size_t operator()(const String& key) const
+    {
+      return key.HashCode;
+    }
+  };
 
-    template <>
-    struct hash<String >{
-        size_t operator()(String const& key) const{
-            return key.HashCode;
-        }
-    };
+  template <>
+  struct hash<String>
+  {
+    size_t operator()(const String& key) const
+    {
+      return key.HashCode;
+    }
+  };
 }
+
+
 //#pragma message(__FILE__ "(" STRING(__LINE__) "):")

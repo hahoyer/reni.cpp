@@ -1,6 +1,6 @@
 #include "Import.h"
 #include "Category.h"
-#include "..\HWLib\String.h"
+#include "..\HWLib\string.h"
 
 static bool Trace = true;
 
@@ -8,28 +8,28 @@ using namespace HWLib;
 using namespace Util;
 
 Category const Category::None(false, false, false, false, false);
-Category const Category::Hllw(true, true, false, false, false);
+Category const Category::Hollow(true, true, false, false, false);
 Category const Category::Size(false, true, false, false, false);
 Category const Category::Code(false, false, true, false, false);
 Category const Category::Type(false, false, false, true, false);
-Category const Category::Exts(false, false, false, false, true);
+Category const Category::Closure(false, false, false, false, true);
 
-Category const Category::Instance(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts)
+Category Category::Instance(bool hasHollow, bool hasSize, bool hasCode, bool hasType, bool hasClosure)
 {
-    return Category(hasHllw, hasSize, hasCode, hasType, hasExts);
+    return Category(hasHollow, hasSize, hasCode, hasType, hasClosure);
 };
 
 Category::Category(Category const& other)
-    : thisType(other.hasHllw, other.hasSize, other.hasCode, other.hasType, other.hasExts)
+    : thisType(other.hasHollow, other.hasSize, other.hasCode, other.hasType, other.hasClosure)
 {
 };
 
-Category::Category(bool hasHllw, bool hasSize, bool hasCode, bool hasType, bool hasExts)
-    : hasHllw(hasHllw)
+Category::Category(bool hasHollow, bool hasSize, bool hasCode, bool hasType, bool hasClosure)
+    : hasHollow(hasHollow)
     , hasSize(hasSize)
     , hasCode(hasCode)
     , hasType(hasType)
-    , hasExts(hasExts)
+    , hasClosure(hasClosure)
 {
     SetDumpString();
 };
@@ -46,69 +46,69 @@ p_implementation(Category, Category, replenished)
     auto result = *this;
     if (result.hasCode)
     {
-        result |= Hllw;
+        result |= Hollow;
         result |= Size;
-        result |= Exts;
+        result |= Closure;
     }
 
     if (result.hasType)
     {
-        result |= Hllw;
+        result |= Hollow;
         result |= Size;
     }
 
     if (result.hasSize)
-        result |= Hllw;
+        result |= Hollow;
 
     return result;
 }
 
-Category const Category::operator|(Category const other)const
+Category Category::operator|(Category const& other) const
 {
     return Category(
-        hasHllw || other.hasHllw,
+        hasHollow || other.hasHollow,
         hasSize || other.hasSize,
         hasCode || other.hasCode,
         hasType || other.hasType,
-        hasExts || other.hasExts
+        hasClosure || other.hasClosure
     );
 }
 
-Category const Category::operator&(Category const other) const
+Category Category::operator&(Category const& other) const
 {
     return Category(
-        hasHllw && other.hasHllw,
+        hasHollow && other.hasHollow,
         hasSize && other.hasSize,
         hasCode && other.hasCode,
         hasType && other.hasType,
-        hasExts && other.hasExts
+        hasClosure && other.hasClosure
     );
 }
 
-Category const Category::operator-(Category const other)const
+Category Category::operator-(Category const& other) const
 {
     return Category(
-        hasHllw && !other.hasHllw,
+        hasHollow && !other.hasHollow,
         hasSize && !other.hasSize,
         hasCode && !other.hasCode,
         hasType && !other.hasType,
-        hasExts && !other.hasExts
+        hasClosure && !other.hasClosure
     );
 }
 
-bool Category::operator==(Category const other)const
+bool Category::operator==(Category const& other)const
 {
-    return hasHllw == other.hasHllw
+    return hasHollow == other.hasHollow
         && hasSize == other.hasSize
         && hasCode == other.hasCode
         && hasType == other.hasType
-        && hasExts == other.hasExts
+        && hasClosure == other.hasClosure
         ;
 }
 
-bool Category::operator<=(Category const other)const
+bool Category::operator<=(Category const& other)const
 {
-    if(hasHllw && !other.hasHllw)
+    if(hasHollow && !other.hasHollow)
         return false;
     if(hasSize && !other.hasSize)
         return false;
@@ -116,24 +116,24 @@ bool Category::operator<=(Category const other)const
         return false;
     if (hasType && !other.hasType)
         return false;
-    if (hasExts && !other.hasExts)
+    if (hasClosure && !other.hasClosure)
         return false;
     return true;
 }
 
-p_implementation(Category, Array<String>, DumpData)
+p_implementation(Category, Array<string>, DumpData)
 {
-    auto result =
+  const auto result =
         _({
-            hasHllw ? String("Hllw") : "",
-            hasSize ? String("Size") : "",
-            hasCode ? String("Code") : "",
-            hasType ? String("Type") : "",
-            hasExts ? String("Exts") : ""
+            hasHollow ? string("Hollow") : "",
+            hasSize ? string("Size") : "",
+            hasCode ? string("Code") : "",
+            hasType ? string("Type") : "",
+            hasClosure ? string("Closure") : ""
         });
 
 
-    auto r2 = result.Where([](String element)
+    auto r2 = result.Where([](string element)
         {
             return element != "";
         })->Stringify(",");

@@ -22,7 +22,7 @@ ExpressionSyntax::ExpressionSyntax(DefineableToken const& tokenClass, Optional<R
     SetDumpString();
 };
 
-p_implementation(ExpressionSyntax, String, SmartDump)
+p_implementation(ExpressionSyntax, string, SmartDump)
 {
     return
         (left.IsEmpty? "" : (left.Value->SmartDumpFrame(priority)+ " "))
@@ -32,7 +32,7 @@ p_implementation(ExpressionSyntax, String, SmartDump)
 
 p_implementation(ExpressionSyntax, int, priority) { return tokenClass.priority; };
 
-ResultData const ExpressionSyntax::GetResultData(Context const&context, Category category)const
+ResultData ExpressionSyntax::GetResultData(const Context& context, Category const& category)const
 {
     if(left.IsEmpty)
     {
@@ -46,7 +46,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
 
     auto result = left
         .Value
-        ->Type(context)
+        ->GetType(context)
         ->thisRef
         .DeclarationsForType(tokenClass)
         .found
@@ -55,7 +55,7 @@ ResultData const ExpressionSyntax::GetResultData(Context const&context, Category
     return(result);
 }
 
-Optional<Ref<Syntax>> const ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const
+Optional<Ref<Syntax>> ExpressionSyntax::Replace(SyntaxArgVisitor const&visitor) const
 {
     Optional<Ref<Syntax>> newLeft;
     if(!left.IsEmpty)
@@ -67,7 +67,7 @@ Optional<Ref<Syntax>> const ExpressionSyntax::Replace(SyntaxArgVisitor const&vis
     if(newLeft.IsEmpty && newRight.IsEmpty)
         return{};
 
-    return new ExpressionSyntax(tokenClass, newLeft || left, part, newRight || right);
+    return Ref<Syntax>(new ExpressionSyntax(tokenClass, newLeft || left, part, newRight || right));
 }
 
 void ExpressionSyntax::AddTo(SyntaxContainer&main) const

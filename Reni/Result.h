@@ -9,59 +9,58 @@ using namespace std;
 
 namespace Reni
 {
-    class ResultCache 
-        : public DumpableObject
-        , public RefCountProvider
-    {
-        typedef DumpableObject baseType;
-        typedef ResultCache thisType;
-    protected:
-        mutable ResultData data;
-        mutable Category pending;
-    public:
-        pod<bool> Trace;
+  class ResultCache
+    : public DumpableObject
+      , public RefCountProvider
+  {
+    typedef DumpableObject baseType;
+    typedef ResultCache thisType;
+  protected:
+    mutable ResultData data;
+    mutable Category pending;
+  public:
+    pod<bool> Trace;
 
-        ResultCache();
+    ResultCache();
 
-        ThisRef;
-        p(bool, hllw);
-        p(Size, size);
-        p(Ref<CodeItem >, code);
-        p(WeakRef<Type>, type);
-        p(Externals, exts);
-        p(Optional<WeakRef<Type>>, cachedType);
+    ThisRef;
+    p(bool, hollow);
+    p(Size, size);
+    p(Ref<CodeItem >, code);
+    p(WeakRef<Type>, type);
+    p(Closure, closure);
+    p(Optional<WeakRef<Type>>, cachedType);
 
-        ResultData const operator &(Category category)const{ return Get(category); }
-        ResultData const Get(Category category)const;
-    private:
-        void Ensure(Category category)const;
-    protected:
-        p_function(Array<String>,DumpData) override;
-        p_virtual(bool, isRecursion) { return false; };
-        virtual ResultData const GetResultData(Category category)const = 0;
-        virtual ResultData const GetResultDataRecursive(Category category) const;
-    private:
-        p(Category, complete);
-    };
+    ResultData operator &(const Category& category) const { return Get(category); }
+    ResultData Get(const Category& category) const;
+  private:
+    void Ensure(const Category& category) const;
+  protected:
+    p_function(Array<string>, DumpData) override;
+    p_virtual(bool, isRecursion) { return false; };
+    virtual ResultData GetResultData(const Category& category) const = 0;
+    virtual ResultData GetResultDataRecursive(const Category& category) const;
+  private:
+    p(Category, complete);
+  };
 
 
-    class Syntax;
-    class Context;
-    class ResultFromSyntaxAndContext final : public ResultCache
-    {
-        typedef ResultCache baseType;
-        typedef ResultFromSyntaxAndContext thisType;
-    public:
-        Syntax const& syntax;
-        Context const&context;
-        ResultFromSyntaxAndContext(Syntax const& syntax, Context const&context);
+  class Syntax;
+  class Context;
 
-    private:
-        p_function(Array<String>,DumpData) override;
-        p_function(bool, isRecursion) override;
-        ResultData const GetResultData(Category category)const override;
-        ResultData const GetResultDataRecursive(Category category) const override;
-    };
+  class ResultFromSyntaxAndContext final : public ResultCache
+  {
+    typedef ResultCache baseType;
+    typedef ResultFromSyntaxAndContext thisType;
+  public:
+    const Syntax& syntax;
+    const Context& context;
+    ResultFromSyntaxAndContext(const Syntax& syntax, const Context& context);
 
+  private:
+    p_function(Array<string>, DumpData) override;
+    p_function(bool, isRecursion) override;
+    ResultData GetResultData(const Category& category) const override;
+    ResultData GetResultDataRecursive(const Category& category) const override;
+  };
 }
-

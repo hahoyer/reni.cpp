@@ -3,6 +3,7 @@
 #include "Type.h"
 #include "../Util/Size.h"
 
+class InstanceFunctionFeature;
 using namespace HWLib;
 using namespace Util;
 
@@ -23,19 +24,22 @@ namespace Reni
         ThisRef;
 
         template<class TTokenClass>
-        SearchResult<Feature> const DeclarationsForType() const;
+        SearchResult<Feature> DeclarationsForType() const;
         static Optional<WeakRef<thisType>> const Convert(Type const&target);
     private:
-        p_function(Array<String>, DumpData) override{return{ nd(*value) };};
-        p_function(bool, hllw) { return true; };
+        p_function(Array<string>,DumpData) override{return{ nd(*value) };};
+        p_function(bool, hollow) { return true; };
         p_function(Size, size) override{ return 0; }
         p_function(WeakRef<Global>, global) override{return value->global;}
-        SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
+        SearchResult<Feature> DeclarationsForType(DeclarationType const& token) const override;
     };
 };
 
 using namespace Reni;
 
 template<>
-SearchResult<Feature> const TypeType::DeclarationsForType<InstanceToken>() const;
+inline SearchResult<Feature> TypeType::DeclarationsForType<InstanceToken>() const
+{
+    return Feature::From<InstanceFunctionFeature>(*this);
+}
 

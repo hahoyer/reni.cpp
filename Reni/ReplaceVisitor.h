@@ -13,7 +13,7 @@ using namespace HWLib;
 
 namespace Reni
 {
-    class Externals;
+    class Closure;
     class FunctionCallContext;
     class Type;
     class CodeItem;
@@ -46,15 +46,15 @@ namespace Reni
         }
 
         void SetResults(External const&tag, ResultCache const& result);
-        Optional<Ref<ResultCache>> const GetResults(External const&tag)const;
-        Optional<Ref<CodeItem>> const GetCode(External const&tag)const;
-        Externals const GetExts(External const&tag)const;
+        Optional<Ref<ResultCache>> GetResults(External const& tag) const;
+        Optional<Ref<CodeItem>> GetCode(External const& tag) const;
+        Closure GetClosure(External const& tag) const;
 
         void Assume(External const&tag, Type const&type)const;
         void AssumeFunctionArg(External::Function const&tag, Type const&arg) const;
 
     private:
-        p_function(Array<String>, DumpData) override;
+        p_function(Array<string>, DumpData) override;
     };
 }
 

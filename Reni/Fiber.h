@@ -1,7 +1,7 @@
 #pragma once
 #include "CodeItem.h"
 #include "CodeVisitor.h"
-#include "Externals.h"
+#include "Closure.h"
 
 using namespace HWLib;
 using namespace Util;
@@ -20,9 +20,9 @@ namespace Reni{
         ThisRef;
         p_virtual(Size, argSize) { return 0; };
         p_virtual(Size, size) { return 0; };
-        p_virtual(Externals, exts){ return{}; };
-        virtual String const ToCpp(CodeVisitor const& visitor)const;
-        virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const;
+        p_virtual(Closure, closure){ return{}; };
+        virtual string ToCpp(CodeVisitor const& visitor) const;
+        virtual Optional<Ref<FiberItem>> Replace(ReplaceVisitor const& arg) const;
         static Array<Ref<FiberItem>> const CopyFromAddress(Type const& target);
     };
 
@@ -35,13 +35,13 @@ namespace Reni{
     public:
         FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&items);
     private:
-        virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
-        Ref<FiberCode> const operator+(Array<Ref<FiberItem>> const&items) const override;
-        p_function(Array<String>,DumpData) override{ return{nd(head), nd(items)}; };
+        virtual Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;
+        Ref<FiberCode> operator+(Array<Ref<FiberItem>> const&items) const override;
+        p_function(Array<string>,DumpData) override{ return{nd(head), nd(items)}; };
         p_function(Size,size) override;
-        p_function(Externals, exts)override;
+        p_function(Closure, closure)override;
         Optional<Ref<FiberCode>> ReCreate(Optional<Ref<CodeItem>> const& head, Array<Optional<Ref<FiberItem>>> const& items)const;
-        virtual String const ToCpp(CodeVisitor const&) const override;
+        virtual string ToCpp(CodeVisitor const&) const override;
         p(bool, IsValid);
     };
 
@@ -61,11 +61,11 @@ namespace Reni{
         ThisRef;
         p_virtual(int, inCount) = 0;
         p_virtual(Size, size) = 0;
-        p_virtual(Externals, exts){ return{}; };
-        p_virtual(String, prefix) = 0;
-        virtual Size const InSize(int index)const = 0;
-        virtual String const ToCpp(CodeVisitor const& visitor)const = 0;
-        virtual Optional<Ref<FiberItem>> const Replace(ReplaceVisitor const&arg) const = 0;
+        p_virtual(Closure, closure){ return{}; };
+        p_virtual(string, prefix) = 0;
+        virtual Size InSize(int index)const = 0;
+        virtual string ToCpp(CodeVisitor const& visitor)const = 0;
+        virtual Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&arg) const = 0;
     };
 
 }

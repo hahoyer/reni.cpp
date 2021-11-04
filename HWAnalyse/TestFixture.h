@@ -36,7 +36,7 @@ namespace HWAnalyse
             virtual ~Data() = default;
 
             virtual void Run()const = 0;
-            virtual String const location()const = 0;
+            virtual std::string location() const = 0;
             bool CheckedRun(bool skipLowPriority);
             void WatchedRun();
         };

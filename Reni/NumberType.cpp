@@ -1,6 +1,7 @@
 #include "Import.h"
 #include "NumberType.h"
 
+#include "Address.h"
 #include "AddressType.h"
 #include "ArrayType.h"
 #include "CodeItems.h"
@@ -25,10 +26,10 @@ namespace Reni
         using baseType = Extended;
         using thisType = NumberConversionProvider;
 
-        ResultData const Result(Category category, Type const& target, Type const& destination) const override
+        ResultData Result(Category const&category, Type const& target, Type const& destination) const override
         {
-            auto destinationAddress = destination.toAddress;
-            return ResultData::GetSmartHllwSizeExts
+          const auto destinationAddress = destination.toAddress;
+            return ResultData::GetSmartHollowSizeClosure
                 (
                 category,
                 l_(CodeItem::NumberConversion(destinationAddress, target)),
@@ -46,20 +47,20 @@ NumberType::NumberType(WeakRef<ArrayType> const parent)
     : parent(*parent)
 {
     SetDumpString();
-    a_if(!parent->hllw, nd(parent));
+    a_if(!parent->hollow, nd(parent));
 }
 
 p_implementation(NumberType, Size, size){return parent.size;};
 p_implementation(NumberType, WeakRef<Global>, global){return parent.global;};
-p_implementation(NumberType, Array<String>, DumpData){ return{nd(parent)}; };
+p_implementation(NumberType, Array<string>,DumpData){ return{nd(parent)}; };
 
 
-p_implementation(NumberType, String, DumpShort)
+p_implementation(NumberType, string, DumpShort)
 {
     return p_base_name(DumpShort) + " size=" + size.DumpShort;
 }
 
-SearchResult<Feature> const NumberType::DeclarationsForType(DeclarationType const& target) const
+SearchResult<Feature> NumberType::DeclarationsForType(DeclarationType const& target) const
 {
     return target.Declarations(*this);
 };

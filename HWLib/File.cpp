@@ -21,155 +21,174 @@
 
 using namespace HWLib;
 
-class File::internal final{
+class File::internal final
+{
 public:
-    String _name;
-    internal(String const& name) : _name(name){};
+  std::string Name;
 
-    p_mutable(String, Data){
-        auto Handle = OpenFile(_O_RDONLY | _O_BINARY);
-        auto Count = ::_filelength(Handle);
-        if (Handle < 0) Count = 0;
-        auto cReturn = new char[Count + 1];
-        if (Handle >= 0) ::_read(Handle, cReturn, Count);
-        cReturn[Count] = 0;
-        ::_close(Handle);
-        auto Return = String(cReturn);
-        delete cReturn;
-        return Return;
-    }
+  internal(const std::string& name)
+    : Name(name)
+  {};
 
-    p_mutable(bool, IsValid){
-        struct _stat buf;
-        auto result = _stat(_name.RawData, &buf);
-        return result == 0;
-    }
+  p_mutable(string, Data);
 
-    p_mutable(bool, IsValidFolder){
-        struct _stat buf;
-        auto result = _stat(_name.RawData, &buf);
-        return result == 0 && (buf.st_mode & _S_IFDIR) != 0;
-    }
+  p_mutable(bool, IsValid)
+  {
+    struct _stat buf{};
+    const auto result = _stat(Name.c_str(), &buf);
+    return result == 0;
+  }
+
+  p_mutable(bool, IsValidFolder)
+  {
+    struct _stat buf{};
+    const auto result = _stat(Name.c_str(), &buf);
+    return result == 0 && (buf.st_mode & _S_IFDIR) != 0;
+  }
 
 private:
-    void CreateFolder(){
-        if (::_mkdir(_name.RawData) == 0)
-            return;
-        System::ThrowLastErrorMessage();
-    }
+  void CreateFolder() const
+  {
+    if(_mkdir(Name.c_str()) == 0)
+      return;
+    System::ThrowLastErrorMessage();
+  }
 
-    void CreateFolderChain(){
-        String head;
-        for (auto element : _name.Split("\\")->ToArray){
-            if (head == "")
-                head = element;
-            else
-                head += "\\" + element;
-            if (head.EndsWith(":"))
-                continue;
+  void CreateFolderChain() const
+  {
+    string head;
+    for(auto element : (Name | Split("\\"))->ToArray)
+    {
+      if(head == "")
+        head = element;
+      else
+        head += "\\" + element;
+      if(head | EndsWith(":"))
+        continue;
 
-            internal headFile = head;
-            if (!headFile.IsValid)
-                headFile.CreateFolder();
-            else if (!headFile.IsValidFolder)
-                throw runtime_error("Error: file exits at requested location.");
-        };
+      internal headFile = head;
+      if(!headFile.IsValid)
+        headFile.CreateFolder();
+      else if(!headFile.IsValidFolder)
+        throw runtime_error("Error: file exits at requested location.");
     };
+  };
 
-    void DeleteFolder(){
-        if (::_rmdir(_name.RawData) == 0)
-            return;
-        System::ThrowLastErrorMessage();
-    };
+  void DeleteFolder() const
+  {
+    if(_rmdir(Name.c_str()) == 0)
+      return;
+    System::ThrowLastErrorMessage();
+  };
 
-    void DeleteFile(){
-        if (::remove(_name.RawData) == 0)
-            return;
-        System::ThrowLastErrorMessage();
-    };
-
-    int OpenFile(int oflag, int pmode = _S_IREAD | _S_IWRITE)const{
-        int result;
-        auto rc = ::_sopen_s(&result, _name.RawData, oflag, SH_DENYNO, pmode);
-        return result;
-    };
-
+  void DeleteFile() const
+  {
+    if(::remove(Name.c_str()) == 0)
+      return;
+    System::ThrowLastErrorMessage();
+  };
 };
 
 
-p_mutator_implementation(File::internal, bool, IsValidFolder){
-    if (value)
-        CreateFolderChain();
-    else
-        DeleteFolder();
+p_mutator_implementation(File::internal, bool, IsValidFolder)
+{
+  if(value)
+    CreateFolderChain();
+  else
+    DeleteFolder();
 }
 
-p_mutator_implementation(File::internal, bool, IsValid){
-    if (value)
-        Data = "";
-    else
-        DeleteFile();
+p_mutator_implementation(File::internal, bool, IsValid)
+{
+  if(value)
+    Data = "";
+  else
+    DeleteFile();
 }
 
-p_mutator_implementation(File::internal, String, Data){
-    const auto Count = static_cast<int>(value.Count);
+FILE* OpenFile(const char* name, bool isWrite)
+{
+  FILE* file;
+  while(file = _fsopen(name, isWrite ? "wbS" : "rbS", _SH_DENYNO), file == nullptr && errno == EACCES)
+    continue;
+  return file;
+}
 
-    int Handle;
-    do Handle = OpenFile(_O_CREAT | _O_TRUNC | _O_WRONLY | _O_BINARY);
-    while (Handle < 0 && errno == EACCES);
+p_implementation(File::internal, string, Data)
+{
+  const auto file = OpenFile(Name.c_str(), false);
+  if(file == nullptr)
+    return "";
 
-    auto Error = System::FormatLastErrorMessage();
-    auto e = errno;
+  _fseeki64(file, 0,SEEK_END);
+  const auto count = _ftelli64(file);
+  string result(count, 0);
+  fread(result.data(), result.size(), count, file);
+  fclose(file);
+  return result;
+}
 
-    a_if(Handle >= 0, String("Error: ") + HWLib::Dump(e) + ":" + Error);
+p_mutator_implementation(File::internal, string, Data)
+{
+  FILE* file = OpenFile(Name.c_str(), true);
+  a_if(file, string("Error: ") + HWLib::Dump(errno) + ":" + System::FormatLastErrorMessage());
 
-    auto WrLength = _write(Handle, value.RawData, Count);
-    a_is(WrLength, == , Count);
-
-    _close(Handle);
+  const auto count = value.size();
+  const auto countWritten = fwrite(value.c_str(), count, count, file);
+  fclose(file);
+  a_if(count == countWritten,
+       string("Error: ") + HWLib::Dump(errno) + ":" + System::FormatLastErrorMessage() + "\ncount=" + to_string(count) +
+       " countWritten=" + to_string(countWritten));
 }
 
 
+File::File(const string& name)
+  : _internal(new internal(name)) {}
 
-File::File(String const& name)
-: _internal(new internal(name)){}
-
-p_implementation(File, String, FullName){
-    auto tReturn = ::_fullpath(0, Name.RawData, 0);
-    auto Return = String(tReturn);
-    delete[] tReturn;
-    return Return;
+p_implementation(File, string, FullName)
+{
+  const auto temporaryResult = _fullpath(nullptr, Name.c_str(), 0);
+  const auto result = string(temporaryResult);
+  delete[] temporaryResult;
+  return result;
 }
 
-p_implementation(File, String, Name){
-    return _internal->_name;
+p_implementation(File, string, Name)
+{
+  return _internal->Name;
 }
 
-p_mutator_implementation(File, String, Name){
-    if (Name == value)
-        return;
-    auto rc = ::rename(Name.RawData, value.RawData);
-    if (rc == 0)
-        _internal->_name = value;
-    a_is(rc, == , 0);
+p_mutator_implementation(File, string, Name)
+{
+  if(Name == value)
+    return;
+  const auto rc = rename(Name.c_str(), value.c_str());
+  if(rc == 0)
+    _internal->Name = value;
+  a_is(rc, ==, 0);
 }
 
-p_implementation(File, String, Data){
-    return _internal->Data;
+p_implementation(File, string, Data)
+{
+  return _internal->Data;
 }
 
-p_mutator_implementation(File, String, Data){
-    _internal->Data = value;
+p_mutator_implementation(File, string, Data)
+{
+  _internal->Data = value;
 }
 
-p_implementation(File, bool, IsValid){
-    return _internal->IsValid;
+p_implementation(File, bool, IsValid)
+{
+  return _internal->IsValid;
 }
 
-p_implementation(File, bool, IsValidFolder){
-    return _internal->IsValidFolder;
+p_implementation(File, bool, IsValidFolder)
+{
+  return _internal->IsValidFolder;
 }
 
-p_mutator_implementation(File, bool, IsValidFolder){
-    _internal->IsValidFolder = value;
+p_mutator_implementation(File, bool, IsValidFolder)
+{
+  _internal->IsValidFolder = value;
 }

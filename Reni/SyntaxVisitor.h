@@ -13,7 +13,7 @@ namespace Reni
     public:
         p_virtual(Ref<Syntax>, arg) = 0;
     private:
-        p_function(Array<String>,DumpData) override{ return{}; };
+        p_function(Array<string>,DumpData) override{ return{}; };
     };
 
     class SyntaxArgVisitor : public ReplaceSyntaxVisitor
@@ -24,7 +24,7 @@ namespace Reni
     public:
         SyntaxArgVisitor(Ref<Syntax> const& value) : value(value){ SetDumpString(); }
     private:
-        p_function(Array<String>,DumpData) override{ return{nd(value)}; };
+        p_function(Array<string>,DumpData) override{ return{nd(value)}; };
         p_function(Ref<Syntax>,arg) override{ return value; };
     };
 }

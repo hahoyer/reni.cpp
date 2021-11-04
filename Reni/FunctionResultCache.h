@@ -18,12 +18,12 @@ namespace Reni
         }
 
     private:
-        p_function(Array<String>, DumpData) override
+        p_function(Array<string>,DumpData) override
         {
             return{};
         };
 
-        ResultData const GetResultData(Category category)const override
+        ResultData GetResultData(const Category &category) const override
         {
             return getData(category);
         }

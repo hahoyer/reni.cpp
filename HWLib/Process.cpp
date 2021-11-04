@@ -2,12 +2,13 @@
 #include "Process.h"
 
 #include "DumpableObject.h"
-#include "String.h"
+#include <cstring>
 #include "System.h"
 #include <windows.h>
 
 static bool Trace = true;
 using namespace HWLib;
+using namespace std;
 
 
 class Process::internal
@@ -15,7 +16,7 @@ class Process::internal
 public:
   class Pipe
   {
-    static const int BUFSIZE = 4096;
+    static constexpr int BufferSize = 4096;
 
   public:
     mutable HANDLE ReadHandle;
@@ -23,21 +24,21 @@ public:
 
     Pipe();
     ~Pipe();
-    p_mutable(String, Data);
+    p_mutable(string, Data);
 
   private:
     static void CloseHandle(HANDLE& handle);
   };
 
-  const String Command;
+  const string Command{};
   Pipe _fromChild;
   Pipe _errorFromChild;
   bool isValid;
-  String ApplicationName;
+  string ApplicationName{};
   void Ensure();
   void Reset();
 
-  static String GetCommandProcessorName()
+  static string GetCommandProcessorName()
   {
     char result[2000];
     ::GetEnvironmentVariable("ComSpec", result, 2000);
@@ -45,18 +46,18 @@ public:
   };
 
 public:
-  internal(const String& applicationName, const String& command)
-    : ApplicationName(applicationName)
-      , Command(command)
-      , isValid(false) {}
+  internal(const string& applicationName, const string& command)
+    : Command(command)
+      , isValid(false)
+      , ApplicationName(applicationName) {}
 
-  internal(const String& command)
-    : ApplicationName(GetCommandProcessorName())
-      , Command("/c " + command)
-      , isValid(false) {}
+  internal(const string& command)
+    : Command("/c " + command)
+      , isValid(false)
+      , ApplicationName(GetCommandProcessorName()) {}
 
-  String data;
-  String errorData;
+  string data{};
+  string errorData{};
   int Result = 0;
   p_mutable(bool, IsValid) { return isValid; }
 };
@@ -87,26 +88,26 @@ Process::internal::Pipe::~Pipe()
   CloseHandle(ReadHandle);
 }
 
-p_implementation(Process::internal::Pipe, String, Data)
+p_implementation(Process::internal::Pipe, string, Data)
 {
   CloseHandle(WriteHandle);
-  String result;
+  string result;
   for(;;)
   {
-    CHAR buffer[BUFSIZE];
+    CHAR buffer[BufferSize];
     DWORD bytesRead = 0;
-    const BOOL Success = ReadFile(ReadHandle, buffer, BUFSIZE, &bytesRead, nullptr);
+    const BOOL Success = ReadFile(ReadHandle, buffer, BufferSize, &bytesRead, nullptr);
     if(bytesRead)
-      result += String(bytesRead, buffer);
+      result += string(buffer,bytesRead);
     if(!Success || bytesRead == 0)
       return result;
   }
 }
 
-p_mutator_implementation(Process::internal::Pipe, String, Data)
+p_mutator_implementation(Process::internal::Pipe, string, Data)
 {
   DWORD bytesWritten;
-  WriteFile(WriteHandle, value.RawData, static_cast<DWORD>(value.Count), &bytesWritten, nullptr);
+  WriteFile(WriteHandle, value.c_str(), static_cast<DWORD>(value.size()), &bytesWritten, nullptr);
   CloseHandle(WriteHandle);
   CloseHandle(ReadHandle);
 }
@@ -132,10 +133,10 @@ void Process::internal::Ensure()
   si.dwFlags |= STARTF_USESTDHANDLES;
   ZeroMemory(&pi, sizeof pi);
 
-  const auto commandChars = Command.RawDataCopy;
+  string commandChars = Command.data();
   if(::CreateProcess(
-    ApplicationName.RawData,
-    commandChars,
+    ApplicationName.c_str(),
+    string(Command.c_str()).data(),
     nullptr, // 		__in_opt     LPSECURITY_ATTRIBUTES lpProcessAttributes,
     nullptr, // 		__in_opt     LPSECURITY_ATTRIBUTES lpThreadAttributes,
     TRUE, // 		__in         BOOL bInheritHandles,
@@ -146,8 +147,6 @@ void Process::internal::Ensure()
     &pi // 		__out        LPPROCESS_INFORMATION lpProcessInformation
   ) == 0)
     System::ThrowLastErrorMessage();;
-
-  delete[] commandChars;
 
   data = _fromChild.Data;
   errorData = _errorFromChild.Data;
@@ -170,16 +169,16 @@ void Process::internal::Reset()
   };
 };
 
-Process::Process(const String& command) : _internal(new internal(command)) {};
-Process::Process(const String& applicationName, const String& command) : _internal(new internal(applicationName, command)) {};
+Process::Process(const string& command) : _internal(new internal(command)) {};
+Process::Process(const string& applicationName, const string& command) : _internal(new internal(applicationName, command)) {};
 
-p_implementation(Process, String, data)
+p_implementation(Process, string, data)
 {
   const_cast<Process&>(*this)._internal->IsValid = true;
   return _internal->data;
 };
 
-p_implementation(Process, String, errorData)
+p_implementation(Process, string, errorData)
 {
   const_cast<Process&>(*this)._internal->IsValid = true;
   return _internal->errorData;

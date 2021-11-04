@@ -13,11 +13,11 @@ namespace Reni
     public:
         explicit ReferenceCode(ContainerContext const& value);
     private:
-        p_function(Array<String>, DumpData) override;
+        p_function(Array<string>, DumpData) override;
         p_function(Size, size) override{return Size::Address;}
-        p_function(Externals, exts) override;
+        p_function(Closure, closure) override;
 
-        Ref<CodeItem> const ReferencePlus(Size offset) const override;
-        Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const& arg) const override;
+        Ref<CodeItem> ReferencePlus(Size offset) const override;
+        Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;
     };
 }

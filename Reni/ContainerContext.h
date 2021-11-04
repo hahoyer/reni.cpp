@@ -40,15 +40,7 @@ namespace Reni
         Size const AlignedPartSize(size_t position) const;
         Size const PartSize(size_t position) const;
     private:
-        p_function(Array<String>, DumpData) override
-        {
-            return p_base_name(DumpData) +
-                _({
-                    nd(containerData),
-                    nd(viewIndex)
-                });
-        };
-
+        p_function(Array<string>, DumpData) override;
     };
 
 };

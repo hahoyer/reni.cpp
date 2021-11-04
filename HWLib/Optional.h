@@ -76,11 +76,8 @@ namespace HWLib
         };
     };
 
-
-    class String;
-
     template <typename T>
-    inline String const Dump(Optional<T> const& target)
+    inline string Dump(Optional<T> const& target)
     {
         if(target.IsValid)
             return "?{ " + HWLib::Dump(target.Value) + " }";

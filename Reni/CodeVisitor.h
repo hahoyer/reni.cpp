@@ -15,35 +15,37 @@ namespace Reni
     protected:
         CodeVisitor(){};
     public:
-        virtual String const Const(Size const size, BitsConst const& value) const;
-        virtual String const DumpPrintNumber(Size const size) const;
-        virtual String const FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const&connector) const;
-        virtual String const NumberOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const;
-        virtual String const NumberConversion(Size const& size, int argDepth, Size const& argSize) const;
-        virtual String const FunctionArg() const;
-        virtual String const CallGetter(Size const&result, size_t const index, Size const&args) const;
+        virtual string Const(Size const size, BitsConst const& value) const;
+        virtual string DumpPrintNumber(Size const size) const;
+        virtual string FiberConnection(Array<Ref<CodeItem>> const& items,
+                                       Ref<FiberConnectorItem> const& connector) const;
+        virtual string NumberOperation(string const& name, Size const& size, int leftDepth, Size const& leftSize,
+                                       int rightDepth, Size const& rightSize) const;
+        virtual string NumberConversion(Size const& size, int argDepth, Size const& argSize) const;
+        virtual string FunctionArg() const;
+        virtual string CallGetter(Size const& result, size_t const index, Size const& args) const;
         
-        static String const InName(String const&prefix, size_t index);
-        static String const GetterFunctionDeclaration(size_t const index);
-        static String const GetterName(size_t const index){ return "get_" + String::Convert(index); };
-        static String const SetterName(size_t const index){ return "set_" + String::Convert(index); };
+        static string InName(string const&prefix, size_t index);
+        static string GetterFunctionDeclaration(size_t const index);
+        static string GetterName(size_t const index) { return "get_" + String::Convert(index); };
+        static string SetterName(size_t const index) { return "set_" + String::Convert(index); };
 
     };
 
     class MainCodeVisitor final : public CodeVisitor{
         typedef CodeVisitor baseType;
         typedef MainCodeVisitor thisType;
-        p_function(Array<String>, DumpData) override { return{}; };
-        String const Const(Size const size, BitsConst const& value) const override;
-        String const DumpPrintNumber(Size const size) const override;
-        String const FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;
-        String const NumberOperation(String const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
-        String const CallGetter(Size const& result, size_t const index, Size const& args) const override;
-        String const FunctionArg() const override;
-        String const Visit(Ref<CodeItem> target)const;
+        p_function(Array<string>, DumpData) override { return{}; };
+        string Const(Size const size, BitsConst const& value) const override;
+        string DumpPrintNumber(Size const size) const override;
+        string FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;
+        string NumberOperation(string const& name, Size const&size, int leftDepth, Size const&leftSize, int rightDepth, Size const&rightSize)const override;
+        string CallGetter(Size const& result, size_t const index, Size const& args) const override;
+        string FunctionArg() const override;
+        string Visit(Ref<CodeItem> target) const;
     public:
-        static String const MainVisit(Ref<CodeItem> body);
-        static String const GetterVisit(size_t index, Ref<CodeItem> body);
+        static string MainVisit(Ref<CodeItem> body);
+        static string GetterVisit(size_t index, Ref<CodeItem> body);
     };
 
 }

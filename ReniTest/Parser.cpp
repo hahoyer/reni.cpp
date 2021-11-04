@@ -17,12 +17,12 @@ namespace _HWLang {
     typedef TokenFactory::TokenClass TokenClass;
     typedef TokenFactory::Syntax Syntax;
 
-    void Check(Optional<Ref<Syntax>> const& target, bool isLeft, String const& part, bool isRight, bool isMatch);
+    void Check(Optional<Ref<Syntax>> const& target, bool isLeft, string const& part, bool isRight, bool isMatch);
 
     test_(ParserBaseStructure) {
         auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevelLeft({Start}, {End});
 
-        String text = "asdf";
+        string text = "asdf";
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Ref<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
@@ -34,7 +34,7 @@ namespace _HWLang {
 
     test(Parenthesis, ParserBaseStructure) {
 
-        String text = "({)} [(asdf)as][yxcv]";
+        string text = "({)} [(asdf)as][yxcv]";
 
         auto pt = PrioTable::CreateLeft({ Any })
             .ParenthesisLevelRight({ "(", "[", "{" }, { ")", "]", "}" })
@@ -83,7 +83,7 @@ namespace _HWLang {
     }
 
     test(PlusTimes, ParserBaseStructure) {
-        String text = "a*b+c*d+e*f";
+        string text = "a*b+c*d+e*f";
 
         auto pt = PrioTable::CreateLeft({ Any })
             .Left({ "*" })
@@ -130,7 +130,7 @@ namespace _HWLang {
     test(ThenElse, ParserBaseStructure) {
 
         bool Trace = true;
-        String text = "x then y else z";
+        string text = "x then y else z";
 
         auto pt = PrioTable::CreateLeft({Any})
             .ThenElseLevel({"then"}, {"else"})
@@ -159,7 +159,7 @@ namespace _HWLang {
     test(TrainWreck, ParserBaseStructure) {
 
         bool Trace = true;
-        String text = "x y z";
+        string text = "x y z";
 
         auto pt = PrioTable()
             .Left({Any})
@@ -179,7 +179,7 @@ namespace _HWLang {
         Check(rll, false, "x", false, false);
     }
 
-    void Check(Optional<Ref<Syntax>> const& target, bool isLeft, String const& part, bool isRight, bool isMatch) {
+    void Check(Optional<Ref<Syntax>> const& target, bool isLeft, string const& part, bool isRight, bool isMatch) {
         a_if(!target.IsEmpty, nd(target));
         a_is(target.Value->name, == , part);
         a_if(!target.Value->left.IsEmpty == isLeft, nd(target));

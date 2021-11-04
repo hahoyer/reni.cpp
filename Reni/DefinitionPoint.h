@@ -11,7 +11,7 @@ namespace Reni{
     public:
         ThisRef;
     private:
-        p_function(Array<String>,DumpData) override{ return{}; };
+        p_function(Array<string>,DumpData) override{ return{}; };
     };
 
     template <typename T>

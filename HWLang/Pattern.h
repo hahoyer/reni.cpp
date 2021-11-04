@@ -48,26 +48,26 @@ namespace HWLang
         DefaultAssignmentOperator;
 
         p(Pattern, Find);
-        Pattern const Else(Pattern const& right)const;
-        Pattern const Else(String right)const;
+        Pattern Else(Pattern const& right) const;
+        Pattern Else(std::string const& right) const;
         Pattern const Repeat(size_t minCount = 0, Optional<size_t> maxCount = {})const;
-        Pattern const Value(function<Pattern const(String)> func)const;
+        Pattern const Value(function<Pattern const(std::string)> func)const;
 
-        Pattern const operator+(Pattern right)const;
-        Pattern const operator+(String right)const;
-        friend Pattern const operator+(String left, Pattern right);
+        Pattern operator+(Pattern const& right)const;
+        Pattern operator+(std::string const& right) const;
+        friend Pattern operator+(std::string const& left, Pattern const& right);
 
         MatchResult Match(SourcePosition const&position)const{ return _value->Match(position); }
     };
 
 
-    Pattern const Box(String);
-    Pattern const Box(function<bool(char)>);
+    Pattern Box(std::string);
+    Pattern Box(function<bool(char)>);
 
     template<typename T>
     Pattern const Error(T const&);
 
-    Pattern const AnyChar(char const*);
+    Pattern AnyChar(char const*);
     Pattern const Digit = Box([](char c){return !!::isdigit(c); });
     Pattern const Letter = Box([](char c){return !!::isalpha(c); });
     Pattern const WhiteSpace = Box([](char c){return !!::isspace(c); });

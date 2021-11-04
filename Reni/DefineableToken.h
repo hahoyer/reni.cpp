@@ -2,7 +2,7 @@
 #include "TokenClass.h"
 #include "SearchTarget.h"
 
-#include "../HWLib/String.h"
+#include "../HWLib/string.h"
 
 using namespace HWLib;
 
@@ -19,9 +19,9 @@ namespace Reni
         typedef TokenClass baseType;
         typedef DefineableToken thisType;
     public:
-        String const name;
+        string const name;
     protected:
-        DefineableToken(String const&name)
+        DefineableToken(string const&name)
             : name(name)
         {
         };
@@ -36,13 +36,13 @@ namespace Reni
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;;
 
-        p_function(Array<String>, DumpData) override
+        p_function(Array<string>, DumpData) override
         {
-            auto result = name.Quote;
+            auto result = name|Quote();
             return{result};
         };
 
-        p_function(String, DumpShort) override{return Dump;};
+        p_function(string, DumpShort) override{return Dump;};
     };
 
 

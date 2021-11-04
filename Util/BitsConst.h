@@ -17,14 +17,15 @@ namespace Util{
         using dataChunkType = BigInt::Ulong;
     private:
         BigInt::Rossi const value;
-        BitsConst(String const&text) : value(text.RawData, 10){ SetDumpString(); }
+        BitsConst(string const&text) : value(text.c_str(), 10){ SetDumpString(); }
         BitsConst() : value(0){ SetDumpString(); }
     public:
-        static BitsConst const Empty();
-        static BitsConst const Convert(String const&text);
-        static size_t const MinusSize(size_t left, size_t right){ return max(left, right) + 1; }
-        static size_t const PlusSize(size_t left, size_t right){ return max(left, right) + 1; }
-        static size_t const TimesSize(size_t left, size_t right){
+        static BitsConst Empty();
+        static BitsConst Convert(string const&text);
+        static size_t MinusSize(size_t left, size_t right) { return max(left, right) + 1; }
+        static size_t PlusSize(size_t left, size_t right) { return max(left, right) + 1; }
+        static size_t TimesSize(size_t left, size_t right)
+        {
             if(left < right)
                 return TimesSize(right, left);
             a_if_(left >= right);
@@ -39,11 +40,11 @@ namespace Util{
 
         p(Size, size);
         p(bool, isEmpty){ return !size.value; }
-        bool const operator==(BitsConst const&other)const{ return value == other.value; };
-        p(String, format);
+        bool operator==(BitsConst const& other) const { return value == other.value; };
+        p(string, format);
         p(Array<dataChunkType>, ToArray);
     private:
-        p_function(Array<String>,DumpData) override{ return{ value.toStrDec() }; };
-        p_function(String, DumpShort) override;
+        p_function(Array<string>,DumpData) override{ return{ value.toStrDec() }; };
+        p_function(string, DumpShort) override;
     };
 }

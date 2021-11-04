@@ -10,7 +10,7 @@ using namespace std;
 namespace Reni
 {
     class ReplaceVisitor;
-    class Externals;
+    class Closure;
     class Context;
 
     class External 
@@ -28,14 +28,14 @@ namespace Reni
         ThisRef;
         bool const operator < (thisType const& other)const;
         bool const operator == (thisType const& other)const;
-        virtual bool const IsProvided(ReplaceVisitor const&) const { return false; };
-        virtual Externals const Replace(ReplaceVisitor const& arg) const;
-        p_function(String, DumpShort) override{ return{internalDump()}; };
+        virtual bool IsProvided(ReplaceVisitor const&) const { return false; };
+        virtual Closure const Replace(ReplaceVisitor const& arg) const;
+        p_function(string, DumpShort) override{ return{internalDump()}; };
     private:
-        p_function(Array<String>, DumpData) override{ return{internalDump()}; };
-        p_function(String, DumpHeader) override{ return ""; };
+        p_function(Array<string>, DumpData) override{ return{internalDump()}; };
+        p_function(string, DumpHeader) override{ return ""; };
     protected:
-        virtual String const internalDump()const = 0;
+        virtual string internalDump()const = 0;
     };
 
     class External::This final : public External
@@ -48,9 +48,9 @@ namespace Reni
         This() {
             SetDumpString();
         };
-        bool const IsProvided(ReplaceVisitor const& arg) const override;
-        String const internalDump() const override{ return "This"; };
-        Externals const Replace(ReplaceVisitor const& arg) const override;
+        bool IsProvided(ReplaceVisitor const& arg) const override;
+        string internalDump() const override{ return "This"; };
+        Closure const Replace(ReplaceVisitor const& arg) const override;
     };
 
     class External::Args final : public External
@@ -63,9 +63,9 @@ namespace Reni
         Args() {
             SetDumpString();
         };
-        bool const IsProvided(ReplaceVisitor const& arg) const override;
-        String const internalDump() const override{ return "Arg"; };
-        Externals const Replace(ReplaceVisitor const& arg) const override;
+        bool IsProvided(ReplaceVisitor const& arg) const override;
+        string internalDump() const override{ return "Arg"; };
+        Closure const Replace(ReplaceVisitor const& arg) const override;
     };
 
     class External::Function : public External
@@ -77,7 +77,7 @@ namespace Reni
         class NewValue;
     protected:
         Function() {};
-        String const internalDump() const override{ return "/\\"; };
+        string internalDump() const override{ return "/\\"; };
     };
 
     class External::Function::Arg final : public Function
@@ -90,11 +90,11 @@ namespace Reni
         Arg() {
             SetDumpString();
         };
-        String const internalDump() const override{ return baseType::internalDump() + "."; };
+        string internalDump() const override{ return baseType::internalDump() + "."; };
 
     public:
-        bool const IsProvided(ReplaceVisitor const&) const override;
-        Externals const Replace(ReplaceVisitor const& arg) const override;
+        bool IsProvided(ReplaceVisitor const&) const override;
+        Closure const Replace(ReplaceVisitor const& arg) const override;
     };
 
     class External::Function::NewValue final : public Function
@@ -107,7 +107,7 @@ namespace Reni
         NewValue() {
             SetDumpString();
         };
-        String const internalDump() const override{ return baseType::internalDump() + "new_value"; };
+        string internalDump() const override{ return baseType::internalDump() + "new_value"; };
     };
 
 }

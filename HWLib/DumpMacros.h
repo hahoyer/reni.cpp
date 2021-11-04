@@ -4,7 +4,7 @@
 #include <boost/preprocessor/variadic/to_seq.hpp>
 
 
-#define nd(x) (HWLib::String(#x) + " = " + HWLib::Dump(x) + ";")
+#define nd(x) (std::string(#x) + " = " + HWLib::Dump(x) + ";")
 #define nd_arg(i,x) {if(Trace)c_.Write("[" STRING(i) "] " + nd(x) + "\n");}
 #define d(x) {if(Trace)c_.Write(nd(x) + "\n");}
 #define dd(x) {if(Trace)c_.Write(x + "\n");}
@@ -15,16 +15,16 @@
 #define srcargdump(x) {if(Trace)c_.Write(nd(x)+"\n").fsrcprint();}
 #define dumpreturn(x) {\
 if(Trace) \
-    c_.Write(HWLib::String("return ") + nd(x) + "\n"); \
+    c_.Write(std::string("return ") + nd(x) + "\n"); \
 return; }
 
 #define return_d(x) {if(Trace) \
-    c_.Write(HWLib::String("return ") + nd(x) + "\n"); \
+    c_.Write(std::string("return ") + nd(x) + "\n"); \
     return x; }
 
 #define return_db(x) {if(Trace) \
         {\
-    c_.Write(HWLib::String("return ") + nd(x) + "\n");b_}; \
+    c_.Write(std::string("return ") + nd(x) + "\n");b_}; \
     return x; }
 
 #define HWLib_ARGDUMP(r, data, i, xx) nd_arg(i,xx)

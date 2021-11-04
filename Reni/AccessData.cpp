@@ -44,11 +44,11 @@ ResultData const AccessData::GetResultData(Category category) const
     return ResultData::Get
         (
         category,
-        l_(GetHllw),
+        l_(GetHollow),
         l_(GetSize),
         l_(GetCode),
         l_(GetType),
-        l_(XetExts)
+        l_(XetClosure)
         );
 }
 
@@ -57,33 +57,33 @@ ResultData const AccessData::SetResultData(Category category) const
     return ResultData::Get
         (
         category,
-        l_(SetHllw),
+        l_(SetHollow),
         l_(SetSize),
         l_(SetCode),
         l_(SetType),
-        l_(XetExts)
+        l_(XetClosure)
         );
 }
 
 p_implementation(AccessData, WeakRef<Global>, global){ return container.global; }
 
 
-p_implementation(AccessData, Externals, XetExts){ return Externals(container.asExternal); }
-p_implementation(AccessData, bool, GetHllw){ return dataResultCache->hllw; }
-p_implementation(AccessData, bool, SetHllw){ return true; }
+p_implementation(AccessData, Closure, XetClosure){ return Closure(container.asExternal); }
+p_implementation(AccessData, bool, GetHollow){ return dataResultCache->hollow; }
+p_implementation(AccessData, bool, SetHollow){ return true; }
 p_implementation(AccessData, Size, SetSize){ return 0; }
 p_implementation(AccessData, WeakRef<Type>, SetType){ return global->voidType.thisRef; }
 
 p_implementation(AccessData, Size, GetSize)
 {
-    if(dataResultCache->hllw)
+    if(dataResultCache->hollow)
         return 0;
     return Size::Address;
 }
 
 p_implementation(AccessData, WeakRef<Type>, GetType)
 {
-    if(dataResultCache->hllw)
+    if(dataResultCache->hollow)
         return &dataResultCache->type->thisRef;
     return new AccessType(*this);
 }

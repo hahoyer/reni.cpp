@@ -17,7 +17,7 @@ namespace HWLib{
         p_function(bool, IsValid) override{
             return iterator != container.end();
         }
-        T const Step()override{
+        T Step()override{
             return *iterator++;
         }
     };

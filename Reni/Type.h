@@ -17,114 +17,123 @@ using namespace Util;
 
 namespace Reni
 {
-    class Address;
-    class ArrayType;
-    class CodeItem;
-    class ContextReference;
-    class DefineableToken;
-    class DefinitionPoint;
-    class DumpPrintToken;
-    class EnableCutType;
-    class Externals;
-    class FiberItem;
-    class FunctionToken;
-    class Global;
-    class InstanceToken;
-    class NumberType;
-    class PlusToken;
-    class ResultData;
-    class StarToken;
-    class TypeType;
+  class Address;
+  class ArrayType;
+  class CodeItem;
+  class ContextReference;
+  class DefineableToken;
+  class DefinitionPoint;
+  class DumpPrintToken;
+  class EnableCutType;
+  class Closure;
+  class FiberItem;
+  class FunctionToken;
+  class Global;
+  class InstanceToken;
+  class NumberType;
+  class PlusToken;
+  class ResultData;
+  class StarToken;
+  class TypeType;
 
-    class Type
-        : public WithId<DumpableObject, Type>
-        , public DeclarationType
+  class Type
+    : public WithId<DumpableObject, Type>
+      , public DeclarationType
+  {
+    using baseType = WithId<DumpableObject, Type>;
+    using thisType = Type;
+    struct internal;
+    CtrlRef<internal> _internal;
+  protected:
+    Type();
+  public:
+    Type(const Type&) = delete;
+    ThisRef;
+
+    bool operator==(const Type& other) const { return this == &other; }
+
+    p_virtual(bool, hollow) = 0;
+    p_virtual(Size, size) = 0;
+    p_virtual(WeakRef<Global>, global) = 0;
+    p_virtual_definition(WeakRef<Type>, toTypeTarget);
+    p_virtual_function(WeakRef<Type>, toTypeTarget);
+    virtual const WeakRef<Type> get_toTypeTarget() const { return thisRef; };
+    p_virtual(Address, toAddress);
+    p_virtual(bool, isCopyable) { return true; };
+
+    const WeakRef<Type> array(size_t count) const;
+    p(WeakRef<NumberType>, numberType);
+    p_definition(WeakRef<TypeType>, typeType);
+    const WeakRef<TypeType> get_typeType() const;
+    p(WeakRef<Type>, indirectType);
+    p(WeakRef<EnableCutType>, enableCutType);
+    p_virtual(WeakRef<Type>, asFunctionResult);
+  protected:
+    p_virtual(Optional<WeakRef<NumberType>>, asNumberType) { return {}; };
+  public:
+    template <class TDestination>
+    const Optional<WeakRef<TDestination>> As() const;
+
+    template <>
+    const Optional<WeakRef<NumberType>> As() const { return asNumberType; }
+
+    const ResultData GetResultData(Category category, function<Ref<CodeItem>()> getCode,
+                                   function<Closure()> getClosure) const;
+    const ResultData GetResultDataSmartClosure(Category category, function<Ref<CodeItem>()> getCode) const;
+    const ResultData GetResultDataEmpty(Category category) const;
+
+    virtual SearchResult<Feature> DeclarationsForType(const DeclarationType& target) const;
+    const WeakRef<NumberType> CreateNumberType() const;
+    const WeakRef<Type> IndirectType(int depth) const;
+    const WeakRef<Type> Common(const Type& other) const;
+    const bool isConvertableTo(const Type& other) const;
+    const Ref<ResultCache> ConvertTo(const Type& destination) const;
+    virtual Ref<ResultCache> DirectConvert() const;
+    const SearchResult<Feature> Declarations(const NumberType& provider) const override;
+    const SearchResult<Feature> Declarations(const TypeType&) const override;
+    const SearchResult<Feature> Declarations(const EnableCutType&) const override;
+    const SearchResult<Feature> Declarations(const AccessType&) const override;
+    virtual Array<Ref<FiberItem>> ConvertFiber(const Type& destination) const;
+  private:
+    p_function(Array<string>, DumpData) override
     {
-        using baseType = WithId<DumpableObject, Type>;
-        using thisType = Type;
-        struct internal;
-        CtrlRef<internal> _internal;
-    protected:
-        Type();
-    public:
-        Type(Type const&) = delete;
-        ThisRef;
-
-        bool operator==(Type const& other)const{return this == &other;}
-
-        p_virtual(bool, hllw) = 0;
-        p_virtual(Size, size) = 0;
-        p_virtual(WeakRef<Global>, global) = 0;
-        p_virtual_definition(WeakRef<Type>,toTypeTarget);
-        p_virtual_function(WeakRef<Type>,toTypeTarget);
-        virtual WeakRef<Type> const get_toTypeTarget()const{return thisRef;};
-        p_virtual(Address, toAddress);
-        p_virtual(bool, isCopyable) { return true; };
-
-        WeakRef<Type> const array(size_t count)const;
-        p(WeakRef<NumberType>, numberType);
-        p_definition(WeakRef<TypeType>,typeType); WeakRef<TypeType> const get_typeType()const;
-        p(WeakRef<Type>, indirectType);
-        p(WeakRef<EnableCutType>, enableCutType);
-        p_virtual(WeakRef<Type>, asFunctionResult);
-    protected:
-        p_virtual(Optional<WeakRef<NumberType>>, asNumberType){ return{}; };
-    public:
-        template <class TDestination>
-        Optional<WeakRef<TDestination>> const As()const;
-
-        template <>
-        Optional<WeakRef<NumberType>> const As()const{return asNumberType;}
-
-        ResultData const GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts)const;
-        ResultData const GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode)const;
-        ResultData const GetResultDataEmpty(Category category)const;
-
-        virtual SearchResult<Feature> const DeclarationsForType(DeclarationType const& target)const;
-        WeakRef<NumberType> const CreateNumberType()const;
-        WeakRef<Type> const IndirectType(int depth)const;
-        WeakRef<Type> const Common(Type const& other)const;
-        bool const isConvertableTo(Type const& other)const;
-        Ref<ResultCache> const ConvertTo(Type const& destination) const;
-        virtual Ref<ResultCache> const DirectConvert() const;
-        SearchResult<Feature> const Declarations(NumberType const& provider) const override;
-        SearchResult<Feature> const Declarations(TypeType const&) const override;
-        SearchResult<Feature> const Declarations(EnableCutType const&) const override;
-        SearchResult<Feature> const Declarations(AccessType const&) const override;
-        virtual Array<Ref<FiberItem>> const ConvertFiber(Type const& destination) const;
-    private:
-        p_function(Array<String>,DumpData) override
-        {
-            return{};
-        };
-
+      return {};
     };
+  };
 
 
-    class EnableCutType final : public Type
+  class EnableCutType final : public Type
+  {
+    typedef Type baseType;
+    typedef EnableCutType thisType;
+  public:
+    const Type& value;
+
+    EnableCutType(const Type& value) : value(value)
     {
-        typedef Type baseType;
-        typedef EnableCutType thisType;
-    public:
-        Type const& value;
+      SetDumpString();
+      a_if_(!this->value.hollow);
+    }
 
-        EnableCutType(Type const& value) : value(value)
-        {
-            SetDumpString();
-            a_if_(!this->value.hllw);
-        }
+    ThisRef;
 
-        ThisRef;
+  private:
+    p_function(Array<string>, DumpData) override { return {nd(value)}; };
+    p_function(bool, hollow) { return false; };
+    p_function(Size, size) override { return value.size; }
+    p_function(WeakRef<Global>, global) override { return value.global; }
+    p_function(Optional<WeakRef<NumberType>>, asNumberType) override { return value.As<NumberType>(); }
+    p_function(Address, toAddress) override;
+    SearchResult<Feature> DeclarationsForType(const DeclarationType& target) const override;
+  };
 
-    private:
-        p_function(Array<String>, DumpData) override{return{nd(value)};};
-        p_function(bool, hllw) { return false; };
-        p_function(Size, size) override{ return value.size; }
-        p_function(WeakRef<Global>, global) override{return value.global;}
-        p_function(Optional<WeakRef<NumberType>>, asNumberType) override{return value.As<NumberType>();}
-        p_function(Address, toAddress) override;
-        SearchResult<Feature> const DeclarationsForType(DeclarationType const& target) const override;
-    };
+  class InstanceFunctionFeature final : public Feature::Extended
+  {
+    using baseType = Extended;
+    using thisType = InstanceFunctionFeature;
+
+    ResultData Result(const Category& category, const Type& target, const Type& arg) const override;
+  };
 }
 
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")

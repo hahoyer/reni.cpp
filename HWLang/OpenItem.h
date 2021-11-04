@@ -26,17 +26,17 @@ namespace HWLang
 
         DefaultAssignmentOperator;
 
-        static OpenItem const StartItem(TToken const& token)
+        static OpenItem StartItem(TToken const& token)
         {
             return OpenItem({}, token);
         };
 
-        PrioTableConst::Tag const Relation(String const& newTokenName, PrioTable const& prioTable)const
+        PrioTableConst::Tag Relation(string const& newTokenName, PrioTable const& prioTable) const
         {
             return prioTable.Relation(newTokenName, token.Name);
         };
 
-        TSyntax const CreateSyntax(Optional<TSyntax> const& right)const
+        TSyntax CreateSyntax(Optional<TSyntax> const& right) const
         {
             return HWLang::CreateSyntax<TSyntax>(left, token, right);
         }

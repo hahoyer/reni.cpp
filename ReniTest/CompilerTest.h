@@ -12,17 +12,17 @@ namespace ReniTest
     class CompilerTest final
     {
         File file;
-        static String const name(){ return  "compilerTest.reni"; };
+        static string name(){ return  "compilerTest.reni"; };
     public:
         Compiler compiler;
 
-        CompilerTest(String text)
+        CompilerTest(string text)
             : file(name())
             , compiler(name())
         {
             file.Data = text;
         }
 
-        static void Check(String const& text, String const expectedResult);
+        static void Check(string const& text, string const &expectedResult);
     };
 }

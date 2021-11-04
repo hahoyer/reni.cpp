@@ -16,7 +16,7 @@ namespace Reni
     class AccessFeature;
     class CodeItem;
     class ContainerContext;
-    class Externals;
+    class Closure;
     class Global;
     class ResultCache;
     class ResultData;
@@ -41,20 +41,20 @@ namespace Reni
 
         ThisRef;
 
-        p_function(Array<String>, DumpData) override{ return{nd(statementIndex), nd(container)}; }
+        p_function(Array<string>, DumpData) override{ return{nd(statementIndex), nd(container)}; }
         p(WeakRef<Global>, global);
 
         ResultData const GetResultData(Category category) const;
         ResultData const SetResultData(Category category) const;
     private:
-        p(bool, GetHllw);
+        p(bool, GetHollow);
         p(Size, GetSize);
         p(Ref<CodeItem>, GetCode);
         p(WeakRef<Type>, GetType);
 
-        p(Externals, XetExts);
+        p(Closure, XetClosure);
 
-        p(bool, SetHllw);
+        p(bool, SetHollow);
         p(Size, SetSize);
         p(Ref<CodeItem>, SetCode);
         p(WeakRef<Type>, SetType);

@@ -10,31 +10,31 @@ namespace Util
   class CppCompilerScripting
   {
     using thisType = CppCompilerScripting;
-    const String program;
+    const string program;
     Process currentProcess;
   public:
-    CppCompilerScripting(const String& program);
+    CppCompilerScripting(const string& program);
 
     void Execute();
     p(int, result);
-    p(String, output);
+    p(string, output);
   private:
-    p(String, fullFileName);
-    p(String, fileName) { return "temp"; };
-    p(String, ProgramFiles86) { return System::EnvironmentVariable("ProgramFiles(x86)"); };
-    p(String, VCInstallDir) { return System::EnvironmentVariable("VS142BASEPATH"); };
-    p(String, WindowsKits) { return ProgramFiles86 + R"(\Windows Kits\10)"; };
-    p(String, Boost) { return ProgramFiles86 + "\\boost\\boost_1_77_0"; };
-    p(String, ProjectDir) { return File(__FILE__ "\\..").FullName; };
-    p(String, SolutionDir) { return File(ProjectDir + "\\..").FullName; };
-    p(String, RuntimeDir) { return File(SolutionDir + "\\Runtime").FullName; };
-    p(String, IncludePath);
-    p(String, LibPath);
-    p(String, CppCompilerExecutable) { return VCInstallDir + "\\bin\\HostX64\\x64\\cl.exe"; };
-    p(String, CompileCommand);
-    p(String, LinkerCommand);
-    p(String, Platform){return "x64";};
-    p(String, CrtVersion){return "10.0.20348.0";};
+    p(string, fullFileName);
+    p(string, fileName) { return "temp"; };
+    p(string, ProgramFiles86) { return System::EnvironmentVariable("ProgramFiles(x86)"); };
+    p(string, VCInstallDir) { return System::EnvironmentVariable("VS142BASEPATH"); };
+    p(string, WindowsKits) { return ProgramFiles86 + R"(\Windows Kits\10)"; };
+    p(string, Boost) { return ProgramFiles86 + "\\boost\\boost_1_77_0"; };
+    p(string, ProjectDir) { return File(__FILE__ "\\..").FullName; };
+    p(string, SolutionDir) { return File(ProjectDir + "\\..").FullName; };
+    p(string, RuntimeDir) { return File(SolutionDir + "\\Runtime").FullName; };
+    p(string, IncludePath);
+    p(string, LibPath);
+    p(string, CppCompilerExecutable) { return VCInstallDir + R"(\bin\HostX64\x64\cl.exe)"; };
+    p(string, CompileCommand);
+    p(string, LinkerCommand);
+    p(string, Platform) { return "x64"; };
+    p(string, CrtVersion) { return "10.0.20348.0"; };
 
     void InitializeFile() const;
   };

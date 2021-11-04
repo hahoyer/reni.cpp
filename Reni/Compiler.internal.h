@@ -12,10 +12,8 @@
 #include "../HWLang/ScannerInstance.h"
 #include "../HWLang/PrioParser.h"
 #include "../HWLib/ValueCache.h"
-#include "../Util/BitsConst.h"
 #include "../Util/CppCompilerScripting.h"
 #include "../Util/Scanner.h"
-#include "../ReniTest/Reni.h"
 
 using namespace HWLib;
 using namespace HWLang;
@@ -37,7 +35,7 @@ using namespace Reni;
 
 class Compiler::internal final
 {
-    String const fileName;
+    string const fileName;
 public:
     ValueCache<CodeBase> codeCache;
     ValueCache<Ref<Syntax>> syntaxCache;
@@ -47,20 +45,20 @@ public:
     internal() = delete;
     internal(internal const&) = delete;
 
-    internal(String const&fileName)
+    internal(string const&fileName)
         : fileName  (fileName)
-        , syntaxCache(l_(syntax))
         , codeCache(l_(code))
+        , syntaxCache(l_(syntax))
     {}
 
-    p(String, cppCode)
+    p(string, cppCode)
     {
-        auto codes = codeCache.Value;
-        auto main = codes.cppMain;
-        auto functions = codes.cppFunctions;
-        auto declarations = codes.cppDeclarations;
+      const auto codes = codeCache.Value;
+      const auto main = codes.cppMain;
+      const auto functions = codes.cppFunctions;
+      const auto declarations = codes.cppDeclarations;
 
-        static String const result = R"(
+        static string const result = R"(
 #include "Common.h"
 using namespace ReniRuntime; 
     
@@ -74,19 +72,19 @@ int main(void)
 ${functions}
 )";
         return result
-            .Replace("${declarations}", declarations)
-            .Replace("${main}", main)
-            .Replace("${functions}", functions);
+            |Replace("${declarations}", declarations)
+            |Replace("${main}", main)
+            |Replace("${functions}", functions);
     };
 
-    ExecutionResult const Execute()
+    ExecutionResult Execute() const
     {
         CppCompilerScripting ccs = cppCode;
         ccs.Execute();
         return ExecutionResult{ ccs.result, ccs.output };
     }
 
-    static Ref<Syntax> const GetSyntaxFromText(String const& text)
+    static Ref<Syntax> GetSyntaxFromText(string const& text)
     {
         return GetSyntax(*Source::CreateFromText(text));
     };
@@ -94,9 +92,9 @@ ${functions}
 private:
     p(Ref<Syntax>,syntax){return GetSyntaxFromFile(fileName);};
     
-    static Ref<Syntax> const GetSyntaxFromFile(String const& file){return GetSyntax(*Source::CreateFromFile(file));};
+    static Ref<Syntax> GetSyntaxFromFile(string const& file) {return GetSyntax(*Source::CreateFromFile(file));};
 
-    static Ref<Syntax> const GetSyntax(Source const&source)
+    static Ref<Syntax> GetSyntax(Source const& source)
     {
         auto scannerInstance = Reni::ScannerInstance(source);
         return Parse<Ref<Syntax>, TokenClass, Token>(PrioTable::Main(), scannerInstance);
@@ -105,10 +103,10 @@ private:
     p(CodeBase,code)
     {
         auto syntax = syntaxCache.Value;
-        Ref<CodeItem> main = syntax->Code(rootContext);
-        Array<Global::Function> functions = rootContext
-            .global
-            ->functions;
+        const Ref<CodeItem> main = syntax->GetCode(rootContext);
+        const Array<Global::Function> functions = rootContext
+                                                  .global
+                                                  ->functions;
 
         return CodeBase(main, functions);
     };

@@ -25,27 +25,27 @@ namespace HWLang
             SetDumpString();
         }
 
-        SourcePosition const operator+(size_t other)const
+        SourcePosition operator+(size_t other) const
         {
             return SourcePosition(_source, _position + other);
         }
 
-        size_t const operator-(SourcePosition const&other)const
+        size_t operator-(SourcePosition const& other) const
         {
             a_is(&*_source, ==, &*other._source);
             return _position - other._position;
         }
 
-        bool const operator==(SourcePosition constother)const;
+        bool operator==(SourcePosition const& other)const;
 
         SourcePart const Span(size_t count)const;
-        String const Part(size_t count)const;
+        string Part(size_t count) const;
 
-        bool const BeginsWith(String value)const;
+        bool BeginsWith(string const&value) const;
     private:
-        p_function(HWLib::Array<HWLib::String>,DumpData) override;
-        p(String, DumpCurrent);
-        p(String, DumpAfterCurrent);
-        p(String, DumpBeforeCurrent);
+        p_function(HWLib::Array<std::string>,DumpData) override;
+        p(std::string, DumpCurrent);
+        p(std::string, DumpAfterCurrent);
+        p(std::string, DumpBeforeCurrent);
     };
 }

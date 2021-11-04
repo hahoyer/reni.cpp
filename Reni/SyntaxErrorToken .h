@@ -10,7 +10,7 @@ namespace Reni{
         SyntaxErrorToken(String const text) : text(text){}
     private:
         Ref<Syntax> const Create(SourcePart const&part)const override final;
-        p_function(Array<String>, DumpData) override{
+        p_function(Array<string>,DumpData) override{
             return{nd(text)};
         };
     };

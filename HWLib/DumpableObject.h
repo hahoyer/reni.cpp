@@ -6,7 +6,6 @@
 #include <thread>
 
 namespace HWLib{
-    class String;
     template<typename T>
     class Array;
 
@@ -19,7 +18,7 @@ namespace HWLib{
         static int NextObjectId;
         int const ObjectId;
         WithId() : ObjectId(NextObjectId++){};
-        p_function(String, DumpHeader) override;
+        p_function(std::string, DumpHeader) override;
     };
 
 
@@ -36,19 +35,19 @@ namespace HWLib{
         DumpableObject();                     
         DumpableObject(DumpableObject const&);
         virtual ~DumpableObject();
-        p_virtual(Array<String>, DumpData) = 0;
-        p_virtual(String, DumpHeader);
+        p_virtual(Array<std::string>, DumpData) = 0;
+        p_virtual(std::string, DumpHeader);
     public:
         void SetDumpString();
-        p(String, Dump);
-        p_virtual(String, DumpShort);
+        p(std::string, Dump);
+        p_virtual(std::string, DumpShort);
         p(bool, IsInDump){return isInDump;}
-        p(String, DumpLong);
+        p(std::string, DumpLong);
         static bool EnableSetDumpString;
         static bool EnableSetDumpStringAsync;
         static void SetDumpStringQueueEntryWait();
     private:
-        String const SetDumpStringWorker();
+        std::string SetDumpStringWorker() const;
     };
 };
 

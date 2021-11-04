@@ -8,6 +8,7 @@
 #include "LevelValue.h"
 
 using namespace HWLib;
+using namespace std;
 
 Console Console::Instance;
 
@@ -28,17 +29,17 @@ static void OutputDebug(const String&text)
         ::printf("%s", text.RawData);
 }
 
-void Console::Write(String const&text, bool isLine)
+void Console::Write(string const&text, bool isLine)
 {
-    auto formattedText = text.Indent(_isLineStart, IndentCount);
-    OutputDebug(formattedText + (isLine ? String("\n") : String("")));
+    auto formattedText = text|Indent(_isLineStart, IndentCount);
+    OutputDebug(formattedText + (isLine ? string("\n") : string("")));
 }
 
-bool Console::BreakTrace(const String&condition, const String&fileName, int line, const String&data)
+bool Console::BreakTrace(const string&condition, const string&fileName, int line, const string&data)
 {
-    WriteLine(String::FilePosition(fileName, line, 0, condition));
+  WriteLine(fileName|FilePosition(line, 0, condition));
     if (data != "")
-        WriteLine(String("Data: ") + data);
+        WriteLine("Data: " + data);
 
     DumpableObject::SetDumpStringQueueEntryWait(); 
     return true;

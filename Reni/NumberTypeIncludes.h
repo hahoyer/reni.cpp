@@ -13,7 +13,7 @@ class NumberType::OperationFeature final : public Feature::Extended
     using baseType = Extended;
     using thisType = OperationFeature;
 
-    ResultData const Result(Category category, Type const&target, Type const&arg)const override
+    ResultData Result(Category const& category, Type const&target, Type const&arg)const override
     {
         auto thisTypeAsNumber = target.As<NumberType>();
         auto argTypeAsNumber = arg.As<NumberType>();
@@ -28,7 +28,7 @@ class NumberType::OperationFeature final : public Feature::Extended
                 target,
                 arg
                 );
-            return resultType->GetResultDataSmartExts(category, l_(code));
+            return resultType->GetResultDataSmartClosure(category, l_(code));
         }
 
         md(category, target, arg);

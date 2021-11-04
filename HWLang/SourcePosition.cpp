@@ -44,40 +44,42 @@ SourcePart const SourcePosition::Span(size_t count)const{
     return SourcePart(_source, _position, count);
 }
 
-String const SourcePosition::Part(size_t count)const{
+string SourcePosition::Part(size_t count) const
+{
     return _source->Part(_position, count);
 }
 
-bool const SourcePosition::BeginsWith(String value)const{
+bool SourcePosition::BeginsWith(string const&value) const
+{
     return _source->BeginsWith(_position, value);
 }
 
-p_implementation(SourcePosition, String, DumpCurrent){
-    return IsEnd ? String() : String(First);
+p_implementation(SourcePosition, string, DumpCurrent){
+    return IsEnd ? string() : string(1,First);
 }
 
 const size_t DumpWidth = 100;
 
-p_implementation(SourcePosition, String, DumpAfterCurrent){
+p_implementation(SourcePosition, string, DumpAfterCurrent){
     return _source->DumpAfterCurrent(_position, 1, DumpWidth);
 }
 
-p_implementation(SourcePosition, String, DumpBeforeCurrent){
+p_implementation(SourcePosition, string, DumpBeforeCurrent){
     return _source->DumpBeforeCurrent(_position, DumpWidth);
 }
 
-p_implementation(SourcePosition, Array<String>, DumpData){
-    auto result = (_source->DumpAroundCurrent(_position, 1, DumpWidth)).Quote;
+p_implementation(SourcePosition, Array<string>, DumpData){
+    auto result = (_source->DumpAroundCurrent(_position, 1, DumpWidth))|Quote();
     return{ result };
 }
 
 //////////////////////////////////////
 
-SourcePart::operator String const()const{
+SourcePart::operator string const()const{
     return _source->Part(_position, _count);
 }
 
-p_implementation(SourcePart, String, DumpCurrent){
+p_implementation(SourcePart, string, DumpCurrent){
     return *this;
 }
 
@@ -89,20 +91,20 @@ p_implementation(SourcePart, bool, IsEnd){
     return _source->IsEnd(_position);
 }
 
-p_implementation(SourcePart, String, DumpAfterCurrent){
+p_implementation(SourcePart, string, DumpAfterCurrent){
     return _source->DumpAfterCurrent(_position, _count, DumpWidth);
 }
 
-p_implementation(SourcePart, String, DumpBeforeCurrent){
+p_implementation(SourcePart, string, DumpBeforeCurrent){
     return _source->DumpBeforeCurrent(_position, DumpWidth);
 }
 
 
-p_implementation(SourcePart, Array<String>, DumpData){
-    auto result = (_source->DumpAroundCurrent(_position, _count, DumpWidth)).Quote;
+p_implementation(SourcePart, Array<string>, DumpData){
+    auto result = (_source->DumpAroundCurrent(_position, _count, DumpWidth))|Quote();
     return{ result };
 }
 
-p_implementation(SourcePart, String, DumpShort){
+p_implementation(SourcePart, string, DumpShort){
     return _source->DumpAroundCurrent(_position, _count, 10);
 }

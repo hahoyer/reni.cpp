@@ -14,7 +14,7 @@ static bool Trace = true;
 
 using namespace Reni;
 
-Compiler::Compiler(String const&fileName)
+Compiler::Compiler(string const&fileName)
 : _internal(new internal(fileName))
 {}
 
@@ -33,7 +33,7 @@ p_implementation(Compiler, Ref<CodeItem>, main)
     return _internal->codeCache.Value.main;
 };
 
-p_implementation(Compiler, String, cppCode)
+p_implementation(Compiler, string, cppCode)
 {
     return _internal->cppCode;
 };
@@ -43,7 +43,7 @@ ExecutionResult Compiler::Execute()
     return _internal->Execute();
 }
 
-Ref<Syntax> Compiler::GetSyntaxFromText(String const& text)
+Ref<Syntax> Compiler::GetSyntaxFromText(string const& text)
 {
     return internal::GetSyntaxFromText(text);
 };
@@ -54,19 +54,19 @@ CodeBase::CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& fun
     SetDumpString();
 }
 
-p_implementation(CodeBase, String, cppMain){ return MainCodeVisitor::MainVisit(main); };
+p_implementation(CodeBase, string, cppMain){ return MainCodeVisitor::MainVisit(main); };
 
-p_implementation(CodeBase, String, cppFunctions)
+p_implementation(CodeBase, string, cppFunctions)
 {
     return functions
-        .Select<String>([&](Global::Function const&function){return function.cppCode; })
-        ->Aggregate<String>();
+        .Select<string>([&](Global::Function const&function){return function.cppCode; })
+        ->Aggregate<string>();
 };
 
-p_implementation(CodeBase, String, cppDeclarations)
+p_implementation(CodeBase, string, cppDeclarations)
 {
     return functions
-        .Select<String>([&](Global::Function const&function){return function.cppDeclarations; })
-        ->Aggregate<String>();
+        .Select<string>([&](Global::Function const&function){return function.cppDeclarations; })
+        ->Aggregate<string>();
 };
 

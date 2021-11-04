@@ -25,13 +25,13 @@ namespace Reni
         static Optional<WeakRef<thisType>> const Convert(Type const&target);
     private:
         p(WeakRef<Type>, value);
-        p_function(bool, hllw) { return false; };
-        p_function(Array<String>, DumpData) override;
+        p_function(bool, hollow) { return false; };
+        p_function(Array<string>, DumpData) override;
         p_function(Size, size)override { return Size::Address; }
         p_function(WeakRef<Global>, global) override;
         Optional<WeakRef<NumberType>> const get_asNumberType() const override;
-        SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
-        Ref<ResultCache> const DirectConvert() const override;
+        SearchResult<Feature> DeclarationsForType(DeclarationType const& token) const override;
+        Ref<ResultCache> DirectConvert() const override;
         Ref<CodeItem> const DirectConvertCode() const;
 
         class AssignmentFeature final : public Feature::Extended
@@ -39,7 +39,7 @@ namespace Reni
             using baseType = Feature::Extended;
             using thisType = AssignmentFeature;
 
-            ResultData const Result(Category category, Type const& target, Type const& arg) const override;
+            ResultData Result(Category const& category, Type const& target, Type const& arg) const override;
         };
     };
 

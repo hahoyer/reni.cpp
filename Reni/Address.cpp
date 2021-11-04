@@ -7,13 +7,13 @@ using namespace Reni;
 static bool Trace = true;
 
 
-Address::Address(Size const& data, int depth) : data(data), depth(depth)
+Address::Address(const Size& data, int depth) : data(data), depth(depth)
 {
-    SetDumpString();
+  SetDumpString();
 }
 
-Address const Address::operator+(int delta) const
+Address Address::operator+(int delta) const
 {
-    a_is(delta, >, 0);
-    return Address(data, depth + delta);
+  a_is(delta, >, 0);
+  return Address(data, depth + delta);
 }

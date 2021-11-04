@@ -9,6 +9,7 @@
 #include <thread>
 
 using namespace HWLib;
+using namespace std;
 
 DumpableObject::DumpableObject() 
 : isDumpStringValid(false)
@@ -51,24 +52,25 @@ void DumpableObject::SetDumpStringQueueEntryWait(){
     SetDumpStringQueueEntry::Wait();
 }
 
-String const DumpableObject::SetDumpStringWorker(){
-    dumpString = DumpLong.RawData;
-    dumpShortString = DumpShort.RawData;
+string DumpableObject::SetDumpStringWorker() const
+{
+    dumpString = DumpLong.c_str();
+    dumpShortString = DumpShort.c_str();
     isDumpStringValid = true;
     return dumpString;
 }
 
-p_implementation(DumpableObject, String, Dump){
+p_implementation(DumpableObject, string, Dump){
     return DumpLong;
 }
 
-p_virtual_header_implementation(DumpableObject, String, DumpHeader);
+p_virtual_header_implementation(DumpableObject, string, DumpHeader);
 
-p_implementation(DumpableObject, String, DumpHeader){return HWLib::DumpTypeName(*this);};
+p_implementation(DumpableObject, string, DumpHeader){return HWLib::DumpTypeName(*this);};
 
-p_implementation(DumpableObject, String, DumpLong){
+p_implementation(DumpableObject, string, DumpLong){
     auto result = DumpHeader;
-    Array<String> dataResult { "..." };
+    Array<string> dataResult { "..." };
 
     if (!isInDump)
     {
@@ -79,10 +81,10 @@ p_implementation(DumpableObject, String, DumpLong){
     return DumpHeader + String::Surround("{", dataResult, "}");
 };
 
-p_virtual_implementation(DumpableObject, String, DumpShort){
+p_virtual_implementation(DumpableObject, string, DumpShort){
     return DumpHeader;
 };
 
-p_virtual_header_implementation(DumpableObject, Array<String>, DumpData);
+p_virtual_header_implementation(DumpableObject, Array<string>, DumpData);
 
 #include "TemplateInstances.h"

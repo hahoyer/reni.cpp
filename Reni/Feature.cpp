@@ -2,7 +2,6 @@
 #include "Feature.h"
 
 #include "AccessFeature.h"
-#include "Address.h"
 #include "CodeItems.h"
 #include "ContainerContext.h"
 #include "DefineableToken.h"
@@ -10,11 +9,9 @@
 #include "Global.h"
 #include "NumberType.h"
 #include "ReplaceVisitor.h"
-#include "SyntaxContainer.h"
 
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/Ref.h"
-#include "FunctionResultCache.h"
 
 static bool Trace = true;
 
@@ -22,13 +19,13 @@ using namespace HWLib;
 using namespace Reni;
 
 
-FoundFeature<Feature> const Feature::Error(String const&title)
+FoundFeature<Feature> Feature::Error(string const& title)
 {
     c_ .Write(title);
     mb;
 }
 
-ResultData const Feature::ConversionResult(Category category, Type const& target, Type const& destination) const
+ResultData Feature::ConversionResult(const Category& category, Type const& target, Type const& destination) const
 {
     return extended.Value->Result(category, target, destination);
 };
@@ -39,11 +36,11 @@ AccessFeature::AccessFeature(Simple const& simple, Extended const& extended)
     , extended(extended.thisRef) 
 {}
 
-ResultData const AccessFeature::FunctionResult(
-    Context const&context,
-    Category category,
-    Optional<Ref<Syntax>> const& right
-    )const
+ResultData AccessFeature::FunctionResult(
+  Context const& context,
+  const Category& category,
+  Optional<Ref<Syntax>> const& right
+) const
 {
     if(right.IsEmpty)
         return simple.Value->Result(context, category);
@@ -51,26 +48,26 @@ ResultData const AccessFeature::FunctionResult(
     ReplaceVisitor visitor;
     Optional<Ref<ResultFromSyntaxAndContext>> const argResult = right.Value->GetResultCache(context);
     visitor.SetResults(External::Args::Instance, *argResult.Value);
-    auto rawResult = extended.Value->Result(context, category, *right.Value->Type(context));
+    auto rawResult = extended.Value->Result(context, category, *right.Value->GetType(context));
     auto result = rawResult.Replace(visitor);
     return(result);
 }
 
 
-ResultData const EnableCutFeature::Result(Category category, Type const&target)const
+ResultData EnableCutFeature::Result(Category const& category, Type const& target) const
 {
     return target
         .enableCutType
-        ->GetResultDataSmartExts(category, l_(CodeItem::This(target)));
+        ->GetResultDataSmartClosure(category, l_(CodeItem::This(target)));
 }
 
 
-ResultData const DumpPrintFeature::Result(Category category, Type const& target)const
+ResultData DumpPrintFeature::Result(Category const& category, Type const& target) const
 {
     return target
         .global
         ->voidType
-        .GetResultDataSmartExts
+        .GetResultDataSmartClosure
         (
             category,
             l_(CodeItem::DumpPrint(dynamic_cast<NumberType const&>(target)))
@@ -96,7 +93,7 @@ FoundFeature<Feature>::FoundFeature(FoundFeature const&other)
 {
 }
 
-ResultData const FoundFeature<Feature>::AlignThis(ResultData const& start) const
+ResultData FoundFeature<Feature>::AlignThis(ResultData const& start) const
 {
     if(path.Count == 0)
         return start;
@@ -112,12 +109,12 @@ ResultData const FoundFeature<Feature>::AlignThis(ResultData const& start) const
     return{};
 }
 
-ResultData const FoundFeature<Feature>::FunctionResult(
-    Context const& context,
-    Category category,
-    Optional<Ref<Syntax>> const& left,
-    Optional<Ref<Syntax>> const& right
-    )const
+ResultData FoundFeature<Feature>::FunctionResult(
+  Context const& context,
+  const Category& category,
+  Optional<Ref<Syntax>> const& left,
+  Optional<Ref<Syntax>> const& right
+) const
 {
     bool Trace = context.ObjectId == 3
         && left.IsValid && left.Value->ObjectId >- 9
@@ -143,7 +140,8 @@ ResultData const FoundFeature<Feature>::FunctionResult(
     return_db(result);
 };
 
-ResultData const FoundFeature<Feature>::Result(Context const& context, Category category, Type const& target, Optional<Ref<Syntax>> const& arg) const
+ResultData FoundFeature<Feature>::Result(Context const& context, const Category& category, Type const& target,
+                                         Optional<Ref<Syntax>> const& arg) const
 {
     if(arg.IsEmpty)
         return feature.simple.Value->Result(category, target);
@@ -157,12 +155,12 @@ ResultData const FoundFeature<Feature>::Result(Context const& context, Category 
         ;
 }
 
-FoundFeature<Feature> const FoundFeature<Feature>::operator+(Type const& fromType)const
+FoundFeature<Feature> FoundFeature<Feature>::operator+(Type const& fromType) const
 {
     return FoundFeature<Feature>(type->thisRef, feature, path + WeakRef<Type>(fromType.thisRef));
 }
 
-ResultData const FoundFeature<Feature>::ConversionResult(Category category, Type const& target, Type const& destination) const
+ResultData FoundFeature<Feature>::ConversionResult(const Category& category, Type const& target, Type const& destination) const
 {
     return feature.ConversionResult(category, target, destination);
 };

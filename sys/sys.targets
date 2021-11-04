@@ -71,8 +71,8 @@
         <ProjectName>$(MSBuildProjectName)</ProjectName>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <ShowAllFiles>true</ShowAllFiles>
-        <OutDir>$(SolutionDir)bin\out\$(Configuration)\</OutDir>
-        <IntDir>$(SolutionDir)bin\temp\$(Configuration)\$(ProjectName)\</IntDir>
+        <OutDir>$(SolutionDir)bin\out\$(PlatformName)\$(Configuration)\</OutDir>
+        <IntDir>$(SolutionDir)bin\intermediate\$(PlatformTarget)\$(Configuration)\$(ProjectName)\</IntDir>
         <IncludePath>$(Boost);$(IncludePath)</IncludePath>
         <LibraryPath>$(Boost)\libs;$(LibraryPath)</LibraryPath>
     </PropertyGroup>

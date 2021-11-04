@@ -18,12 +18,12 @@ AccessType::AccessType(AccessData const& data)
     SetDumpString();
 }
 
-p_implementation(AccessType, Array<String>, DumpData) { return data->p_name(DumpData)(); }
+p_implementation(AccessType, Array<string>,DumpData) { return data->p_name(DumpData)(); }
 p_implementation(AccessType, WeakRef<Global>, global){ return data->global; }
 p_implementation(AccessType, WeakRef<Type>, value){return data->dataResultCache->type;}
 p_implementation(AccessType, Optional<WeakRef<NumberType>>, asNumberType){ return value->As<NumberType>(); }
 
-SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType const& target) const
+SearchResult<Feature> AccessType::DeclarationsForType(DeclarationType const& target) const
 {
     auto dircetResult = target.Declarations(*this);
     if(dircetResult.IsValid)
@@ -36,12 +36,12 @@ SearchResult<Feature> const AccessType::DeclarationsForType(DeclarationType cons
     return{};
 }
 
-Ref<ResultCache> const AccessType::DirectConvert() const
+Ref<ResultCache> AccessType::DirectConvert() const
 {
     return new FunctionResultCache
         ([&](Category category) -> ResultData const
     {
-        return ResultData::GetSmartHllwSizeExts
+        return ResultData::GetSmartHollowSizeClosure
             (
             category,
             l_(DirectConvertCode()),
@@ -65,7 +65,7 @@ Optional<WeakRef<AccessType>> const AccessType::Convert(Type const& target)
 }
 
 
-ResultData const AccessType::AssignmentFeature::Result(Category category, Type const& target, Type const& arg) const
+ResultData AccessType::AssignmentFeature::Result(Category const& category, Type const& target, Type const& arg) const
 {
     bool Trace = false;
     md(category, target, arg);

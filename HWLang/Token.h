@@ -21,7 +21,7 @@ namespace HWLang{
 
         DefaultAssignmentOperator;
 
-        p(String, Name){
+        p(string, Name){
             if (IsEnd)
                 return PrioTableConst::End;
             if (IsStart)
@@ -33,13 +33,13 @@ namespace HWLang{
         p(bool, IsStart){ return Part.IsStart; };
 
     private:
-        p_function(Array<String>,DumpData) override{
+        p_function(Array<string>,DumpData) override{
             return{
                 nd(Class),
                 nd(Part)
             };
         };
-        p_function(String,DumpShort) override{
+        p_function(string,DumpShort) override{
             return p_base_name(DumpShort) + "{" + Name + "}";
         };
     };

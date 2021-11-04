@@ -1,5 +1,5 @@
 #pragma once
-#include "../HWLib/String.h"
+#include "../HWLib/string.h"
 #include "../HWLang/Token.h"
 #include "../HWLib/Ref.h"
 
@@ -15,7 +15,7 @@ namespace Reni
     struct ExecutionResult
     {
         int result;
-        String data;
+        string data;
     };
 
     using Token = Token<TokenClass>;
@@ -28,15 +28,15 @@ namespace Reni
     public:
         Compiler() = delete;
         Compiler(Compiler const&) = delete;
-        Compiler(String const&fileName);
+        Compiler(string const&fileName);
     
         p(Array<Token>, tokens);
         p(Ref<Syntax>, syntax);
         p(CodeBase, code);
         p(Ref<CodeItem>, main);
-        p(String, cppCode);
+        p(string, cppCode);
         ExecutionResult Execute();
 
-        static Ref<Syntax> GetSyntaxFromText(String const& text);
+        static Ref<Syntax> GetSyntaxFromText(string const& text);
     };
 }

@@ -25,10 +25,10 @@ namespace Reni{
         ThisRef;
 
     private:
-        p_function(String, SmartDump) override; 
+        p_function(string, SmartDump) override; 
         p_function(int, priority) override{ return 0; }
 
-        ResultData const GetResultData(Context const& context, Category category) const override;
+        ResultData GetResultData(const Context& context, Category const& category) const override;
     };
 
 }

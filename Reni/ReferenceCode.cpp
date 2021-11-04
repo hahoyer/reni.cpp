@@ -21,10 +21,10 @@ ReferenceCode::ReferenceCode(ContainerContext const& value) : value(value)
     SetDumpString();
 }
 
-p_implementation(ReferenceCode, Array<String>, DumpData) { return{nd(value)}; };
-p_implementation(ReferenceCode, Externals, exts){return Externals(value.asExternal);}
+p_implementation(ReferenceCode, Array<string>,DumpData) { return{nd(value)}; };
+p_implementation(ReferenceCode, Closure, closure){return Closure(value.asExternal);}
 
-inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
+inline Ref<CodeItem> ReferenceCode::ReferencePlus(Size offset) const
 {
     if(offset == 0)
         return thisRef;
@@ -32,13 +32,13 @@ inline Ref<CodeItem> const ReferenceCode::ReferencePlus(Size offset) const
         ->thisRef;
 }
 
-Optional<Ref<CodeItem>> const ReferenceCode::ReplaceImpl(ReplaceVisitor const&visitor) const
+Optional<Ref<CodeItem>> ReferenceCode::ReplaceImpl(ReplaceVisitor const& visitor) const
 {
     return visitor.GetCode(value.asExternal);
 }
 
 
-String const AssignCode::ToCpp(CodeVisitor const& visitor) const
+std::string AssignCode::ToCpp(CodeVisitor const& visitor) const
 {
     md(visitor);
     mb;

@@ -17,7 +17,7 @@ namespace Reni
         explicit EmptySyntax(SourcePart const& part)
             : Syntax(part) {}
     private:
-        p_function(String, SmartDump) override{ return ""; };
+        p_function(string, SmartDump) override{ return ""; };
         p_function(int, priority) override{ return 0; }
 
         void AddTo(SyntaxContainer& main) const override;

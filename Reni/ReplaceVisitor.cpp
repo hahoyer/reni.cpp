@@ -3,7 +3,7 @@
 
 #include "Address.h"
 #include "CodeItem.h"
-#include "Externals.h"
+#include "Closure.h"
 #include "Result.h"
 #include "Type.h"
 
@@ -14,25 +14,25 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-p_implementation(ReplaceVisitor, Array<String>, DumpData){
+p_implementation(ReplaceVisitor, Array<string>, DumpData){
     return results
         .keys
-        .Select<String>([&](External const* key)
+        .Select<string>([&](External const* key)
     {
         return HWLib::Dump(key) + ": " + HWLib::Dump(results[key]); 
     })
         ->ToArray;
 };
 
-Externals const ReplaceVisitor::GetExts(External const&tag)const
+Closure ReplaceVisitor::GetClosure(External const& tag) const
 {
     auto result = GetResults(tag);
     if (result.IsEmpty)
-        return Externals(tag);
-    return result.Value->exts;
+        return Closure(tag);
+    return result.Value->closure;
 };
 
-Optional<Ref<CodeItem>>const ReplaceVisitor::GetCode(External const&tag)const
+Optional<Ref<CodeItem>> ReplaceVisitor::GetCode(External const& tag) const
 {
     auto result = GetResults(tag);
     if (result.IsEmpty)
@@ -55,7 +55,7 @@ void ReplaceVisitor::AssumeFunctionArg(External::Function const& tag, Type const
     a_is(arg.toAddress.data, == , result.Value->type->toAddress.data);
 }
 
-Optional<Ref<ResultCache>> const ReplaceVisitor::GetResults(External const& tag) const
+Optional<Ref<ResultCache>> ReplaceVisitor::GetResults(External const& tag) const
 {
     return results.Find(&tag);
 }

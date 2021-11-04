@@ -7,51 +7,54 @@ static bool Trace = true;
 
 using namespace Util;
 
-BitsConst const BitsConst::Empty(){
-    return BitsConst();
+BitsConst BitsConst::Empty()
+{
+  return BitsConst();
 }
 
-BitsConst const BitsConst::Convert(String const&text){
-    return BitsConst(text);
+BitsConst BitsConst::Convert(const string& text)
+{
+  return BitsConst(text);
 };
 
-BitsConst::operator size_t const() const
+BitsConst::operator const size_t() const
 {
-    return value.toUlong();
+  return value.toUlong();
 }
 
-p_implementation(BitsConst, Size, size){
-    if (value == BigInt::Rossi(0))
-        return 0;
-    size_t result = (value.getUnitsSize() - 1) * 8;
-    a_is(result, <, 10000);
-    BigInt::Rossi value = this->value;
-    if (result != 0)
-        value >>= result;
+p_implementation(BitsConst, Size, size)
+{
+  if(value == BigInt::Rossi(0))
+    return 0;
+  size_t result = (value.getUnitsSize() - 1) * 8;
+  a_is(result, <, 10000);
+  BigInt::Rossi value = this->value;
+  if(result != 0)
+    value >>= result;
 
-    if (value < BigInt::Rossi(0))
-        value = -value;
-    else
-        result++;
+  if(value < BigInt::Rossi(0))
+    value = -value;
+  else
+    result++;
 
-    while (value != BigInt::Rossi(0))
-    {
-        value >>= 1;
-        result++;
-    }
-    return result;
+  while(value != BigInt::Rossi(0))
+  {
+    value >>= 1;
+    result++;
+  }
+  return result;
 }
 
-p_implementation(BitsConst, String, format){
-    return 
-        Array<BigInt::Ulong>(value.ToArray())
-        .Select<String>([](long element){return String::Convert(element); })
-        ->Stringify(", ");
+p_implementation(BitsConst, string, format)
+{
+  return
+    Array<BigInt::Ulong>(value.ToArray())
+    .Select<string>([](long element) { return String::Convert(element); })
+    ->Stringify(", ");
 }
 
 
-p_implementation(BitsConst, String, DumpShort){
-    return String(value.toStrDec())
-        + String(" size=") 
-        + size.DumpShort;
+p_implementation(BitsConst, string, DumpShort)
+{
+  return value.toStrDec() + string(" size=") + size.DumpShort;
 };

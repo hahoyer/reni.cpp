@@ -15,12 +15,12 @@ namespace Reni
         Ref<Syntax> const condition;
         Ref<Syntax> const thenClause;
         Ref<Syntax> const elseClause;
-        IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> const thenClause, SourcePart const part, Ref<Syntax> const elseClause);
+        IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> const thenClause, SourcePart const& part, Ref<Syntax> const elseClause);
     private:
-        p_function(String, SmartDump) override;
+        p_function(string, SmartDump) override;
         p_function(int, priority) override{ return -10; }
-        virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Optional<Ref<Syntax>> const Replace(SyntaxArgVisitor const&) const override;
+        virtual ResultData GetResultData(const Context& context, Category const& category)const override;
+        virtual Optional<Ref<Syntax>> Replace(SyntaxArgVisitor const&) const override;
     };
 
     class IfThenSyntax final : public Syntax
@@ -36,10 +36,10 @@ namespace Reni
             return new IfThenElseSyntax(condition, thenClause, part, clause);
         }
     private:
-        p_function(String, SmartDump) override;
+        p_function(string, SmartDump) override;
         p_function(int, priority) override{ return -10; }
-        virtual ResultData const GetResultData(Context const&context, Category category)const override;
-        virtual Optional<Ref<Syntax>> const Replace(SyntaxArgVisitor const&) const override;
+        virtual ResultData GetResultData(const Context& context, Category const& category)const override;
+        virtual Optional<Ref<Syntax>> Replace(SyntaxArgVisitor const&) const override;
     };
 
 }

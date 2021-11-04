@@ -7,18 +7,18 @@ using namespace Util;
 
 namespace Reni
 {
-    class Address final : public DumpableObject
-    {
-        using baseType = DumpableObject;
-        using thisType = Address;
-    public:
-        Size const data;
-        int const depth;
+  class Address final : public DumpableObject
+  {
+    using baseType = DumpableObject;
+    using thisType = Address;
+  public:
+    const Size data;
+    const int depth;
 
-        Address(Size const& data, int depth);
+    Address(const Size& data, int depth);
 
-        Address const operator+(int delta)const;
-    private:
-        p_function(Array<String>, DumpData) override{ return{nd(data), nd(depth)}; };
-    };
+    Address operator+(int delta) const;
+  private:
+    p_function(Array<string>, DumpData) override { return {nd(data), nd(depth)}; };
+  };
 };

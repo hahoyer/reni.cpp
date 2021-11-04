@@ -1,5 +1,5 @@
 #pragma once
-#include "../HWLib/String.h"
+#include "../HWLib/string.h"
 #include "../Runtime/Common.h"
 #include "../HWLib/DumpableObject.h"
 #include "../HWLib/RefCountProvider.h"
@@ -14,7 +14,7 @@ namespace Reni
 {
     class ContainerContext;
     class CodeVisitor;
-    class Externals;
+    class Closure;
     class FiberCode;
     class FiberItem;
     class NumberType;
@@ -31,43 +31,43 @@ namespace Reni
         typedef ReniRuntime::Stack::dataType dataItemType;
         typedef ReniRuntime::Stack::sizeType dataItemSizeType;
 
-        static Ref<CodeItem> const Assign(Type const&data, Ref<CodeItem> left);
-        static Ref<CodeItem> const Arg(Type const&type);
-        static Ref<CodeItem> const FunctionArg(Type const&value);
-        static Ref<CodeItem> const Const(BitsConst const&value);
-        static Ref<CodeItem> const Empty(){ return Const(BitsConst::Empty()); };
-        static Ref<CodeItem> const NumberOperation
-            (
-            String name, 
-            Address const&result, 
-            Type const&left,
-            Type const&right
-            );
-        static Ref<CodeItem> const DumpPrint(NumberType const&value);
-        static Ref<CodeItem> const This(Type const&type);
-        static Ref<CodeItem> const Reference(ContainerContext const&value);
-        static Ref<CodeItem> const CallGetter(Size const& size, size_t const index, Type const&arg);
-        static Ref<CodeItem> const CallGetter(Size const& size, size_t const index);
-        static Ref<CodeItem> const SmartList(Array<Optional<Ref<CodeItem>>> const&items);
-        static Ref<CodeItem> const List(Array<Ref<CodeItem>> const&items);
-        static Ref<CodeItem> const NumberConversion(Address const&result, Type const& arg);
-        static Ref<CodeItem> const IfThenElse(Ref<CodeItem> const condition, Ref<CodeItem> const then, Ref<CodeItem> const _else);
+        static Ref<CodeItem> Assign(Type const& data, Ref<CodeItem> left);
+        static Ref<CodeItem> Arg(Type const& type);
+        static Ref<CodeItem> FunctionArg(Type const& value);
+        static Ref<CodeItem> Const(BitsConst const& value);
+        static Ref<CodeItem> Empty() { return Const(BitsConst::Empty()); };
+        static Ref<CodeItem> NumberOperation
+        (
+          string name,
+          Address const& result,
+          Type const& left,
+          Type const& right
+        );
+        static Ref<CodeItem> DumpPrint(NumberType const& value);
+        static Ref<CodeItem> This(Type const& type);
+        static Ref<CodeItem> Reference(ContainerContext const& value);
+        static Ref<CodeItem> CallGetter(Size const& size, size_t index, Type const& arg);
+        static Ref<CodeItem> CallGetter(Size const& size, size_t index);
+        static Ref<CodeItem> SmartList(Array<Optional<Ref<CodeItem>>> const& items);
+        static Ref<CodeItem> List(Array<Ref<CodeItem>> const& items);
+        static Ref<CodeItem> NumberConversion(Address const& result, Type const& arg);
+        static Ref<CodeItem> IfThenElse(Ref<CodeItem> condition, Ref<CodeItem> then, Ref<CodeItem> _else);
 
-        bool const operator==(thisType const&other)const;
+        bool operator==(thisType const& other) const;
 
-        virtual String const ToCpp(CodeVisitor const& visitor)const;
+        virtual string ToCpp(CodeVisitor const& visitor) const;
         p_virtual(bool, isReference){ return false; };
         p_virtual(Size, size) = 0;
-        p_virtual(Externals, exts) = 0;
+        p_virtual(Closure, closure) = 0;
         p_virtual(bool, isEmpty){ return false; };
         ThisRef;
-        Optional<Ref<CodeItem>> const Replace(ReplaceVisitor const&arg) const;
-        Ref<FiberCode> const operator+(FiberItem const&item)const;
-        virtual Ref<FiberCode> const operator+(Array<Ref<FiberItem>> const&items)const;
-        virtual Ref<CodeItem> const ReferencePlus(Size offset)const;
-        virtual Ref<CodeItem> const Convert(Type const& type)const;
+        Optional<Ref<CodeItem>> Replace(ReplaceVisitor const& arg) const;
+        Ref<FiberCode> operator+(FiberItem const& item) const;
+        virtual Ref<FiberCode> operator+(Array<Ref<FiberItem>> const&items)const;
+        virtual Ref<CodeItem> ReferencePlus(Size offset) const;
+        virtual Ref<CodeItem> Convert(Type const& type) const;
     protected:
-        virtual Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const = 0;
+        virtual Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const = 0;
     };
 }
 

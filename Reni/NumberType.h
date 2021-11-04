@@ -28,14 +28,14 @@ namespace Reni
         SearchResult<Feature> const Declarations(EnableCutType const& provider) const override;
         WeakRef<NumberType> const Resize(size_t newSize)const;
     private:
-        p_function(bool, hllw) { return false; };
+        p_function(bool, hollow) { return false; };
         p_function(Size, size) override;
         p_function(WeakRef<Global>, global) override;
-        p_function(Array<String>, DumpData) override;
-        p_function(String, DumpShort) override;
+        p_function(Array<string>, DumpData) override;
+        p_function(string, DumpShort) override;
         p_function(Optional<WeakRef<NumberType>>, asNumberType)override{ return thisRef; }
 
-        SearchResult<Feature> const DeclarationsForType(DeclarationType const& token) const override;
+        SearchResult<Feature> DeclarationsForType(DeclarationType const& token) const override;
 
         template<class TTokenClass>
         class OperationFeature;

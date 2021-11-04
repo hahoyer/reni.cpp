@@ -9,9 +9,9 @@ namespace Reni
 
     class MainTokenFactory 
     {
-        FunctionCache<Ref<TokenClass>, String> tokenClasses;
-        Map<String, Ref<TokenClass>> predefinedTokenClasses;
-        FunctionCache<Ref<TokenClass>, String> errorClasses;
+        FunctionCache<Ref<TokenClass>, string> tokenClasses;
+        Map<string, Ref<TokenClass>> predefinedTokenClasses;
+        FunctionCache<Ref<TokenClass>, string> errorClasses;
 
         MainTokenFactory();
     public:
@@ -21,10 +21,10 @@ namespace Reni
         static TokenClass const& End;
         static TokenClass const& Number;
         static TokenClass const& Text;
-        static TokenClass const& GetTokenClass(String const&name);
-        static TokenClass const& GetErrorClass(String const&name);
+        static TokenClass const& GetTokenClass(string const&name);
+        static TokenClass const& GetErrorClass(string const&name);
     private:
-        TokenClass const& InternalGetTokenClass(String const&name)const;
+        TokenClass const& InternalGetTokenClass(string const&name)const;
 
         template<class TTokenClass>
         void AddTokenClass(TTokenClass const*tokenClass);

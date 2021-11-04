@@ -28,7 +28,7 @@ namespace Reni
         }
 
     private:
-        p_function(Array<String>, DumpData) override
+        p_function(Array<string>,DumpData) override
         {
             return{
                 nd(code),
@@ -36,9 +36,9 @@ namespace Reni
             };
         };
 
-        ResultData const GetResultData(Category category)const override
+        ResultData GetResultData(Category const&category)const override
         {
-            return ResultData::GetSmartHllwSizeExts(category, l_(code.Value), l_(type.Value));
+            return ResultData::GetSmartHollowSizeClosure(category, l_(code.Value), l_(type.Value));
         }
     };
 }

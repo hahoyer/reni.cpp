@@ -26,7 +26,7 @@ RootContext::RootContext()
     SetDumpString();
 }
 
-p_implementation(RootContext, Array<String>, DumpData)
+p_implementation(RootContext, Array<string>,DumpData)
 {
     return{};
 };

@@ -31,42 +31,42 @@ public:
 
     ThisRef;
 private:
-    p_function(String, SmartDump) override{
+    p_function(string, SmartDump) override{
         return
         target->SmartDumpFrame(priority)
         + " type";
     }
     p_function(int, priority) override{ return 0; }
 
-    ResultData const GetResultData(Context const& context, Category category) const override;
+    ResultData GetResultData(const Context& context, Category const& category) const override;
 };
 
 
-ResultData const TypeOperatorSyntax::GetResultData(Context const& context, Category category) const
+ResultData TypeOperatorSyntax::GetResultData(const Context& context, Category const& category) const
 {
     if(category.hasType)
-        return target->Type(context)->typeType->GetResultDataEmpty(category);
+        return target->GetType(context)->typeType->GetResultDataEmpty(category);
     return context.global->voidType.GetResultDataEmpty(category);
 }
 
-p_virtual_header_implementation(Syntax, String, SmartDump);
+p_virtual_header_implementation(Syntax, string, SmartDump);
 p_virtual_header_implementation(Syntax, int, priority);
 
-p_implementation(Syntax, Array<String>, DumpData) 
+p_implementation(Syntax, Array<string>,DumpData)
 {
     return{SmartDumpFrame(priority)};
 }
 
 Reni::Syntax::Syntax(SourcePart const&part)
-    : part(part)
-      , resultCache([&](Context const*context)
-          {
-              return new ResultFromSyntaxAndContext(*this, *context);
-          })
+    : resultCache([&](Context const*context)
+      {
+        return new ResultFromSyntaxAndContext(*this, *context);
+      })
+      , part(part)
 {
 };
 
-String const Syntax::SmartDumpFrame(int priority) const
+string Syntax::SmartDumpFrame(int priority) const
 {
     auto result = SmartDump;
     if(this->priority > priority)
@@ -74,37 +74,37 @@ String const Syntax::SmartDumpFrame(int priority) const
     return "(" + result + ")";
 };
 
-Size const Syntax::Size(Context const& context) const
+Size Syntax::GetSize(Context const& context) const
 {
     return resultCache(&context)->size;
 };
 
-Ref<CodeItem> const Syntax::Code(Context const&context)const
+Ref<CodeItem> Syntax::GetCode(Context const& context) const
 {
     return resultCache(&context)->code;
 };
 
-WeakRef<Type>const Syntax::Type(Context const&context)const
+WeakRef<Type> Syntax::GetType(Context const& context) const
 {
     return resultCache(&context)->type;
 }
 
-Externals const Syntax::Exts(Context const& context) const
+Closure Syntax::GetClosure(Context const& context) const
 {
-    return resultCache(&context)->exts;
+    return resultCache(&context)->closure;
 }
 
-Ref<ResultFromSyntaxAndContext> const Syntax::GetResultCache(Context const&context)const
+Ref<ResultFromSyntaxAndContext> Syntax::GetResultCache(Context const& context) const
 {
     return resultCache(&context);
 }
 
-Optional<WeakRef<Type>> const Syntax::CachedType(RegularContext const& context) const
+Optional<WeakRef<Type>> Syntax::CachedType(RegularContext const& context) const
 {
     return resultCache(&context)->cachedType;
 };
 
-ResultData const Syntax::GetResultData(Context const&context, Category category)const
+ResultData Syntax::GetResultData(Context const& context, Category const&category) const
 {
     return context
         .global
@@ -113,19 +113,19 @@ ResultData const Syntax::GetResultData(Context const&context, Category category)
 };
 
 
-Ref<Syntax> const Syntax::ReplaceArg(Ref<Syntax> const&arg)const
+Ref<Syntax> Syntax::ReplaceArg(Ref<Syntax> const& arg) const
 {
-    SyntaxArgVisitor visitor = arg;
+  const SyntaxArgVisitor visitor = arg;
     return Replace(visitor) || Ref<Syntax> (thisRef);
 };
 
-Optional<Ref<Syntax>> const Syntax::Replace(SyntaxArgVisitor const&visitor) const
+Optional<Ref<Syntax>> Syntax::Replace(SyntaxArgVisitor const& visitor) const
 {
     md(visitor)  ;
     mb;
 }
 
-Ref<SyntaxContainer> const Syntax::Defines(SourcePart const& part, Ref<Syntax> const&value) const
+Ref<SyntaxContainer> Syntax::Defines(SourcePart const& part, Ref<Syntax> const& value) const
 {
     md(part, value)    ;
     mb;
@@ -137,36 +137,36 @@ void Syntax::AddTo(SyntaxContainer& syntaxContainer) const
     b_;
 }
 
-Ref<Syntax> const Syntax::TypeOperator(SourcePart const part) const
+Ref<Syntax> Syntax::TypeOperator(SourcePart const& part) const
 {
     return new TypeOperatorSyntax(thisRef, part);
 }
 
-p_implementation(InfixSyntax, String, SmartDump)
+p_implementation(InfixSyntax, string, SmartDump)
 {
     return
         left->SmartDumpFrame(priority)
         + " "
-        + String(part)
+        + string(part)
         + " "
         + right->SmartDumpFrame(priority);
 };
 
 
-p_implementation(PrefixSyntax, String, SmartDump)
+p_implementation(PrefixSyntax, string, SmartDump)
 {
     return
-        String(part)
+        string(part)
         + " "
         + right->SmartDumpFrame(priority);
 };
 
 
-p_implementation(SuffixSyntax, String, SmartDump)
+p_implementation(SuffixSyntax, string, SmartDump)
 {
     return
         left->SmartDumpFrame(priority)
         + " "
-        + String(part)
+        + string(part)
         ;
 };

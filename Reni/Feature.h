@@ -29,15 +29,15 @@ namespace Reni
         using thisType = Feature;
     public:
         template<class T>
-        static FoundFeature<Feature> const From(Type const&type);
-        static FoundFeature<Feature> const Error(String const&title);
+        static FoundFeature<Feature> From(Type const&type);
+        static FoundFeature<Feature> Error(string const& title);
 
         class Simple : public RefCountProvider
         {
             using thisType = Simple;
         public:
             ThisRef;
-            virtual ResultData const Result(Category category, Type const&target) const = 0;
+            virtual ResultData Result(Category const& category, Type const&target) const = 0;
         };
 
 
@@ -46,7 +46,7 @@ namespace Reni
             using thisType = Extended;
         public:
             ThisRef;
-            virtual ResultData const Result(Category category, Type const&target, Type const&arg) const = 0;
+            virtual ResultData Result(Category const& category, Type const&target, Type const&arg) const = 0;
         };
 
 
@@ -68,9 +68,9 @@ namespace Reni
 
     public:
         p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
-        ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
+        ResultData ConversionResult(const Category& category, Type const& target, Type const& destination) const;
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
+        p_function(Array<string>, DumpData) override{ return{nd(simple) + nd(extended)}; }
     };
 
 
@@ -78,14 +78,14 @@ namespace Reni
     {
         using baseType = Simple;
         using thisType = EnableCutFeature;
-        ResultData const Result(Category category, Type const&target)const override;
+        ResultData Result(Category const& category, Type const& target) const override;
     };
 
     class DumpPrintFeature final : public Feature::Simple
     {
         using baseType = Simple;
         using thisType = DumpPrintFeature;
-        ResultData const Result(Category category, Type const&target)const override;
+        ResultData Result(Category const& category, Type const& target) const override;
     };
 
     template<>
@@ -103,20 +103,21 @@ namespace Reni
         FoundFeature(Type const& type, Feature const& feature);
         FoundFeature(FoundFeature const&);;
 
-        ResultData const AlignThis(ResultData const& start) const;
-        ResultData const FunctionResult(
-            Context const&context,
-            Category category,
-            Optional<Ref<Syntax>> const& left,
-            Optional<Ref<Syntax>> const& right
-            )const;
-        thisType const operator+(Type const&fromType)const;
+        ResultData AlignThis(ResultData const& start) const;
+        ResultData FunctionResult(
+          Context const& context,
+          const Category& category,
+          Optional<Ref<Syntax>> const& left,
+          Optional<Ref<Syntax>> const& right
+        ) const;
+        thisType operator+(Type const& fromType) const;
 
-        ResultData const ConversionResult(Category category, Type const&target, Type const&destination) const;
+        ResultData ConversionResult(const Category& category, Type const& target, Type const& destination) const;
 
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(type) + nd(feature) + nd(path)}; };
-        ResultData const Result(Context const& context, Category category, Type const& target, Optional<Ref<Syntax>> const& arg) const;
+        p_function(Array<string>, DumpData) override{ return{nd(type) + nd(feature) + nd(path)}; };
+        ResultData Result(Context const& context, const Category& category, Type const& target,
+                          Optional<Ref<Syntax>> const& arg) const;
     };
 
 }
@@ -124,7 +125,7 @@ namespace Reni
 using namespace Reni;
 
 template <class T>
-FoundFeature<Feature> const Feature::From(Type const&type)
+FoundFeature<Feature> Feature::From(Type const&type)
 {
     return FoundFeature<Feature>(type, Feature(*new T));
 }

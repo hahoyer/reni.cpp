@@ -17,7 +17,7 @@ namespace _Reni
     {
         CompilerTest ct = "4711";
         auto s = ct.compiler.syntax;
-        a_if(Dump(s).BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), nd(s));
+        a_if(Dump(s)|BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), nd(s));
     }
 
     test(CodeSimple, ParseSimple) 

@@ -54,13 +54,13 @@ void TestFixture::Data::WatchedRun(){
     }
     catch(TestFailedException const&exception){
         c_.IndentCount--;
-        c_.WriteLine(String("test_(") + name + ") exception: ");
+        c_.WriteLine(string("test_(") + name + ") exception: ");
         c_.IndentCount++;
         c_.WriteLine(Dump(exception));
     }
     catch(...){
         c_.IndentCount--;
-        c_.WriteLine(String("test_(") + name + ") unexpected exception. Execution aborted.");
+        c_.WriteLine(string("test_(") + name + ") unexpected exception. Execution aborted.");
         throw;
     }
 };

@@ -28,12 +28,12 @@ SyntaxContainer::SyntaxContainer(SourcePart const&part)
     SetDumpString();
 }
 
-p_implementation(SyntaxContainer, String, SmartDump)
+p_implementation(SyntaxContainer, string, SmartDump)
 {
     return( _({nd(statements)}) +
         names
         .keys
-        .Select<String>([&](DefineableToken const*key)
+        .Select<string>([&](DefineableToken const*key)
             {
                 return key->name + ": " + HWLib::Dump(names[key]);
             })
@@ -57,18 +57,18 @@ void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const
     statements += value;
 }
 
-ResultData const SyntaxContainer::GetResultData(Context const& context, Category category) const
+ResultData SyntaxContainer::GetResultData(const Context& context, Category const& category) const
 {
-    return ResultData::GetSmartHllwSize
+    return ResultData::GetSmartHollowSize
         (
         category,
         l_(GetCode(context)),
         l_(GetType(context)),
-        l_(GetExts(context))
+        l_(GetClosure(context))
         );
 }
      
-WeakRef<Type> const SyntaxContainer::GetType(Context const& context) const
+WeakRef<Type> SyntaxContainer::GetType(Context const& context) const
 {
     return context.Container(*this, statements.Count)->dataType;
 }
@@ -80,7 +80,7 @@ void SyntaxContainer::Add(Optional<Ref<Syntax>> const& value)
 }
 
 
-Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const
+Ref<CodeItem> SyntaxContainer::GetCode(Context const& context) const
 {
     auto result = Numbers(statements.Count)
         ->Select<Ref<CodeItem>>([&](size_t index){return GetCode(context, index);})
@@ -94,21 +94,21 @@ Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context) const
     mb;
 };
 
-Ref<CodeItem> const SyntaxContainer::GetCode(Context const& context, size_t index) const
+Ref<CodeItem> SyntaxContainer::GetCode(Context const& context, size_t index) const
 {
     auto container = context.Container(*this, index);
-    return statements[index]->Code(*container);
+    return statements[index]->GetCode(*container);
 }
 
-Externals const SyntaxContainer::GetExts(Context const& context) const
+Closure SyntaxContainer::GetClosure(Context const& context) const
 {
     return Numbers(statements.Count)
-        ->Select<Externals>([&](size_t index){return GetExts(context, index); })
-        ->Aggregate<Externals>();
+        ->Select<Closure>([&](size_t index){return GetClosure(context, index); })
+        ->Aggregate<Closure>();
 }
 
-Externals const SyntaxContainer::GetExts(Context const& context, size_t index) const
+Closure SyntaxContainer::GetClosure(Context const& context, size_t index) const
 {
     auto container = context.Container(*this, index);
-    return statements[index]->Exts(*container);
+    return statements[index]->GetClosure(*container);
 };

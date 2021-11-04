@@ -18,7 +18,7 @@ namespace _HWLib{
     test_(FileTest){
         auto s = Source::FromFile(__FILE__);
         auto t = s.Text;
-        a_is(t.Part(0, 8), == , "#include");
+        a_is(t.substr(0, 8), == , "#include");
     }
 
     test_(StackTrace){
@@ -40,7 +40,7 @@ namespace _Process
     test(StartProgram, Simple)
     {
         auto path = System::EnvironmentVariable("VS120COMNTOOLS");
-        a_if(path.Contains(" "), nd(path));
+        a_if(path|Contains(" "), nd(path));
         auto name = "..\\ide\\vb7to8.exe";
         auto p = Process("\"" + path + "\\" + name + "\"");
         auto d = p.data;
@@ -87,31 +87,31 @@ namespace _String
 
     test_(Find)
     {
-        String a = "Hallo";
-        auto b = a.Find("a");
+        string a = "Hallo";
+        auto b = a|HWLib::Find("a");
         a_is(b.Value, == , 1);
-        auto c = a.Find("c");
+        auto c = a|HWLib::Find("c");
         a_if_(!c.IsValid);
     }
 
     test_(Part)
     {
-        String a = "Hallo";
-        String b = a.Part(1);
+        string a = "Hallo";
+        string b = a.substr(1);
         a_is(b, == , "al");
     }
 
     test_(Plus)
     {
-        String a = "Hallo";
-        String b = a + a;
+        string a = "Hallo";
+        string b = a + a;
         a_is(b, == , "HalloHallo");
     }
 
     test_(Split)
     {
-        String a = "A B C";
-        auto b = a.Split(" ")->ToArray;
+        string a = "A B C";
+        auto b = (a|HWLib::Split(" "))->ToArray;
         a_is(b.Count, == , 3);
         a_is(b[0], == , "A");
 
@@ -119,8 +119,8 @@ namespace _String
 
     test_(Stringify)
     {
-        String a = "A B C";
-        auto split = a.Split(" ")->ToArray;
+        string a = "A B C";
+        auto split = (a|HWLib::Split(" "))->ToArray;
         a_is(split.Count, == , 3);
 
         auto b = split.Stringify(".");
@@ -130,15 +130,15 @@ namespace _String
 
     test_(Replace)
     {
-        String a = "A B C";
-        auto b = a.Replace(" ", ".");
-        a_is(b.Count, == , a.Count);
+        string a = "A B C";
+        auto b = a|HWLib::Replace(" ", ".");
+        a_is(b.size(), == , a.size());
         a_is(b, == , "A.B.C");
 
     }
     test_(Replace1) {
-        String a = "DumpPrint($(arg))";
-        auto b = a.Replace("$(arg)", "3");
+        string a = "DumpPrint($(arg))";
+        auto b = a|HWLib::Replace("$(arg)", "3");
         a_is(b, == , "DumpPrint(3)");
 
     }
@@ -223,8 +223,8 @@ namespace _Enumerable
 
     test_(FromString)
     {
-        Array<Array<String>> c = {{"asdf"}};
-        auto cc = c.ConvertMany<String>()->ToArray;
+        Array<Array<string>> c = {{"asdf"}};
+        auto cc = c.ConvertMany<string>()->ToArray;
         a_if_(cc.Count == 1);
         a_if_(cc[0] == "asdf");
     }
@@ -321,7 +321,7 @@ namespace _FunctionCache{
 
     test(Multiple, Simple){
         int value = 1;
-        FunctionCache<size_t, String, size_t> c([&](String x, size_t y){return value + x.Count + y;});
+        FunctionCache<size_t, string, size_t> c([&](string x, size_t y){return value + x.size()+ y;});
         a_if_(c("ss",1) == 4);
         value = 2;
         a_if_(c("ss", 1) == 4);

@@ -19,11 +19,11 @@ namespace Reni
 
         CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& functions);
 
-        p(String, cppMain);
-        p(String, cppFunctions);
-        p(String, cppDeclarations);
+        p(string, cppMain);
+        p(string, cppFunctions);
+        p(string, cppDeclarations);
     private:
-        p_function(Array<String>, DumpData) override
+        p_function(Array<string>,DumpData) override
         {
             return{nd(main), nd(functions)};
         }

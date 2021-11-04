@@ -14,11 +14,9 @@
 #include "FunctionResultCache.h"
 #include "NumberType.h"
 #include "Result.h"
-#include "SyntaxContainer.h"
 #include "TypeType.h"
 #include "UserDefinedToken.h"
 
-#include "../HWLib/_EditorTemplates.h"
 #include "../HWLib/FunctionCache.h"
 #include "../HWLib/RefCountContainer.instance.h"
 #include "../HWLib/ValueCache.h"
@@ -37,25 +35,25 @@ struct Type::internal
 
     explicit internal(Type const&parent)
         : array([&](size_t count)
-              {
-                  return new ArrayType(parent, count);
-              })
+          {
+            return new ArrayType(parent, count);
+          })
           , number([&]
-              {
-                  return parent.CreateNumberType();
-              })
-          , indirect([&]
-              {
-                  return new AddressType(parent.thisRef);
-              })
+          {
+            return parent.CreateNumberType();
+          })
           , type([&]
-              {
-                  return new TypeType(parent.thisRef);
-              })
+          {
+            return new TypeType(parent.thisRef);
+          })
+          , indirect([&]
+          {
+            return new AddressType(parent.thisRef);
+          })
           , enableCut([&]
-              {
-                  return new EnableCutType(parent.thisRef);
-              })
+          {
+            return new EnableCutType(parent.thisRef);
+          })
     {
     };
 };
@@ -68,7 +66,7 @@ Type::Type() : _internal(new internal(*this))
 p_virtual_header_implementation(Type, Size, size) ;
 p_virtual_header_implementation(Type, WeakRef<Global>, global) ;
 p_virtual_header_implementation(Type, WeakRef<Type>, asFunctionResult) ;
-p_virtual_header_implementation(Type, bool, hllw);
+p_virtual_header_implementation(Type, bool, hollow);
 p_virtual_header_implementation(Type, WeakRef<Type>, toTypeTarget);
 p_virtual_header_implementation(Type, Address, toAddress);
 p_virtual_header_implementation(Type, Optional<WeakRef<NumberType>>, asNumberType);
@@ -98,26 +96,26 @@ SearchResult<Feature> const Type::Declarations(AccessType const&provider) const
     mb;
 }
 
-Array<Ref<FiberItem>> const Type::ConvertFiber(Type const& destination) const
+Array<Ref<FiberItem>> Type::ConvertFiber(Type const& destination) const
 {
     md(destination);
     mb;
 }
 
-ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Externals()> getExts) const
+ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Closure()> getClosure) const
 {
-    return ResultData::Get(category, l_(hllw), l_(size), getCode, l_(&thisRef), getExts);
+    return ResultData::Get(category, l_(hollow), l_(size), getCode, l_(&thisRef), getClosure);
 }
 
-ResultData const Type::GetResultDataSmartExts(Category category, function<Ref<CodeItem>()> getCode) const
+ResultData const Type::GetResultDataSmartClosure(Category category, function<Ref<CodeItem>()> getCode) const
 {
-    return ResultData::GetSmartHllwExts(category, l_(size), getCode, l_(&thisRef));
+    return ResultData::GetSmartHollowClosure(category, l_(size), getCode, l_(&thisRef));
 }
 
 ResultData const Type::GetResultDataEmpty(Category category) const
 {
-    a_if(hllw, Dump);
-    return ResultData::GetSmartHllwExts(category, l_(size), l_(CodeItem::Const(BitsConst::Empty())), l_(&thisRef));
+    a_if(hollow, Dump);
+    return ResultData::GetSmartHollowClosure(category, l_(size), l_(CodeItem::Const(BitsConst::Empty())), l_(&thisRef));
 }
 
 WeakRef<Type> const Type::array(size_t count)const
@@ -147,7 +145,7 @@ p_implementation(Type, WeakRef<EnableCutType>, enableCutType)
 
 p_implementation(Type, Address, toAddress)
 {
-    a_if(!hllw, Dump);
+    a_if(!hollow, Dump);
     return Address(size,0);
 }
 
@@ -176,7 +174,7 @@ Ref<ResultCache> const Type::ConvertTo(Type const& destination) const
         );
 }
 
-Ref<ResultCache> const Type::DirectConvert() const
+Ref<ResultCache> Type::DirectConvert() const
 {
     md_;
     mb;
@@ -207,7 +205,7 @@ WeakRef<NumberType> const Type::CreateNumberType() const
     return new NumberType(a->thisRef);
 };
 
-SearchResult<Feature> const Type::DeclarationsForType(DeclarationType const& target) const
+SearchResult<Feature> Type::DeclarationsForType(DeclarationType const& target) const
 {
     bool Trace = true;
     md(target);
@@ -217,7 +215,7 @@ SearchResult<Feature> const Type::DeclarationsForType(DeclarationType const& tar
 
 p_implementation(AddressType, Address, toAddress){return value.toAddress + 1;}
 
-SearchResult<Feature> const AddressType::DeclarationsForType(DeclarationType const& target) const
+SearchResult<Feature> AddressType::DeclarationsForType(DeclarationType const& target) const
 {
     auto result = value.DeclarationsForType(target);
     if(result.IsValid)
@@ -225,7 +223,7 @@ SearchResult<Feature> const AddressType::DeclarationsForType(DeclarationType con
     return {};
 }
 
-Array<Ref<FiberItem>> const AddressType::ConvertFiber(Type const& destination) const
+Array<Ref<FiberItem>> AddressType::ConvertFiber(Type const& destination) const
 {
     if(destination == value)
         return FiberItem::CopyFromAddress(value);
@@ -247,7 +245,7 @@ TypeType::TypeType(Type const& value)
     SetDumpString();
 }
 
-SearchResult<Feature> const TypeType::DeclarationsForType(DeclarationType const& target) const
+SearchResult<Feature> TypeType::DeclarationsForType(DeclarationType const& target) const
 {
     auto result = target.Declarations(*this);
     if(result.IsValid)
@@ -255,34 +253,18 @@ SearchResult<Feature> const TypeType::DeclarationsForType(DeclarationType const&
     return baseType::DeclarationsForType(target);
 }
 
-
-
-class InstanceFunctionFeature final : public Feature::Extended
-{
-    using baseType = Extended;
-    using thisType = InstanceFunctionFeature;
-
-    ResultData const Result(Category category, Type const&target, Type const&arg)const override
-    {
-        return arg.ConvertTo(TypeType::Convert(target).Value->value->thisRef)->Get(category);
-    }
-};
-
-
-template<>
-SearchResult<Feature> const TypeType::DeclarationsForType<InstanceToken>() const
-{
-    return Feature::From<InstanceFunctionFeature>(*this);
-}
-
-
 p_implementation(EnableCutType, Address, toAddress)
 {
     return value.toAddress;
 }
 
-SearchResult<Feature> const EnableCutType::DeclarationsForType(DeclarationType const& target) const
+SearchResult<Feature> EnableCutType::DeclarationsForType(DeclarationType const& target) const
 {
     return target.Declarations(thisRef);
+}
+
+ResultData Reni::InstanceFunctionFeature::Result(const Category& category, const Type& target, const Type& arg) const
+{
+  return arg.ConvertTo(TypeType::Convert(target).Value->value->thisRef)->Get(category);
 };
 

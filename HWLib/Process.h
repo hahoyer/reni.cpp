@@ -7,13 +7,13 @@ namespace HWLib{
         class internal;
         CtrlRef<internal> _internal;
     public:
-        Process(String const& command);
-        Process(const String& applicationName, const String& command);
-        p(String, data);
-        p(String, errorData);
+        Process(std::string const& command);
+        Process(const std::string& applicationName, const std::string& command);
+        p(std::string, data);
+        p(std::string, errorData);
         p(int, result);
         void Execute();
     };
 
-    String const Dump(Process const&target);
+    std::string const Dump(Process const&target);
 }

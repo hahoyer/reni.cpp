@@ -16,9 +16,9 @@ namespace Reni
     public:
         AccessResultCache(AccessData const&data);
 
-        Array<String> const p_name(DumpData)()const override;
+        Array<string> const p_name(DumpData)()const override;
 
-        ResultData const GetResultData(Category category)const override;
+        ResultData GetResultData(Category const& category)const override;
         p(Ref<CodeItem>, codeGet);
         p(Ref<CodeItem>, CodeSet);
         p(WeakRef<Type>, valueType);

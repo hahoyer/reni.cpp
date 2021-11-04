@@ -27,11 +27,11 @@ namespace _HWLang{
 
         TokenClass const& start = sc.Step().Class;
         a_is(&start, == , &TokenFactory::Start);
-        String t = sc.Step().Part;
+        string t = sc.Step().Part;
         a_is(t, == , "asd");
     }
 
-    void Test(String const&text, Array<String> results)
+    void Test(string const&text, Array<string> results)
     {
         using TokenFactory = SimpleTokenFactory;
         using ScannerInstance = TokenFactory::ScannerInstance;
@@ -40,7 +40,7 @@ namespace _HWLang{
         auto ss = sc.ToArray;
         auto i = 0;
         for(; i < results.Count && i < ss.Count; i++)
-            a_if(results[i] == ss[i].Part, nd(i) + nd(ss[i].Part) + nd(results[i]));
+            a_if(results[i] == string(ss[i].Part), nd(i) + nd(ss[i].Part) + nd(results[i]));
         for(; i < results.Count; i++)
             a_fail(nd(i) + nd(results[i]));
         for(; i < ss.Count; i++)
@@ -129,12 +129,12 @@ asdf
     {
         auto s = Source::FromText("asdf") + 0;
 
-        auto p = SourceEnd.Find + HWLang::Error(String("x"));
+        auto p = SourceEnd.Find + HWLang::Error(string("x"));
         try
         {
             auto sp = p.Match(s);
         }
-        catch(Exception<String> xxx)
+        catch(Exception<string> xxx)
         {
             a_if_(xxx.Position.IsEnd);
             a_if_(xxx.Error == "x");

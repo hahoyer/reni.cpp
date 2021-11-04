@@ -3,7 +3,6 @@
 
 namespace HWLib
 {
-    class String;
     template<typename T> class LevelValue;
 
     class Console  final
@@ -12,11 +11,11 @@ namespace HWLib
     public:
         int IndentCount;
         Console();
-        void Write(String const&text, bool isLine = false);
-        void WriteLine(String const&text){ Write(text, true); };
-        bool BreakTrace(const String&condtion, const String&fileName, int line, const String&data);
+        void Write(std::string const& text, bool isLine = false);
+        void WriteLine(std::string const&text){ Write(text, true); };
+        bool BreakTrace(const std::string& condition, const std::string& fileName, int line, const std::string& data);
         template <typename T>
-        void FunctionTrace(String const&function, T const& object);
+        void FunctionTrace(std::string const&function, T const& object);
 
         p_nonconst(LevelValue<int>, IndentLevel);
         p(bool, IsDebuggerPresent);
@@ -29,19 +28,19 @@ namespace HWLib
 using namespace HWLib;
 
 template <typename T>
-void Console::FunctionTrace(String const&function, T const& object)
+void Console::FunctionTrace(std::string const&function, T const& object)
 {
     Write(function);
     if (typeid(object) != typeid(T))
     {
         auto header
-            = String(" *** ")
+            = (" *** ")
             + DumpTypeName(object)
             + " *** ";
         Write(header);
     }
 
     IndentCount++;
-    Write(String("[ ") + HWLib::Dump(object) + " ]\n");
+    Write(("[ ") + HWLib::Dump(object) + " ]\n");
 };
 

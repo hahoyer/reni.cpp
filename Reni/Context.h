@@ -93,7 +93,7 @@ namespace Reni
         {
         }
 
-        p_function(Array<String>, DumpData) override{ return{nd(parent)}; }
+        p_function(Array<string>, DumpData) override{ return{nd(parent)}; }
 
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const& token) const override;;
     private:
@@ -115,9 +115,9 @@ public:
     {
         SetDumpString();
     }
-    String const internalDump() const override;
+    string internalDump() const override;
 private:
-    Externals const Replace(ReplaceVisitor const& arg) const override;
+    Closure const Replace(ReplaceVisitor const& arg) const override;
 };
 
 

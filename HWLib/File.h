@@ -4,21 +4,17 @@
 
 namespace HWLib
 {
-    class String;
+  class File final
+  {
+    class internal;
+    CtrlRef<internal> _internal;
+  public:
+    File(const std::string& name);
 
-    class File final
-    {
-        class internal;
-        CtrlRef<internal> _internal;
-    public:
-        File(String const&name);
-
-        p(String, FullName);
-        p_mutable(String, Name);
-        p_mutable(String, Data);
-        p(bool, IsValid);
-        p_mutable(bool, IsValidFolder);
-    };
-
+    p(std::string, FullName);
+    p_mutable(std::string, Name);
+    p_mutable(std::string, Data);
+    p(bool, IsValid);
+    p_mutable(bool, IsValidFolder);
+  };
 }
-                           

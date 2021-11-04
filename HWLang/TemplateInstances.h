@@ -3,7 +3,7 @@
 using namespace HWLang;
 
 template <class Token, class TokenFactory, class Scanner>
-Token const 
+Token 
 ScannerInstance<Token, TokenFactory, Scanner>
 ::Step(){
     try{
@@ -46,9 +46,10 @@ ScannerInstance<Token, TokenFactory, Scanner>
 
 
 template <class Token, class TokenFactory, class Scanner>
-Token const
+Token
 ScannerInstance<Token, TokenFactory, Scanner>
-::Step(size_t count, TokenClass const& tokenClass){
+::Step(size_t count, TokenClass const& tokenClass)
+{
     auto part = position.Span(count);
     position += count;
     SetDumpString();
@@ -57,7 +58,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
 
 
 template <class Token, class TokenFactory, class Scanner>
-p_implementation(ScannerInstance<Token COMMA TokenFactory COMMA Scanner>, Array<String>, DumpData){
+p_implementation(ScannerInstance<Token COMMA TokenFactory COMMA Scanner>, Array<string>, DumpData){
     return{
         nd(position)
     };

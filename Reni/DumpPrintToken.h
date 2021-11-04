@@ -12,13 +12,13 @@ namespace Reni
 
     struct  DumpPrintToken final : public NamedDefinableToken<DumpPrintToken>
     {
-        static String const Text(){ return "dump_print"; }
+        static string Text() { return "dump_print"; }
         tc_Search(NumberType);
     };
 
     struct MinusToken final : public NamedDefinableToken<MinusToken>
     {
-        static String const Text(){ return "-"; }
+        static string Text() { return "-"; }
     private:
         tc_Search(NumberType);
         p_function(int, priority) override{ return -4; }
@@ -26,7 +26,7 @@ namespace Reni
     
     struct PlusToken final : public NamedDefinableToken<PlusToken>
     {
-        static String const Text(){ return "+"; }
+        static string Text() { return "+"; }
     private:
         tc_Search(NumberType);
         p_function(int, priority) override{ return -4; }
@@ -34,7 +34,7 @@ namespace Reni
     
     struct StarToken final : public NamedDefinableToken<StarToken>
     {
-        static String const Text(){ return "*"; }
+        static string Text() { return "*"; }
     private:
         tc_Search(NumberType);
         p_function(int, priority) override{ return -2; }
@@ -42,35 +42,35 @@ namespace Reni
 
     struct EnableCutToken final : public NamedDefinableToken<EnableCutToken>
     {
-        static String const Text(){ return "enable_cut"; }
+        static string Text() { return "enable_cut"; }
     private:
         tc_Search(NumberType);
     };
 
     struct InstanceToken final : public NamedDefinableToken<InstanceToken>
     {
-        static String const Text(){ return "instance"; }
+        static string Text() { return "instance"; }
     private:
         tc_Search(TypeType);
     };
 
     struct EqualToken final : public NamedDefinableToken<EqualToken>
     {
-        static String const Text(){ return "="; }
+        static string Text() { return "="; }
     private:
         tc_Search(NumberType);
     };
 
     struct GreaterToken final : public NamedDefinableToken<GreaterToken>
     {
-        static String const Text(){ return ">"; }
+        static string Text() { return ">"; }
     private:
         tc_Search(NumberType);
     };
 
     struct ColonEqual final : public NamedDefinableToken<ColonEqual>
     {
-        static String const Text(){ return ":="; }
+        static string Text() { return ":="; }
     private:
         tc_Search(AccessType);
     };

@@ -8,9 +8,9 @@
 using namespace Reni;
 
 
-p_implementation(FunctionSyntax, String, SmartDump) 
+p_implementation(FunctionSyntax, string, SmartDump) 
 {
-    String result;
+    string result;
     if(!setter.IsEmpty)
         result += setter.Value->SmartDumpFrame(priority);
     result += " /\\ ";
@@ -20,7 +20,7 @@ p_implementation(FunctionSyntax, String, SmartDump)
 }
 
 
-ResultData const FunctionSyntax::GetResultData(Context const& context, Category category) const
+ResultData FunctionSyntax::GetResultData(const Context& context, Category const& category) const
 {
     return context.FunctionType(*this)->GetResultDataEmpty(category);
 }

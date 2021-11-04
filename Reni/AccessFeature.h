@@ -44,14 +44,14 @@ namespace Reni
 
         ThisRef;
 
-        ResultData const FunctionResult(
-            Context const&context,
-            Category category,
-            Optional<Ref<Syntax>> const& right
-            )const;
+        ResultData FunctionResult(
+          Context const& context,
+          const Category& category,
+          Optional<Ref<Syntax>> const& right
+        ) const;
         p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(simple) + nd(extended)}; }
+        p_function(Array<string>, DumpData) override{ return{nd(simple) + nd(extended)}; }
     };
 
     template<>
@@ -74,7 +74,7 @@ namespace Reni
             Optional<Ref<Syntax>> const& right
             )const;
     private:
-        p_function(Array<String>, DumpData) override{ return{nd(feature)}; };
+        p_function(Array<string>, DumpData) override{ return{nd(feature)}; };
     };
 }
 

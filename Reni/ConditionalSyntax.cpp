@@ -21,7 +21,7 @@ IfThenSyntax::IfThenSyntax(Ref<Syntax> const condition, SourcePart const part, R
     SetDumpString();
 };
 
-p_implementation(IfThenSyntax, String, SmartDump)
+p_implementation(IfThenSyntax, string, SmartDump)
 {
     return
         condition->SmartDumpFrame(priority)
@@ -29,12 +29,12 @@ p_implementation(IfThenSyntax, String, SmartDump)
         + thenClause->SmartDumpFrame(priority);
 };
 
-ResultData const IfThenSyntax::GetResultData(Context const&context, Category category)const
+ResultData IfThenSyntax::GetResultData(const Context& context, Category const& category)const
 {
     WeakRef<Reni::Type> elseType = context.global->voidType.thisRef;
 
     auto conditionCategory =
-        (category.hasCode || category.hasExts)
+        (category.hasCode || category.hasClosure)
         ? category.typed
         : Category::None;
 
@@ -49,25 +49,25 @@ ResultData const IfThenSyntax::GetResultData(Context const&context, Category cat
         ->GetResultCache(context)
         ->Get(category);
 
-    return ResultData::GetSmartHllwSize
+    return ResultData::GetSmartHollowSize
         (
         category,
         l_(CodeItem::IfThenElse(conditionResult.code, thenResult.code, CodeItem::Empty())),
         l_(elseType),
-        l_(conditionResult.exts.Value + thenResult.exts.Value)
+        l_(conditionResult.closure.Value + thenResult.closure.Value)
         );
 }
 
-Optional<Ref<Syntax>> const IfThenSyntax::Replace(SyntaxArgVisitor const&visitor) const{
+Optional<Ref<Syntax>> IfThenSyntax::Replace(SyntaxArgVisitor const&visitor) const{
     Optional<Ref<Syntax>> newLeft = condition->Replace(visitor);
     auto newRight = thenClause->Replace(visitor);
     if(newLeft.IsEmpty && newRight.IsEmpty)
         return{};
-    return new IfThenSyntax(newLeft || condition, part, newRight || thenClause);
+    return Ref<Syntax>(new IfThenSyntax(newLeft || condition, part, newRight || thenClause));
 }
 
 
-IfThenElseSyntax::IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> const thenClause, SourcePart const part, Ref<Syntax> const elseClause)
+IfThenElseSyntax::IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> const thenClause, SourcePart const& part, Ref<Syntax> const elseClause)
 : baseType(part)
 , condition(condition)
 , thenClause(thenClause)
@@ -76,7 +76,7 @@ IfThenElseSyntax::IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> cons
     SetDumpString();
 };
 
-p_implementation(IfThenElseSyntax, String, SmartDump)
+p_implementation(IfThenElseSyntax, string, SmartDump)
 {
     return
         condition->SmartDumpFrame(priority)
@@ -86,10 +86,9 @@ p_implementation(IfThenElseSyntax, String, SmartDump)
         + elseClause->SmartDumpFrame(priority);
 };
 
-ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category category)const
+ResultData IfThenElseSyntax::GetResultData(const Context& context, Category const& category)const
 {
-    auto recursionContext = dynamic_cast<RecursionContext const*>(&context);
-    if(recursionContext)
+  if(auto recursionContext = dynamic_cast<RecursionContext const*>(&context))
     {
         if(category == Category::Type)
         {
@@ -104,8 +103,8 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
 
         }
         
-        if(category == Category::Exts)
-            return Externals();
+        if(category == Category::Closure)
+            return Closure();
 
         md(context, category);
         b_;
@@ -113,7 +112,7 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
     }
 
     auto conditionCategory =
-        (category.hasCode || category.hasExts)
+        (category.hasCode || category.hasClosure)
             ? category.typed
             : Category::None;
 
@@ -133,22 +132,22 @@ ResultData const IfThenElseSyntax::GetResultData(Context const&context, Category
         ->GetResultCache(context)
         ->Get(category);
 
-    return ResultData::GetSmartHllwSize
+    return ResultData::GetSmartHollowSize
         (
             category,
             l_(CodeItem::IfThenElse(conditionResult.code, thenResult.code, elseResult.code)),
             l_(thenResult.type.Value->Common(*elseResult.type.Value)),
-            l_(conditionResult.exts.Value + thenResult.exts.Value + elseResult.exts.Value)
+            l_(conditionResult.closure.Value + thenResult.closure.Value + elseResult.closure.Value)
         );
 }
 
-Optional<Ref<Syntax>> const IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const
+Optional<Ref<Syntax>> IfThenElseSyntax::Replace(SyntaxArgVisitor const&visitor) const
 {
     auto newLeft = condition->Replace(visitor);
     auto newRight = thenClause->Replace(visitor);
     auto newElse= elseClause->Replace(visitor);
     if(newLeft.IsEmpty && newRight.IsEmpty&& newElse.IsEmpty)
         return{};
-    return new IfThenElseSyntax(newLeft || condition, newRight || thenClause, part, newElse || elseClause);
+    return Ref<Syntax>(new IfThenElseSyntax(newLeft || condition, newRight || thenClause, part, newElse || elseClause));
 }
 

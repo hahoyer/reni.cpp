@@ -37,7 +37,7 @@
     <ClCompile Include="ConditionalSyntax.cpp" />
     <ClCompile Include="FunctionToken.cpp" />
     <ClCompile Include="FunctionSyntax.cpp" />
-    <ClCompile Include="Externals.cpp" />
+    <ClCompile Include="Closure.cpp" />
     <ClCompile Include="SyntaxContainer.cpp" />
     <ClCompile Include="NumberType.cpp" />
     <ClCompile Include="Type.cpp" />
@@ -57,7 +57,7 @@
     <ClInclude Include="EmptySyntax.h" />
     <ClInclude Include="FunctionCallResultCache.h" />
     <ClInclude Include="ContainerContext.h" />
-    <ClInclude Include="Externals.h" />
+    <ClInclude Include="Closure.h" />
     <ClInclude Include="FunctionCallContext.h" />
     <ClInclude Include="ArrayType.h" />
     <ClInclude Include="CodeItems.h" />

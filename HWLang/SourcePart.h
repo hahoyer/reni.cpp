@@ -37,12 +37,12 @@ namespace HWLang{
 
         p(bool, IsStart);
         p(bool, IsEnd);
-        operator String const()const;
+        operator string const()const;
     private:
-        p_function(Array<String>,DumpData) override;
-        p_function(String, DumpShort) override;
-        p(String, DumpCurrent);
-        p(String, DumpAfterCurrent);
-        p(String, DumpBeforeCurrent);
+        p_function(Array<string>,DumpData) override;
+        p_function(string, DumpShort) override;
+        p(string, DumpCurrent);
+        p(string, DumpAfterCurrent);
+        p(string, DumpBeforeCurrent);
     };
 }

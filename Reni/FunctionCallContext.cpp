@@ -27,7 +27,7 @@ namespace Reni
         }
 
     private:
-        p_function(Array<String>, DumpData) override
+        p_function(Array<string>,DumpData) override
         {
             return
                 {
@@ -37,12 +37,12 @@ namespace Reni
         };
 
         p_function(Size, size) override{return Size::Address;}
-        p_function(Externals, exts) override{ return Externals(external); };
+        p_function(Closure, closure) override{ return Closure(external); };
 
-        Ref<CodeItem> const ReferencePlus(Size offset) const override;
-        Optional<Ref<CodeItem>> const ReplaceImpl(ReplaceVisitor const&arg) const override;
-        String const ToCpp(CodeVisitor const& visitor) const override;
-        Ref<CodeItem> const Convert(Type const& type) const override;
+        Ref<CodeItem> ReferencePlus(Size offset) const override;
+        Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;
+        string ToCpp(CodeVisitor const& visitor) const override;
+        Ref<CodeItem> Convert(Type const& type) const override;
     };
 
 };
@@ -67,7 +67,7 @@ ResultData const FunctionCallContext::ReferenceResult(Category category, Externa
 {
     bool Trace = false;
     md(category, external);
-    ResultData result = ResultData::GetSmartHllwSizeExts
+    ResultData result = ResultData::GetSmartHollowSizeClosure
         (
             category,
             l_(new FunctionCallReferenceCode(thisRef, external)),
@@ -83,27 +83,27 @@ p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
 }
 
 
-Ref<CodeItem> const FunctionCallReferenceCode::ReferencePlus(Size offset) const
+Ref<CodeItem> FunctionCallReferenceCode::ReferencePlus(Size offset) const
 {
     md(offset);
     mb;
     return thisRef;
 }
 
-String const FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
+string FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
 {
     if(external != External::Function::Arg::Instance)
         return baseType::ToCpp(visitor);
     return "arg";
 }
 
-Ref<CodeItem> const FunctionCallReferenceCode::Convert(Type const& type) const
+Ref<CodeItem> FunctionCallReferenceCode::Convert(Type const& type) const
 {
     md(type);
     mb;
 }
 
-Optional<Ref<CodeItem>> const FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const
+Optional<Ref<CodeItem>> FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const
 {
     arg.AssumeFunctionArg(external, *context.arg);
     return arg.GetCode(external);

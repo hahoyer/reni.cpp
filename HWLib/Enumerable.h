@@ -27,31 +27,31 @@ namespace HWLib
         using AggregateFunction = function<TResult const(TResult, T)>;
 
         template<typename TResult>
-        TResult                        const Aggregate (TResult start, AggregateFunction<TResult> selector)const;
+        TResult Aggregate(TResult start, AggregateFunction<TResult> selector) const;
         template<typename TResult>
         TResult                         const Aggregate(AggregateFunction<TResult> selector)const{ return Aggregate(TResult(), selector); };
         template<typename TResult>
         TResult                          const Aggregate() const{ return Aggregate(AggregateFunction<TResult>([&](TResult current, T next){return current + next; })); };
         template<typename TResult>
-        CtrlRef<Enumerable<TResult>>      const Convert    () const;
+        CtrlRef<Enumerable<TResult>> Convert() const;
         template<typename TResult>
-        CtrlRef<Enumerable<TResult>>       const ConvertMany() const;
-        Optional<size_t> const FirstIndex(function<bool(T)> selector) const;
-        Optional<T>                          const Max()const;
+        CtrlRef<Enumerable<TResult>> ConvertMany() const;
+        Optional<size_t> FirstIndex(function<bool(T)> selector) const;
+        Optional<T> Max() const;
         Optional<T>                           const Max(function<bool(T)> selector)const;
         Optional<T>                            const Max(function<bool(T, T)> isLess)const;
-        CtrlRef<thisType>                       const Merge    (thisType const& right, function<bool(T, T)> isLess, bool removeDuplicates)const;
-        CtrlRef<thisType>                        const operator+(thisType const& right)const;
+        CtrlRef<thisType> Merge(thisType const& right, function<bool(T, T)> isLess, bool removeDuplicates) const;
+        CtrlRef<thisType> operator+(thisType const& right) const;
         template<typename TOther>
-        CtrlRef<Enumerable<std::pair<T, TOther>>> const operator*(Enumerable<TOther>const&other)const;
+        CtrlRef<Enumerable<std::pair<T, TOther>>> operator*(Enumerable<TOther> const& other) const;
         template<typename TResult>
-        CtrlRef<Enumerable<TResult>>             const Select   (function<TResult(T)> selector) const;
-        CtrlRef<thisType>                       const Skip       (size_t count) const;
-        CtrlRef<Enumerable>                    const Sort       (function<bool(T,T)>isLeftSmaller) const;
-        T                                     const Stringify  (T const&delimiter)const;
-        T                                    const Sum        ()const;
-        CtrlRef<thisType>                   const Take       (size_t count) const;
-        CtrlRef<thisType>                  const Where      (function<bool(T)> selector)const;
+        CtrlRef<Enumerable<TResult>> Select(function<TResult(T)> selector) const;
+        CtrlRef<thisType> Skip(size_t count) const;
+        CtrlRef<Enumerable> Sort(function<bool(T, T)> isLeftSmaller) const;
+        T                                     Stringify  (T const&delimiter)const;
+        T Sum() const;
+        CtrlRef<thisType> Take(size_t count) const;
+        CtrlRef<thisType> Where(function<bool(T)> selector) const;
 
         p(bool,    Any           );
         p(size_t,   Count         );
@@ -68,8 +68,8 @@ namespace HWLib
         public:
             virtual ~Iterator(){};
             p_virtual_inline(bool, IsValid) = 0;
-            virtual T const Step() = 0;
-            p_nonconst(Array<T> const, ToArray);
+            virtual T Step() = 0;
+            p_nonconst(Array<T>, ToArray);
         };
 
         class RangeBasedForLoopSimulator;
@@ -87,7 +87,7 @@ namespace HWLib
         virtual p_nonconst_function(CtrlRef<Iterator>, ToIterator)const = 0;
 
         RangeBasedForLoopSimulator const begin()const{ return ToIterator; }
-        RangeBasedForLoopSimulator const end()const;
+        RangeBasedForLoopSimulator end() const;
 
         class EmptySequenceException : public std::exception{};
     private:
@@ -103,7 +103,7 @@ namespace HWLib
     };
 
 
-    CtrlRef<Enumerable<size_t>> const Numbers(size_t count);
+    CtrlRef<Enumerable<size_t>> Numbers(size_t count);
 
 }
 

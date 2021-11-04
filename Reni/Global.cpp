@@ -47,7 +47,7 @@ struct Global::Function::Xetter final : public DumpableObject
     
     bool Ensure(function<CodeFunction()> getCode) const;
 private:
-    p_function(Array<String>, DumpData) override{ return{nd(isRequired),nd(code)}; }
+    p_function(Array<string>,DumpData) override{ return{nd(isRequired),nd(code)}; }
 };
 
 Global::Global()
@@ -78,7 +78,7 @@ p_implementation(Global, Array<Global::Function>, functions)
     return _internal->functions;
 }
 
-p_implementation(Global, Array<String>, DumpData)
+p_implementation(Global, Array<string>,DumpData)
 {
     return{
         nd(bitType),
@@ -90,7 +90,7 @@ p_implementation(Global, Array<String>, DumpData)
 Global::Function::Function(): setter(new Xetter), getter(new Xetter)
 {}
 
-p_implementation(Global::Function, Array<String>, DumpData)
+p_implementation(Global::Function, Array<string>,DumpData)
 {
     return{ };
 }
@@ -103,14 +103,14 @@ bool Global::Function::Ensure(FunctionCallResultCache const&source)const
         setter->Ensure(l_(source.setter));
 };
 
-p_implementation(Global::Function, String, cppCode)
+p_implementation(Global::Function, string, cppCode)
 {
     auto g = getter->code.IsValid ? getter->code.Value.cppCode : "";
     auto s = setter->code.IsValid ? setter->code.Value.cppCode : "";
     return g + s;
 }
 
-p_implementation(Global::Function, String, cppDeclarations)
+p_implementation(Global::Function, string, cppDeclarations)
 {
     auto g = getter->code.IsValid ? getter->code.Value.cppDeclaration : "";
     auto s = setter->code.IsValid ? setter->code.Value.cppDeclaration : "";
@@ -145,12 +145,12 @@ CodeFunction::CodeFunction(
     a_if(index >= 0, nd(index));
 }
 
-p_implementation(CodeFunction, String,cppCode)
+p_implementation(CodeFunction, string,cppCode)
 {
     return MainCodeVisitor::GetterVisit(index, body);
 }
 
-p_implementation(CodeFunction, String, cppDeclaration)
+p_implementation(CodeFunction, string, cppDeclaration)
 {
     return MainCodeVisitor::GetterFunctionDeclaration(index) + ";\n";
 }
