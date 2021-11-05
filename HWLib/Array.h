@@ -83,7 +83,7 @@ namespace HWLib
         delete[] reinterpret_cast<const __int8*>(_data);
     }
 
-    DefaultAssignmentOperator;
+    HW_DO_PLACEMENT_ASSIGN;
 
     p(size_t, Count) { return _count; }
     p(T const*, RawData) { return _data; }

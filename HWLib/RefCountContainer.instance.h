@@ -1,7 +1,7 @@
 #pragma once
 #include "Ref.h"
 
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 #include "RefBase.h"
 
 using namespace HWLib;

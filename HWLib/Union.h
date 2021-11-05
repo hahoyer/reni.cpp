@@ -75,7 +75,7 @@ namespace HWLib
             new (&rawData) T(data);
         };
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
         ~Union(){ internal::UnionHelper<TItems...>::Dispose(typeId, &rawData); }
 
         template<class T> bool const is()const{ return internal::UnionHelper<TItems...>::template typeId<T>() == typeId; };

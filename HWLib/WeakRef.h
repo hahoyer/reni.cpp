@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 
 namespace HWLib
 {
@@ -24,7 +24,7 @@ namespace HWLib
         template<typename TOther>
         WeakRef(WeakRef<TOther> const&other) : value(other.value){ };
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         bool const operator==(thisType const&other)const{ return value == other.value; }
         T const& operator*()const { return *value; };

@@ -1,14 +1,13 @@
 #pragma once
 
-#include "DefaultAssignmentOperator.h"
-#include <boost/shared_ptr.hpp>
+#include "DefaultOperators.h"
 #include "RefBase.h"
 
 namespace HWLib
 {
     template<typename T>
-    class CtrlRef final : public RefBase<T, boost::shared_ptr<T>>{
-        typedef RefBase<T, boost::shared_ptr<T>> baseType;
+    class CtrlRef final : public RefBase<T, std::shared_ptr<T>>{
+        typedef RefBase<T, std::shared_ptr<T>> baseType;
         typedef CtrlRef thisType;
         friend class CtrlRef<T>;
         friend class CtrlRef<T const>;
@@ -19,19 +18,19 @@ namespace HWLib
         template<typename TOther>
         CtrlRef(CtrlRef<TOther> const&other) : baseType(other){ };
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
     };
 
     template<typename T>
-    class CtrlRef<T const>final : public RefBase<T const, boost::shared_ptr<T const>>{
-        typedef RefBase<T const, boost::shared_ptr<T const>> baseType;
+    class CtrlRef<T const>final : public RefBase<T const, std::shared_ptr<T const>>{
+        typedef RefBase<T const, std::shared_ptr<T const>> baseType;
         typedef CtrlRef<T const> thisType;
     
     public:
         CtrlRef(T const *value) :baseType(value){ a_if_(value); }
         CtrlRef(CtrlRef<T const> const&other) : baseType(other){ };
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
         T const& operator*()const { return *value; };
         T const* operator->()const { return &*value; };
 

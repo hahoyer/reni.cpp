@@ -21,7 +21,7 @@ namespace HWLang{
             , startTokenReturned(false)
         {}
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         p_function(bool,IsValid) override{ return !endTokenReturned; };
         TToken Step() override;

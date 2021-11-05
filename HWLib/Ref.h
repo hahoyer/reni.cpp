@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 #include "RefBase.h"
 
 namespace HWLib{
@@ -17,7 +17,7 @@ namespace HWLib{
         T & operator*(){ return *value; };
         T * operator->(){ return value; };
         bool const operator==(thisType const&other)const{ return value == other.value; };
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
     };
 
     template<typename T>
@@ -32,6 +32,6 @@ namespace HWLib{
         template<class TOther>
         Ref(Ref<TOther>&other) :baseType(*other){};
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
     };
 }

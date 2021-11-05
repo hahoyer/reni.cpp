@@ -4,7 +4,6 @@
 #include "../HWAnalyse/TestFixture.h"
 
 namespace _HWLang{
-
     test_class(SimpleAndDetailed);
     test_class(Simple);
     test_class(Text);

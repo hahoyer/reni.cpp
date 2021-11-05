@@ -29,7 +29,7 @@ namespace Util{
         Category(bool hasHollow, bool hasSize, bool hasCode, bool hasType, bool hasClosure);
 
     public:
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         p(Category, typed);
         p(Category, replenished);

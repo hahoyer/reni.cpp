@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 
 namespace HWLib
 {
@@ -20,7 +20,7 @@ namespace HWLib
         {
         }
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         operator T const ()const{ return value; };
     };

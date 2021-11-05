@@ -30,7 +30,7 @@ namespace HWLang
             TagTable const& subTable,
             size_t leftCount);
     public:
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         PrioTable Left(Array<string> const& tokens) const;
         PrioTable Right(Array<string> const& tokens) const;

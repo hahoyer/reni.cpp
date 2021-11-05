@@ -1,7 +1,7 @@
 #pragma once
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 #include "Properties.h"
 #include "CtrlRef.h"
 

@@ -10,7 +10,7 @@ namespace HWLib
         using thisType = Stack;
         std::vector<T> _internal;
     public:
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         void Push(T target){ _internal.push_back(target); };
         T const Pop(){ auto result = _internal.back(); _internal.pop_back(); return result; };

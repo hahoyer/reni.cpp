@@ -6,7 +6,7 @@
 #include "../Console.h"
 #include "../Constraints.h"
 #include "../CtrlRef.h"
-#include "../DefaultAssignmentOperator.h"
+#include "../DefaultOperators.h"
 #include "../DumpableObject.h"
 #include "../DumpMacros.h"
 #include "../DumpToString.h"

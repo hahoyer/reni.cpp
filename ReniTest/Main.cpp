@@ -11,7 +11,7 @@ void MainEntry()
     DumpableObject::EnableSetDumpStringAsync = true;
     test_item(_Reni::Negative).isLowPriority = true;
     test_item(_Reni::Function).WatchedRun();
-    HWAnalyse::TestFixture::RunAll();
+    HWAnalysis::TestFixture::RunAll();
 }
 
 

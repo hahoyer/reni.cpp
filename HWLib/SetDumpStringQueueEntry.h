@@ -34,7 +34,7 @@ namespace HWLib
         , entry(&entry)
         , id(nextId++)
     {
-      assert(root == &rootInstance);
+      a_if_(root == &rootInstance);
       next->previous = this;
       previous->next = this;
     }

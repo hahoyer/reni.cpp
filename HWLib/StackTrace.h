@@ -53,7 +53,7 @@ namespace HWLib
             ::CloseHandle(handle);
         }
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         bool operator ==(Thread const& x) const { return handle == x.handle; };
         bool operator !=(Thread const& x) const { return !(*this == x); };

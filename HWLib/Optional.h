@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 #include "Properties.h"
 #include "Union.h"
 #include <functional>
@@ -18,7 +18,7 @@ namespace HWLib
         Optional() : data(Union<>()){ Initialize(); };
         Optional(T const&data) : data(data){ Initialize(); };
         Optional(thisType const&other) : data(other.data){ Initialize(); };
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
         p(bool, IsValid){ return data.is<targetType>(); };
         p(bool, IsEmpty){ return data.is<Union<>>(); };
 

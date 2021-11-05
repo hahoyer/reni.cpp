@@ -1242,7 +1242,7 @@ bool BigInt::Rossi::operator!= (const BigInt::Rossi& i_arg) const
 // ------------------
 BigInt::Rossi BigInt::Rossi::operator/ (const BigInt::Rossi& i_arg) const
 {
-    return divide(*this, i_arg, NULL);
+    return divide(*this, i_arg, nullptr);
 }
 
 
@@ -1873,7 +1873,7 @@ BigInt::Rossi BigInt::Rossi::divide (
 
     quotient.resizeUnits (dividend.getUnitsSize ());
 
-    if (o_remainder != NULL)
+    if (o_remainder != nullptr)
     {
         o_remainder->resizeUnits (dividend.getUnitsSize ());
     }
@@ -1915,7 +1915,7 @@ BigInt::Rossi BigInt::Rossi::divide (
     BigInt::Rossi remainder (dividend); 
     remainder.smartTruncateUnits ();	
 
-    if (o_remainder != NULL) 
+    if (o_remainder != nullptr) 
     {
         *o_remainder = remainder;
         o_remainder->smartTruncateUnits ();

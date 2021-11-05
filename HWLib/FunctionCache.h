@@ -12,7 +12,7 @@ namespace HWLib
         FunctionCache(function<TValue(TKey...)> createValue)
             : baseType(createValue){};
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
     };
 
 };

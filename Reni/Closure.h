@@ -31,7 +31,7 @@ namespace Reni
         explicit Closure(Array<WeakRef<External>> const&other);
     public:
         ThisRef;
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         p(bool, isEmpty){ return data.Count == 0; }
 

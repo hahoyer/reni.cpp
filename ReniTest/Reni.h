@@ -3,15 +3,32 @@
 #include "../HWAnalyse/TestMacros.h"
 #include "../HWAnalyse/TestFixture.h"
 
-namespace _Reni{
-    test_class(ParseSimple);
-    test_class(CodeSimple);
-    test_class(CompileSimple);
-    test_class(Simple);
-    test_class(Negative);
-    test_class(SimpleFunction);
-    test_class(Function);
-    test_class(SimpleFunctionWithNonLocal);
-    test_class(RecursiveFunction);
-    test_class(PrimitiveRecursiveFunctionByteWithDump);
+namespace _Reni
+{
+  test_class(ParseSimple);
+
+  test_class(CodeSimple);
+
+  test_class(CompileSimple);
+
+  test_class(Simple);
+
+  test_class(Negative);
+
+  test_class(SimpleFunction);
+
+  test_class(Function);
+
+  test_class(SimpleFunctionWithNonLocal);
+
+  test_class(RecursiveFunction);
+
+  struct test_class_name(PrimitiveRecursiveFunctionByteWithDump) final : public HWAnalysis::TestFixture::Data
+  {
+    test_class_name(PrimitiveRecursiveFunctionByteWithDump)();
+    string location() const override;
+    void Run() const override;
+    static
+    RuntimeChain<HWAnalysis::TestFixture> instance;
+  };
 }

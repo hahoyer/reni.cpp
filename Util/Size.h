@@ -17,7 +17,7 @@ namespace Util{
             SetDumpString();
         }
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
         Size operator+(Size const& other) const {return value + other.value;};
         Size operator-(Size const& other) const { return value - other.value; };
         Size operator*(size_t other) const { return value * other; };

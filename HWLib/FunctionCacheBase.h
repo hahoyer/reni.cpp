@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 #include <functional>
 #include <string.h>
 #include <unordered_map>

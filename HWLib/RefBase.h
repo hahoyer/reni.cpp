@@ -1,7 +1,6 @@
 #pragma once
 
-#include "DefaultAssignmentOperator.h"
-#include <boost/smart_ptr/shared_ptr.hpp>
+#include "DefaultOperators.h"
 #include "Common.h"
 
 namespace HWLib
@@ -22,7 +21,7 @@ namespace HWLib
         RefBase(dataContainerType const&value) : value(value){}
 
     public:
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
         T const& operator*()const { return *value; };
         T const* operator->()const { return &*value; };
         T & operator*(){ return *value; };

@@ -28,7 +28,7 @@ namespace HWLang
 
         virtual ~Source(){};
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
         operator Source& ()const{ return const_cast<Source&>(*this); }
 
         p(string, Text);

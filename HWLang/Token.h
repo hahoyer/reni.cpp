@@ -19,7 +19,7 @@ namespace HWLang{
             SetDumpString();
         };
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         p(string, Name){
             if (IsEnd)

@@ -24,7 +24,6 @@ namespace Util
     p(string, ProgramFiles86) { return System::EnvironmentVariable("ProgramFiles(x86)"); };
     p(string, VCInstallDir) { return System::EnvironmentVariable("VS142BASEPATH"); };
     p(string, WindowsKits) { return ProgramFiles86 + R"(\Windows Kits\10)"; };
-    p(string, Boost) { return ProgramFiles86 + "\\boost\\boost_1_77_0"; };
     p(string, ProjectDir) { return File(__FILE__ "\\..").FullName; };
     p(string, SolutionDir) { return File(ProjectDir + "\\..").FullName; };
     p(string, RuntimeDir) { return File(SolutionDir + "\\Runtime").FullName; };

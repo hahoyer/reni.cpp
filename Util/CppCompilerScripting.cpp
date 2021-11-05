@@ -71,7 +71,6 @@ p_implementation(CppCompilerScripting, string, LibPath)
     VCInstallDir + R"(\lib\)" + Platform,
     WindowsKits + R"(\lib\)" + CrtVersion + R"(\um\)" + Platform,
     WindowsKits + R"(\lib\)" + CrtVersion + R"(\ucrt\)" + Platform,
-    Boost + "\\libs",
   };
 
   return list
@@ -96,7 +95,6 @@ p_implementation(CppCompilerScripting, string, IncludePath)
   const Array<string> list{
     VCInstallDir + "\\include",
     WindowsKits + R"(\include\)" + CrtVersion + R"(\ucrt)",
-    Boost,
     RuntimeDir
   };
 

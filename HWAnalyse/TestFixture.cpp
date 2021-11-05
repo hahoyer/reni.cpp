@@ -1,68 +1,73 @@
 #include "Import.h"
 #include "TestFixture.h"
 
-static bool Trace = true;
+[[maybe_unused]] static bool Trace = true;
 
-using namespace HWAnalyse;
+using namespace HWAnalysis;
 using namespace HWLib;
 
 
-void TestFixture::RunAll(){
-    auto all = RuntimeChain<TestFixture>::All()
-        ->ToArray;
+void TestFixture::RunAll()
+{
+  const auto all = RuntimeChain<TestFixture>::All()
+    ->ToArray;
 
-    while(RunAny(all, true))
-        continue;
+  while(RunAny(all, true))
+    continue;
 
-    c_.WriteLine("\n--- RUnning low priority tests ---");
-    while(RunAny(all, false))
-        continue;
+  c_.WriteLine("\n--- RUnning low priority tests ---");
+  while(RunAny(all, false))
+    continue;
 };
 
-bool TestFixture::RunAny(Array<Data*> const&all, bool skipLowPriority){
-    auto result = false;
-    for(int i = 0; i < all.Count; i++)
-        result = all[i]->CheckedRun(skipLowPriority) || result;
-    return result;
+bool TestFixture::RunAny(const Array<Data*>& all, bool skipLowPriority)
+{
+  auto result = false;
+  for(int i = 0; i < all.Count; i++)
+    result = all[i]->CheckedRun(skipLowPriority) || result;
+  return result;
 };
 
-bool TestFixture::Data::CheckedRun(bool skipLowPriority){
-    if(isStarted)
-        return false;
-    if(skipLowPriority&& isLowPriority)
-        return false;
-    bool hasUnsuccessfulDependant 
-        = dependencies
-        .Where([](CtrlRef<Data> dependant){return !dependant->isSuccessful;})
-        ->Any;
-    if(hasUnsuccessfulDependant)
-        return false;
-    isStarted = true;
-    currentTest = this;
-    WatchedRun();
-    return true;
+bool TestFixture::Data::CheckedRun(bool skipLowPriority)
+{
+  if(isStarted)
+    return false;
+  if(skipLowPriority && isLowPriority)
+    return false;
+  if(dependencies
+      .Where([](CtrlRef<Data> dependency) { return !dependency->isSuccessful; })
+      ->Any)
+    return false;
+  isStarted = true;
+  currentTest = this;
+  WatchedRun();
+  return true;
 };
 
-void TestFixture::Data::WatchedRun(){
-    auto name = typeid(*this).name();
-    c_.WriteLine(location());
-    auto indentLevel = c_.IndentLevel;
+void TestFixture::Data::WatchedRun()
+{
+  const auto name = typeid(*this).name();
+  c_.WriteLine(location());
+  auto indentLevel = c_.IndentLevel;
+  c_.IndentCount++;
+  try
+  {
+    Run();
+    isSuccessful = true;
+  }
+  catch(const TestFailedException& exception)
+  {
+    c_.IndentCount--;
+    c_.WriteLine(string("test_(") + name + ") exception: ");
     c_.IndentCount++;
-    try{
-        Run();
-        isSuccessful = true;
-    }
-    catch(TestFailedException const&exception){
-        c_.IndentCount--;
-        c_.WriteLine(string("test_(") + name + ") exception: ");
-        c_.IndentCount++;
-        c_.WriteLine(Dump(exception));
-    }
-    catch(...){
-        c_.IndentCount--;
-        c_.WriteLine(string("test_(") + name + ") unexpected exception. Execution aborted.");
-        throw;
-    }
+    c_.WriteLine(Dump(exception));
+  }
+  catch(...)
+  {
+    c_.IndentCount--;
+    c_.WriteLine(string("test_(") + name + ") unexpected exception. Execution aborted.");
+    throw;
+  }
 };
 
 TestFixture::Data* TestFixture::currentTest = {};

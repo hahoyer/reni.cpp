@@ -6,7 +6,7 @@
 #include <vector>
 
 
-using namespace HWAnalyse;
+using namespace HWAnalysis;
 using namespace std;
 
 class Profiler::internal{
@@ -26,7 +26,7 @@ private:
     p(__int64, ticks);
     p(bool, isEmpty){ return Entries.size() == 0; };
     p(bool, isAtTopLevel){ return Stack.size() == 0; };
-    p(Entry*, Top){ return !isAtTopLevel ? Stack.back() : NULL; }
+    p(Entry*, Top){ return !isAtTopLevel ? Stack.back() : nullptr; }
     Entry* const Find(const char*FileName, const char*Flag)const;
 };
 

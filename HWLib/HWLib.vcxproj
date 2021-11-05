@@ -31,7 +31,7 @@
     <ClInclude Include="BreakHandling.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="DefaultAssignmentOperator.h" />
+    <ClInclude Include="DefaultOperators.h" />
     <ClInclude Include="DumpMacros.h" />
     <ClInclude Include="DumpToString.h" />
     <ClInclude Include="Enumerable.h" />

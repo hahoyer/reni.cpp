@@ -103,7 +103,7 @@ in Headers.
 ************************************************************************* */
 
 
-namespace HWAnalyse{
+namespace HWAnalysis{
     class Profiler
     {
         class internal;
@@ -112,8 +112,8 @@ namespace HWAnalyse{
     public:
         Profiler();
         ~Profiler();
-        void Start(const char*FileName, int Line, const char*Flag);
-        void End();
+        void Start(const char*FileName, int Line, const char*Flag) const;
+        void End() const;
         virtual void dumpprint(int Hide = 10)const;
         virtual void Reset();
     };

@@ -24,7 +24,7 @@ namespace HWLang
         {
         }
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         static OpenItem StartItem(TToken const& token)
         {

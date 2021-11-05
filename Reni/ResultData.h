@@ -87,7 +87,7 @@ namespace Reni
           function<WeakRef<Type>()> getType
         );
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
         ResultData operator|(ResultData const& other) const;
         bool IsConsistent(ResultData const& other) const;
         ResultData operator&(Category const& other) const;

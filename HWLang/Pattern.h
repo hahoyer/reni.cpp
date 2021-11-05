@@ -45,7 +45,7 @@ namespace HWLang
 
         virtual ~Pattern(){};
 
-        DefaultAssignmentOperator;
+        HW_DO_PLACEMENT_ASSIGN;
 
         p(Pattern, Find);
         Pattern Else(Pattern const& right) const;

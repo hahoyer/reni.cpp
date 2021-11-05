@@ -2,7 +2,7 @@
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "Array.h"
-#include "DefaultAssignmentOperator.h"
+#include "DefaultOperators.h"
 #include "Properties.h"
 #include <string>
 #include "ExtensionMethodBase.h"
@@ -24,7 +24,7 @@ namespace HWLib
     String(const std::string& other);
     String(const Array<const char>& other);
 
-    DefaultAssignmentOperator;
+    HW_DO_PLACEMENT_ASSIGN;
 
     p(size_t, Count) { return _data.length(); }
     p(size_t, HashCode);
