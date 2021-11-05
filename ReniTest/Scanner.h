@@ -4,11 +4,11 @@
 #include "../HWAnalyse/TestFixture.h"
 
 namespace _HWLang{
-    test_class(SimpleAndDetailed);
-    test_class(Simple);
-    test_class(Text);
-    test_class(Comment);
-    test_class(LineCommentError);
-    test_class(CommentError);
-    test_class(Pattern);
+    HW_TM_CLASS(SimpleAndDetailed);
+    HW_TM_CLASS(Simple);
+    HW_TM_CLASS(Text);
+    HW_TM_CLASS(Comment);
+    HW_TM_CLASS(LineCommentError);
+    HW_TM_CLASS(CommentError);
+    HW_TM_CLASS(Pattern);
 }

@@ -5,27 +5,27 @@
 
 namespace _Reni
 {
-  test_class(ParseSimple);
+  HW_TM_CLASS(ParseSimple);
 
-  test_class(CodeSimple);
+  HW_TM_CLASS(CodeSimple);
 
-  test_class(CompileSimple);
+  HW_TM_CLASS(CompileSimple);
 
-  test_class(Simple);
+  HW_TM_CLASS(Simple);
 
-  test_class(Negative);
+  HW_TM_CLASS(Negative);
 
-  test_class(SimpleFunction);
+  HW_TM_CLASS(SimpleFunction);
 
-  test_class(Function);
+  HW_TM_CLASS(Function);
 
-  test_class(SimpleFunctionWithNonLocal);
+  HW_TM_CLASS(SimpleFunctionWithNonLocal);
 
-  test_class(RecursiveFunction);
+  HW_TM_CLASS(RecursiveFunction);
 
-  struct test_class_name(PrimitiveRecursiveFunctionByteWithDump) final : public HWAnalysis::TestFixture::Data
+  struct HW_TM_CLASS_NAME(PrimitiveRecursiveFunctionByteWithDump) final : public HWAnalysis::TestFixture::Data
   {
-    test_class_name(PrimitiveRecursiveFunctionByteWithDump)();
+    HW_TM_CLASS_NAME(PrimitiveRecursiveFunctionByteWithDump)();
     string location() const override;
     void Run() const override;
     static

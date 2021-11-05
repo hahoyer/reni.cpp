@@ -13,14 +13,14 @@ using namespace ReniTest;
 
 namespace _Reni
 {
-  test_implementation(ParseSimple, {})
+  HW_TM_IMPLEMENTATION(ParseSimple, {})
   {
     const CompilerTest ct = "4711";
     const auto s = ct.compiler.syntax;
     a_if(Dump(s)|BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), nd(s));
   }
 
-  test(CodeSimple, ParseSimple)
+  HW_TM_TEST(CodeSimple, ParseSimple)
   {
     const CompilerTest ct = "4711";
     auto s = ct.compiler.main;
@@ -31,19 +31,19 @@ namespace _Reni
     a_is(sc->value, ==, c4711);
   }
 
-  test(CompileSimple, CodeSimple)
+  HW_TM_TEST(CompileSimple, CodeSimple)
   {
     CompilerTest ct = "4711";
     const auto result = ct.compiler.Execute();
     a_is(result.result, ==, 4711);
   }
 
-  test(Simple, CompileSimple)
+  HW_TM_TEST(Simple, CompileSimple)
   {
     CompilerTest::Check("3 dump_print", "3");
   }
 
-  test(Negative, Simple)
+  HW_TM_TEST(Negative, Simple)
   {
     CompilerTest::Check("(-1)dump_print", "-1");
     CompilerTest::Check("(-12)dump_print", "-12");
@@ -57,28 +57,28 @@ namespace _Reni
     CompilerTest::Check("(-1234567890)dump_print", "-1234567890");
   }
 
-  test(SimpleFunction, Simple)
+  HW_TM_TEST(SimpleFunction, Simple)
   {
     CompilerTest::Check(R"(
             f: /\1; f() dump_print;
         )", "1");
   }
 
-  test(Function, SimpleFunction)
+  HW_TM_TEST(Function, SimpleFunction)
   {
     CompilerTest::Check(R"(
             f: /\ ^ + 1; f(2) dump_print;
         )", "3");
   }
 
-  test(SimpleFunctionWithNonLocal, Function)
+  HW_TM_TEST(SimpleFunctionWithNonLocal, Function)
   {
     CompilerTest::Check(R"(
             x: 100; f: /\x;f() dump_print;
         )", "100");
   }
 
-  test(PrimitiveRecursiveFunctionByteWithDump, Function, SimpleFunctionWithNonLocal, _HWLang::ThenElse,
+  HW_TM_TEST(PrimitiveRecursiveFunctionByteWithDump, Function, SimpleFunctionWithNonLocal, _HWLang::ThenElse,
        _HWLang::TrainWreck)
   {
     CompilerTest::Check(
@@ -86,7 +86,7 @@ namespace _Reni
       "9876543210");
   }
 
-  test(RecursiveFunction, PrimitiveRecursiveFunctionByteWithDump)
+  HW_TM_TEST(RecursiveFunction, PrimitiveRecursiveFunctionByteWithDump)
   {
     CompilerTest::Check(R"(
 f: /\

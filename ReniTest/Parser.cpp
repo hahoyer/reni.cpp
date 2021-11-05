@@ -19,7 +19,7 @@ namespace _HWLang {
 
     void Check(Optional<Ref<Syntax>> const& target, bool isLeft, string const& part, bool isRight, bool isMatch);
 
-    test_(ParserBaseStructure) {
+    HW_TM_TEST_(ParserBaseStructure) {
         auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevelLeft({Start}, {End});
 
         string text = "asdf";
@@ -32,7 +32,7 @@ namespace _HWLang {
         a_is(syntax.Value->name, == , text);
     };
 
-    test(Parenthesis, ParserBaseStructure) {
+    HW_TM_TEST(Parenthesis, ParserBaseStructure) {
 
         string text = "({)} [(asdf)as][yxcv]";
 
@@ -82,7 +82,7 @@ namespace _HWLang {
         Check(rrlr, false, "yxcv", false, false);
     }
 
-    test(PlusTimes, ParserBaseStructure) {
+    HW_TM_TEST(PlusTimes, ParserBaseStructure) {
         string text = "a*b+c*d+e*f";
 
         auto pt = PrioTable::CreateLeft({ Any })
@@ -127,7 +127,7 @@ namespace _HWLang {
         Check(rrr, false, "f", false, false);
     }
 
-    test(ThenElse, ParserBaseStructure) {
+    HW_TM_TEST(ThenElse, ParserBaseStructure) {
 
         bool Trace = true;
         string text = "x then y else z";
@@ -156,7 +156,7 @@ namespace _HWLang {
         Check(rlr, false, "y", false, false);
     }
 
-    test(TrainWreck, ParserBaseStructure) {
+    HW_TM_TEST(TrainWreck, ParserBaseStructure) {
 
         bool Trace = true;
         string text = "x y z";

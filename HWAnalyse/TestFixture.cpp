@@ -53,7 +53,7 @@ void TestFixture::Data::WatchedRun()
   try
   {
     Run();
-    isSuccessful = true;
+     isSuccessful = true;
   }
   catch(const TestFailedException& exception)
   {

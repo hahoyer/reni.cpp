@@ -1,54 +1,54 @@
 #pragma once
 
 namespace _HWLib{
-    test_class(FileTest);
-    test_class(StackTrace);
+    HW_TM_CLASS(FileTest);
+    HW_TM_CLASS(StackTrace);
 }
 
 namespace _Process{
-    test_class(Simple);
-    test_class(StartProgram);
-    test_class(Double);
-    test_class(Double2);
-    test_class(Error);
+    HW_TM_CLASS(Simple);
+    HW_TM_CLASS(StartProgram);
+    HW_TM_CLASS(Double);
+    HW_TM_CLASS(Double2);
+    HW_TM_CLASS(Error);
 }
 
 namespace _String{
-    test_class(WriteHallo);
-    test_class(Find);
-    test_class(Part);
-    test_class(Plus);
-    test_class(Split);
-    test_class(Stringify);
-    test_class(Replace);
-    test_class(Replace1);
+    HW_TM_CLASS(WriteHallo);
+    HW_TM_CLASS(Find);
+    HW_TM_CLASS(Part);
+    HW_TM_CLASS(Plus);
+    HW_TM_CLASS(Split);
+    HW_TM_CLASS(Stringify);
+    HW_TM_CLASS(Replace);
+    HW_TM_CLASS(Replace1);
 }
 
 namespace _Ref{
-    test_class(WriteHallo);
+    HW_TM_CLASS(WriteHallo);
 }
 
 namespace _Array{
-    test_class(WriteHallo);
+    HW_TM_CLASS(WriteHallo);
 }
 
 namespace _Enumerable{
-    test_class(FromInt0);
-    test_class(FromInt1);
-    test_class(FromInt1_1);
-    test_class(FromInt1_2);
-    test_class(FromInt0_1_1);
-    test_class(FromString);
+    HW_TM_CLASS(FromInt0);
+    HW_TM_CLASS(FromInt1);
+    HW_TM_CLASS(FromInt1_1);
+    HW_TM_CLASS(FromInt1_2);
+    HW_TM_CLASS(FromInt0_1_1);
+    HW_TM_CLASS(FromString);
 }
 
 namespace _ValueCache{
-    test_class(Simple);
-    test_class(Context);
-    test_class(Member);
+    HW_TM_CLASS(Simple);
+    HW_TM_CLASS(Context);
+    HW_TM_CLASS(Member);
 }
 
 namespace _FunctionCache{
-    test_class(Simple);
-    test_class(Context);
-    test_class(Multiple);
+    HW_TM_CLASS(Simple);
+    HW_TM_CLASS(Context);
+    HW_TM_CLASS(Multiple);
 }

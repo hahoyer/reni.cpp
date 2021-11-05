@@ -14,7 +14,7 @@ using namespace _HWLang;
 
 namespace _HWLang{
 
-    test_(SimpleAndDetailed)
+    HW_TM_TEST_(SimpleAndDetailed)
     {
         using TokenFactory = SimpleTokenFactory;
         using ScannerInstance = TokenFactory::ScannerInstance;
@@ -47,7 +47,7 @@ namespace _HWLang{
             a_fail(nd(i) + nd(ss[i].Part));
     }
 
-    test_(Simple)
+    HW_TM_TEST_(Simple)
     {
         Test(" asd \"cc\" 1234 ",
         {
@@ -59,7 +59,7 @@ namespace _HWLang{
         });
     }
 
-    test_(Text)
+    HW_TM_TEST_(Text)
     {
         Test(" \"a_if\"\" b\" '\" ' ",
         {
@@ -70,7 +70,7 @@ namespace _HWLang{
         });
     }
 
-    test_(Comment)
+    HW_TM_TEST_(Comment)
     {
         Test(R"(
 12## line comment
@@ -92,7 +92,7 @@ abc#( comment
         });
     };
 
-    test_(LineCommentError)
+    HW_TM_TEST_(LineCommentError)
     {
         Test(R"(
 12## line comment
@@ -108,7 +108,7 @@ asdf
         });
     };
 
-    test_(CommentError)
+    HW_TM_TEST_(CommentError)
     {
         Test(R"(
 12## line comment
@@ -125,7 +125,7 @@ asdf
         });
     };
 
-    test_(Pattern)
+    HW_TM_TEST_(Pattern)
     {
         auto s = Source::FromText("asdf") + 0;
 

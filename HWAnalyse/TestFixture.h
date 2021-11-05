@@ -13,13 +13,9 @@ namespace HWAnalysis
 {
   struct TestFailedException : public DumpableObject
   {
-    TestFailedException(TestFailedException const&) = delete;
-    TestFailedException(TestFailedException &&) = delete;
+     HW_DO_DELETE(TestFailedException, CC,MC,CA,MA);
 
     ~TestFailedException() override = default;
-
-    TestFailedException& operator=(TestFailedException const&) = delete;
-    TestFailedException& operator=(TestFailedException &&) = delete;
   };
 
   struct TestFixture
@@ -35,10 +31,10 @@ namespace HWAnalysis
       bool isStarted;
 
       explicit Data(const Array<CtrlRef<Data>>& dependencies)
-        : isLowPriority(false)
+        : dependencies(dependencies)
+          , isLowPriority(false)
           , isSuccessful(false)
           , isStarted(false)
-          , dependencies(dependencies)
       { };
 
       virtual ~Data() = default;

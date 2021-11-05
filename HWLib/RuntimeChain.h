@@ -1,55 +1,58 @@
 #pragma once
 #include <functional>
-#include "../HWLib/String.h"
 using std::function;
 
-namespace HWLib{
-    template<class T>
-    class RuntimeChain final{
-        typedef typename T::dataType dataType;
+namespace HWLib
+{
+  template <class T>
+  class RuntimeChain final
+  {
+    typedef typename T::dataType DataType;
 
-        class Iterator final : public Enumerable<dataType>::Iterator{
-            RuntimeChain<T> const* current;
-        public:
-
-            Iterator()
-                : current(begin){
-            }
-
-        protected:
-            p_function(bool, IsValid) override{
-                return !!current;
-            };
-
-            dataType Step() override;
-        };
-
-        static RuntimeChain const* begin;
-        RuntimeChain const*const next;
+    class Iterator final : public Enumerable<DataType>::Iterator
+    {
+      const RuntimeChain<T>* current;
     public:
-        dataType data;
-        RuntimeChain(dataType data);
+      Iterator()
+        : current(begin) { }
 
-        static CtrlRef<Enumerable<dataType>> const All(){
-            return new Enumerable<dataType>::Container(new Iterator);
-        };
+    protected:
+      p_function(bool, IsValid) override
+      {
+        return !!current;
+      };
 
+      DataType Step() override;
     };
 
-    template<class T>
-    RuntimeChain<T> const* RuntimeChain<T>::begin = {};
+    static const RuntimeChain* begin;
+    const RuntimeChain* const next;
+  public:
+    DataType data;
+    RuntimeChain(DataType data);
 
-    template<class T>
-    RuntimeChain<T>::RuntimeChain(dataType data)
-        : next(begin)
-          , data(data){
-        begin = this;
-    }
+    static CtrlRef<Enumerable<DataType>> All()
+    {
+      return new typename Enumerable<DataType>::Container(new Iterator);
+    };
+  };
 
-    template<class T>
-    typename T::dataType RuntimeChain<T>::Iterator::Step() {
-        auto result = current->data;
-        current = current->next;
-        return result;
-    }
+  template <class T>
+  const RuntimeChain<T>* RuntimeChain<T>::begin = {};
+
+  template <class T>
+  RuntimeChain<T>::RuntimeChain(DataType data)
+    : next(begin)
+      , data(data)
+  {
+    begin = this;
+  }
+
+  template <class T>
+  typename T::dataType RuntimeChain<T>::Iterator::Step()
+  {
+    auto result = current->data;
+    current = current->next;
+    return result;
+  }
 }
