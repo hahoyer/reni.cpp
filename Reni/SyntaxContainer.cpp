@@ -50,8 +50,8 @@ void SyntaxContainer::AddTo(SyntaxContainer&main) const
 void SyntaxContainer::Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const& value)
 {
     auto& e = dynamic_cast<ExpressionSyntax const&>(*definitionTarget);
-    a_if_(e.left.IsEmpty);
-    a_if_(e.right.IsEmpty);
+    HW_ASSERT_(e.left.IsEmpty);
+    HW_ASSERT_(e.right.IsEmpty);
     auto& d = dynamic_cast<DefineableToken const&>(e.tokenClass);
     names.Assign(&d, statements.Count);
     statements += value;

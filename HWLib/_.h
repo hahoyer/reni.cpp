@@ -48,9 +48,9 @@ namespace HWLib
         p_definition(T&, Data);
         p_nonconst_function(T&, Data){ return _data; }
 
-        void SaveDelete() { a_if_(_data); delete _data; _data = null; };
+        void SaveDelete() { HW_ASSERT_(_data); delete _data; _data = null; };
         void SmartDelete() { if (_data) delete _data; _data = null; };
-        void SaveDeleteArray() { a_if_(_data); delete[] _data; _data = null; };
+        void SaveDeleteArray() { HW_ASSERT_(_data); delete[] _data; _data = null; };
         void SmartDeleteArray() { if (_data) delete[] _data; _data = null; };
     };
 
@@ -70,9 +70,9 @@ namespace HWLib
         p_definition(T&, Data);
         p_nonconst_function(T&, Data){ return _data; }
 
-        void SaveDelete() { a_if_(_data); delete _data; };
+        void SaveDelete() { HW_ASSERT_(_data); delete _data; };
         void SmartDelete() { if (_data) delete _data; };
-        void SaveDeleteArray() { a_if_(_data); delete[] _data; };
+        void SaveDeleteArray() { HW_ASSERT_(_data); delete[] _data; };
         void SmartDeleteArray() { if (_data) delete[] _data; };
     };
 

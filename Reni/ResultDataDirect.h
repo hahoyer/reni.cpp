@@ -19,7 +19,7 @@ namespace Reni
         {
             SetDumpString();
             if(!type.IsEmpty && code.IsValid)
-                a_if(type.Value->size == code.Value->size, HW_D_VALUE(code)+HW_D_VALUE(type));
+                HW_ASSERT(type.Value->size == code.Value->size, HW_D_VALUE(code)+HW_D_VALUE(type));
         }
 
         ResultDataDirect()

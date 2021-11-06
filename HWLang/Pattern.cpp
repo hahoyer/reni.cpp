@@ -69,8 +69,8 @@ public:
       , _minCount(minCount)
       , _maxCount(maxCount)
   {
-    a_is(_minCount, >=, 0);
-    a_if_(!_maxCount.IsValid || _minCount <= _maxCount);
+    HW_ASSERT_IS(_minCount, >=, 0);
+    HW_ASSERT_(!_maxCount.IsValid || _minCount <= _maxCount);
   }
 
 private:

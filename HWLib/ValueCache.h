@@ -32,7 +32,7 @@ namespace HWLib
     private:
         void Ensure()const
         {
-            a_if_(!isBusy);
+            HW_ASSERT_(!isBusy);
             if(value.IsValid)
                 return;
             isBusy = true;
@@ -42,7 +42,7 @@ namespace HWLib
 
         void Reset()const
         {
-            a_if_(!isBusy);
+            HW_ASSERT_(!isBusy);
             value = {};
         }
 

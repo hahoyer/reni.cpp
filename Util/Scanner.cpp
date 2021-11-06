@@ -96,7 +96,7 @@ static Scanner instance;
 size_t Scanner::WhiteSpace(const SourcePosition& position)
 {
   auto result = ExceptionGuard(position, instance._internal->_whiteSpaces);
-  a_if_(result.IsValid);
+  HW_ASSERT_(result.IsValid);
   return result;
 };
 

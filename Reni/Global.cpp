@@ -142,7 +142,7 @@ CodeFunction::CodeFunction(
       , body(body)
 {
     SetDumpString();
-    a_if(index >= 0, HW_D_VALUE(index));
+    HW_ASSERT(index >= 0, HW_D_VALUE(index));
 }
 
 p_implementation(CodeFunction, string,cppCode)

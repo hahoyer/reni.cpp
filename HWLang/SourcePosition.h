@@ -32,7 +32,7 @@ namespace HWLang
 
         size_t operator-(SourcePosition const& other) const
         {
-            a_is(&*_source, ==, &*other._source);
+            HW_ASSERT_IS(&*_source, ==, &*other._source);
             return _position - other._position;
         }
 

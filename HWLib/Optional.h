@@ -25,13 +25,13 @@ namespace HWLib
         p_definition(T,Value); 
         T const p_name(Value)()const
         {
-            a_if_(IsValid);
+            HW_ASSERT_(IsValid);
             return data.get<targetType>();
         };
 
         T p_name(Value)()
         {
-            a_if_(IsValid);
+            HW_ASSERT_(IsValid);
             return data.get<targetType>();
         };
 

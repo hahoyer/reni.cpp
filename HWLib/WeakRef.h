@@ -17,7 +17,7 @@ namespace HWLib
         dataContainerType value;
     public:
         WeakRef(T &value) :value(&value){ }
-        WeakRef(T *value) :value(value){ a_if_(value); }
+        WeakRef(T *value) :value(value){ HW_ASSERT_(value); }
         WeakRef(WeakRef<T> const&other) : value(other.value){ };
         
         friend class WeakRef;

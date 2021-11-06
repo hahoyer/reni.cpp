@@ -15,7 +15,7 @@ using namespace std;
 
 static bool Trace = true;
 
-#define WinApiCall(call) a_if(call, System::FormatLastErrorMessage())
+#define WinApiCall(call) HW_ASSERT(call, System::FormatLastErrorMessage())
 
 
 StackFrameData::StackFrameData(DWORD64 instructionPointer)

@@ -17,7 +17,7 @@ namespace _Reni
   {
     const CompilerTest ct = "4711";
     const auto s = ct.compiler.syntax;
-    a_if(Dump(s)|BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), HW_D_VALUE(s));
+    HW_ASSERT(Dump(s)|BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), HW_D_VALUE(s));
   }
 
   HW_TM_TEST(CodeSimple, ParseSimple)
@@ -25,17 +25,17 @@ namespace _Reni
     const CompilerTest ct = "4711";
     auto s = ct.compiler.main;
     auto sc = dynamic_cast<const ConstCode*>(&*s);
-    a_if(sc, HW_D_VALUE(s));
-    a_is(sc->size, ==, 14);
+    HW_ASSERT(sc, HW_D_VALUE(s));
+    HW_ASSERT_IS(sc->size, ==, 14);
     const auto c4711 = BitsConst::Convert("4711");
-    a_is(sc->value, ==, c4711);
+    HW_ASSERT_IS(sc->value, ==, c4711);
   }
 
   HW_TM_TEST(CompileSimple, CodeSimple)
   {
     CompilerTest ct = "4711";
     const auto result = ct.compiler.Execute();
-    a_is(result.result, ==, 4711);
+    HW_ASSERT_IS(result.result, ==, 4711);
   }
 
   HW_TM_TEST(Simple, CompileSimple)

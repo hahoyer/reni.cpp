@@ -26,9 +26,9 @@ namespace _HWLang{
         auto sc = ScannerInstance(file);
 
         TokenClass const& start = sc.Step().Class;
-        a_is(&start, == , &TokenFactory::Start);
+        HW_ASSERT_IS(&start, == , &TokenFactory::Start);
         string t = sc.Step().Part;
-        a_is(t, == , "asd");
+        HW_ASSERT_IS(t, == , "asd");
     }
 
     void Test(string const&text, Array<string> results)
@@ -40,11 +40,11 @@ namespace _HWLang{
         auto ss = sc.ToArray;
         auto i = 0;
         for(; i < results.Count && i < ss.Count; i++)
-            a_if(results[i] == string(ss[i].Part), HW_D_VALUE(i) + HW_D_VALUE(ss[i].Part) + HW_D_VALUE(results[i]));
+            HW_ASSERT(results[i] == string(ss[i].Part), HW_D_VALUE(i) + HW_D_VALUE(ss[i].Part) + HW_D_VALUE(results[i]));
         for(; i < results.Count; i++)
-            a_fail(HW_D_VALUE(i) + HW_D_VALUE(results[i]));
+            HW_FAIL(HW_D_VALUE(i) + HW_D_VALUE(results[i]));
         for(; i < ss.Count; i++)
-            a_fail(HW_D_VALUE(i) + HW_D_VALUE(ss[i].Part));
+            HW_FAIL(HW_D_VALUE(i) + HW_D_VALUE(ss[i].Part));
     }
 
     HW_TM_TEST(Simple)
@@ -61,10 +61,10 @@ namespace _HWLang{
 
     HW_TM_TEST(Text)
     {
-        Test(" \"a_if\"\" b\" '\" ' ",
+        Test(" \"HW_ASSERT\"\" b\" '\" ' ",
         {
             "",
-            "\"a_if\"\" b\"",
+            "\"HW_ASSERT\"\" b\"",
             "'\" '",
             ""
         });
@@ -136,8 +136,8 @@ asdf
         }
         catch(Exception<string> xxx)
         {
-            a_if_(xxx.Position.IsEnd);
-            a_if_(xxx.Error == "x");
+            HW_ASSERT_(xxx.Position.IsEnd);
+            HW_ASSERT_(xxx.Error == "x");
         }
     }
 }

@@ -244,7 +244,7 @@ protected:
 
 CtrlRef<Enumerable<string>> String::Split(const std::string& target, string delimiter)
 {
-  a_is(delimiter, !=, "");
+  HW_ASSERT_IS(delimiter, !=, "");
   return new Enumerable<string>::Container(new SplitIterator(target, delimiter));
 }
 
@@ -253,8 +253,8 @@ string String::Convert(unsigned __int64 value, int radix)
   if(value == 0)
     return "0";
 
-  a_is(radix, >, 1);
-  a_is(radix, <, 36);
+  HW_ASSERT_IS(radix, >, 1);
+  HW_ASSERT_IS(radix, <, 36);
 
   string result;
   do

@@ -26,10 +26,10 @@ namespace _HWLang {
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Ref<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
-        a_if(!syntax.IsEmpty, HW_D_VALUE(syntax));
-        a_if(syntax.Value->left.IsEmpty, HW_D_VALUE(syntax));
-        a_if(syntax.Value->right.IsEmpty, HW_D_VALUE(syntax));
-        a_is(syntax.Value->name, == , text);
+        HW_ASSERT(!syntax.IsEmpty, HW_D_VALUE(syntax));
+        HW_ASSERT(syntax.Value->left.IsEmpty, HW_D_VALUE(syntax));
+        HW_ASSERT(syntax.Value->right.IsEmpty, HW_D_VALUE(syntax));
+        HW_ASSERT_IS(syntax.Value->name, == , text);
     };
 
     HW_TM_TEST(Parenthesis, ParserBaseStructure) {
@@ -180,11 +180,11 @@ namespace _HWLang {
     }
 
     void Check(Optional<Ref<Syntax>> const& target, bool isLeft, string const& part, bool isRight, bool isMatch) {
-        a_if(!target.IsEmpty, HW_D_VALUE(target));
-        a_is(target.Value->name, == , part);
-        a_if(!target.Value->left.IsEmpty == isLeft, HW_D_VALUE(target));
-        a_is(!target.Value->right.IsEmpty, == , isRight);
-        a_is(target.Value->isMatch, == , isMatch);
+        HW_ASSERT(!target.IsEmpty, HW_D_VALUE(target));
+        HW_ASSERT_IS(target.Value->name, == , part);
+        HW_ASSERT(!target.Value->left.IsEmpty == isLeft, HW_D_VALUE(target));
+        HW_ASSERT_IS(!target.Value->right.IsEmpty, == , isRight);
+        HW_ASSERT_IS(target.Value->isMatch, == , isMatch);
     }
 }
 

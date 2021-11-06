@@ -16,13 +16,13 @@ namespace HWLib
 
         void RemoveReference()const
         {
-            a_if_(value > 0);
+            HW_ASSERT_(value > 0);
             value--;
             if (value)
                 return;
             delete this;
         }
     protected:
-        virtual ~RefCountProvider(){a_if_(value == 0);};
+        virtual ~RefCountProvider(){HW_ASSERT_(value == 0);};
     };
 }

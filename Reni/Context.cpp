@@ -179,7 +179,7 @@ ResultData FunctionCallResultCache::GetResultDataRecursive(const Category& categ
 
 ResultData FunctionCallResultCache::GetResultData(Category const&category) const
 {
-  a_is(category, !=, Category::None);
+  HW_ASSERT_IS(category, !=, Category::None);
   return ResultData::GetSmartHollowSize(category, l_(codeGet), l_(valueType), l_(extsGet));
 }
 
@@ -194,8 +194,8 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
   auto Trace = false; //context.ObjectId == 7 && bodyIndex == 0; 
   HW_D_METHOD_;
-  a_if(!arg.IsEmpty, "NotImpl: no arg " + Dump);
-  a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+  HW_ASSERT(!arg.IsEmpty, "NotImpl: no arg " + Dump);
+  HW_ASSERT(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
   function.GetterIsUsed();
   auto rawResult
     = body
@@ -228,8 +228,8 @@ p_implementation(FunctionCallResultCache, Closure, extsGet)
 
 p_implementation(FunctionCallResultCache, CodeFunction, getter)
 {
-  a_if(!arg.IsEmpty, "NotImpl: no arg " + Dump);
-  a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
+  HW_ASSERT(!arg.IsEmpty, "NotImpl: no arg " + Dump);
+  HW_ASSERT(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
   auto rawResult = body
                    .getter
                    .Value

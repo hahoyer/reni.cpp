@@ -27,7 +27,7 @@ namespace HWLib{
         Ref() :baseType({}){}
     public:
         Ref(T &value) :baseType(&value){ }
-        Ref(T *value) :baseType(value){ a_if_(value); }
+        Ref(T *value) :baseType(value){ HW_ASSERT_(value); }
         Ref(thisType const&other):baseType(other){};
         template<class TOther>
         Ref(Ref<TOther>&other) :baseType(*other){};

@@ -34,22 +34,22 @@ namespace HWLib
         , entry(&entry)
         , id(nextId++)
     {
-      a_if_(root == &rootInstance);
+      HW_ASSERT_(root == &rootInstance);
       next->previous = this;
       previous->next = this;
     }
 
     ~SetDumpStringQueueEntry()
     {
-      a_if_(root == &rootInstance);
-      a_if_(entry);
-      a_if_(!entry->SetDumpStringToDo);
+      HW_ASSERT_(root == &rootInstance);
+      HW_ASSERT_(entry);
+      HW_ASSERT_(!entry->SetDumpStringToDo);
       //static int i = 0;
       //HW_CONSOLE.WriteLine(Dump(i++));
       previous->next = next;
       next->previous = previous;
       entry = {};
-      //b_if_(i == 14);
+      //HW_BREAK_IF_(i == 14);
     }
 
     static void Run()

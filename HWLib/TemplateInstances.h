@@ -85,14 +85,14 @@ public:
 
   T operator *() const
   {
-    a_if_(!_hasBeenAccessed);
+    HW_ASSERT_(!_hasBeenAccessed);
     _hasBeenAccessed = true;
     return const_cast<RangeBasedForLoopSimulator&>(*this)._data.Value->Step();
   }
 
   bool operator !=(RangeBasedForLoopSimulator other) const
   {
-    a_if_(other._data.IsEmpty);
+    HW_ASSERT_(other._data.IsEmpty);
     return _data.Value->IsValid;
   }
 };
@@ -356,15 +356,15 @@ public:
 protected:
   p_function(bool, IsValid) override
   {
-    a_if_(rightIterator.IsValid);
+    HW_ASSERT_(rightIterator.IsValid);
     return rightIterator.Value->IsValid;
   };
 
   resultType Step() override
   {
-    a_if_(leftResult.IsValid);
-    a_if_(rightIterator.IsValid);
-    a_if_(rightIterator.Value->IsValid);
+    HW_ASSERT_(leftResult.IsValid);
+    HW_ASSERT_(rightIterator.IsValid);
+    HW_ASSERT_(rightIterator.Value->IsValid);
     resultType result(*leftResult.Value, rightIterator.Value->Step());
     Align();
     return result;

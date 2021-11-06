@@ -40,7 +40,7 @@ ResultData ExpressionSyntax::GetResultData(const Context& context, Category cons
             .DeclarationsForType(tokenClass)
             .found
             .FunctionResult(context, category, right);
-        a_is(category, <= , result.complete);
+        HW_ASSERT_IS(category, <= , result.complete);
         return(result);
     }
 
@@ -51,7 +51,7 @@ ResultData ExpressionSyntax::GetResultData(const Context& context, Category cons
         .DeclarationsForType(tokenClass)
         .found
         .FunctionResult(context, category, left, right);
-    a_is(category, <=, result.complete);
+    HW_ASSERT_IS(category, <=, result.complete);
     return(result);
 }
 

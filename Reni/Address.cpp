@@ -14,6 +14,6 @@ Address::Address(const Size& data, int depth) : data(data), depth(depth)
 
 Address Address::operator+(int delta) const
 {
-  a_is(delta, >, 0);
+  HW_ASSERT_IS(delta, >, 0);
   return Address(data, depth + delta);
 }

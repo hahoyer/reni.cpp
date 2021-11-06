@@ -114,7 +114,7 @@ ResultData const Type::GetResultDataSmartClosure(Category category, function<Ref
 
 ResultData const Type::GetResultDataEmpty(Category category) const
 {
-    a_if(hollow, Dump);
+    HW_ASSERT(hollow, Dump);
     return ResultData::GetSmartHollowClosure(category, l_(size), l_(CodeItem::Const(BitsConst::Empty())), l_(&thisRef));
 }
 
@@ -145,7 +145,7 @@ p_implementation(Type, WeakRef<EnableCutType>, enableCutType)
 
 p_implementation(Type, Address, toAddress)
 {
-    a_if(!hollow, Dump);
+    HW_ASSERT(!hollow, Dump);
     return Address(size,0);
 }
 
@@ -192,7 +192,7 @@ WeakRef<Type> const Type::Common(Type const& other) const
 
 WeakRef<Type> const Type::IndirectType(int depth) const
 {
-    a_is(depth, >= , 0);
+    HW_ASSERT_IS(depth, >= , 0);
     if(depth)
         return IndirectType(depth - 1)->indirectType;
     return thisRef;
@@ -201,7 +201,7 @@ WeakRef<Type> const Type::IndirectType(int depth) const
 WeakRef<NumberType> const Type::CreateNumberType() const
 {
     auto a = dynamic_cast<ArrayType const*>(this);
-    a_if(a && dynamic_cast<BitType const*>(&a->elementType), HW_D_VALUE(*this) + " cannot be flagged as number type");
+    HW_ASSERT(a && dynamic_cast<BitType const*>(&a->elementType), HW_D_VALUE(*this) + " cannot be flagged as number type");
     return new NumberType(a->thisRef);
 };
 

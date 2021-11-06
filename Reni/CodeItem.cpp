@@ -157,9 +157,9 @@ Optional<Ref<CodeItem>> CodeItem::Replace(const ReplaceVisitor& arg) const
 {
   const bool Trace = arg.Trace || ObjectId == -16;
   HW_D_METHOD(closure);
-  b_if_(Trace);
+  HW_BREAK_IF_(Trace);
   auto result = ReplaceImpl(arg);
-  a_if(result.IsEmpty || result.Value->size == size,
+  HW_ASSERT(result.IsEmpty || result.Value->size == size,
        Dump + "\n" +
        HW_D_VALUE(result) + "\n" +
        HW_D_VALUE(size) + "\n" +
@@ -231,7 +231,7 @@ p_implementation(TypedCode, Size, size) { return type.size; }
 ArgCode::ArgCode(const Type& type) : baseType(type)
 {
   SetDumpString();
-  b_if(ObjectId == -10, Dump);
+  HW_BREAK_IF(ObjectId == -10, Dump);
 }
 
 p_implementation(ArgCode, Closure, closure) { return Closure(External::Args::Instance); }
@@ -261,7 +261,7 @@ FunctionArgCode::FunctionArgCode(const Type& type)
   : baseType(type.indirectType->thisRef)
 {
   SetDumpString();
-  b_if(ObjectId == -10, Dump);
+  HW_BREAK_IF(ObjectId == -10, Dump);
 }
 
 string FunctionArgCode::ToCpp(const CodeVisitor& visitor) const
@@ -317,7 +317,7 @@ FiberConnector::FiberConnector(const Array<Ref<CodeItem>>& items, const Ref<Fibe
     , connector(connector)
 {
   SetDumpString();
-  a_if(IsValid, Dump);
+  HW_ASSERT(IsValid, Dump);
 }
 
 p_implementation(FiberConnector, Closure, closure)

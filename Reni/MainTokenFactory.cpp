@@ -149,7 +149,7 @@ TokenClass const& MainTokenFactory::End = *new RightParenthesisToken(0);
 template<class TTokenClass>
 void MainTokenFactory::AddTokenClass(TTokenClass const*tokenClass){
     auto key = tokenClass->name;
-    a_if(!predefinedTokenClasses.ContainsKey(key), HW_D_VALUE(key) + HW_D_VALUE(predefinedTokenClasses[key]));
+    HW_ASSERT(!predefinedTokenClasses.ContainsKey(key), HW_D_VALUE(key) + HW_D_VALUE(predefinedTokenClasses[key]));
     predefinedTokenClasses.Assign(key,&tokenClass->thisRef);
 }
 

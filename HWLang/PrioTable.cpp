@@ -140,7 +140,7 @@ string HWLib::Dump(Array<const Array<const Tag>> data)
 string HWLib::Dump(const TagTable& data)
 {
   const auto count = data.size();
-  a_is(count, ==, 3);
+  HW_ASSERT_IS(count, ==, 3);
 
   char* * d = new char*[3];
   auto i = 0;
@@ -189,8 +189,8 @@ size_t PrioTable::Index(const string& name) const
 
 Tag PrioTable::Relation(size_t newIndex, size_t recentIndex) const
 {
-  a_is(tokens[newIndex], !=, PrioTableConst::Start);
-  a_is(tokens[recentIndex], !=, PrioTableConst::End);
+  HW_ASSERT_IS(tokens[newIndex], !=, PrioTableConst::Start);
+  HW_ASSERT_IS(tokens[recentIndex], !=, PrioTableConst::End);
   return data[newIndex][recentIndex];
 }
 

@@ -42,8 +42,8 @@ namespace Reni
         Optional<Ref<Syntax>> Replace(SyntaxArgVisitor const&) const { return {}; };
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
-            a_if(left.IsEmpty, HW_D_VALUE(left) + "\n" + HW_D_VALUE(*this) + "\n" + HW_D_VALUE(part) + "\n" + HW_D_VALUE(right));
-            a_if(right.IsEmpty, HW_D_VALUE(left) + "\n" + HW_D_VALUE(*this) + "\n" + HW_D_VALUE(part) + "\n" + HW_D_VALUE(right));
+            HW_ASSERT(left.IsEmpty, HW_D_VALUE(left) + "\n" + HW_D_VALUE(*this) + "\n" + HW_D_VALUE(part) + "\n" + HW_D_VALUE(right));
+            HW_ASSERT(right.IsEmpty, HW_D_VALUE(left) + "\n" + HW_D_VALUE(*this) + "\n" + HW_D_VALUE(part) + "\n" + HW_D_VALUE(right));
             return Create(part);
         };
     };
@@ -56,8 +56,8 @@ namespace Reni
         virtual Ref<Syntax> const Create(SourcePart const&part, Ref<Syntax>const right)const = 0;
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
-            a_if_(left.IsEmpty);
-            a_if_(!right.IsEmpty);
+            HW_ASSERT_(left.IsEmpty);
+            HW_ASSERT_(!right.IsEmpty);
             return Create(part, right);
         };
     };
@@ -70,8 +70,8 @@ namespace Reni
         virtual Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part)const = 0;
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
-            a_if_(!left.IsEmpty);
-            a_if_(right.IsEmpty);
+            HW_ASSERT_(!left.IsEmpty);
+            HW_ASSERT_(right.IsEmpty);
             return Create(left, part);
         };
     };
@@ -84,8 +84,8 @@ namespace Reni
         virtual Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const = 0;
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override final{
-            a_if_(!left.IsEmpty);
-            a_if_(!right.IsEmpty);
+            HW_ASSERT_(!left.IsEmpty);
+            HW_ASSERT_(!right.IsEmpty);
             return Create(left, part, right);
         };
     };

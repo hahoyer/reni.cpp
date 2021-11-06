@@ -123,12 +123,12 @@ ResultData FoundFeature<Feature>::FunctionResult(
     HW_D_METHOD(context, category, left, right);
 
     auto rawResult = Result(context, category, type->thisRef, right);
-    a_is(category, == , rawResult.complete);
+    HW_ASSERT_IS(category, == , rawResult.complete);
     HW_D_LOG_VALUE(rawResult);
-    b_if_(Trace);
+    HW_BREAK_IF_(Trace);
     auto alignedResult = AlignThis(rawResult);
     HW_D_LOG_VALUE(alignedResult);
-    b_if_(Trace);
+    HW_BREAK_IF_(Trace);
     auto leftResult = left.Value->GetResultCache(context);
     leftResult->Trace = Trace;
     auto result = alignedResult

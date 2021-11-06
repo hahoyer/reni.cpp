@@ -31,7 +31,7 @@ ResultData ResultCache::Get(const Category& category) const
         return data;
 
     const auto recursive = GetResultDataRecursive(pendingCategory);
-    a_if(recursive.IsConsistent(data), HW_D_VALUE(thisRef) + HW_D_VALUE(recursive) + HW_D_VALUE(pendingCategory));
+    HW_ASSERT(recursive.IsConsistent(data), HW_D_VALUE(thisRef) + HW_D_VALUE(recursive) + HW_D_VALUE(pendingCategory));
     return recursive | data;
 }
 
@@ -49,13 +49,13 @@ void ResultCache::Ensure(const Category& category)const
 
         auto oldData = data;
         HW_D_LOG_VALUE(newTodo);
-        b_if_(Trace);
+        HW_BREAK_IF_(Trace);
         auto newResult = GetResultData(newTodo);
         HW_D_LOG_VALUE(newResult);
-        b_if_(Trace);
-        a_if(isRecursion || data.IsConsistent(newResult), HW_D_VALUE(thisRef) + HW_D_VALUE(newResult));
+        HW_BREAK_IF_(Trace);
+        HW_ASSERT(isRecursion || data.IsConsistent(newResult), HW_D_VALUE(thisRef) + HW_D_VALUE(newResult));
         data = newResult| data;
-        a_if(isRecursion || category <= complete, HW_D_VALUE(category) + HW_D_VALUE(complete) + HW_D_VALUE(pending));
+        HW_ASSERT(isRecursion || category <= complete, HW_D_VALUE(category) + HW_D_VALUE(complete) + HW_D_VALUE(pending));
     }
 
     pending -= complete;
@@ -100,12 +100,12 @@ ResultFromSyntaxAndContext::ResultFromSyntaxAndContext(Syntax const& syntax, Con
 
 ResultData ResultFromSyntaxAndContext::GetResultData(Category const&category) const
 {
-    a_if_(category != Category::None || context.isRecursion);
+    HW_ASSERT_(category != Category::None || context.isRecursion);
     bool Trace = false;// this->Trace && category.hasClosure;
     HW_D_METHOD(category);
-    b_if_(Trace);
+    HW_BREAK_IF_(Trace);
     auto result = syntax.GetResultData(context,category);
-    a_is(category, <= , result.complete);
+    HW_ASSERT_IS(category, <= , result.complete);
     return_db(result);
 }
 
@@ -192,7 +192,7 @@ Optional<bool> ResultData::ReplenishHollow(Category const& category, function<Re
     if(category.hasType)
         return getType()->size == 0;
     
-    a_fail(category.Dump);
+    HW_FAIL(category.Dump);
     return{};
 }
 
@@ -205,7 +205,7 @@ Optional<Size> ResultData::ReplenishSize(Category const& category, function<Ref<
             return getCode()->size;
         if(category.hasType)
             return getType()->size;
-        a_fail(category.Dump);
+        HW_FAIL(category.Dump);
     }
 
     return {};
@@ -339,37 +339,37 @@ void ResultData::AssertValid() const
     if (complete.hasHollow)
     {
         if (complete.hasSize)
-            a_if(hollow.Value == (size.Value == 0), HW_D_VALUE(hollow) + HW_D_VALUE(size));
+            HW_ASSERT(hollow.Value == (size.Value == 0), HW_D_VALUE(hollow) + HW_D_VALUE(size));
         if (complete.hasCode)
-            a_if(hollow.Value == (code.Value->size == 0), HW_D_VALUE(hollow) + HW_D_VALUE(code));
+            HW_ASSERT(hollow.Value == (code.Value->size == 0), HW_D_VALUE(hollow) + HW_D_VALUE(code));
         if (complete.hasType)
-            a_if(hollow.Value == (type.Value->size == 0), HW_D_VALUE(hollow) + HW_D_VALUE(type));
+            HW_ASSERT(hollow.Value == (type.Value->size == 0), HW_D_VALUE(hollow) + HW_D_VALUE(type));
     }
 
     if(complete.hasSize)
     {
         if(complete.hasCode)
-            a_is(code.Value->size, == , size.Value);
+            HW_ASSERT_IS(code.Value->size, == , size.Value);
         if(complete.hasType)
-            a_is(type.Value->size, == , size.Value);
+            HW_ASSERT_IS(type.Value->size, == , size.Value);
     }
     else if(complete.hasCode && complete.hasType)
-        a_is(code.Value->size, == , type.Value->size);
+        HW_ASSERT_IS(code.Value->size, == , type.Value->size);
     if(complete.hasCode && complete.hasClosure)
-        a_is(code.Value->closure, == , closure.Value);
+        HW_ASSERT_IS(code.Value->closure, == , closure.Value);
 }
 
 void ResultData::AssertValid(const Category& category, Optional<bool> const& hollow, Optional<Size> const size, Optional<Ref<CodeItem>> code, Optional<WeakRef<Type>> type, Optional<Closure> const& closure)
 {
     if(category.hasHollow)
-        a_if(hollow.IsValid, HW_D_VALUE(category) + HW_D_VALUE(hollow));
+        HW_ASSERT(hollow.IsValid, HW_D_VALUE(category) + HW_D_VALUE(hollow));
     if(category.hasSize)
-        a_if(size.IsValid, HW_D_VALUE(category) + HW_D_VALUE(size));
+        HW_ASSERT(size.IsValid, HW_D_VALUE(category) + HW_D_VALUE(size));
     if(category.hasCode)
-        a_if(code.IsValid, HW_D_VALUE(category) + HW_D_VALUE(code));
+        HW_ASSERT(code.IsValid, HW_D_VALUE(category) + HW_D_VALUE(code));
     if(category.hasType)
-        a_if(type.IsValid, HW_D_VALUE(category) + HW_D_VALUE(type));
+        HW_ASSERT(type.IsValid, HW_D_VALUE(category) + HW_D_VALUE(type));
     if(category.hasClosure)
-        a_if(closure.IsValid, HW_D_VALUE(category) + HW_D_VALUE(closure));
+        HW_ASSERT(closure.IsValid, HW_D_VALUE(category) + HW_D_VALUE(closure));
 }
 

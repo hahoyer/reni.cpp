@@ -13,7 +13,7 @@ namespace Reni
         AddressType(Type const& value) : value(value)
         {
             SetDumpString();
-            a_if_(!this->value.hollow);
+            HW_ASSERT_(!this->value.hollow);
         }
         ThisRef;
     private:

@@ -45,7 +45,7 @@ Optional<Ref<FiberItem>> FiberItem::Replace(ReplaceVisitor const& visitor) const
 
 Array<Ref<FiberItem>> const FiberItem::CopyFromAddress(Type const& target)
 {
-    a_if(target.isCopyable, HW_D_VALUE(target));
+    HW_ASSERT(target.isCopyable, HW_D_VALUE(target));
     return{new CopyFromAddressFiber(target)};
 };
 
@@ -61,7 +61,7 @@ FiberCode::FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&item
     , items(items)
 {
     SetDumpString();
-    a_if(IsValid, Dump);
+    HW_ASSERT(IsValid, Dump);
 }
 
 p_implementation(FiberCode, Size, size){ return items.Last->size; };

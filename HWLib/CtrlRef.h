@@ -12,7 +12,7 @@ namespace HWLib
         friend class CtrlRef<T>;
         friend class CtrlRef<T const>;
     public:
-        CtrlRef(T *value) :baseType(value){ a_if_(value); }
+        CtrlRef(T *value) :baseType(value){ HW_ASSERT_(value); }
         CtrlRef(CtrlRef<T> const&other) : baseType(other.value){ };
         CtrlRef(CtrlRef<T const> const&other) ;
         template<typename TOther>
@@ -27,7 +27,7 @@ namespace HWLib
         typedef CtrlRef<T const> thisType;
     
     public:
-        CtrlRef(T const *value) :baseType(value){ a_if_(value); }
+        CtrlRef(T const *value) :baseType(value){ HW_ASSERT_(value); }
         CtrlRef(CtrlRef<T const> const&other) : baseType(other){ };
 
         HW_DO_PLACEMENT_ASSIGN;

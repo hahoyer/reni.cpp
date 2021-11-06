@@ -27,7 +27,7 @@ p_implementation(BitsConst, Size, size)
   if(value == BigInt::Rossi(0))
     return 0;
   size_t result = (value.getUnitsSize() - 1) * 8;
-  a_is(result, <, 10000);
+  HW_ASSERT_IS(result, <, 10000);
   BigInt::Rossi value = this->value;
   if(result != 0)
     value >>= result;

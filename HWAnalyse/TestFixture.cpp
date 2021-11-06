@@ -44,8 +44,11 @@ bool TestFixture::Data::CheckedRun(bool skipLowPriority)
   return true;
 };
 
+
 void TestFixture::Data::WatchedRun()
 {
+  HW_ASSERT_(true);
+  HW_ASSERT(true,"Wert");
   const auto name = typeid(*this).name();
   HW_CONSOLE.WriteLine(location());
   auto indentLevel = HW_CONSOLE.IndentLevel;

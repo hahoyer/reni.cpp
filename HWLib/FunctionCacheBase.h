@@ -61,7 +61,7 @@ namespace HWLib
             auto element = data.find(TKeys(key...));
             if (element == data.end())
             {
-                a_throw(busyKeys.find(TKeys(key...)) == busyKeys.end(), "illegal recursion");
+                HW_ASSERT_AND_THROW(busyKeys.find(TKeys(key...)) == busyKeys.end(), "illegal recursion");
                 busyKeys.insert(TKeys(key...));
                 auto result = createValue(key...);
                 busyKeys.erase(TKeys(key...));

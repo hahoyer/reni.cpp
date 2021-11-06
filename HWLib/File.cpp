@@ -131,12 +131,12 @@ p_implementation(File::internal, string, Data)
 p_mutator_implementation(File::internal, string, Data)
 {
   FILE* file = OpenFile(Name.c_str(), true);
-  a_if(file, string("Error: ") + HWLib::Dump(errno) + ":" + System::FormatLastErrorMessage());
+  HW_ASSERT(file, string("Error: ") + HWLib::Dump(errno) + ":" + System::FormatLastErrorMessage());
 
   const auto count = value.size();
   const auto countWritten = fwrite(value.c_str(), count, count, file);
   fclose(file);
-  a_if(count == countWritten,
+  HW_ASSERT(count == countWritten,
        string("Error: ") + HWLib::Dump(errno) + ":" + System::FormatLastErrorMessage() + "\ncount=" + to_string(count) +
        " countWritten=" + to_string(countWritten));
 }
@@ -165,7 +165,7 @@ p_mutator_implementation(File, string, Name)
   const auto rc = rename(Name.c_str(), value.c_str());
   if(rc == 0)
     _internal->Name = value;
-  a_is(rc, ==, 0);
+  HW_ASSERT_IS(rc, ==, 0);
 }
 
 p_implementation(File, string, Data)

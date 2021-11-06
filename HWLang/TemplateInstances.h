@@ -36,7 +36,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
             return Step(count, TokenFactory::GetTokenClass(position.Part(count)));
 
         HW_D_METHOD_
-        a_fail_;
+        HW_FAIL_;
         return Optional<Token>().Value;
     }
     catch (Scanner::Error const& error){

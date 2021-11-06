@@ -15,8 +15,8 @@ namespace Reni
         LeftParenthesisToken(int level) : level(level){}
 
         p(string, name){
-            a_is(level, > , 0);
-            a_is(level, < , 4);
+            HW_ASSERT_IS(level, > , 0);
+            HW_ASSERT_IS(level, < , 4);
             return string(1,level[" {[("]);
         }
     private:
@@ -49,7 +49,7 @@ namespace Reni
 
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const& part, Optional<Ref<Syntax>>const right)const override final
         {
-            a_if_(left.IsEmpty);
+            HW_ASSERT_(left.IsEmpty);
             return new OpenSyntax(level, part, right);
         };
     };
@@ -65,8 +65,8 @@ namespace Reni
 
         p(string, name)
         {
-            a_is(level, >, 0);
-            a_is(level, <, 4);
+            HW_ASSERT_IS(level, >, 0);
+            HW_ASSERT_IS(level, <, 4);
             return string(1,level[" }])"]);
         }
     private:

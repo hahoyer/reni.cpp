@@ -84,7 +84,7 @@ string MainCodeVisitor::MainVisit(Ref<CodeItem> target)
 
 string MainCodeVisitor::Visit(Ref<CodeItem> target) const
 {
-    a_if(target->closure.isEmpty, HW_D_VALUE(target));
+    HW_ASSERT(target->closure.isEmpty, HW_D_VALUE(target));
     const auto result= target->ToCpp(*this);
     if(target->size == 0)
         return result + ";\nreturn 0;";

@@ -52,7 +52,7 @@ void ReplaceVisitor::AssumeFunctionArg(External::Function const& tag, Type const
     if (result.IsEmpty)
         return;
 
-    a_is(arg.toAddress.data, == , result.Value->type->toAddress.data);
+    HW_ASSERT_IS(arg.toAddress.data, == , result.Value->type->toAddress.data);
 }
 
 Optional<Ref<ResultCache>> ReplaceVisitor::GetResults(External const& tag) const
@@ -66,7 +66,7 @@ void ReplaceVisitor::Assume(External const& tag, Type const& type) const
     if (result.IsEmpty)
         return ;
 
-    a_if(type.toAddress.depth == 0, HW_D_VALUE(type));
-    a_is(type.size, ==, result.Value->type->toAddress.data);
+    HW_ASSERT(type.toAddress.depth == 0, HW_D_VALUE(type));
+    HW_ASSERT_IS(type.size, ==, result.Value->type->toAddress.data);
 }
 

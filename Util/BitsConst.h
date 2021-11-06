@@ -28,7 +28,7 @@ namespace Util{
         {
             if(left < right)
                 return TimesSize(right, left);
-            a_if_(left >= right);
+            HW_ASSERT_(left >= right);
             
             if(left == 0 || right == 0)
                 return 0;

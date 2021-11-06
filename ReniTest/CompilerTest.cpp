@@ -34,5 +34,5 @@ void CompilerTest::Check(const string& text, const string& expectedResult)
   HW_D_LOG("c++ code:\n" + co.cppCode + "\n");
 
 
-  a_fail_throw_;
+  HW_FAIL_AND_THROW_;
 };

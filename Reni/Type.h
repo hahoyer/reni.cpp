@@ -112,7 +112,7 @@ namespace Reni
     EnableCutType(const Type& value) : value(value)
     {
       SetDumpString();
-      a_if_(!this->value.hollow);
+      HW_ASSERT_(!this->value.hollow);
     }
 
     ThisRef;

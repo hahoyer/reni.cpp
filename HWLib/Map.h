@@ -35,7 +35,7 @@ namespace HWLib
         TValue const operator[](TKey const& key)const
         {
             auto result = data.find(key);
-            a_if_(result != data.end());
+            HW_ASSERT_(result != data.end());
             return result->second;
         };
 
