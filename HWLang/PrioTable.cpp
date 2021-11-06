@@ -95,7 +95,7 @@ Tag PrioTable::Relation(const string& newTokenName, const string& recentTokenNam
 p_implementation(PrioTable, Array<string>, DumpData)
 {
   if(Count == 0)
-    return {nd(Count)};
+    return {HW_D_VALUE(Count)};
 
   const auto maxlength = tokens.Select<size_t>([](const string& t) { return t.size(); })->Max().Value;
   auto head0 = string() | CastLeft(maxlength);

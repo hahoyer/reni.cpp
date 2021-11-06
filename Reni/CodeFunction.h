@@ -38,9 +38,9 @@ namespace Reni
         {
             return
                 {
-                    nd(isSetter),
-                    nd(index),
-                    nd(body)
+                    HW_D_VALUE(isSetter),
+                    HW_D_VALUE(index),
+                    HW_D_VALUE(body)
                 };
         }
     };

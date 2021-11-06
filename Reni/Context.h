@@ -93,7 +93,7 @@ namespace Reni
         {
         }
 
-        p_function(Array<string>, DumpData) override{ return{nd(parent)}; }
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(parent)}; }
 
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const& token) const override;;
     private:

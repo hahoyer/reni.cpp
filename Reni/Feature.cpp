@@ -21,7 +21,7 @@ using namespace Reni;
 
 FoundFeature<Feature> Feature::Error(string const& title)
 {
-    c_ .Write(title);
+    HW_CONSOLE .Write(title);
     mb;
 }
 

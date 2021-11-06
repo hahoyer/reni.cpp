@@ -47,12 +47,12 @@ NumberType::NumberType(WeakRef<ArrayType> const parent)
     : parent(*parent)
 {
     SetDumpString();
-    a_if(!parent->hollow, nd(parent));
+    a_if(!parent->hollow, HW_D_VALUE(parent));
 }
 
 p_implementation(NumberType, Size, size){return parent.size;};
 p_implementation(NumberType, WeakRef<Global>, global){return parent.global;};
-p_implementation(NumberType, Array<string>,DumpData){ return{nd(parent)}; };
+p_implementation(NumberType, Array<string>,DumpData){ return{HW_D_VALUE(parent)}; };
 
 
 p_implementation(NumberType, string, DumpShort)

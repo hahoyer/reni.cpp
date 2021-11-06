@@ -161,9 +161,9 @@ Optional<Ref<CodeItem>> CodeItem::Replace(const ReplaceVisitor& arg) const
   auto result = ReplaceImpl(arg);
   a_if(result.IsEmpty || result.Value->size == size,
        Dump + "\n" +
-       nd(result) + "\n" +
-       nd(size) + "\n" +
-       nd(result.Value->size));
+       HW_D_VALUE(result) + "\n" +
+       HW_D_VALUE(size) + "\n" +
+       HW_D_VALUE(result.Value->size));
   return_d(result);
 }
 
@@ -224,7 +224,7 @@ string DumpPrintNumberCode::ToCpp(const CodeVisitor& visitor) const
 TypedCode::TypedCode(const Type& type): type(type)
 {}
 
-p_implementation(TypedCode, Array<string>, DumpData) { return {nd(type)}; };
+p_implementation(TypedCode, Array<string>, DumpData) { return {HW_D_VALUE(type)}; };
 p_implementation(TypedCode, Size, size) { return type.size; }
 
 

@@ -19,7 +19,7 @@ namespace Reni
         {
             SetDumpString();
             if(!type.IsEmpty && code.IsValid)
-                a_if(type.Value->size == code.Value->size, nd(code)+nd(type));
+                a_if(type.Value->size == code.Value->size, HW_D_VALUE(code)+HW_D_VALUE(type));
         }
 
         ResultDataDirect()
@@ -31,8 +31,8 @@ namespace Reni
         p_function(Array<string>,DumpData) override
         {
             return{
-                nd(code),
-                nd(type)
+                HW_D_VALUE(code),
+                HW_D_VALUE(type)
             };
         };
 

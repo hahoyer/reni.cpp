@@ -20,7 +20,7 @@ namespace Reni
             return string(1,level[" {[("]);
         }
     private:
-        p_function(Array<string>,DumpData) override{ return{nd(level)}; };
+        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(level)}; };
 
         class OpenSyntax final : public Syntax
         {
@@ -43,7 +43,7 @@ namespace Reni
                     return baseType::ParenthesisMatch(level, part);
                 return right || Ref<Syntax>(new EmptySyntax(part));
             };
-            p_function(string, SmartDump) override{return nd(right);}
+            p_function(string, SmartDump) override{return HW_D_VALUE(right);}
             p_function(int, priority) override{ return 0; }
         };
 
@@ -77,7 +77,7 @@ namespace Reni
 
         p_function(Array<string>,DumpData) override
         {
-            return{nd(level)};
+            return{HW_D_VALUE(level)};
         };
     };
 

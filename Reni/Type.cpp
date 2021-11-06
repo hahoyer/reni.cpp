@@ -201,7 +201,7 @@ WeakRef<Type> const Type::IndirectType(int depth) const
 WeakRef<NumberType> const Type::CreateNumberType() const
 {
     auto a = dynamic_cast<ArrayType const*>(this);
-    a_if(a && dynamic_cast<BitType const*>(&a->elementType), nd(*this) + " cannot be flagged as number type");
+    a_if(a && dynamic_cast<BitType const*>(&a->elementType), HW_D_VALUE(*this) + " cannot be flagged as number type");
     return new NumberType(a->thisRef);
 };
 

@@ -19,16 +19,16 @@ namespace _HWLang {
 
     void Check(Optional<Ref<Syntax>> const& target, bool isLeft, string const& part, bool isRight, bool isMatch);
 
-    HW_TM_TEST_(ParserBaseStructure) {
+    HW_TM_TEST(ParserBaseStructure) {
         auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevelLeft({Start}, {End});
 
         string text = "asdf";
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Ref<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
 
-        a_if(!syntax.IsEmpty, nd(syntax));
-        a_if(syntax.Value->left.IsEmpty, nd(syntax));
-        a_if(syntax.Value->right.IsEmpty, nd(syntax));
+        a_if(!syntax.IsEmpty, HW_D_VALUE(syntax));
+        a_if(syntax.Value->left.IsEmpty, HW_D_VALUE(syntax));
+        a_if(syntax.Value->right.IsEmpty, HW_D_VALUE(syntax));
         a_is(syntax.Value->name, == , text);
     };
 
@@ -180,9 +180,9 @@ namespace _HWLang {
     }
 
     void Check(Optional<Ref<Syntax>> const& target, bool isLeft, string const& part, bool isRight, bool isMatch) {
-        a_if(!target.IsEmpty, nd(target));
+        a_if(!target.IsEmpty, HW_D_VALUE(target));
         a_is(target.Value->name, == , part);
-        a_if(!target.Value->left.IsEmpty == isLeft, nd(target));
+        a_if(!target.Value->left.IsEmpty == isLeft, HW_D_VALUE(target));
         a_is(!target.Value->right.IsEmpty, == , isRight);
         a_is(target.Value->isMatch, == , isMatch);
     }

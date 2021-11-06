@@ -31,8 +31,8 @@ namespace Reni
     p_function(Array<string>, DumpData) override
     {
       return {
-        nd(elementType),
-        nd(count)
+        HW_D_VALUE(elementType),
+        HW_D_VALUE(count)
       };
     }
 

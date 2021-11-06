@@ -66,7 +66,7 @@ void ReplaceVisitor::Assume(External const& tag, Type const& type) const
     if (result.IsEmpty)
         return ;
 
-    a_if(type.toAddress.depth == 0, nd(type));
+    a_if(type.toAddress.depth == 0, HW_D_VALUE(type));
     a_is(type.size, ==, result.Value->type->toAddress.data);
 }
 

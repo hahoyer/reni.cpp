@@ -30,7 +30,7 @@ namespace Reni
     private:
         p(Optional<WeakRef<Type const>>, arg){ return context.arg; }
         p(ContainerContext const&, container){return context.container;}
-        p_function(Array<string>,DumpData) override{return{nd(bodyIndex), nd(context)};}
+        p_function(Array<string>,DumpData) override{return{HW_D_VALUE(bodyIndex), HW_D_VALUE(context)};}
 
         ResultData GetResultDataRecursive(Category const& category) const override;
         ResultData GetResultData(Category const& category)const override;

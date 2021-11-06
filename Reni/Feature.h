@@ -70,7 +70,7 @@ namespace Reni
         p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
         ResultData ConversionResult(const Category& category, Type const& target, Type const& destination) const;
     private:
-        p_function(Array<string>, DumpData) override{ return{nd(simple) + nd(extended)}; }
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(simple) + HW_D_VALUE(extended)}; }
     };
 
 
@@ -115,7 +115,7 @@ namespace Reni
         ResultData ConversionResult(const Category& category, Type const& target, Type const& destination) const;
 
     private:
-        p_function(Array<string>, DumpData) override{ return{nd(type) + nd(feature) + nd(path)}; };
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(type) + HW_D_VALUE(feature) + HW_D_VALUE(path)}; };
         ResultData Result(Context const& context, const Category& category, Type const& target,
                           Optional<Ref<Syntax>> const& arg) const;
     };

@@ -160,8 +160,8 @@ p_implementation(ContainerContext, Array<string>, DumpData)
 {
   return p_base_name(DumpData) +
     _({
-      nd(containerData),
-      nd(viewIndex)
+      HW_D_VALUE(containerData),
+      HW_D_VALUE(viewIndex)
     });
 };
 

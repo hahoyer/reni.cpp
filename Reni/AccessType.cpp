@@ -74,7 +74,7 @@ ResultData AccessType::AssignmentFeature::Result(Category const& category, Type 
     if(category <= Category::Type.replenished)
         return_d(rawResult);
 
-    b_if(Trace, nd(rawResult));
+    b_if(Trace, HW_D_VALUE(rawResult));
 
     ReplaceVisitor visitor;
     visitor.SetResults(External::Args::Instance, *arg.ConvertTo(typedTarget.Value->value->thisRef));

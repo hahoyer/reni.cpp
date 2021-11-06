@@ -74,8 +74,8 @@ namespace Reni
         p_function(Array<string>, DumpData) override
         {
             return{
-                nd(context),
-                nd(body)
+                HW_D_VALUE(context),
+                HW_D_VALUE(body)
             };
         };
 
@@ -97,7 +97,7 @@ namespace Reni
         }
 
     private:
-        p_function(Array<string>, DumpData) override{return{nd(parent)};}
+        p_function(Array<string>, DumpData) override{return{HW_D_VALUE(parent)};}
         p_function(bool, hollow) { return size == 0; };
         p_function(Size,size) override;
         p_function(WeakRef<Global>, global) override;

@@ -21,7 +21,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>,DumpData) override{ return{ nd(size), nd(value) }; };
+        p_function(Array<std::string>,DumpData) override{ return{ HW_D_VALUE(size), HW_D_VALUE(value) }; };
         p_function(Size,size) override{ return size; };
         p_function(Closure, closure)override{ return{}; };
         p_function(bool, isEmpty)override;
@@ -47,7 +47,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>,DumpData) override{ return{nd(result),nd(index), nd(arg)}; };
+        p_function(Array<std::string>,DumpData) override{ return{HW_D_VALUE(result),HW_D_VALUE(index), HW_D_VALUE(arg)}; };
         p_function(Size,argSize) override{ return arg; };
         p_function(Size,size) override{ return result; };
         string ToCpp(CodeVisitor const& visitor) const override;
@@ -66,7 +66,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>, DumpData) override{ return{nd(_size)}; };
+        p_function(Array<std::string>, DumpData) override{ return{HW_D_VALUE(_size)}; };
         p_function(Size, argSize) override{ return _size; };
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override{ return{}; }
@@ -84,7 +84,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>, DumpData) override{ return{nd(referenceSize), nd(offset)}; };
+        p_function(Array<std::string>, DumpData) override{ return{HW_D_VALUE(referenceSize), HW_D_VALUE(offset)}; };
         p_function(Size, argSize) override{ return referenceSize; };
         p_function(Size, size) override{ return referenceSize; };
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override { return{}; }
@@ -116,12 +116,12 @@ namespace Reni{
         {
             return
             {
-                nd(size),
-                nd(leftDepth), 
-                nd(leftSize), 
-                nd(name), 
-                nd(rightDepth), 
-                nd(rightSize)
+                HW_D_VALUE(size),
+                HW_D_VALUE(leftDepth), 
+                HW_D_VALUE(leftSize), 
+                HW_D_VALUE(name), 
+                HW_D_VALUE(rightDepth), 
+                HW_D_VALUE(rightSize)
             };
         };
         p_function(int, inCount) override{ return 2; };
@@ -159,9 +159,9 @@ namespace Reni{
         {
             return
             {
-                nd(size),
-                nd(argDepth),
-                nd(_argSize)
+                HW_D_VALUE(size),
+                HW_D_VALUE(argDepth),
+                HW_D_VALUE(_argSize)
             };
         };
         p_function(Size, size) override { return _size; };
@@ -240,7 +240,7 @@ namespace Reni{
         Ref<FiberConnectorItem> const connector;
         FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector);
     private:
-        p_function(Array<std::string>, DumpData) override{ return{nd(items),nd(connector)}; };
+        p_function(Array<std::string>, DumpData) override{ return{HW_D_VALUE(items),HW_D_VALUE(connector)}; };
         p_function(Size, size) override{ return connector->size; };
         p_function(Closure, closure)override;
         p(bool, IsValid) {
@@ -270,7 +270,7 @@ namespace Reni{
         {
             return
             {
-                nd(data)
+                HW_D_VALUE(data)
             };
         };
         p_function(int, inCount) override{ return 2; };

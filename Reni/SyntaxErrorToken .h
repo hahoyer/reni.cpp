@@ -11,7 +11,7 @@ namespace Reni{
     private:
         Ref<Syntax> const Create(SourcePart const&part)const override final;
         p_function(Array<string>,DumpData) override{
-            return{nd(text)};
+            return{HW_D_VALUE(text)};
         };
     };
 }

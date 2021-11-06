@@ -41,7 +41,7 @@ namespace Reni
 
         ThisRef;
 
-        p_function(Array<string>, DumpData) override{ return{nd(statementIndex), nd(container)}; }
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(statementIndex), HW_D_VALUE(container)}; }
         p(WeakRef<Global>, global);
 
         ResultData const GetResultData(Category category) const;

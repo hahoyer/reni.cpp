@@ -24,7 +24,7 @@ namespace Reni
     public:
         SyntaxArgVisitor(Ref<Syntax> const& value) : value(value){ SetDumpString(); }
     private:
-        p_function(Array<string>,DumpData) override{ return{nd(value)}; };
+        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(value)}; };
         p_function(Ref<Syntax>,arg) override{ return value; };
     };
 }

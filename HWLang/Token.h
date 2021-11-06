@@ -35,8 +35,8 @@ namespace HWLang{
     private:
         p_function(Array<string>,DumpData) override{
             return{
-                nd(Class),
-                nd(Part)
+                HW_D_VALUE(Class),
+                HW_D_VALUE(Part)
             };
         };
         p_function(string,DumpShort) override{

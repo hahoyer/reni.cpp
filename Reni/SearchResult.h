@@ -60,7 +60,7 @@ namespace Reni
         p(bool, IsValid){ return data.IsValid; };
 
     private:
-        p_function(Array<string>, DumpData) override{ return{nd(data)}; };
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(data)}; };
         void AssertValid()const{ a_if(IsValid, Dump); }
     };
 }

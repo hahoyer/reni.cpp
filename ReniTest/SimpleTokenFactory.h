@@ -44,11 +44,11 @@ namespace _HWLang{
         private:
             p_function(Array<string>,DumpData) override{
                 return{
-                    nd(left),
-                    nd(tokenClass),
-                    nd(name),
-                    nd(right),
-                    nd(isMatch)
+                    HW_D_VALUE(left),
+                    HW_D_VALUE(tokenClass),
+                    HW_D_VALUE(name),
+                    HW_D_VALUE(right),
+                    HW_D_VALUE(isMatch)
                 };
             }
 

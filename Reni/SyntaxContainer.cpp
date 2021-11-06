@@ -30,7 +30,7 @@ SyntaxContainer::SyntaxContainer(SourcePart const&part)
 
 p_implementation(SyntaxContainer, string, SmartDump)
 {
-    return( _({nd(statements)}) +
+    return( _({HW_D_VALUE(statements)}) +
         names
         .keys
         .Select<string>([&](DefineableToken const*key)

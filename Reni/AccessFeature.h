@@ -51,7 +51,7 @@ namespace Reni
         ) const;
         p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
     private:
-        p_function(Array<string>, DumpData) override{ return{nd(simple) + nd(extended)}; }
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(simple) + HW_D_VALUE(extended)}; }
     };
 
     template<>
@@ -74,7 +74,7 @@ namespace Reni
             Optional<Ref<Syntax>> const& right
             )const;
     private:
-        p_function(Array<string>, DumpData) override{ return{nd(feature)}; };
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(feature)}; };
     };
 }
 

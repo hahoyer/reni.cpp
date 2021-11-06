@@ -13,11 +13,11 @@ using namespace ReniTest;
 
 namespace _Reni
 {
-  HW_TM_IMPLEMENTATION(ParseSimple, {})
+  HW_TM_TEST(ParseSimple)
   {
     const CompilerTest ct = "4711";
     const auto s = ct.compiler.syntax;
-    a_if(Dump(s)|BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), nd(s));
+    a_if(Dump(s)|BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), HW_D_VALUE(s));
   }
 
   HW_TM_TEST(CodeSimple, ParseSimple)
@@ -25,7 +25,7 @@ namespace _Reni
     const CompilerTest ct = "4711";
     auto s = ct.compiler.main;
     auto sc = dynamic_cast<const ConstCode*>(&*s);
-    a_if(sc, nd(s));
+    a_if(sc, HW_D_VALUE(s));
     a_is(sc->size, ==, 14);
     const auto c4711 = BitsConst::Convert("4711");
     a_is(sc->value, ==, c4711);

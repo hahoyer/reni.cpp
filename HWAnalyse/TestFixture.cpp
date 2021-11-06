@@ -15,7 +15,7 @@ void TestFixture::RunAll()
   while(RunAny(all, true))
     continue;
 
-  c_.WriteLine("\n--- RUnning low priority tests ---");
+  HW_CONSOLE.WriteLine("\n--- RUnning low priority tests ---");
   while(RunAny(all, false))
     continue;
 };
@@ -47,9 +47,9 @@ bool TestFixture::Data::CheckedRun(bool skipLowPriority)
 void TestFixture::Data::WatchedRun()
 {
   const auto name = typeid(*this).name();
-  c_.WriteLine(location());
-  auto indentLevel = c_.IndentLevel;
-  c_.IndentCount++;
+  HW_CONSOLE.WriteLine(location());
+  auto indentLevel = HW_CONSOLE.IndentLevel;
+  HW_CONSOLE.IndentCount++;
   try
   {
     Run();
@@ -57,15 +57,15 @@ void TestFixture::Data::WatchedRun()
   }
   catch(const TestFailedException& exception)
   {
-    c_.IndentCount--;
-    c_.WriteLine(string("test_(") + name + ") exception: ");
-    c_.IndentCount++;
-    c_.WriteLine(Dump(exception));
+    HW_CONSOLE.IndentCount--;
+    HW_CONSOLE.WriteLine(string("test_(") + name + ") exception: ");
+    HW_CONSOLE.IndentCount++;
+    HW_CONSOLE.WriteLine(Dump(exception));
   }
   catch(...)
   {
-    c_.IndentCount--;
-    c_.WriteLine(string("test_(") + name + ") unexpected exception. Execution aborted.");
+    HW_CONSOLE.IndentCount--;
+    HW_CONSOLE.WriteLine(string("test_(") + name + ") unexpected exception. Execution aborted.");
     throw;
   }
 };

@@ -47,7 +47,7 @@ struct Global::Function::Xetter final : public DumpableObject
     
     bool Ensure(function<CodeFunction()> getCode) const;
 private:
-    p_function(Array<string>,DumpData) override{ return{nd(isRequired),nd(code)}; }
+    p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(isRequired),HW_D_VALUE(code)}; }
 };
 
 Global::Global()
@@ -81,8 +81,8 @@ p_implementation(Global, Array<Global::Function>, functions)
 p_implementation(Global, Array<string>,DumpData)
 {
     return{
-        nd(bitType),
-        nd(voidType)
+        HW_D_VALUE(bitType),
+        HW_D_VALUE(voidType)
     };
 };
 
@@ -142,7 +142,7 @@ CodeFunction::CodeFunction(
       , body(body)
 {
     SetDumpString();
-    a_if(index >= 0, nd(index));
+    a_if(index >= 0, HW_D_VALUE(index));
 }
 
 p_implementation(CodeFunction, string,cppCode)

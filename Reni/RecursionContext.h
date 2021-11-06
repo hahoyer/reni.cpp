@@ -20,7 +20,7 @@ namespace Reni
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
         p_function(WeakRef<Global>, global) override{ return parent.global; };
-        p_function(Array<string>,DumpData) override{ return{nd(parent)}; }
+        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(parent)}; }
         p_function(bool, isRecursion) override{ return true; };
         p_function(WeakRef<RecursionContext>, recursionContext) override;
 

@@ -31,7 +31,7 @@ ResultData ResultCache::Get(const Category& category) const
         return data;
 
     const auto recursive = GetResultDataRecursive(pendingCategory);
-    a_if(recursive.IsConsistent(data), nd(thisRef) + nd(recursive) + nd(pendingCategory));
+    a_if(recursive.IsConsistent(data), HW_D_VALUE(thisRef) + HW_D_VALUE(recursive) + HW_D_VALUE(pendingCategory));
     return recursive | data;
 }
 
@@ -53,9 +53,9 @@ void ResultCache::Ensure(const Category& category)const
         auto newResult = GetResultData(newTodo);
         d(newResult);
         b_if_(Trace);
-        a_if(isRecursion || data.IsConsistent(newResult), nd(thisRef) + nd(newResult));
+        a_if(isRecursion || data.IsConsistent(newResult), HW_D_VALUE(thisRef) + HW_D_VALUE(newResult));
         data = newResult| data;
-        a_if(isRecursion || category <= complete, nd(category) + nd(complete) + nd(pending));
+        a_if(isRecursion || category <= complete, HW_D_VALUE(category) + HW_D_VALUE(complete) + HW_D_VALUE(pending));
     }
 
     pending -= complete;
@@ -77,8 +77,8 @@ p_implementation(ResultCache, Optional<WeakRef<Type>>, cachedType){return data.t
 p_implementation(ResultCache, Array<string>,DumpData)
 {
     return{
-        nd(pending),
-        nd(data)
+        HW_D_VALUE(pending),
+        HW_D_VALUE(data)
     };
 };
 
@@ -125,8 +125,8 @@ p_implementation(ResultFromSyntaxAndContext, Array<string>,DumpData)
 {
   const auto baseDump = p_base_name(DumpData);
     const auto thisDump = Array<string>({
-        nd(context),
-        nd(syntax)
+        HW_D_VALUE(context),
+        HW_D_VALUE(syntax)
     });
     return baseDump + thisDump;
 };
@@ -315,11 +315,11 @@ ResultData ResultData::Replace(External const& tag, ResultCache const& result) c
 p_implementation(ResultData, Array<string>,DumpData)
 {
     return{
-        nd(hollow),
-        nd(size),
-        nd(type),
-        nd(code),
-        nd(closure)
+        HW_D_VALUE(hollow),
+        HW_D_VALUE(size),
+        HW_D_VALUE(type),
+        HW_D_VALUE(code),
+        HW_D_VALUE(closure)
     };
 }
 
@@ -339,11 +339,11 @@ void ResultData::AssertValid() const
     if (complete.hasHollow)
     {
         if (complete.hasSize)
-            a_if(hollow.Value == (size.Value == 0), nd(hollow) + nd(size));
+            a_if(hollow.Value == (size.Value == 0), HW_D_VALUE(hollow) + HW_D_VALUE(size));
         if (complete.hasCode)
-            a_if(hollow.Value == (code.Value->size == 0), nd(hollow) + nd(code));
+            a_if(hollow.Value == (code.Value->size == 0), HW_D_VALUE(hollow) + HW_D_VALUE(code));
         if (complete.hasType)
-            a_if(hollow.Value == (type.Value->size == 0), nd(hollow) + nd(type));
+            a_if(hollow.Value == (type.Value->size == 0), HW_D_VALUE(hollow) + HW_D_VALUE(type));
     }
 
     if(complete.hasSize)
@@ -362,14 +362,14 @@ void ResultData::AssertValid() const
 void ResultData::AssertValid(const Category& category, Optional<bool> const& hollow, Optional<Size> const size, Optional<Ref<CodeItem>> code, Optional<WeakRef<Type>> type, Optional<Closure> const& closure)
 {
     if(category.hasHollow)
-        a_if(hollow.IsValid, nd(category) + nd(hollow));
+        a_if(hollow.IsValid, HW_D_VALUE(category) + HW_D_VALUE(hollow));
     if(category.hasSize)
-        a_if(size.IsValid, nd(category) + nd(size));
+        a_if(size.IsValid, HW_D_VALUE(category) + HW_D_VALUE(size));
     if(category.hasCode)
-        a_if(code.IsValid, nd(category) + nd(code));
+        a_if(code.IsValid, HW_D_VALUE(category) + HW_D_VALUE(code));
     if(category.hasType)
-        a_if(type.IsValid, nd(category) + nd(type));
+        a_if(type.IsValid, HW_D_VALUE(category) + HW_D_VALUE(type));
     if(category.hasClosure)
-        a_if(closure.IsValid, nd(category) + nd(closure));
+        a_if(closure.IsValid, HW_D_VALUE(category) + HW_D_VALUE(closure));
 }
 

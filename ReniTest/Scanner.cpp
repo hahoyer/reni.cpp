@@ -14,7 +14,7 @@ using namespace _HWLang;
 
 namespace _HWLang{
 
-    HW_TM_TEST_(SimpleAndDetailed)
+    HW_TM_TEST(SimpleAndDetailed)
     {
         using TokenFactory = SimpleTokenFactory;
         using ScannerInstance = TokenFactory::ScannerInstance;
@@ -22,7 +22,7 @@ namespace _HWLang{
 
         auto file = File("1.reni");
         file.Data = " asd f";
-        c_.WriteLine(String::FilePosition(file.FullName, 1, 3, ""));
+        HW_CONSOLE.WriteLine(String::FilePosition(file.FullName, 1, 3, ""));
         auto sc = ScannerInstance(file);
 
         TokenClass const& start = sc.Step().Class;
@@ -40,14 +40,14 @@ namespace _HWLang{
         auto ss = sc.ToArray;
         auto i = 0;
         for(; i < results.Count && i < ss.Count; i++)
-            a_if(results[i] == string(ss[i].Part), nd(i) + nd(ss[i].Part) + nd(results[i]));
+            a_if(results[i] == string(ss[i].Part), HW_D_VALUE(i) + HW_D_VALUE(ss[i].Part) + HW_D_VALUE(results[i]));
         for(; i < results.Count; i++)
-            a_fail(nd(i) + nd(results[i]));
+            a_fail(HW_D_VALUE(i) + HW_D_VALUE(results[i]));
         for(; i < ss.Count; i++)
-            a_fail(nd(i) + nd(ss[i].Part));
+            a_fail(HW_D_VALUE(i) + HW_D_VALUE(ss[i].Part));
     }
 
-    HW_TM_TEST_(Simple)
+    HW_TM_TEST(Simple)
     {
         Test(" asd \"cc\" 1234 ",
         {
@@ -59,7 +59,7 @@ namespace _HWLang{
         });
     }
 
-    HW_TM_TEST_(Text)
+    HW_TM_TEST(Text)
     {
         Test(" \"a_if\"\" b\" '\" ' ",
         {
@@ -70,7 +70,7 @@ namespace _HWLang{
         });
     }
 
-    HW_TM_TEST_(Comment)
+    HW_TM_TEST(Comment)
     {
         Test(R"(
 12## line comment
@@ -92,7 +92,7 @@ abc#( comment
         });
     };
 
-    HW_TM_TEST_(LineCommentError)
+    HW_TM_TEST(LineCommentError)
     {
         Test(R"(
 12## line comment
@@ -108,7 +108,7 @@ asdf
         });
     };
 
-    HW_TM_TEST_(CommentError)
+    HW_TM_TEST(CommentError)
     {
         Test(R"(
 12## line comment
@@ -125,7 +125,7 @@ asdf
         });
     };
 
-    HW_TM_TEST_(Pattern)
+    HW_TM_TEST(Pattern)
     {
         auto s = Source::FromText("asdf") + 0;
 

@@ -60,6 +60,6 @@ ScannerInstance<Token, TokenFactory, Scanner>
 template <class Token, class TokenFactory, class Scanner>
 p_implementation(ScannerInstance<Token COMMA TokenFactory COMMA Scanner>, Array<string>, DumpData){
     return{
-        nd(position)
+        HW_D_VALUE(position)
     };
 }

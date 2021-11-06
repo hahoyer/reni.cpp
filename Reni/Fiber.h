@@ -37,7 +37,7 @@ namespace Reni{
     private:
         virtual Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;
         Ref<FiberCode> operator+(Array<Ref<FiberItem>> const&items) const override;
-        p_function(Array<string>,DumpData) override{ return{nd(head), nd(items)}; };
+        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(head), HW_D_VALUE(items)}; };
         p_function(Size,size) override;
         p_function(Closure, closure)override;
         Optional<Ref<FiberCode>> ReCreate(Optional<Ref<CodeItem>> const& head, Array<Optional<Ref<FiberItem>>> const& items)const;

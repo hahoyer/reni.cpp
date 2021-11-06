@@ -26,7 +26,7 @@ namespace Reni
         ResultData const ReferenceResult(Category category, External::Function const& external) const override;
     private:
         p_function(WeakRef<FunctionCallContext>, functionContext) override{ return thisRef; };
-        p_function(Array<string>,DumpData) override{ return{nd(arg), nd(container)}; }
+        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(arg), HW_D_VALUE(container)}; }
         p(WeakRef<Type>, objectType);
     };
 

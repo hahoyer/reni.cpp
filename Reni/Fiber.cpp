@@ -26,7 +26,7 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(Array<string>, DumpData) override{ return{nd(target)}; };
+        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(target)}; };
         p_function(Size, argSize) override{ return Size::Address; };
         p_function(Size, size) override{ return target.size; };
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override { return{}; }
@@ -45,7 +45,7 @@ Optional<Ref<FiberItem>> FiberItem::Replace(ReplaceVisitor const& visitor) const
 
 Array<Ref<FiberItem>> const FiberItem::CopyFromAddress(Type const& target)
 {
-    a_if(target.isCopyable, nd(target));
+    a_if(target.isCopyable, HW_D_VALUE(target));
     return{new CopyFromAddressFiber(target)};
 };
 

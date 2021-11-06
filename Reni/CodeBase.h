@@ -25,7 +25,7 @@ namespace Reni
     private:
         p_function(Array<string>,DumpData) override
         {
-            return{nd(main), nd(functions)};
+            return{HW_D_VALUE(main), HW_D_VALUE(functions)};
         }
     };
 };

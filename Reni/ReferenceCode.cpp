@@ -21,7 +21,7 @@ ReferenceCode::ReferenceCode(ContainerContext const& value) : value(value)
     SetDumpString();
 }
 
-p_implementation(ReferenceCode, Array<string>,DumpData) { return{nd(value)}; };
+p_implementation(ReferenceCode, Array<string>,DumpData) { return{HW_D_VALUE(value)}; };
 p_implementation(ReferenceCode, Closure, closure){return Closure(value.asExternal);}
 
 inline Ref<CodeItem> ReferenceCode::ReferencePlus(Size offset) const

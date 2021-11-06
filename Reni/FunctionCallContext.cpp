@@ -31,8 +31,8 @@ namespace Reni
         {
             return
                 {
-                    nd(context),
-                    nd(external)
+                    HW_D_VALUE(context),
+                    HW_D_VALUE(external)
                 };
         };
 
