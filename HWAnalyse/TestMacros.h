@@ -24,7 +24,7 @@ struct HW_TM_CLASS_NAME(name) final: public HWAnalysis::TestFixture::Data{\
 
 #define HW_TM_IMPLEMENTATION(name,initialize)                                                      \
     HW_TM_CLASS_NAME(name)::HW_TM_CLASS_NAME(name)(): Data(initialize){};                               \
-    string HW_TM_CLASS_NAME(name)::location()const {return FILE_LINE_FUNCTION;};                  \
+    string HW_TM_CLASS_NAME(name)::location()const {return HW_FILE_LINE_FUNCTION;};                  \
     HWLib::RuntimeChain<HWAnalysis::TestFixture> HW_TM_INSTANCE_NAME(name) = new HW_TM_CLASS_NAME(name)(); \
     void HW_TM_CLASS_NAME(name)::Run() const
 

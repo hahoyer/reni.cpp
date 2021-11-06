@@ -41,17 +41,17 @@ void ResultCache::Ensure(const Category& category)const
     if(todo == Category::None)
         return;
     bool Trace = this->Trace && category.hasClosure;
-    md(category);
+    HW_D_METHOD(category);
     auto newTodo = todo - pending;
     if (newTodo != Category::None)
     {
         LevelValue<Category> localPending(pending, pending | newTodo);
 
         auto oldData = data;
-        d(newTodo);
+        HW_D_LOG_VALUE(newTodo);
         b_if_(Trace);
         auto newResult = GetResultData(newTodo);
-        d(newResult);
+        HW_D_LOG_VALUE(newResult);
         b_if_(Trace);
         a_if(isRecursion || data.IsConsistent(newResult), HW_D_VALUE(thisRef) + HW_D_VALUE(newResult));
         data = newResult| data;
@@ -60,7 +60,7 @@ void ResultCache::Ensure(const Category& category)const
 
     pending -= complete;
     thisRef.SetDumpString();
-    dumpreturn(data);
+    return ;
 }
 
 p_virtual_header_implementation(ResultCache, bool, isRecursion) ;
@@ -85,8 +85,8 @@ p_implementation(ResultCache, Array<string>,DumpData)
 ResultData ResultCache::GetResultDataRecursive(Category const& category) const
 {
     bool Trace = true;
-    md(category);
-    mb;
+    HW_D_METHOD(category);
+    HW_BREAK_AND_THROW;
 }
 
 
@@ -102,7 +102,7 @@ ResultData ResultFromSyntaxAndContext::GetResultData(Category const&category) co
 {
     a_if_(category != Category::None || context.isRecursion);
     bool Trace = false;// this->Trace && category.hasClosure;
-    md(category);
+    HW_D_METHOD(category);
     b_if_(Trace);
     auto result = syntax.GetResultData(context,category);
     a_is(category, <= , result.complete);
@@ -117,8 +117,8 @@ ResultData ResultFromSyntaxAndContext::GetResultDataRecursive(Category const& ca
     if (category == Category::Closure)
         return Closure();
     auto Trace = true;
-    md(category);
-    mb;
+    HW_D_METHOD(category);
+    HW_BREAK_AND_THROW;
 }
 
 p_implementation(ResultFromSyntaxAndContext, Array<string>,DumpData)
@@ -217,8 +217,8 @@ ResultData ResultData::Convert(Type const& destination) const
         return *this;
     if(destination == *type.Value)
         return *this;
-    md(destination);
-    mb;
+    HW_D_METHOD(destination);
+    HW_BREAK_AND_THROW;
 }
 
 Optional<Closure> ResultData::ReplenishExternals(Category const& category, function<Ref<CodeItem>()> getCode)

@@ -376,9 +376,9 @@ private:
     {
       if(leftResult.IsValid)
       {
-        if(!rightIterator.IsValid) { b_; }
-        else if(rightIterator.Value->IsValid) { b_; }
-        else { b_; }
+        if(!rightIterator.IsValid) { HW_BREAKPOINT; }
+        else if(rightIterator.Value->IsValid) { HW_BREAKPOINT; }
+        else { HW_BREAKPOINT; }
       }
       else
       {
@@ -388,23 +388,23 @@ private:
           rightIterator = right.ToIterator;
           return;
         }
-        if(rightIterator.Value->IsValid) { b_; }
-        else { b_; }
+        if(rightIterator.Value->IsValid) { HW_BREAKPOINT; }
+        else { HW_BREAKPOINT; }
       }
     }
     else
     {
       if(leftResult.IsValid)
       {
-        if(!rightIterator.IsValid) { b_; }
-        else if(rightIterator.Value->IsValid) { b_; }
+        if(!rightIterator.IsValid) { HW_BREAKPOINT; }
+        else if(rightIterator.Value->IsValid) { HW_BREAKPOINT; }
         else return;
       }
       else
       {
-        if(!rightIterator.IsValid) { b_; }
-        else if(rightIterator.Value->IsValid) { b_; }
-        else { b_; }
+        if(!rightIterator.IsValid) { HW_BREAKPOINT; }
+        else if(rightIterator.Value->IsValid) { HW_BREAKPOINT; }
+        else { HW_BREAKPOINT; }
       }
     }
   };

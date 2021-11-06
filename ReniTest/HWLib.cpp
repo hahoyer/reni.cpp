@@ -24,8 +24,8 @@ namespace _HWLib{
 
     HW_TM_TEST(StackTrace){
         auto t = HWLib::Thread::FormatStackTraceOfCurrentThread(0);
-        dd(t);
-        //b_;
+        HW_D_LOG(t);
+        //HW_BREAKPOINT;
     }
 }
 

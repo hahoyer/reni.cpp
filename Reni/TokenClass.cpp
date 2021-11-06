@@ -28,8 +28,8 @@ SearchResult <Feature> const DefineableToken::Declarations(NumberType const&) co
 SearchResult <Feature> const DefineableToken::Declarations(EnableCutType const& provider) const
 {
     bool Trace = true;
-    md(provider);
-    b_;
+    HW_D_METHOD(provider);
+    HW_BREAKPOINT;
     return_d(SearchResult<Feature>());
 };
 

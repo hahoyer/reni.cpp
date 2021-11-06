@@ -74,14 +74,14 @@ p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
 
 RegularContext::operator Optional<Ref<ContextFeatureProvider<MinusToken>>>() const
 {
-  md_;
-  mb;
+  HW_D_METHOD_;
+  HW_BREAK_AND_THROW;
 }
 
 RegularContext::operator Optional<Ref<ContextFeatureProvider<DefineableToken>>>() const
 {
-  md_;
-  mb;
+  HW_D_METHOD_;
+  HW_BREAK_AND_THROW;
 }
 
 const WeakRef<ContainerContext> RegularContext::Container(const SyntaxContainer& statements, size_t viewIndex) const
@@ -97,8 +97,8 @@ const WeakRef<Type> RegularContext::FunctionType(const FunctionSyntax& body) con
 
 const SearchResult<AccessFeature> Context::DeclarationsForType(const DefineableToken& token) const
 {
-  md(token);
-  mb;
+  HW_D_METHOD(token);
+  HW_BREAK_AND_THROW;
 }
 
 const ResultData Context::ReferenceResult(Category category, const External::Function& external) const
@@ -193,7 +193,7 @@ p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
 p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
   auto Trace = false; //context.ObjectId == 7 && bodyIndex == 0; 
-  md_;
+  HW_D_METHOD_;
   a_if(!arg.IsEmpty, "NotImpl: no arg " + Dump);
   a_if(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
   function.GetterIsUsed();
@@ -203,7 +203,7 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
       .Value
       ->GetResultCache(context)
       ->Get(Category::Type | Category::Closure);
-  d(rawResult);
+  HW_D_LOG_VALUE(rawResult);
   auto result = rawResult
     .Convert(*valueType);
   if(result.closure.Value == Closure())
@@ -212,8 +212,8 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
   if(result.closure.Value == External::Function::Arg::Instance)
     return_d(CodeItem::CallGetter(valueType->size, codeIndex, *arg.Value));
 
-  md(result);
-  mb;
+  HW_D_METHOD(result);
+  HW_BREAK_AND_THROW;
 }
 
 p_implementation(FunctionCallResultCache, Closure, extsGet)
@@ -248,14 +248,14 @@ p_implementation(FunctionCallResultCache, CodeFunction, getter)
     auto result = rawResult.Replace(visitor);
     return CodeFunction::Getter(codeIndex, result.code.Value);
   }
-  md(rawResult);
-  mb;
+  HW_D_METHOD(rawResult);
+  HW_BREAK_AND_THROW;
 }
 
 p_implementation(FunctionCallResultCache, CodeFunction, setter)
 {
-  md_;
-  mb;
+  HW_D_METHOD_;
+  HW_BREAK_AND_THROW;
 }
 
 p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
@@ -270,14 +270,14 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
 
 p_implementation(RecursionContext, WeakRef<RecursionContext>, recursionContext)
 {
-  md_;
-  mb;
+  HW_D_METHOD_;
+  HW_BREAK_AND_THROW;
 }
 
 const WeakRef<Type> RecursionContext::FunctionType(const FunctionSyntax& body) const
 {
-  md(body);
-  mb;
+  HW_D_METHOD(body);
+  HW_BREAK_AND_THROW;
 }
 
 const Optional<WeakRef<Type>> RecursionContext::CachedType(const Syntax& target) const

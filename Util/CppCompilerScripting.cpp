@@ -32,11 +32,11 @@ void CppCompilerScripting::Execute()
   InitializeFile();
   const auto cpp = fullFileName + ".cpp";
   const auto exe = fullFileName + ".exe";
-  d(cpp);
-  d(exe);
+  HW_D_LOG_VALUE(cpp);
+  HW_D_LOG_VALUE(exe);
 
-  d(CppCompilerExecutable);
-  dd(CompileCommand + "\n");
+  HW_D_LOG_VALUE(CppCompilerExecutable);
+  HW_D_LOG(CompileCommand + "\n");
   currentProcess = Process(CppCompilerExecutable, CompileCommand);
   if(currentProcess.result == 0)
   {
@@ -44,9 +44,9 @@ void CppCompilerScripting::Execute()
     currentProcess.Execute();
   }
 
-  d(currentProcess.result);
-  d(currentProcess.data);
-  d(currentProcess.errorData);
+  HW_D_LOG_VALUE(currentProcess.result);
+  HW_D_LOG_VALUE(currentProcess.data);
+  HW_D_LOG_VALUE(currentProcess.errorData);
   if(currentProcess.errorData != "")
   {
     auto error = currentProcess.errorData;

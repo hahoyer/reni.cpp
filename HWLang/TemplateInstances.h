@@ -35,7 +35,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
         if (count.IsValid)
             return Step(count, TokenFactory::GetTokenClass(position.Part(count)));
 
-        md_
+        HW_D_METHOD_
         a_fail_;
         return Optional<Token>().Value;
     }

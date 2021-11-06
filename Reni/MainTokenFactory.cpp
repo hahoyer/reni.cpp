@@ -32,8 +32,8 @@ class TextToken final : public TerminalTokenClass{
     using thisType = TextToken;
 
     Ref<Syntax> const Create(SourcePart const&part)const override final{
-        md(part);
-        mb;
+        HW_D_METHOD(part);
+        HW_BREAK_AND_THROW;
     }
 };
 
@@ -202,15 +202,15 @@ TokenClass const& MainTokenFactory::InternalGetTokenClass(string const&name) con
 
 
 Ref<Syntax> const SyntaxErrorToken::Create(SourcePart const&part)const{
-    md(part);
-    mb;
+    HW_D_METHOD(part);
+    HW_BREAK_AND_THROW;
 }
 
 
 ResultData const ArgToken::GetResultData(Context const& context, Category category, SourcePart const&) const
 {
     bool Trace = false;
-    md(context, category);
+    HW_D_METHOD(context, category);
     auto result = context.ReferenceResult(category, External::Function::Arg::Instance);
     return_db(result);
 }

@@ -41,8 +41,8 @@ namespace Reni
     virtual const Ref<Syntax> ParenthesisMatch(int level, const SourcePart& part) const
     {
       const bool Trace = true;
-      md(level, part);
-      mb;
+      HW_D_METHOD(level, part);
+      HW_BREAK_AND_THROW;
     };
 
     ThisRef;

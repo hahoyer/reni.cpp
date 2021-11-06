@@ -28,10 +28,10 @@ void CompilerTest::Check(const string& text, const string& expectedResult)
   if(result.data == expectedResult)
     return;
 
-  dd("Text:\n" + text +"\n");
-  d(expectedResult);
-  d(result.data);
-  dd("c++ code:\n" + co.cppCode + "\n");
+  HW_D_LOG("Text:\n" + text +"\n");
+  HW_D_LOG_VALUE(expectedResult);
+  HW_D_LOG_VALUE(result.data);
+  HW_D_LOG("c++ code:\n" + co.cppCode + "\n");
 
 
   a_fail_throw_;

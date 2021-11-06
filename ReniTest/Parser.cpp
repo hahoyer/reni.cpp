@@ -137,7 +137,7 @@ namespace _HWLang {
             .ParenthesisLevelLeft({Start}, {End})
             ;
 
-        //md(pt);
+        //HW_D_METHOD(pt);
 
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Ref<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);
@@ -166,7 +166,7 @@ namespace _HWLang {
             .ParenthesisLevelLeft({Start}, {End})
             ;
 
-        //md(pt);
+        //HW_D_METHOD(pt);
 
         auto sc = ScannerInstance(text);
         auto syntax = Parse<Ref<Syntax>, TokenClass, HWLang::Token<TokenClass>>(pt, sc);

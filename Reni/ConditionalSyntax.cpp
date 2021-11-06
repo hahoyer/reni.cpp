@@ -97,8 +97,8 @@ ResultData IfThenElseSyntax::GetResultData(const Context& context, Category cons
             if(thenType.IsEmpty != elseType.IsEmpty)
                 return *(thenType || elseType).Value;
 
-            md(context, category);
-            b_;
+            HW_D_METHOD(context, category);
+            HW_BREAKPOINT;
             return{};
 
         }
@@ -106,8 +106,8 @@ ResultData IfThenElseSyntax::GetResultData(const Context& context, Category cons
         if(category == Category::Closure)
             return Closure();
 
-        md(context, category);
-        b_;
+        HW_D_METHOD(context, category);
+        HW_BREAKPOINT;
         return{};
     }
 

@@ -23,15 +23,15 @@ string CodeVisitor::InName(string const& prefix, size_t index)
 
 string CodeVisitor::Const(Size const size, BitsConst const& value) const
 {
-    md(size, value)    ;
-    b_;
+    HW_D_METHOD(size, value)    ;
+    HW_BREAKPOINT;
     return "";
 }
 
 string CodeVisitor::CallGetter(Size const& result, size_t const index, Size const& args) const
 {
-    md(result, index,args)      ;
-    b_;
+    HW_D_METHOD(result, index,args)      ;
+    HW_BREAKPOINT;
     return "";
 }
 
@@ -42,37 +42,37 @@ string CodeVisitor::GetterFunctionDeclaration(size_t const index)
 
 string CodeVisitor::DumpPrintNumber(Size const size) const
 {
-    md(size)  ;
-    b_;
+    HW_D_METHOD(size)  ;
+    HW_BREAKPOINT;
     return "";
 }
 
 string CodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<FiberConnectorItem> const& connector) const
 {
-    md(items, connector)    ;
-    b_;
+    HW_D_METHOD(items, connector)    ;
+    HW_BREAKPOINT;
     return "";
 }
 
 string CodeVisitor::NumberOperation(string const& name, Size const& size, int leftDepth, Size const& leftSize,
                                     int rightDepth, Size const& rightSize) const
 {
-    md(name, size, leftDepth, leftSize, rightDepth, rightSize)            ;
-    b_;
+    HW_D_METHOD(name, size, leftDepth, leftSize, rightDepth, rightSize)            ;
+    HW_BREAKPOINT;
     return "";
 }
 
 string CodeVisitor::NumberConversion(Size const& size, int argDepth, Size const& argSize) const
 {
-    md(size, argDepth, argSize);
-    b_;
+    HW_D_METHOD(size, argDepth, argSize);
+    HW_BREAKPOINT;
     return "";
 }
 
 string CodeVisitor::FunctionArg() const
 {
-    md_;
-    b_;
+    HW_D_METHOD_;
+    HW_BREAKPOINT;
     return "";
 };
 
@@ -139,8 +139,8 @@ string MainCodeVisitor::FiberConnection(Array<Ref<CodeItem>> const& items, Ref<F
 string UnrefCode(int depth, string const&target)
 {
     return "(" + target + ")";
-    fd(depth, target);
-    b_;
+    HW_D_FUNCTION(depth, target);
+    HW_BREAKPOINT;
     return target;
 }
 

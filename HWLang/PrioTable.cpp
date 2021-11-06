@@ -221,8 +221,8 @@ Array<Array<Tag>> PrioTable::AllocData(size_t count, function<Tag(size_t, size_t
 Tag PrioTable::PrioChar(const Array<Array<Tag>>& base, const TagTable& subTable, size_t leftCount, size_t i,
                         size_t j)
 {
-  d_here;
-  fd(base, subTable, leftCount, i, j);
+  HW_D_LOG_HERE;
+  HW_D_FUNCTION(base, subTable, leftCount, i, j);
 
   auto baseCount = base.Count;
   const auto iGroup = FindGroup(i, {leftCount, baseCount});

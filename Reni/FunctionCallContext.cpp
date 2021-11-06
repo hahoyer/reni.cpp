@@ -66,7 +66,7 @@ FunctionCallContext::FunctionCallContext(ContainerContext const& parent, WeakRef
 ResultData const FunctionCallContext::ReferenceResult(Category category, External::Function const& external) const
 {
     bool Trace = false;
-    md(category, external);
+    HW_D_METHOD(category, external);
     ResultData result = ResultData::GetSmartHollowSizeClosure
         (
             category,
@@ -85,8 +85,8 @@ p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
 
 Ref<CodeItem> FunctionCallReferenceCode::ReferencePlus(Size offset) const
 {
-    md(offset);
-    mb;
+    HW_D_METHOD(offset);
+    HW_BREAK_AND_THROW;
     return thisRef;
 }
 
@@ -99,8 +99,8 @@ string FunctionCallReferenceCode::ToCpp(CodeVisitor const& visitor) const
 
 Ref<CodeItem> FunctionCallReferenceCode::Convert(Type const& type) const
 {
-    md(type);
-    mb;
+    HW_D_METHOD(type);
+    HW_BREAK_AND_THROW;
 }
 
 Optional<Ref<CodeItem>> FunctionCallReferenceCode::ReplaceImpl(ReplaceVisitor const& arg) const

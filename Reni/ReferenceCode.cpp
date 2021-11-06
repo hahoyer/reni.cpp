@@ -40,6 +40,6 @@ Optional<Ref<CodeItem>> ReferenceCode::ReplaceImpl(ReplaceVisitor const& visitor
 
 std::string AssignCode::ToCpp(CodeVisitor const& visitor) const
 {
-    md(visitor);
-    mb;
+    HW_D_METHOD(visitor);
+    HW_BREAK_AND_THROW;
 }

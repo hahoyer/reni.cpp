@@ -121,20 +121,20 @@ Ref<Syntax> Syntax::ReplaceArg(Ref<Syntax> const& arg) const
 
 Optional<Ref<Syntax>> Syntax::Replace(SyntaxArgVisitor const& visitor) const
 {
-    md(visitor)  ;
-    mb;
+    HW_D_METHOD(visitor)  ;
+    HW_BREAK_AND_THROW;
 }
 
 Ref<SyntaxContainer> Syntax::Defines(SourcePart const& part, Ref<Syntax> const& value) const
 {
-    md(part, value)    ;
-    mb;
+    HW_D_METHOD(part, value)    ;
+    HW_BREAK_AND_THROW;
 }
 
 void Syntax::AddTo(SyntaxContainer& syntaxContainer) const
 {
-    md(syntaxContainer)  ;
-    b_;
+    HW_D_METHOD(syntaxContainer)  ;
+    HW_BREAKPOINT;
 }
 
 Ref<Syntax> Syntax::TypeOperator(SourcePart const& part) const

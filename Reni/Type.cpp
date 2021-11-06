@@ -74,32 +74,32 @@ p_virtual_header_implementation(Type, bool, isCopyable);
 
 SearchResult<Feature> const Type::Declarations(TypeType const&provider) const
 {
-    md(provider);
-    mb;
+    HW_D_METHOD(provider);
+    HW_BREAK_AND_THROW;
 }
 
 SearchResult<Feature> const Type::Declarations(NumberType const& provider) const
 {
-    md(provider);
-    mb;
+    HW_D_METHOD(provider);
+    HW_BREAK_AND_THROW;
 };
 
 SearchResult<Feature> const Type::Declarations(EnableCutType const&provider) const
 {
-    md(provider);
-    mb;
+    HW_D_METHOD(provider);
+    HW_BREAK_AND_THROW;
 }
 
 SearchResult<Feature> const Type::Declarations(AccessType const&provider) const
 {
-    md(provider);
-    mb;
+    HW_D_METHOD(provider);
+    HW_BREAK_AND_THROW;
 }
 
 Array<Ref<FiberItem>> Type::ConvertFiber(Type const& destination) const
 {
-    md(destination);
-    mb;
+    HW_D_METHOD(destination);
+    HW_BREAK_AND_THROW;
 }
 
 ResultData const Type::GetResultData(Category category, function<Ref<CodeItem>()> getCode, function<Closure()> getClosure) const
@@ -176,8 +176,8 @@ Ref<ResultCache> const Type::ConvertTo(Type const& destination) const
 
 Ref<ResultCache> Type::DirectConvert() const
 {
-    md_;
-    mb;
+    HW_D_METHOD_;
+    HW_BREAK_AND_THROW;
 }
 
 WeakRef<Type> const Type::Common(Type const& other) const
@@ -186,8 +186,8 @@ WeakRef<Type> const Type::Common(Type const& other) const
         return thisRef;
     if(isConvertableTo(other))
         return other.thisRef;
-    md(other);
-    mb;
+    HW_D_METHOD(other);
+    HW_BREAK_AND_THROW;
 }
 
 WeakRef<Type> const Type::IndirectType(int depth) const
@@ -208,8 +208,8 @@ WeakRef<NumberType> const Type::CreateNumberType() const
 SearchResult<Feature> Type::DeclarationsForType(DeclarationType const& target) const
 {
     bool Trace = true;
-    md(target);
-    b_;
+    HW_D_METHOD(target);
+    HW_BREAKPOINT;
     return_d(SearchResult<Feature>());
 }
 

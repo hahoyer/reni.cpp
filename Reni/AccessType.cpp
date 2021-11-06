@@ -68,7 +68,7 @@ Optional<WeakRef<AccessType>> const AccessType::Convert(Type const& target)
 ResultData AccessType::AssignmentFeature::Result(Category const& category, Type const& target, Type const& arg) const
 {
     bool Trace = false;
-    md(category, target, arg);
+    HW_D_METHOD(category, target, arg);
     auto typedTarget = Convert(target);
     auto rawResult = typedTarget.Value->data->SetResultData(category);
     if(category <= Category::Type.replenished)

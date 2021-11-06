@@ -26,8 +26,8 @@ bool const External::operator==(External const& other) const
 
 Closure const External::Replace(ReplaceVisitor const&arg) const
 {
-    md(arg);
-    b_;
+    HW_D_METHOD(arg);
+    HW_BREAKPOINT;
     return{};
 }
 

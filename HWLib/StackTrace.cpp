@@ -75,7 +75,7 @@ void ShowSymGetOptions()
   ShowSymGetOptions_CONVERT(SYMOPT_SECURE);
   ShowSymGetOptions_CONVERT(SYMOPT_UNDNAME);
 #undef ShowSymGetOptions_CONVERT
-  d(result);
+  HW_D_LOG_VALUE(result);
 }
 
 

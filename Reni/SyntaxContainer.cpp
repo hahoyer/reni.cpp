@@ -90,8 +90,8 @@ Ref<CodeItem> SyntaxContainer::GetCode(Context const& context) const
     if(result.Count == 1)
         return result[0];
 
-    md(context, result);
-    mb;
+    HW_D_METHOD(context, result);
+    HW_BREAK_AND_THROW;
 };
 
 Ref<CodeItem> SyntaxContainer::GetCode(Context const& context, size_t index) const

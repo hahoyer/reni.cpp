@@ -80,8 +80,8 @@ Ref<CodeItem> CodeItem::NumberConversion(const Address& result, const Type& arg)
 
 Ref<CodeItem> CodeItem::IfThenElse(const Ref<CodeItem> condition, const Ref<CodeItem> then, const Ref<CodeItem> _else)
 {
-  fd(condition, then, _else);
-  mb;
+  HW_D_FUNCTION(condition, then, _else);
+  HW_BREAK_AND_THROW;
   return Empty();
 }
 
@@ -126,8 +126,8 @@ Ref<CodeItem> CodeItem::List(const Array<Ref<CodeItem>>& items)
   case 1:
     return items[0];
   default:
-    fd(items);
-    b_;
+    HW_D_FUNCTION(items);
+    HW_BREAKPOINT;
     return Empty();
   }
 }
@@ -156,7 +156,7 @@ Ref<CodeItem> CodeItem::This(const Type& value)
 Optional<Ref<CodeItem>> CodeItem::Replace(const ReplaceVisitor& arg) const
 {
   const bool Trace = arg.Trace || ObjectId == -16;
-  md(closure);
+  HW_D_METHOD(closure);
   b_if_(Trace);
   auto result = ReplaceImpl(arg);
   a_if(result.IsEmpty || result.Value->size == size,
@@ -180,8 +180,8 @@ Ref<FiberCode> CodeItem::operator+(const Array<Ref<FiberItem>>& items) const
 
 Ref<CodeItem> CodeItem::ReferencePlus(Size offset) const
 {
-  md(offset);
-  b_;
+  HW_D_METHOD(offset);
+  HW_BREAKPOINT;
   return thisRef;
 }
 
@@ -189,8 +189,8 @@ Ref<CodeItem> CodeItem::Convert(const Type& type) const
 {
   if(size == type.size)
     return thisRef;
-  md(type);
-  b_;
+  HW_D_METHOD(type);
+  HW_BREAKPOINT;
   return thisRef;
 }
 
@@ -203,8 +203,8 @@ Ref<CodeItem> CodeItem::FunctionArg(const Type& value)
 
 string CodeItem::ToCpp(const CodeVisitor& visitor) const
 {
-  md(visitor);
-  mb;
+  HW_D_METHOD(visitor);
+  HW_BREAK_AND_THROW;
 };
 
 
@@ -238,8 +238,8 @@ p_implementation(ArgCode, Closure, closure) { return Closure(External::Args::Ins
 
 string ArgCode::ToCpp(const CodeVisitor& visitor) const
 {
-  md(visitor);
-  mb;
+  HW_D_METHOD(visitor);
+  HW_BREAK_AND_THROW;
 }
 
 Optional<Ref<CodeItem>> ArgCode::ReplaceImpl(const ReplaceVisitor& visitor) const
@@ -278,8 +278,8 @@ p_implementation(ThisCode, Closure, closure) { return Closure(External::This::In
 
 string ThisCode::ToCpp(const CodeVisitor& visitor) const
 {
-  md(visitor);
-  mb;
+  HW_D_METHOD(visitor);
+  HW_BREAK_AND_THROW;
 }
 
 string CallGetterFiber::ToCpp(const CodeVisitor& visitor) const
@@ -293,9 +293,9 @@ Optional<Ref<CodeItem>> ThisCode::ReplaceImpl(const ReplaceVisitor& visitor) con
   if(rawResult.IsEmpty)
     return {};
   const auto Trace = visitor.Trace;
-  md(visitor, rawResult);
+  HW_D_METHOD(visitor, rawResult);
   auto result = rawResult.Value->Convert(type);
-  d(result);
+  HW_D_LOG_VALUE(result);
   return result;
 };
 
@@ -342,7 +342,7 @@ string FiberConnector::ToCpp(const CodeVisitor& visitor) const
 Optional<Ref<CodeItem>> FiberConnector::ReplaceImpl(const ReplaceVisitor& visitor) const
 {
   const bool Trace = visitor.Trace && ObjectId == 6;
-  md(visitor);
+  HW_D_METHOD(visitor);
   const auto replacedItems = items
                              .Select<Optional<Ref<CodeItem>>>
                              (
@@ -350,7 +350,7 @@ Optional<Ref<CodeItem>> FiberConnector::ReplaceImpl(const ReplaceVisitor& visito
                              )
                              ->ToArray;
 
-  d(replacedItems);
+  HW_D_LOG_VALUE(replacedItems);
 
   if(
     !replacedItems.Where
@@ -382,6 +382,6 @@ DereferenceCode::DereferenceCode(const Type& type) : baseType(type)
 
 string DereferenceCode::ToCpp(const CodeVisitor& visitor) const
 {
-  md(visitor);
-  mb;
+  HW_D_METHOD(visitor);
+  HW_BREAK_AND_THROW;
 }

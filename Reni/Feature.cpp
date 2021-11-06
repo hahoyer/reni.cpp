@@ -22,7 +22,7 @@ using namespace Reni;
 FoundFeature<Feature> Feature::Error(string const& title)
 {
     HW_CONSOLE .Write(title);
-    mb;
+    HW_BREAK_AND_THROW;
 }
 
 ResultData Feature::ConversionResult(const Category& category, Type const& target, Type const& destination) const
@@ -104,8 +104,8 @@ ResultData FoundFeature<Feature>::AlignThis(ResultData const& start) const
         return start.Replace(External::This::Instance, *resultingThis->DirectConvert());
     }
 
-    md(start);
-    mb;
+    HW_D_METHOD(start);
+    HW_BREAK_AND_THROW;
     return{};
 }
 
@@ -120,14 +120,14 @@ ResultData FoundFeature<Feature>::FunctionResult(
         && left.IsValid && left.Value->ObjectId >- 9
         && category.hasCode
         && !context.isRecursion;
-    md(context, category, left, right);
+    HW_D_METHOD(context, category, left, right);
 
     auto rawResult = Result(context, category, type->thisRef, right);
     a_is(category, == , rawResult.complete);
-    d(rawResult);
+    HW_D_LOG_VALUE(rawResult);
     b_if_(Trace);
     auto alignedResult = AlignThis(rawResult);
-    d(alignedResult);
+    HW_D_LOG_VALUE(alignedResult);
     b_if_(Trace);
     auto leftResult = left.Value->GetResultCache(context);
     leftResult->Trace = Trace;

@@ -5,18 +5,13 @@
 
 
 #define HW_D_VALUE(x) (std::string(#x) + " = " + HWLib::Dump(x) + ";")
-#define nd_arg(i,x) {if(Trace)HW_CONSOLE.Write("[" STRING(i) "] " + HW_D_VALUE(x) + "\n");}
-#define d(x) {if(Trace)HW_CONSOLE.Write(HW_D_VALUE(x) + "\n");}
-#define dd(x) {if(Trace)HW_CONSOLE.Write(x + "\n");}
+#define HW_D_VALUE_I(i,x) {if(Trace)HW_CONSOLE.Write("[" STRING(i) "] " + HW_D_VALUE(x) + "\n");}
+#define HW_D_LOG_VALUE(x) {if(Trace)HW_CONSOLE.Write(HW_D_VALUE(x) + "\n");}
+#define HW_D_LOG(x) {if(Trace)HW_CONSOLE.Write((x) + "\n");}
 
-#define FILE_LINE_FUNCTION HWLib::String::FilePosition(__FILE__,__LINE__,0,__FUNCTION__)
-#define d_here {if(Trace) HW_CONSOLE.Write(FILE_LINE_FUNCTION);}
-#define writeLineFilePosition  HW_CONSOLE.WriteLine(FILE_LINE_FUNCTION)
-#define srcargdump(x) {if(Trace)HW_CONSOLE.Write(HW_D_VALUE(x)+"\n").fsrcprint();}
-#define dumpreturn(x) {\
-if(Trace) \
-    HW_CONSOLE.Write(std::string("return ") + HW_D_VALUE(x) + "\n"); \
-return; }
+#define HW_FILE_LINE_FUNCTION HWLib::String::FilePosition(__FILE__,__LINE__,0,__FUNCTION__)
+#define HW_D_LOG_HERE {if(Trace) HW_CONSOLE.Write(HW_FILE_LINE_FUNCTION);}
+#define HW_WRITE_LINE_FILE_POSITION  HW_CONSOLE.WriteLine(HW_FILE_LINE_FUNCTION)
 
 #define return_d(x) {if(Trace) \
     HW_CONSOLE.Write(std::string("return ") + HW_D_VALUE(x) + "\n"); \
@@ -24,28 +19,28 @@ return; }
 
 #define return_db(x) {if(Trace) \
         {\
-    HW_CONSOLE.Write(std::string("return ") + HW_D_VALUE(x) + "\n");b_}; \
+    HW_CONSOLE.Write(std::string("return ") + HW_D_VALUE(x) + "\n");HW_BREAKPOINT}; \
     return x; }
 
-#define HWLib_ARGDUMP(r, data, i, xx) nd_arg(i,xx)
-#define HWLib_HEADERDUMP(thisDump) {\
-    auto HWLib_HEADERDUMP_indentLevel = HW_CONSOLE.IndentLevel;\
+#define HW_D_LOG_HEADER(thisDump) {\
+    auto HW_D_LOG_HEADER_outerIndentLevel = HW_CONSOLE.IndentLevel;\
     if(Trace) {\
-        HW_CONSOLE.Write(FILE_LINE_FUNCTION);\
+        HW_CONSOLE.Write(HW_FILE_LINE_FUNCTION);\
         HW_CONSOLE.IndentCount++; \
         HW_CONSOLE.Write("\n");\
         thisDump;\
     };\
 }
 
-#define md_ HWLib_HEADERDUMP(HW_CONSOLE.Write(HW_D_VALUE(*this) + "\n"))
-#define fd_ HWLib_HEADERDUMP(void())
-#define md(...) {HWLib_HEADERDUMP(HW_CONSOLE.Write(HW_D_VALUE(*this) + "\n"));BOOST_PP_SEQ_FOR_EACH_I(HWLib_ARGDUMP, ~, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__));}
-#define fd(...) {HWLib_HEADERDUMP(void());BOOST_PP_SEQ_FOR_EACH_I(HWLib_ARGDUMP, ~, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__));}
-#define md_throw(...) {bool Trace=true;md(__VA_ARGS__);b_;throw AssertionException();}
-#define fd_throw(...) {bool Trace=true;fd(__VA_ARGS__);b_;throw AssertionException();}
-#define no_fd_
-#define no_md_
-#define no_fd(...)
-#define no_md(...)
-#define mb b_;throw BreakpointException()
+#define HW_D_ARG_FOR_BOOST(r, data, i, xx) HW_D_VALUE_I(i,xx)
+#define HW_D_METHOD_ HW_D_LOG_HEADER(HW_CONSOLE.Write(HW_D_VALUE(*this) + "\n"))
+#define HW_D_FUNCTION_ HW_D_LOG_HEADER(void())
+#define HW_D_METHOD(...) {HW_D_LOG_HEADER(HW_CONSOLE.Write(HW_D_VALUE(*this) + "\n"));BOOST_PP_SEQ_FOR_EACH_I(HW_D_ARG_FOR_BOOST, ~, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__));}
+#define HW_D_FUNCTION(...) {HW_D_LOG_HEADER(void());BOOST_PP_SEQ_FOR_EACH_I(HW_D_ARG_FOR_BOOST, ~, BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__));}
+#define HW_D_METHOD_THROW(...) {bool Trace=true;HW_D_METHOD(__VA_ARGS__);HW_BREAKPOINT;throw AssertionException();}
+#define HW_D_FUNCTION_THROW(...) {bool Trace=true;HW_D_FUNCTION(__VA_ARGS__);HW_BREAKPOINT;throw AssertionException();}
+#define NO_HW_D_FUNCTION_
+#define NO_HW_D_METHOD_
+#define NO_HW_D_FUNCTION(...)
+#define NO_HW_D_METHOD(...)
+#define HW_BREAK_AND_THROW HW_BREAKPOINT;throw BreakpointException()

@@ -39,8 +39,8 @@ p_virtual_header_implementation(FiberItem, Closure, closure);
 
 Optional<Ref<FiberItem>> FiberItem::Replace(ReplaceVisitor const& visitor) const
 {
-    md(visitor);
-    mb;
+    HW_D_METHOD(visitor);
+    HW_BREAK_AND_THROW;
 }
 
 Array<Ref<FiberItem>> const FiberItem::CopyFromAddress(Type const& target)
@@ -51,8 +51,8 @@ Array<Ref<FiberItem>> const FiberItem::CopyFromAddress(Type const& target)
 
 string FiberItem::ToCpp(CodeVisitor const& visitor) const
 {
-    md(visitor);
-    mb;
+    HW_D_METHOD(visitor);
+    HW_BREAK_AND_THROW;
 };
 
 

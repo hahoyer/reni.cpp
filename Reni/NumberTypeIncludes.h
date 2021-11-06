@@ -31,8 +31,8 @@ class NumberType::OperationFeature final : public Feature::Extended
             return resultType->GetResultDataSmartClosure(category, l_(code));
         }
 
-        md(category, target, arg);
-        b_;
+        HW_D_METHOD(category, target, arg);
+        HW_BREAKPOINT;
         return{};
     }
 

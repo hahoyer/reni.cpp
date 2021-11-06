@@ -21,7 +21,7 @@ namespace Reni
         RootContext();
         ThisRef;
     private:
-        p_function(WeakRef<FunctionCallContext>, functionContext) override{ mb; };
+        p_function(WeakRef<FunctionCallContext>, functionContext) override{ HW_BREAK_AND_THROW; };
         p_function(WeakRef<Global>, global) override{ return _global; };
         p_function(Array<string>,DumpData) override;
     };
