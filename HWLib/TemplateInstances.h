@@ -614,7 +614,7 @@ template <typename T>
 template <typename TResult>
 CtrlRef<Enumerable<TResult>> Enumerable<T>::Convert() const
 {
-  return new Container(new ConvertIterator<TResult>(*this, selector));
+  return new Container(new ConvertIterator<TResult>(*this));
 };
 
 template <typename TBase, typename TRealm>

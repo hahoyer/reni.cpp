@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+
 #include "Properties.h"
 
 #undef min

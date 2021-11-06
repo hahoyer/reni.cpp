@@ -49,7 +49,7 @@ p_implementation(BitsConst, string, format)
 {
   return
     Array<BigInt::Ulong>(value.ToArray())
-    .Select<string>([](long element) { return String::Convert(element); })
+    .Select<string>([](__int64 element) { return String::Convert(element); })
     ->Stringify(", ");
 }
 

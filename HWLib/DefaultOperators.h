@@ -1,5 +1,8 @@
 #pragma once
 #include "PlacementNew.h"
+#include <boost/preprocessor/variadic/to_seq.hpp>
+#include <boost/preprocessor/seq/for_each_i.hpp>
+
 #define HW_DO_PLACEMENT_ASSIGN thisType& operator=(thisType const&x)\
 {\
 	if(this == &x) return *this;\

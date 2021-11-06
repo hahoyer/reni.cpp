@@ -28,12 +28,13 @@ namespace HWLib
         struct UnionHelper<TItem, TItems...>
         {
             template <class T>
-            static typeIdType const typeId()
+            static typeIdType typeId()
             {
                 static_assert(sizeof...(TItems) < maxTypeId, "too much items for union");
                 return UnionHelper<TItems...>::template typeId<T>() + 1;
             };
-            template<> static typeIdType const typeId<TItem>(){ return 0; };
+            template<>
+            typeIdType typeId<TItem>(){ return 0; };
 
             static void Dispose(typeIdType typeId, void* data)
             {

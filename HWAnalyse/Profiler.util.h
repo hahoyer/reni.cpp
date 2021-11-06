@@ -71,7 +71,7 @@ void dumpprinttime(__int64 x, __int64 q){
 
     xx *= 600;
 
-    char* Unit[6] = {"sec", "msec", "µsec", "nsec", "psec", "fsec"};
+    const char* Unit[6] = {"sec", "msec", "µsec", "nsec", "psec", "fsec"};
     for(int i = 1; i<18; i++){
         if(xx >= 100.0){
             dumpprint(int(xx), i % 3, Unit[i / 3]);

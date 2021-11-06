@@ -141,7 +141,7 @@ const SearchResult<AccessFeature> ContainerContext::DeclarationsForType(const De
   if(containerData->names.ContainsKey(&token))
   {
     auto data = accessData(containerData->names[&token]);
-    return data->feature->thisRef;
+    return SearchResult<AccessFeature> (data->feature->thisRef);
   }
   return baseType::DeclarationsForType(token);
 }

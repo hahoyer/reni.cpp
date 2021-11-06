@@ -39,7 +39,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
         HW_FAIL_;
         return Optional<Token>().Value;
     }
-    catch (Scanner::Error const& error){
+    catch (typename Scanner::Error const& error){
         return Step(error.Count, TokenFactory::GetErrorClass(error.Id));
     }
 }

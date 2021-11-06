@@ -125,19 +125,22 @@ namespace HWAnalysis{
 #	define STMT_PROF(expr) (expr)
 #	define NEXT_PROF(Flag)
 #	define END_PROF()
+template<class T>
+T _ReturnProfile(T x){return x;};
+
 #else
 #	define BEGIN_PROF(Flag) if(PROFILE) (PROFILE)->Start(__FILE__, __LINE__,Flag )
 #	define FUNC_PROF(expr) ((PROFILE)->Start(__FILE__, __LINE__,#expr ), _ReturnProfile(expr))
 #	define STMT_PROF(expr) ((PROFILE)->Start(__FILE__, __LINE__,#expr ), expr, (PROFILE)->End())
 #	define END_PROF() if(PROFILE) (PROFILE)->End()
 #	define NEXT_PROF(Flag) END_PROF();BEGIN_PROF(Flag)
-#endif
-
-
 template<class T>
 T _ReturnProfile(T x)
 {
     (PROFILE)->End();
     return x;
 };
+#endif
+
+
 

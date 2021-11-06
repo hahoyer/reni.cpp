@@ -16,7 +16,7 @@ namespace ReniTest
     public:
         Compiler compiler;
 
-        CompilerTest(string text)
+        CompilerTest(string const&text)
             : file(name())
             , compiler(name())
         {

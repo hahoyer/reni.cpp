@@ -252,7 +252,7 @@ namespace _ValueCache
     HW_TM_TEST(Context)
     {
         _value = 12;
-        ValueCache<int>c = ([&]{return _value; });
+        ValueCache<int>c ([&]{return _value; });
         c.IsValid = true;
         HW_ASSERT_IS(c.Value, == , 12);
         _value = 13;

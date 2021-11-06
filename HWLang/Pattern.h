@@ -6,7 +6,7 @@ namespace HWLang
 {
     class SourcePosition;
     class Pattern;
-    using MatchResult = Optional<size_t> const;
+    using MatchResult = Optional<size_t>;
 
     class IPattern
     {

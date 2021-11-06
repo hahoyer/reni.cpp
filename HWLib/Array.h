@@ -91,15 +91,19 @@ namespace HWLib
     const T& operator[](size_t Index) const { return _data[Index]; }
     T& operator[](size_t Index) { return _data[Index]; }
     thisType operator+(const thisType& other) const { return baseType::operator+(other)->ToArray; }
-    thisType operator+(const T& other) const { return *this + _({other}); }
+    thisType operator+(const T& other) const
+    {
+      auto otherBox = {other};
+      return *this + otherBox;
+    }
     void operator+=(const T& other) { *this = *this + other; }
     void operator+=(const thisType& other) { *this = *this + other; }
 
     bool Compare(const Array<T>& other) const;
   private:
-    class LocalIterator final : public Iterator
+    class LocalIterator final : public baseType::Iterator
     {
-      using baseType = Iterator;
+      using baseType = baseType::Iterator;
       using thisType = LocalIterator;
       const Array<T>& _parent;
       size_t _index;
@@ -115,7 +119,7 @@ namespace HWLib
       void operator=(const LocalIterator&) = delete;
     };
 
-    p_nonconst_function(CtrlRef<Iterator>, ToIterator) const override { return new LocalIterator(*this); }
+    p_nonconst_function(CtrlRef<Enumerable<T>::Iterator>, ToIterator) const override { return new LocalIterator(*this); }
   };
 
   template <typename T>

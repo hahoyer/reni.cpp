@@ -15,14 +15,14 @@ namespace _Reni
 {
   HW_TM_TEST(ParseSimple)
   {
-    const CompilerTest ct = "4711";
+    const CompilerTest ct ( "4711");
     const auto s = ct.compiler.syntax;
     HW_ASSERT(Dump(s)|BeginsWith("*{ Reni::TerminalSyntax<class Reni::NumberToken>.Id"), HW_D_VALUE(s));
   }
 
   HW_TM_TEST(CodeSimple, ParseSimple)
   {
-    const CompilerTest ct = "4711";
+    const CompilerTest ct ("4711");
     auto s = ct.compiler.main;
     auto sc = dynamic_cast<const ConstCode*>(&*s);
     HW_ASSERT(sc, HW_D_VALUE(s));
@@ -33,7 +33,7 @@ namespace _Reni
 
   HW_TM_TEST(CompileSimple, CodeSimple)
   {
-    CompilerTest ct = "4711";
+    CompilerTest ct ("4711");
     const auto result = ct.compiler.Execute();
     HW_ASSERT_IS(result.result, ==, 4711);
   }
@@ -107,7 +107,7 @@ f: /\
     )
 };
 f(4)dump_print
-        
+
         )", "3");
   }
 }

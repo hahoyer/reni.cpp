@@ -85,7 +85,7 @@ private:
 
       const auto length = _data->Match(current);
       if(!length.IsValid)
-        return count < _minCount ? MatchResult() : result;
+        return count < _minCount ? MatchResult() : MatchResult(result);
       if(current.IsEnd)
         return MatchResult();
       current += length;
@@ -116,7 +116,10 @@ public:
       return MatchResult();
     const auto value = position.Part(length.Value);
     const auto funcResult = _func(value).Match(position + length.Value);
-    return funcResult.IsValid ? length.Value + funcResult.Value : MatchResult();
+    if(funcResult.IsValid)
+      return length.Value + funcResult.Value;
+    else
+      return MatchResult();
   }
 };
 

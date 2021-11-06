@@ -17,8 +17,6 @@
 
 #include "../HWLib/RefCountContainer.instance.h"
 
-static bool Trace = true;
-
 using namespace Reni;
 using namespace HWLang;
 

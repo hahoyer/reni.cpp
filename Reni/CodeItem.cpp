@@ -160,10 +160,10 @@ Optional<Ref<CodeItem>> CodeItem::Replace(const ReplaceVisitor& arg) const
   HW_BREAK_IF_(Trace);
   auto result = ReplaceImpl(arg);
   HW_ASSERT(result.IsEmpty || result.Value->size == size,
-       Dump + "\n" +
-       HW_D_VALUE(result) + "\n" +
-       HW_D_VALUE(size) + "\n" +
-       HW_D_VALUE(result.Value->size));
+            Dump + "\n" +
+            HW_D_VALUE(result) + "\n" +
+            HW_D_VALUE(size) + "\n" +
+            HW_D_VALUE(result.Value->size));
   return_d(result);
 }
 
@@ -343,12 +343,13 @@ Optional<Ref<CodeItem>> FiberConnector::ReplaceImpl(const ReplaceVisitor& visito
 {
   const bool Trace = visitor.Trace && ObjectId == 6;
   HW_D_METHOD(visitor);
-  const auto replacedItems = items
-                             .Select<Optional<Ref<CodeItem>>>
-                             (
-                               [&](Ref<CodeItem> item) { return item->Replace(visitor); }
-                             )
-                             ->ToArray;
+  const auto replacedItems
+    = items
+      .Select<Optional<Ref<CodeItem>>>
+      (
+        [&](Ref<CodeItem> item) { return item->Replace(visitor); }
+      )
+      ->ToArray;
 
   HW_D_LOG_VALUE(replacedItems);
 
@@ -361,17 +362,18 @@ Optional<Ref<CodeItem>> FiberConnector::ReplaceImpl(const ReplaceVisitor& visito
     return_db(Optional<Ref<CodeItem>> {});
 
   auto index = 0;
-  const auto newItems = replacedItems
-                        .Select<Ref<CodeItem>>
-                        (
-                          [&](Optional<Ref<CodeItem>> item)
-                          {
-                            return item || items[index++];
-                          }
-                        )
-                        ->ToArray;
+  const auto newItems
+    = replacedItems
+      .Select<Ref<CodeItem>>
+      (
+        [&](Optional<Ref<CodeItem>> item)
+        {
+          return item || items[index++];
+        }
+      )
+      ->ToArray;
 
-  return_db(new FiberConnector(newItems COMMA connector));
+  return_db(Ref<CodeItem>(new FiberConnector(newItems COMMA connector)));
 };
 
 

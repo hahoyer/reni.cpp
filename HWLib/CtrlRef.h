@@ -5,42 +5,52 @@
 
 namespace HWLib
 {
-    template<typename T>
-    class CtrlRef final : public RefBase<T, std::shared_ptr<T>>{
-        typedef RefBase<T, std::shared_ptr<T>> baseType;
-        typedef CtrlRef thisType;
-        friend class CtrlRef<T>;
-        friend class CtrlRef<T const>;
-    public:
-        CtrlRef(T *value) :baseType(value){ HW_ASSERT_(value); }
-        CtrlRef(CtrlRef<T> const&other) : baseType(other.value){ };
-        CtrlRef(CtrlRef<T const> const&other) ;
-        template<typename TOther>
-        CtrlRef(CtrlRef<TOther> const&other) : baseType(other){ };
+  template <typename T>
+  class CtrlRef final : public RefBase<T, std::shared_ptr<T>>
+  {
+    typedef RefBase<T, std::shared_ptr<T>> baseType;
+    typedef CtrlRef thisType;
+    friend class CtrlRef<T>;
+    friend class CtrlRef<const T>;
+  public:
+    CtrlRef(T* value) : baseType(value)
+    {
+      HW_ASSERT_(value);
+    }
 
-        HW_DO_PLACEMENT_ASSIGN;
-    };
+    CtrlRef(const CtrlRef<T>& other) : baseType(other.value) { };
+    CtrlRef(const CtrlRef<const T>& other);
 
-    template<typename T>
-    class CtrlRef<T const>final : public RefBase<T const, std::shared_ptr<T const>>{
-        typedef RefBase<T const, std::shared_ptr<T const>> baseType;
-        typedef CtrlRef<T const> thisType;
-    
-    public:
-        CtrlRef(T const *value) :baseType(value){ HW_ASSERT_(value); }
-        CtrlRef(CtrlRef<T const> const&other) : baseType(other){ };
+    template <typename TOther>
+    CtrlRef(const CtrlRef<TOther>& other) : baseType(other) { };
 
-        HW_DO_PLACEMENT_ASSIGN;
-        T const& operator*()const { return *value; };
-        T const* operator->()const { return &*value; };
+    HW_DO_PLACEMENT_ASSIGN;
+  };
 
-    private:
-        T & operator*();
-        T * operator->();
-    };
+  template <typename T>
+  class CtrlRef<const T>final : public RefBase<const T, std::shared_ptr<const T>>
+  {
+    typedef RefBase<const T, std::shared_ptr<const T>> baseType;
+    typedef CtrlRef<const T> thisType;
 
-    template<typename T>
-    CtrlRef<T>::CtrlRef(CtrlRef<T const> const&other) 
-        : baseType(other.value){ };
+  public:
+    CtrlRef(const T* value) : baseType(value)
+    {
+      HW_ASSERT_(value);
+    }
+
+    CtrlRef(const CtrlRef<const T>& other) : baseType(other) { };
+
+    HW_DO_PLACEMENT_ASSIGN;
+    const T& operator*() const { return *baseType::value; };
+    const T* operator->() const { return &*baseType::value; };
+
+  private:
+    T& operator*();
+    T* operator->();
+  };
+
+  template <typename T>
+  CtrlRef<T>::CtrlRef(const CtrlRef<const T>& other)
+    : baseType(other.value) { };
 }
-

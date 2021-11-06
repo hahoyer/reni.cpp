@@ -6,6 +6,7 @@
 #include "Global.h"
 
 using namespace Reni;
+static bool Trace = false;
 
 template<class TTokenClass>
 class NumberType::OperationFeature final : public Feature::Extended
