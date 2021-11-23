@@ -1,7 +1,7 @@
 #include "Import.h"
 #include "SimpleTokenFactory.h"
 
-using namespace _HWLang;
+using namespace TestHWLang;
 
 typedef SimpleTokenFactory TokenFactory;
 typedef TokenFactory::TokenClass SimpleTokenClass;

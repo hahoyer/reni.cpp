@@ -11,7 +11,7 @@
 using namespace HWLib;
 using namespace HWLang;
 
-namespace _HWLang{
+namespace TestHWLang{
     class SimpleTokenFactory final{
         typedef RefCountProvider baseType;
         typedef SimpleTokenFactory thisType;

@@ -47,14 +47,6 @@ void Profiler::internal::Reset()
     delete entry;
 };
 
-p_implementation(Profiler::internal, int, count)
-{
-  auto result = 0;
-  for(auto entry : Entries)
-    result++;
-  return result;
-}
-
 p_implementation(Profiler::internal, __int64, ticks)
 {
   __int64 result = 0;
@@ -78,7 +70,7 @@ void Profiler::internal::CalibrationValues()
   SuspendTime -= ResumeTime;
 }
 
-Profiler::internal::Entry* const Profiler::internal::Find(const char* FileName, const char* Flag) const
+Profiler::internal::Entry* Profiler::internal::Find(const char* FileName, const char* Flag) const
 {
   for(const auto entry : Entries)
     if(strcmp(FileName, entry->FileName) == 0 && Flag == entry->Flag)
@@ -86,30 +78,30 @@ Profiler::internal::Entry* const Profiler::internal::Find(const char* FileName, 
   return {};
 }
 
-void Profiler::internal::dumpprint(int Hide) const
+void Profiler::internal::dump(int Hide) const
 {
   if(isEmpty)
   {
-    ::dumpprint("\n\r=========== Profile empty ============\n\r");
+    ::dump("\n\r=========== Profile empty ============\n\r");
     return;
   }
 
-  ::dumpprint("\n\r=========== Profile ==================\n\r");
+  ::dump("\n\r=========== Profile ==================\n\r");
 
-  vector<Entry*> entries = Entries;
-  std::sort(entries.begin(), entries.end(), Entry::PointerLessThan());
+  auto entries = Entries;
+  ranges::sort(entries, Entry::PointerLessThan());
 
   const auto All = ticks;
   auto ShowTime = All;
   auto TimeNotShown = All;
-  int ShowCount = count;
+  auto ShowCount = entries.size();
   if(Hide > 0)
     ShowTime -= All / Hide;
-  else if(-Hide > 0 && -Hide < count)
+  else if(-Hide > 0 && -Hide < entries.size())
     ShowCount = -Hide;
   size_t LFileName = 0;
 
-  int i = 0;
+  size_t i = 0;
   for(; i < ShowCount && ShowTime > 0; i++)
   {
     const auto That = entries[i];
@@ -129,47 +121,47 @@ void Profiler::internal::dumpprint(int Hide) const
     const auto That = entries[i];
     __int64 ticks = That->ticks;
     if(ticks < 0) ticks = 0;
-    ::dumpprint(That->FileName);
-    ::dumpprint("(");
-    const size_t LLine = ::dumpprint(That->Line);
-    ::dumpprint("):");
+    ::dump(That->FileName);
+    ::dump("(");
+    const size_t LLine = ::dump(That->Line);
+    ::dump("):");
 
     size_t Spaces = LFileName + 6 - strlen(That->FileName) - LLine;
     while(Spaces > 0)
     {
-      ::dumpprint(" ");
+      ::dump(" ");
       --Spaces;
     };
 
-    ::dumpprint(i);
-    ::dumpprint(":\t");
-    size_t counter = ::dumpprint(That->counter);
-    ::dumpprint("x");
-    while(counter++ < 6) ::dumpprint(" ");
-    ::dumpprint("\t");
-    dumpprinttime(ticks, That->counter);
-    ::dumpprint(" \t");
-    dumpprinttime(ticks, 1);
-    ::dumpprint(" \t");
-    ::dumpprint(static_cast<long long>(100.0 * static_cast<float>(ticks) / static_cast<float>(All)));
-    ::dumpprint("%\t");
-    ::dumpprint(That->Flag);
-    ::dumpprint("\n\r");
+    ::dump(i);
+    ::dump(":\t");
+    size_t counter = ::dump(That->counter);
+    ::dump("x");
+    while(counter++ < 6) ::dump(" ");
+    ::dump("\t");
+    dumpTime(ticks, That->counter);
+    ::dump(" \t");
+    dumpTime(ticks, 1);
+    ::dump(" \t");
+    ::dump(static_cast<long long>(100.0 * static_cast<float>(ticks) / static_cast<float>(All)));
+    ::dump("%\t");
+    ::dump(That->Flag);
+    ::dump("\n\r");
   };
 
-  ::dumpprint("Total: \t");
-  dumpprinttime(All, 1);
+  ::dump("Total: \t");
+  dumpTime(All, 1);
 
-  if(i < count)
+  if(i < entries.size())
   {
-    ::dumpprint(" (");
-    ::dumpprint(count - i);
-    ::dumpprint(" not-shown-items ");
-    dumpprinttime(TimeNotShown, 1);
-    ::dumpprint(")");
+    ::dump(" (");
+    ::dump(entries.size() - i);
+    ::dump(" not-shown-items ");
+    dumpTime(TimeNotShown, 1);
+    ::dump(")");
   };
 
-  ::dumpprint("\n\r======================================\n\r");
+  ::dump("\n\r======================================\n\r");
 };
 
 
@@ -187,8 +179,8 @@ void Profiler::Start(const char* FileName, int Line, const char* Flag) const
 }
 
 void Profiler::End() const { return _internal.End(); }
-void Profiler::Reset() { return _internal.Reset(); }
-void Profiler::dumpprint(int Hide) const { _internal.dumpprint(Hide); }
+void Profiler::Reset() const { return _internal.Reset(); }
+void Profiler::dump(int Hide) const { _internal.dump(Hide); }
 
 
 void Profiler::internal::Entry::CalibrationValues(long long& suspend, long long& resume) const
@@ -200,6 +192,8 @@ void Profiler::internal::Entry::CalibrationValues(long long& suspend, long long&
     break;
   case 'r':
     resume = ticks / counter;
+    break;
+  default:
     break;
   };
 };

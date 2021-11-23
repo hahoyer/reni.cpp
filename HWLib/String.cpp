@@ -1,7 +1,6 @@
 #include "Import.h"
 #include "String.h"
 
-#include "Common.h"
 #include "DumpMacros.h"
 #include "DumpToString.h"
 #include "File.h"
@@ -26,13 +25,13 @@ String::String(const std::string& data)
 String::String(const Array<const char>& other)
   : _data(other.RawData, other.Count) {}
 
-String::String() {}
+String::String() = default;
 
 Array<const char> String::GetToArray(const string& target)
 {
-  const char* d = target.c_str();
+  const auto string = target.c_str();
   return Numbers(target.size())
-         ->Select<const char>([&](size_t i) { return d[i]; })
+         ->Select<const char>([&](size_t i) { return string[i]; })
          ->ToArray;
 }
 
@@ -63,19 +62,14 @@ string CharQuote(const char character)
   switch(character)
   {
   case '\\':
-    return "\\\\";
   case '"':
-    return "\\\"";
   case '\n':
-    return "\\n";
   case '\t':
-    return "\\t";
   case '\r':
-    return "\\r";
   case '\f':
-    return "\\f";
+    return "\\" + character;
   default: ;
-    static const char* hex = "0123456789abcdef";
+    static auto hex = "0123456789abcdef";
     if(character < 16)
       return "\\0x0" + string(1, hex[character]);
     return string(1, character);
@@ -136,10 +130,10 @@ bool String::Contains(const std::string& target, std::string expected, size_t st
 
 Optional<size_t> String::Find(const string& target, string expected, size_t start)
 {
-  for(const auto end = target.size() - expected.size(); start < end; start++)
-    if(target.find(expected, start))
-      return Optional<size_t>(start);
-  return {};
+  const auto result = target.find(expected, start);
+  if(result == string::npos)
+    return {};
+  return result;
 }
 
 bool String::Contains1(const std::string& target, char expected, size_t start)
@@ -231,7 +225,7 @@ protected:
     return _index < _parent.size();
   }
 
-  string Step() override
+  virtual string Step() override
   {
     const auto start = _index;
     auto newEnd = _parent | Find(_delimiter, start);
@@ -259,7 +253,7 @@ string String::Convert(unsigned __int64 value, int radix)
   string result;
   do
   {
-    const constexpr char* digits = "0123456789abcdefghijklmnopqrstuvwxyz";
+    constexpr auto digits = "0123456789abcdefghijklmnopqrstuvwxyz";
     const auto digit = value % radix;
     result = string(1, digits[digit]) + result;
     value /= radix;

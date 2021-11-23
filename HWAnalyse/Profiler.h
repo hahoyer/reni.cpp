@@ -1,21 +1,19 @@
-
-
 #pragma once
 
 /* *************************************************************************
 
-Source Profiler -- Copyright (C) 1995 - 2014 - Harald Hoyer
+Source Profiler -- Copyright (C) 1995 - 2021 - Harald Hoyer
 -----------------------------------------------------
 
 Strategy:
 
-With macros BEGIN_PROF and END_PROF you define regions of source code that
+With macros HW_PROF_BEGIN and HW_PROF_END you define regions of source code that
 build an entry of profiler table. At run time for such a region each call is
 counted and time elapsed is accumulated.
 All data is stored in a global variable called Profile.
-With member function dumpprint the results can be printed into Microsofts dump
+With member function dump the results can be printed into Microsoft dump
 context at any time.
-Time measurement is done by use of best timer available (1.12 MHz, about 900 nsec)
+Time measurement is done by use of best timer available (1.12 MHz, about 900 nano seconds)
 
 ---
 
@@ -23,7 +21,7 @@ Usage:
 
 Include:	Profiler.H
 Include this file in each source file you want to monitor and wherein
-you want to put the Profile.dumpprint call.
+you want to put the Profile.dump call.
 
 Source:		Profiler.CPP
 Include this file in your project list or make file.
@@ -32,45 +30,45 @@ Include this file in your project list or make file.
 
 Functions / Macros:
 
-BEGIN_PROF( <FlagText> );
+HW_PROF_BEGIN( <FlagText> );
 
-Defines a start point of a region to monitor. HWPROF uses file name and line
+Defines a start point of a region to monitor. profiler uses file name and line
 number as identification for accumulation. The parameter FlagText is an
 additional string that will be also presented in profile dump and serves as
-a comment. If at run time a region is aready active, its measurements are
+a comment. If at run time a region is already active, its measurements are
 stopped and the values are saved.
 
 
-END_PROF();
+HW_PROF_END();
 
-Defines the ending point of a region to monitor. Each END_PROF must have
-a corresponding BEGIN_PROF call. Association is done dynamically. After END_PROF
+Defines the ending point of a region to monitor. Each HW_PROF_END must have
+a corresponding HW_PROF_BEGIN call. Association is done dynamically. After HW_PROF_END
 the former region is resumed, if there is one.
 
 
-NEXT_PROF( <FlagText> );
+HW_PROF_NEXT( <FlagText> );
 
 Ends up the current region and starts a new one.
 
 
-FUNC_PROF(expr)
+HW_PROF_FUNCTION(expression)
 
-Creates a profile region that suround the evaluation of expr. The expression itself
-is used as flagtext.
-
-
-STMT_PROF(expr)
-
-Same as FUNC_PROF, use it for void-type expressions.
+Creates a profile region that surround the evaluation of expression. The expression itself
+is used as parameter "flagtext".
 
 
-Profile.dumpprint(int Hide = 10);
+HW_PROF_STATEMENT(expression)
+
+Same as HW_PROF_FUNCTION, use it for void-type expressions.
+
+
+Profile.dump(int Hide = 10);
 
 Dump accumulated values into MFCs dump context. The output format is:
 
 <FileName>(<LineNr>): [<SeqNo>]:	<CallCount>	<TimePerCall>	<ElapsedTime>	<FlagText>
 
-For each BEGIN_PROF one line such line is generated. The lines are sorted by
+For each HW_PROF_BEGIN one line such line is generated. The lines are sorted by
 elapsed time. With MSVC you can use the F4-key ("Goto Error/Tag") on these lines.
 The parameter Hide is used to restrict the amount of lines. If it is negative
 it determines the lines to print (-1 -> first line only, -2 -> first two
@@ -86,61 +84,68 @@ Clear counters of all regions and retain the memory used. This function may
 only be used when no region is active.
 
 
-#define PROFILE <Instance of CHWProfile>
+#define HW_PROF_INSTANCE <Instance of CHWProfile>
 
-Use this define before include of HWPROF.H to enable measurement and
+Use this define before include to enable measurement and
 to provide the profile variable to use. The thing provided here should be a pointer
 to CHWProfile
 
 
-#undef PROFILE
+#undef HW_PROF_INSTANCE
 
-Use this before include of HWPROF.H to disable measurement (this is the default).
+Use this before include to disable measurement (this is the default).
 
-To avoid confusion, use #define / #undef of PROFILE only in CPP-Files and never
+To avoid confusion, use #define / #undef of HW_PROF_INSTANCE only in CPP-Files and never
 in Headers.
 
 ************************************************************************* */
 
+namespace HWAnalysis
+{
+  class Profiler final
+  {
+    class internal;
+    internal& _internal;
 
-namespace HWAnalysis{
-    class Profiler
-    {
-        class internal;
-        internal& _internal;
+  public:
+    Profiler();
+    ~Profiler();
 
-    public:
-        Profiler();
-        ~Profiler();
-        void Start(const char*FileName, int Line, const char*Flag) const;
-        void End() const;
-        virtual void dumpprint(int Hide = 10)const;
-        virtual void Reset();
-    };
+    Profiler(const Profiler&) = delete;
+    Profiler(Profiler&&) = delete;
+    Profiler& operator=(const Profiler&) = delete;
+    Profiler& operator=(Profiler&&) = delete;
+
+    void Start(const char* FileName, int Line, const char* Flag) const;
+    void End() const;
+    void dump(int Hide = 10) const;
+    void Reset() const;
+
+    template <class T>
+    static T FunctionReturn(T result);
+  };
 }
 
-#ifndef PROFILE
-#	define BEGIN_PROF(Flag)
-#	define FUNC_PROF(expr) (expr)
-#	define STMT_PROF(expr) (expr)
-#	define NEXT_PROF(Flag)
-#	define END_PROF()
-template<class T>
-T _ReturnProfile(T x){return x;};
+#ifndef HW_PROF_INSTANCE
+#	define HW_PROF_BEGIN(flag)
+#	define HW_PROF_FUNCTION(expression) (expression)
+#	define HW_PROF_STATEMENT(expression) (expression)
+#	define HW_PROF_NEXT(flag)
+#	define HW_PROF_END()
+
+template <class T>
+T HWAnalysis::Profiler::FunctionReturn(T result) { return result; };
 
 #else
-#	define BEGIN_PROF(Flag) if(PROFILE) (PROFILE)->Start(__FILE__, __LINE__,Flag )
-#	define FUNC_PROF(expr) ((PROFILE)->Start(__FILE__, __LINE__,#expr ), _ReturnProfile(expr))
-#	define STMT_PROF(expr) ((PROFILE)->Start(__FILE__, __LINE__,#expr ), expr, (PROFILE)->End())
-#	define END_PROF() if(PROFILE) (PROFILE)->End()
-#	define NEXT_PROF(Flag) END_PROF();BEGIN_PROF(Flag)
+#	define HW_PROF_BEGIN(flag) if(HW_PROF_INSTANCE) (HW_PROF_INSTANCE)->Start(__FILE__, __LINE__,flag )
+#	define HW_PROF_FUNCTION(expression) ((HW_PROF_INSTANCE)->Start(__FILE__, __LINE__,#expression ), HWAnalysis::Profiler::FunctionReturn(expression))
+#	define HW_PROF_STATEMENT(expression) ((HW_PROF_INSTANCE)->Start(__FILE__, __LINE__,#expression ), expression, (HW_PROF_INSTANCE)->End())
+#	define HW_PROF_END() if(HW_PROF_INSTANCE) (HW_PROF_INSTANCE)->End()
+#	define HW_PROF_NEXT(flag) HW_PROF_END();HW_PROF_BEGIN(flag)
 template<class T>
-T _ReturnProfile(T x)
+T HWAnalysis::Profiler::FunctionReturn(T result)
 {
-    (PROFILE)->End();
-    return x;
+    (HW_PROF_INSTANCE)->End();
+    return result;
 };
 #endif
-
-
-

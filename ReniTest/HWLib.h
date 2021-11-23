@@ -1,11 +1,11 @@
 #pragma once
 
-namespace _HWLib{
+namespace TestHWLib{
     HW_TM_CLASS(FileTest);
     HW_TM_CLASS(StackTrace);
 }
 
-namespace _Process{
+namespace TestProcess{
     HW_TM_CLASS(Simple);
     HW_TM_CLASS(StartProgram);
     HW_TM_CLASS(Double);
@@ -13,7 +13,7 @@ namespace _Process{
     HW_TM_CLASS(Error);
 }
 
-namespace _String{
+namespace TestString{
     HW_TM_CLASS(WriteHallo);
     HW_TM_CLASS(Find);
     HW_TM_CLASS(Part);
@@ -24,15 +24,15 @@ namespace _String{
     HW_TM_CLASS(Replace1);
 }
 
-namespace _Ref{
+namespace TestRef{
     HW_TM_CLASS(WriteHallo);
 }
 
-namespace _Array{
+namespace TestArray{
     HW_TM_CLASS(WriteHallo);
 }
 
-namespace _Enumerable{
+namespace TestEnumerable{
     HW_TM_CLASS(FromInt0);
     HW_TM_CLASS(FromInt1);
     HW_TM_CLASS(FromInt1_1);
@@ -41,13 +41,13 @@ namespace _Enumerable{
     HW_TM_CLASS(FromString);
 }
 
-namespace _ValueCache{
+namespace TestValueCache{
     HW_TM_CLASS(Simple);
     HW_TM_CLASS(Context);
     HW_TM_CLASS(Member);
 }
 
-namespace _FunctionCache{
+namespace TestFunctionCache{
     HW_TM_CLASS(Simple);
     HW_TM_CLASS(Context);
     HW_TM_CLASS(Multiple);

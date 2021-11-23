@@ -3,7 +3,7 @@
 #include "../HWAnalyse/TestMacros.h"
 #include "../HWAnalyse/TestFixture.h"
 
-namespace _Reni
+namespace TestReni
 {
   HW_TM_CLASS(ParseSimple);
 

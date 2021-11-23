@@ -3,7 +3,7 @@
 #include "../HWAnalyse/TestMacros.h"
 #include "../HWAnalyse/TestFixture.h"
 
-namespace _HWLang{
+namespace TestHWLang{
     HW_TM_CLASS(SimpleAndDetailed);
     HW_TM_CLASS(Simple);
     HW_TM_CLASS(Text);

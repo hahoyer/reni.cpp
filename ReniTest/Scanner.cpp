@@ -10,11 +10,11 @@
 #include "../HWAnalyse/TestFixture.h"
 
 using namespace HWLang;
-using namespace _HWLang;
+using namespace TestHWLang;
 
-namespace _HWLang{
+namespace TestHWLang{
 
-    HW_TM_TEST(SimpleAndDetailed)
+    HW_TM_IMPLEMENTATION(SimpleAndDetailed)
     {
         using TokenFactory = SimpleTokenFactory;
         using ScannerInstance = TokenFactory::ScannerInstance;
@@ -47,7 +47,7 @@ namespace _HWLang{
             HW_FAIL(HW_D_VALUE(i) + HW_D_VALUE(ss[i].Part));
     }
 
-    HW_TM_TEST(Simple)
+    HW_TM_IMPLEMENTATION(Simple)
     {
         Test(" asd \"cc\" 1234 ",
         {
@@ -59,7 +59,7 @@ namespace _HWLang{
         });
     }
 
-    HW_TM_TEST(Text)
+    HW_TM_IMPLEMENTATION(Text)
     {
         Test(" \"HW_ASSERT\"\" b\" '\" ' ",
         {
@@ -70,7 +70,7 @@ namespace _HWLang{
         });
     }
 
-    HW_TM_TEST(Comment)
+    HW_TM_IMPLEMENTATION(Comment)
     {
         Test(R"(
 12## line comment
@@ -92,7 +92,7 @@ abc#( comment
         });
     };
 
-    HW_TM_TEST(LineCommentError)
+    HW_TM_IMPLEMENTATION(LineCommentError)
     {
         Test(R"(
 12## line comment
@@ -108,7 +108,7 @@ asdf
         });
     };
 
-    HW_TM_TEST(CommentError)
+    HW_TM_IMPLEMENTATION(CommentError)
     {
         Test(R"(
 12## line comment
@@ -125,7 +125,7 @@ asdf
         });
     };
 
-    HW_TM_TEST(Pattern)
+    HW_TM_IMPLEMENTATION(Pattern)
     {
         auto s = Source::FromText("asdf") + 0;
 

@@ -10,7 +10,7 @@
 
 using namespace HWLang;
 
-namespace _HWLang {
+namespace TestHWLang {
 
     typedef SimpleTokenFactory TokenFactory;
     using ScannerInstance = TokenFactory::ScannerInstance;
@@ -19,7 +19,7 @@ namespace _HWLang {
 
     void Check(Optional<Ref<Syntax>> const& target, bool isLeft, string const& part, bool isRight, bool isMatch);
 
-    HW_TM_TEST(ParserBaseStructure) {
+    HW_TM_IMPLEMENTATION(ParserBaseStructure) {
         auto pt = PrioTable::CreateLeft({Any}).ParenthesisLevelLeft({Start}, {End});
 
         string text = "asdf";
@@ -32,7 +32,7 @@ namespace _HWLang {
         HW_ASSERT_IS(syntax.Value->name, == , text);
     };
 
-    HW_TM_TEST(Parenthesis, ParserBaseStructure) {
+    HW_TM_IMPLEMENTATION(Parenthesis, ParserBaseStructure) {
 
         string text = "({)} [(asdf)as][yxcv]";
 
@@ -82,7 +82,7 @@ namespace _HWLang {
         Check(rrlr, false, "yxcv", false, false);
     }
 
-    HW_TM_TEST(PlusTimes, ParserBaseStructure) {
+    HW_TM_IMPLEMENTATION(PlusTimes, ParserBaseStructure) {
         string text = "a*b+c*d+e*f";
 
         auto pt = PrioTable::CreateLeft({ Any })
@@ -127,7 +127,7 @@ namespace _HWLang {
         Check(rrr, false, "f", false, false);
     }
 
-    HW_TM_TEST(ThenElse, ParserBaseStructure) {
+    HW_TM_IMPLEMENTATION(ThenElse, ParserBaseStructure) {
 
         bool Trace = true;
         string text = "x then y else z";
@@ -156,7 +156,7 @@ namespace _HWLang {
         Check(rlr, false, "y", false, false);
     }
 
-    HW_TM_TEST(TrainWreck, ParserBaseStructure) {
+    HW_TM_IMPLEMENTATION(TrainWreck, ParserBaseStructure) {
 
         bool Trace = true;
         string text = "x y z";

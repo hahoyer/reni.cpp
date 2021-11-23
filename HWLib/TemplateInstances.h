@@ -1,19 +1,20 @@
 #pragma once
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
-#include "DumpToString.h"
-#include "DumpableObject.h"
-#include "FunctionCacheBase.h"
-#include "CtrlRef.h"
 #include <queue>
+
+#include "CtrlRef.h"
+#include "DumpableObject.h"
+#include "DumpToString.h"
+#include "FunctionCacheBase.h"
 
 using namespace HWLib;
 using namespace std;
 
-inline string HWLib::Dump(__int64 target, int radix) { return HWLib::String::Convert(target, radix); };
-inline string HWLib::Dump(int target, int radix) { return HWLib::String::Convert(target, radix); };
-inline string HWLib::Dump(size_t target, int radix) { return HWLib::String::Convert(target, radix); };
-inline string HWLib::Dump(bool target) { return HWLib::String::Convert(target); };
+inline string HWLib::Dump(__int64 target, int radix) { return String::Convert(target, radix); };
+inline string HWLib::Dump(int target, int radix) { return String::Convert(target, radix); };
+inline string HWLib::Dump(size_t target, int radix) { return String::Convert(target, radix); };
+inline string HWLib::Dump(bool target) { return String::Convert(target); };
 
 template <>
 inline string HWLib::Dump(const char* target) { return Dump(std::string(target)); };
@@ -347,7 +348,7 @@ class PairIterator final : public Enumerable<std::pair<T, TOther>>::Iterator
 public:
   PairIterator(const Enumerable<T>& left, const Enumerable<TOther>& right)
     : leftIterator(left.ToIterator)
-    , leftResult{}
+      , leftResult{}
       , right(right)
   {
     Align();
@@ -516,7 +517,7 @@ T Enumerable<T>::Stringify(const T& delimiter) const
 template <>
 inline string Enumerable<string>::Stringify(const string& delimiter) const
 {
-  return HWLib::String::Stringify(*this, delimiter);
+  return String::Stringify(*this, delimiter);
 }
 
 template <typename T>
@@ -620,7 +621,7 @@ CtrlRef<Enumerable<TResult>> Enumerable<T>::Convert() const
 template <typename TBase, typename TRealm>
 p_implementation(WithId<TBase COMMA TRealm>, string, DumpHeader)
 {
-  auto objectId = HWLib::Dump(ObjectId);
+  auto objectId = Dump(ObjectId);
   return p_base_name(DumpHeader) + ".Id" + objectId;
 };
 
@@ -658,7 +659,7 @@ string HWLib::Dump(const Array<T>& target)
 
 inline string HWLib::DumpList(const Array<string>& target)
 {
-  return HWLib::String::Surround("{", target, "}");
+  return String::Surround("{", target, "}");
 }
 
 template <typename T>
@@ -717,8 +718,18 @@ public:
 
 private:
   p_function(bool, IsValid) override { return index < count; }
-  size_t Step() override { return index++; }
+  virtual size_t Step() override { return index++; }
 };
+
+template <typename T>
+class Enumerable<T>::Container final : public Enumerable<T>
+{
+  CtrlRef<Iterator> _iterator;
+public:
+  Container(Iterator* iterator) : _iterator(iterator) {}
+  p_nonconst_function(CtrlRef<Iterator>, ToIterator) const override { return _iterator; }
+};
+
 
 inline CtrlRef<Enumerable<size_t>> HWLib::Numbers(size_t count)
 {
