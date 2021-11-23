@@ -87,7 +87,8 @@
 
     <ItemDefinitionGroup>
         <ClCompile>
-            <LanguageStandard>stdcpp20</LanguageStandard>
+            <LanguageStandard>stdcpplatest</LanguageStandard>
+            <LanguageStandard_C>stdc17</LanguageStandard_C>
             <PreprocessToFile>false</PreprocessToFile>
             <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
             <FunctionLevelLinking>false</FunctionLevelLinking>
