@@ -75,7 +75,7 @@
         <IntDir>$(SolutionDir)bin\intermediate\$(PlatformTarget)\$(Configuration)\$(ProjectName)\</IntDir>
         <IncludePath>$(Boost);$(IncludePath)</IncludePath>
         <LibraryPath>$(Boost)\libs;$(LibraryPath)</LibraryPath>
-        <AdditionalOptions>/experimental:module /std:c++latest %(AdditionalOptions)</AdditionalOptions>
+        <AdditionalOptions>/experimental:module %(AdditionalOptions)</AdditionalOptions>
     </PropertyGroup>
 
     <ImportGroup Label="ExtensionSettings" />
