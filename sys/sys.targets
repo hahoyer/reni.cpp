@@ -27,7 +27,7 @@
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 
     <PropertyGroup Label="Configuration">
-        <PlatformToolset>v142</PlatformToolset>
+        <PlatformToolset>v143</PlatformToolset>
         <CharacterSet>Unicode</CharacterSet>
     </PropertyGroup>
 
@@ -67,7 +67,7 @@
     </ItemDefinitionGroup>
 
     <PropertyGroup>
-        <Boost>$(ProgramFiles)\boost\boost_1_77_0</Boost>
+        <Boost>$(SolutionDir)sys\boost\boost_1_80_0</Boost>
         <ProjectName>$(MSBuildProjectName)</ProjectName>
         <TargetName>$(MSBuildProjectName)</TargetName>
         <ShowAllFiles>true</ShowAllFiles>
@@ -75,6 +75,7 @@
         <IntDir>$(SolutionDir)bin\intermediate\$(PlatformTarget)\$(Configuration)\$(ProjectName)\</IntDir>
         <IncludePath>$(Boost);$(IncludePath)</IncludePath>
         <LibraryPath>$(Boost)\libs;$(LibraryPath)</LibraryPath>
+        <AdditionalOptions>/experimental:module /std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </PropertyGroup>
 
     <ImportGroup Label="ExtensionSettings" />
