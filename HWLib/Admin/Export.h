@@ -14,7 +14,6 @@
 #include "../File.h"
 #include "../String.h"
 #include "../FunctionCache.h"
-#include "../initializer_list.h"
 #include "../Lambda.h"
 #include "../LevelValue.h"
 #include "../Map.h"
@@ -30,4 +29,3 @@
 #include "../ValueCache.h"
 #include "../WeakRef.h"
 #include "../TemplateInstances.h"
-

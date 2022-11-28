@@ -17,6 +17,7 @@ namespace HWLib
   class Enumerable
   {
     typedef Enumerable thisType;
+
   public:
     Enumerable() = default;
     Enumerable(const thisType&) = delete;
@@ -59,31 +60,31 @@ namespace HWLib
     CtrlRef<thisType> Take(size_t count) const;
     CtrlRef<thisType> Where(function<bool(T)> selector) const;
 
-    p(bool, Any);
-    p(size_t, Count);
-    p(T, First);
-    p(Optional<T>, FirstOrDefault);
-    p(T, Last);
-    p(Optional<T>, LastOrDefault);
-    p(T, Single);
-    p(Optional<T>, SingleOrDefault);
-    p(Array<T>, ToArray);
+    HW_PR_GET(bool, Any);
+    HW_PR_GET(size_t, Count);
+    HW_PR_GET(T, First);
+    HW_PR_GET(Optional<T>, FirstOrDefault);
+    HW_PR_GET(T, Last);
+    HW_PR_GET(Optional<T>, LastOrDefault);
+    HW_PR_GET(T, Single);
+    HW_PR_GET(Optional<T>, SingleOrDefault);
+    HW_PR_GET(Array<T>, ToArray);
 
     class Iterator // It's a one-time-access-forward-read-only iterator
     {
     public:
       virtual ~Iterator() {};
-      p_virtual_inline(bool, IsValid) = 0;
+      HW_PR_VIRTUAL_GET_INLINE(bool, IsValid) = 0;
       virtual T Step() = 0;
-      p_nonconst(Array<T>, ToArray);
+      HW_PR_MUTABLE_GET(Array<T>, ToArray);
     };
 
     class RangeBasedForLoopSimulator;
     class Container;
 
-    p_virtual_definition(CtrlRef<Iterator>, ToIterator);
-    CtrlRef<Iterator> p_virtual_name(ToIterator)() const { return p_name(ToIterator)(); }
-    virtual p_nonconst_function(CtrlRef<Iterator>, ToIterator) const = 0;
+    HW_PR_VIRTUAL_GETTER_SPECIFICATION(CtrlRef<Iterator>, ToIterator);
+    CtrlRef<Iterator> HW_PR_VIRTUAL_GETTER_NAME(ToIterator)() const { return HW_PR_GETTER_NAME(ToIterator)(); }
+    virtual HW_PR_DECL_MUTABLE_GETTER(CtrlRef<Iterator>, ToIterator) const = 0;
 
     const RangeBasedForLoopSimulator begin() const { return ToIterator; }
     RangeBasedForLoopSimulator end() const;

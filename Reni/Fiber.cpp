@@ -26,16 +26,16 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(target)}; };
-        p_function(Size, argSize) override{ return Size::Address; };
-        p_function(Size, size) override{ return target.size; };
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override{ return{HW_D_VALUE(target)}; };
+        HW_PR_DECL_GETTER(Size, argSize) override{ return Size::Address; };
+        HW_PR_DECL_GETTER(Size, size) override{ return target.size; };
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override { return{}; }
     };
 }
 
-p_virtual_header_implementation(FiberItem, Size, argSize); 
-p_virtual_header_implementation(FiberItem, Size, size); 
-p_virtual_header_implementation(FiberItem, Closure, closure);
+HW_PR_VIRTUAL_GETTER_WRAPPER(FiberItem, Size, argSize); 
+HW_PR_VIRTUAL_GETTER_WRAPPER(FiberItem, Size, size); 
+HW_PR_VIRTUAL_GETTER_WRAPPER(FiberItem, Closure, closure);
 
 Optional<Ref<FiberItem>> FiberItem::Replace(ReplaceVisitor const& visitor) const
 {
@@ -64,9 +64,9 @@ FiberCode::FiberCode(Ref<CodeItem> const& head, Array<Ref<FiberItem>> const&item
     HW_ASSERT(IsValid, Dump);
 }
 
-p_implementation(FiberCode, Size, size){ return items.Last->size; };
+HW_PR_IMPL_GETTER(FiberCode, Size, size){ return items.Last->size; };
 
-p_implementation(FiberCode, Closure, closure)
+HW_PR_IMPL_GETTER(FiberCode, Closure, closure)
 {
     auto itemClosure = items
         .Select<Closure>([&](Ref<FiberItem> item)
@@ -82,7 +82,7 @@ Ref<FiberCode> FiberCode::operator+(Array<Ref<FiberItem>> const&items) const
     return *head + (this->items + items);
 }
 
-p_implementation(FiberCode, bool, IsValid) {
+HW_PR_IMPL_GETTER(FiberCode, bool, IsValid) {
     Optional<Ref<FiberItem>> lastItem;
     for(Ref<FiberItem> item: items)
     {
@@ -134,8 +134,8 @@ string FiberCode::ToCpp(CodeVisitor const& visitor) const{
 
 int FiberConnectorItem::nextObjectId = 0;
 
-p_virtual_header_implementation(FiberConnectorItem, int, inCount);
-p_virtual_header_implementation(FiberConnectorItem, Size, size);
-p_virtual_header_implementation(FiberConnectorItem, Closure, closure);
-p_virtual_header_implementation(FiberConnectorItem, string, prefix);
+HW_PR_VIRTUAL_GETTER_WRAPPER(FiberConnectorItem, int, inCount);
+HW_PR_VIRTUAL_GETTER_WRAPPER(FiberConnectorItem, Size, size);
+HW_PR_VIRTUAL_GETTER_WRAPPER(FiberConnectorItem, Closure, closure);
+HW_PR_VIRTUAL_GETTER_WRAPPER(FiberConnectorItem, string, prefix);
 

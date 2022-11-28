@@ -18,22 +18,22 @@ Compiler::Compiler(string const&fileName)
 : _internal(new internal(fileName))
 {}
 
-p_implementation(Compiler, Ref<Syntax>, syntax)
+HW_PR_IMPL_GETTER(Compiler, Ref<Syntax>, syntax)
 {
     return _internal->syntaxCache.Value;
 };
 
-p_implementation(Compiler, CodeBase, code)
+HW_PR_IMPL_GETTER(Compiler, CodeBase, code)
 {
     return _internal->codeCache.Value;
 };
 
-p_implementation(Compiler, Ref<CodeItem>, main)
+HW_PR_IMPL_GETTER(Compiler, Ref<CodeItem>, main)
 {
     return _internal->codeCache.Value.main;
 };
 
-p_implementation(Compiler, string, cppCode)
+HW_PR_IMPL_GETTER(Compiler, string, cppCode)
 {
     return _internal->cppCode;
 };
@@ -54,16 +54,16 @@ CodeBase::CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& fun
     SetDumpString();
 }
 
-p_implementation(CodeBase, string, cppMain){ return MainCodeVisitor::MainVisit(main); };
+HW_PR_IMPL_GETTER(CodeBase, string, cppMain){ return MainCodeVisitor::MainVisit(main); };
 
-p_implementation(CodeBase, string, cppFunctions)
+HW_PR_IMPL_GETTER(CodeBase, string, cppFunctions)
 {
     return functions
         .Select<string>([&](Global::Function const&function){return function.cppCode; })
         ->Aggregate<string>();
 };
 
-p_implementation(CodeBase, string, cppDeclarations)
+HW_PR_IMPL_GETTER(CodeBase, string, cppDeclarations)
 {
     return functions
         .Select<string>([&](Global::Function const&function){return function.cppDeclarations; })

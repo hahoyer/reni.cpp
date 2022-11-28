@@ -21,7 +21,7 @@ IfThenSyntax::IfThenSyntax(Ref<Syntax> const condition, SourcePart const part, R
     SetDumpString();
 };
 
-p_implementation(IfThenSyntax, string, SmartDump)
+HW_PR_IMPL_GETTER(IfThenSyntax, string, SmartDump)
 {
     return
         condition->SmartDumpFrame(priority)
@@ -76,7 +76,7 @@ IfThenElseSyntax::IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> cons
     SetDumpString();
 };
 
-p_implementation(IfThenElseSyntax, string, SmartDump)
+HW_PR_IMPL_GETTER(IfThenElseSyntax, string, SmartDump)
 {
     return
         condition->SmartDumpFrame(priority)

@@ -21,10 +21,10 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>,DumpData) override{ return{ HW_D_VALUE(size), HW_D_VALUE(value) }; };
-        p_function(Size,size) override{ return size; };
-        p_function(Closure, closure)override{ return{}; };
-        p_function(bool, isEmpty)override;
+        HW_PR_DECL_GETTER(Array<std::string>,DumpData) override{ return{ HW_D_VALUE(size), HW_D_VALUE(value) }; };
+        HW_PR_DECL_GETTER(Size,size) override{ return size; };
+        HW_PR_DECL_GETTER(Closure, closure)override{ return{}; };
+        HW_PR_DECL_GETTER(bool, isEmpty)override;
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const&) const override{ return{}; }
     };
@@ -47,9 +47,9 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>,DumpData) override{ return{HW_D_VALUE(result),HW_D_VALUE(index), HW_D_VALUE(arg)}; };
-        p_function(Size,argSize) override{ return arg; };
-        p_function(Size,size) override{ return result; };
+        HW_PR_DECL_GETTER(Array<std::string>,DumpData) override{ return{HW_D_VALUE(result),HW_D_VALUE(index), HW_D_VALUE(arg)}; };
+        HW_PR_DECL_GETTER(Size,argSize) override{ return arg; };
+        HW_PR_DECL_GETTER(Size,size) override{ return result; };
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override{ return{}; }
     };
@@ -66,8 +66,8 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>, DumpData) override{ return{HW_D_VALUE(_size)}; };
-        p_function(Size, argSize) override{ return _size; };
+        HW_PR_DECL_GETTER(Array<std::string>, DumpData) override{ return{HW_D_VALUE(_size)}; };
+        HW_PR_DECL_GETTER(Size, argSize) override{ return _size; };
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override{ return{}; }
     };
@@ -84,9 +84,9 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>, DumpData) override{ return{HW_D_VALUE(referenceSize), HW_D_VALUE(offset)}; };
-        p_function(Size, argSize) override{ return referenceSize; };
-        p_function(Size, size) override{ return referenceSize; };
+        HW_PR_DECL_GETTER(Array<std::string>, DumpData) override{ return{HW_D_VALUE(referenceSize), HW_D_VALUE(offset)}; };
+        HW_PR_DECL_GETTER(Size, argSize) override{ return referenceSize; };
+        HW_PR_DECL_GETTER(Size, size) override{ return referenceSize; };
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override { return{}; }
     };
 
@@ -112,7 +112,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>, DumpData) override
+        HW_PR_DECL_GETTER(Array<std::string>, DumpData) override
         {
             return
             {
@@ -124,9 +124,9 @@ namespace Reni{
                 HW_D_VALUE(rightSize)
             };
         };
-        p_function(int, inCount) override{ return 2; };
-        p_function(Size, size) override { return _size; };
-        p_function(std::string, prefix) override { return name; };
+        HW_PR_DECL_GETTER(int, inCount) override{ return 2; };
+        HW_PR_DECL_GETTER(Size, size) override { return _size; };
+        HW_PR_DECL_GETTER(std::string, prefix) override { return name; };
         std::string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override{ return{}; }
 
@@ -155,7 +155,7 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>, DumpData) override
+        HW_PR_DECL_GETTER(Array<std::string>, DumpData) override
         {
             return
             {
@@ -164,8 +164,8 @@ namespace Reni{
                 HW_D_VALUE(_argSize)
             };
         };
-        p_function(Size, size) override { return _size; };
-        p_function(Size, argSize) override { return _argSize; };
+        HW_PR_DECL_GETTER(Size, size) override { return _size; };
+        HW_PR_DECL_GETTER(Size, argSize) override { return _argSize; };
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override{ return{}; }
     };
@@ -178,8 +178,8 @@ namespace Reni{
     protected:
         explicit TypedCode(Type const& type);
     private:
-        p_function(Array<std::string>,DumpData) override;
-        p_function(Size,size) override;
+        HW_PR_DECL_GETTER(Array<std::string>,DumpData) override;
+        HW_PR_DECL_GETTER(Size,size) override;
     };
 
 
@@ -189,7 +189,7 @@ namespace Reni{
     public:
         explicit ArgCode(Type const&value);
     private:
-        p_function(Closure, closure)override;
+        HW_PR_DECL_GETTER(Closure, closure)override;
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const&) const override;
         Ref<CodeItem> Convert(Type const& type) const override;
@@ -202,7 +202,7 @@ namespace Reni{
     public:
         explicit ThisCode(Type const& type);
     private:
-        p_function(Closure, closure)override;
+        HW_PR_DECL_GETTER(Closure, closure)override;
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;
     };
@@ -215,8 +215,8 @@ namespace Reni{
         FunctionArgCode(Type const&type);
     private:
         string ToCpp(CodeVisitor const& visitor) const override;
-        p_function(Closure, closure)override{ return{}; }
-        p_function(bool, isReference)override{ return true; }
+        HW_PR_DECL_GETTER(Closure, closure)override{ return{}; }
+        HW_PR_DECL_GETTER(bool, isReference)override{ return true; }
         Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const&) const override{ return{}; }
     };
 
@@ -227,7 +227,7 @@ namespace Reni{
     public:
         explicit DereferenceCode(Type const&value);
     private:
-        p_function(Closure, closure)override{ return{}; };
+        HW_PR_DECL_GETTER(Closure, closure)override{ return{}; };
         string ToCpp(CodeVisitor const& visitor) const override;
         Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const&) const override { return{}; };
     };
@@ -240,10 +240,10 @@ namespace Reni{
         Ref<FiberConnectorItem> const connector;
         FiberConnector(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector);
     private:
-        p_function(Array<std::string>, DumpData) override{ return{HW_D_VALUE(items),HW_D_VALUE(connector)}; };
-        p_function(Size, size) override{ return connector->size; };
-        p_function(Closure, closure)override;
-        p(bool, IsValid) {
+        HW_PR_DECL_GETTER(Array<std::string>, DumpData) override{ return{HW_D_VALUE(items),HW_D_VALUE(connector)}; };
+        HW_PR_DECL_GETTER(Size, size) override{ return connector->size; };
+        HW_PR_DECL_GETTER(Closure, closure)override;
+        HW_PR_GET(bool, IsValid) {
             if(items.Count != connector->inCount)
                 return false;
             for(auto i = 0; i < items.Count; i++)
@@ -266,16 +266,16 @@ namespace Reni{
             SetDumpString();
         }
     private:
-        p_function(Array<std::string>, DumpData) override
+        HW_PR_DECL_GETTER(Array<std::string>, DumpData) override
         {
             return
             {
                 HW_D_VALUE(data)
             };
         };
-        p_function(int, inCount) override{ return 2; };
-        p_function(Size, size) override { return 0; };
-        p_function(std::string, prefix) override { return "assign"; };
+        HW_PR_DECL_GETTER(int, inCount) override{ return 2; };
+        HW_PR_DECL_GETTER(Size, size) override { return 0; };
+        HW_PR_DECL_GETTER(std::string, prefix) override { return "assign"; };
         std::string ToCpp(CodeVisitor const& visitor)const override;
         Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&) const override{ return{}; }
 

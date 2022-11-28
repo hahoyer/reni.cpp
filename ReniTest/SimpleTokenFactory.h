@@ -42,7 +42,7 @@ namespace TestHWLang{
             }
 
         private:
-            p_function(Array<string>,DumpData) override{
+            HW_PR_DECL_GETTER(Array<string>,DumpData) override{
                 return{
                     HW_D_VALUE(left),
                     HW_D_VALUE(tokenClass),
@@ -52,7 +52,7 @@ namespace TestHWLang{
                 };
             }
 
-            p_function(string,DumpShort) override{
+            HW_PR_DECL_GETTER(string,DumpShort) override{
                 auto result = name;
                 if(!left.IsEmpty)
                     result = "<" + HWLib::DumpShort(left) + ">" + result;
@@ -77,7 +77,7 @@ namespace TestHWLang{
             TokenClass(TokenClass const&) = delete;
             TokenClass(bool isMatch):isMatch(isMatch){};
 
-            p(bool, AcceptsMatch){ return this->isMatch; }
+            HW_PR_GET(bool, AcceptsMatch){ return this->isMatch; }
 
             Ref<Syntax> const Mismatch(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const{
                 return new Syntax(left, *this, part, right, !isMatch);
@@ -87,7 +87,7 @@ namespace TestHWLang{
             };
 
         private:
-            p_function(Array<string>,DumpData) override{
+            HW_PR_DECL_GETTER(Array<string>,DumpData) override{
                 return{};
             };
         };

@@ -17,8 +17,8 @@ namespace Reni
         Ref<Syntax> const elseClause;
         IfThenElseSyntax(Ref<Syntax> const condition, Ref<Syntax> const thenClause, SourcePart const& part, Ref<Syntax> const elseClause);
     private:
-        p_function(string, SmartDump) override;
-        p_function(int, priority) override{ return -10; }
+        HW_PR_DECL_GETTER(string, SmartDump) override;
+        HW_PR_DECL_GETTER(int, priority) override{ return -10; }
         virtual ResultData GetResultData(const Context& context, Category const& category)const override;
         virtual Optional<Ref<Syntax>> Replace(SyntaxArgVisitor const&) const override;
     };
@@ -36,8 +36,8 @@ namespace Reni
             return new IfThenElseSyntax(condition, thenClause, part, clause);
         }
     private:
-        p_function(string, SmartDump) override;
-        p_function(int, priority) override{ return -10; }
+        HW_PR_DECL_GETTER(string, SmartDump) override;
+        HW_PR_DECL_GETTER(int, priority) override{ return -10; }
         virtual ResultData GetResultData(const Context& context, Category const& category)const override;
         virtual Optional<Ref<Syntax>> Replace(SyntaxArgVisitor const&) const override;
     };

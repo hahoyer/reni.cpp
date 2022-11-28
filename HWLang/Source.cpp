@@ -43,13 +43,13 @@ Source::Source(const Source& other)
 {}
 
 
-p_implementation(Source, string, Text)
+HW_PR_IMPL_GETTER(Source, string, Text)
 {
   return textCache.Value;
 }
 
 
-p_implementation(Source, size_t, Count)
+HW_PR_IMPL_GETTER(Source, size_t, Count)
 {
   return Text.size();
 }
@@ -114,7 +114,7 @@ bool Source::BeginsWith(size_t position, string value) const
   return (Text .substr(position)) == value;
 }
 
-p_implementation(Source, Array<string>, DumpData)
+HW_PR_IMPL_GETTER(Source, Array<string>, DumpData)
 {
   return Array<string>{FilePosition(0, "", "")};
 }

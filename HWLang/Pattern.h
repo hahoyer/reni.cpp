@@ -47,7 +47,7 @@ namespace HWLang
 
         HW_DO_PLACEMENT_ASSIGN;
 
-        p(Pattern, Find);
+        HW_PR_GET(Pattern, Find);
         Pattern Else(Pattern const& right) const;
         Pattern Else(std::string const& right) const;
         Pattern const Repeat(size_t minCount = 0, Optional<size_t> maxCount = {})const;

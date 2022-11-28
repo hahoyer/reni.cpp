@@ -29,18 +29,18 @@ namespace Reni
         ContainerContext(RegularContext const&parent, SyntaxContainer const&containerData, size_t index);
 
         ContainerContext(ContainerContext const&) = delete;
-        ThisRef;
+        HW_PR_THISREF;
 
-        p(WeakRef<Type>, dataType){return dataTypeCache.Value;};
-        p(Size, dataSize);
-        p(WeakRef<External>, asExternal);
+        HW_PR_GET(WeakRef<Type>, dataType){return dataTypeCache.Value;};
+        HW_PR_GET(Size, dataSize);
+        HW_PR_GET(WeakRef<External>, asExternal);
 
         Ref<ResultCache> const AccessResult(Type const& argsType, size_t tokenIndex) const;
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const&token) const override;
         Size const AlignedPartSize(size_t position) const;
         Size const PartSize(size_t position) const;
     private:
-        p_function(Array<string>, DumpData) override;
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override;
     };
 
 };

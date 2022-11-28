@@ -16,17 +16,19 @@ class Profiler::internal
   class Entry;
   vector<Entry*> Entries{};
   vector<Entry*> Stack{};
+
 public:
   void Start(const char* FileName, int Line, const char* Flag);
   void End();
   void dump(int Hide = 10) const;
   void CalibrationValues();
   void Reset();
+
 private:
-  p(__int64, ticks);
-  p(bool, isEmpty) { return Entries.size() == 0; };
-  p(bool, isAtTopLevel) { return Stack.size() == 0; };
-  p(Entry*, Top) { return !isAtTopLevel ? Stack.back() : nullptr; }
+  HW_PR_GET(__int64, ticks);
+  HW_PR_GET(bool, isEmpty) { return Entries.size() == 0; };
+  HW_PR_GET(bool, isAtTopLevel) { return Stack.size() == 0; };
+  HW_PR_GET(Entry*, Top) { return !isAtTopLevel ? Stack.back() : nullptr; }
   Entry* Find(const char* FileName, const char* Flag) const;
 };
 

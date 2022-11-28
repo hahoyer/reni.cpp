@@ -24,16 +24,16 @@ namespace Reni
     class Function;
     class Context;
 
-    ThisRef;
+    HW_PR_THISREF;
     bool const operator <(thisType const& other) const;
     bool const operator ==(thisType const& other) const;
     virtual bool IsProvided(ReplaceVisitor const&) const { return false; };
     virtual Closure const Replace(ReplaceVisitor const& arg) const;
-    p_function(string, DumpShort) override { return {internalDump()}; };
+    HW_PR_DECL_GETTER(string, DumpShort) override { return {internalDump()}; };
 
   private:
-    p_function(Array<string>, DumpData) override { return {internalDump()}; };
-    p_function(string, DumpHeader) override { return ""; };
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override { return {internalDump()}; };
+    HW_PR_DECL_GETTER(string, DumpHeader) override { return ""; };
 
   protected:
     virtual string internalDump() const = 0;

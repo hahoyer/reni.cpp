@@ -19,6 +19,6 @@ namespace Reni
 
     Address operator+(int delta) const;
   private:
-    p_function(Array<string>, DumpData) override { return {HW_D_VALUE(data), HW_D_VALUE(depth)}; };
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override { return {HW_D_VALUE(data), HW_D_VALUE(depth)}; };
   };
 };

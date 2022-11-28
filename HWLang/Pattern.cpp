@@ -34,7 +34,7 @@ private:
   }
 };
 
-p_implementation(Pattern, Pattern, Find) { return new FindMatcher(_value); };
+HW_PR_IMPL_GETTER(Pattern, Pattern, Find) { return new FindMatcher(_value); };
 
 class ElseMatcher final : public IPattern
 {

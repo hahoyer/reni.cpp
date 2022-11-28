@@ -21,7 +21,7 @@ namespace HWLib
             return data.find(key) != data.end();
         }
 
-        p(Array<TKey>, keys)
+        HW_PR_GET(Array<TKey>, keys)
         {
             return _(data)
                 .ToEnumerable<dataType::value_type>()

@@ -21,16 +21,16 @@ namespace Reni
     public:
         WeakRef<Type> value;
         TypeType(Type const& value);
-        ThisRef;
+        HW_PR_THISREF;
 
         template<class TTokenClass>
         SearchResult<Feature> DeclarationsForType() const;
         static Optional<WeakRef<thisType>> const Convert(Type const&target);
     private:
-        p_function(Array<string>,DumpData) override{return{ HW_D_VALUE(*value) };};
-        p_function(bool, hollow) { return true; };
-        p_function(Size, size) override{ return 0; }
-        p_function(WeakRef<Global>, global) override{return value->global;}
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{return{ HW_D_VALUE(*value) };};
+        HW_PR_DECL_GETTER(bool, hollow) { return true; };
+        HW_PR_DECL_GETTER(Size, size) override{ return 0; }
+        HW_PR_DECL_GETTER(WeakRef<Global>, global) override{return value->global;}
         SearchResult<Feature> DeclarationsForType(DeclarationType const& token) const override;
     };
 };

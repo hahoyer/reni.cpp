@@ -28,27 +28,27 @@ namespace Reni
         public:
             Function();
 
-            p(string, cppCode);
-            p(string, cppDeclarations);
+            HW_PR_GET(string, cppCode);
+            HW_PR_GET(string, cppDeclarations);
             void GetterIsUsed()const;
             void SetterIsUsed()const;
         private:
-            p_function(Array<string>, DumpData) override;
+            HW_PR_DECL_GETTER(Array<string>, DumpData) override;
             bool Ensure(FunctionCallResultCache const& source) const;
         };
     private:
         CtrlRef<internal> _internal;
     public:
         Global();
-        ThisRef;
+        HW_PR_THISREF;
 
         BoolType const boolType;
         BitType const bitType;
         VoidType const voidType;
 
         size_t const FunctionIndex(FunctionCallResultCache const& target)const;
-        p(Array<Function>, functions);
+        HW_PR_GET(Array<Function>, functions);
     private:
-        p_function(Array<string>, DumpData) override;
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override;
     };
 }

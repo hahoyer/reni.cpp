@@ -27,11 +27,11 @@ namespace Reni
         TokenClass() = default;
         TokenClass(TokenClass const&) = delete;
 
-        ThisRef;
+        HW_PR_THISREF;
 
         virtual Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const = 0;
     private:
-        p_function(Array<string>, DumpData) override{ return{}; };
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override{ return{}; };
     };
 
     class TerminalTokenClass : public TokenClass{

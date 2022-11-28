@@ -25,7 +25,7 @@ namespace Reni
         {
             using thisType = Simple;
         public:
-            ThisRef;
+            HW_PR_THISREF;
             virtual ResultData const Result(Context const&target, Category category) const = 0;
         };
 
@@ -33,7 +33,7 @@ namespace Reni
         {
             using thisType = Extended;
         public:
-            ThisRef;
+            HW_PR_THISREF;
             virtual ResultData const Result(Context const&target, Category category, Type const&arg) const = 0;
         };
 
@@ -42,16 +42,16 @@ namespace Reni
 
         AccessFeature(Simple const& simple, Extended const& extended);
 
-        ThisRef;
+        HW_PR_THISREF;
 
         ResultData FunctionResult(
           Context const& context,
           const Category& category,
           Optional<Ref<Syntax>> const& right
         ) const;
-        p(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
+        HW_PR_GET(bool, isEmpty){ return simple.IsEmpty && extended.IsEmpty; }
     private:
-        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(simple) + HW_D_VALUE(extended)}; }
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override{ return{HW_D_VALUE(simple) + HW_D_VALUE(extended)}; }
     };
 
     template<>
@@ -74,7 +74,7 @@ namespace Reni
             Optional<Ref<Syntax>> const& right
             )const;
     private:
-        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(feature)}; };
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override{ return{HW_D_VALUE(feature)}; };
     };
 }
 

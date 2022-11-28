@@ -16,7 +16,7 @@ namespace HWLib
         , container(container) { }
 
   private:
-    p_function(bool, IsValid) override
+    HW_PR_DECL_GETTER(bool, IsValid) override
     {
       return iterator != container.end();
     }
@@ -39,7 +39,7 @@ namespace HWLib
     Enumerable_(TContainer const& container) : container(container) { };
 
   private:
-    p_nonconst_function(CtrlRef<typename baseType::Iterator>, ToIterator) const override
+    HW_PR_DECL_MUTABLE_GETTER(CtrlRef<typename baseType::Iterator>, ToIterator) const override
     {
       return new BeginEndIterator<T, TContainer>(container);
     }

@@ -30,11 +30,11 @@ namespace Reni
         Compiler(Compiler const&) = delete;
         Compiler(string const&fileName);
     
-        p(Array<Token>, tokens);
-        p(Ref<Syntax>, syntax);
-        p(CodeBase, code);
-        p(Ref<CodeItem>, main);
-        p(string, cppCode);
+        HW_PR_GET(Array<Token>, tokens);
+        HW_PR_GET(Ref<Syntax>, syntax);
+        HW_PR_GET(CodeBase, code);
+        HW_PR_GET(Ref<CodeItem>, main);
+        HW_PR_GET(string, cppCode);
         ExecutionResult Execute();
 
         static Ref<Syntax> GetSyntaxFromText(string const& text);

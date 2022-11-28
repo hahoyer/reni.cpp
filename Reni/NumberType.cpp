@@ -50,14 +50,14 @@ NumberType::NumberType(WeakRef<ArrayType> const parent)
     HW_ASSERT(!parent->hollow, HW_D_VALUE(parent));
 }
 
-p_implementation(NumberType, Size, size){return parent.size;};
-p_implementation(NumberType, WeakRef<Global>, global){return parent.global;};
-p_implementation(NumberType, Array<string>,DumpData){ return{HW_D_VALUE(parent)}; };
+HW_PR_IMPL_GETTER(NumberType, Size, size){return parent.size;};
+HW_PR_IMPL_GETTER(NumberType, WeakRef<Global>, global){return parent.global;};
+HW_PR_IMPL_GETTER(NumberType, Array<string>,DumpData){ return{HW_D_VALUE(parent)}; };
 
 
-p_implementation(NumberType, string, DumpShort)
+HW_PR_IMPL_GETTER(NumberType, string, DumpShort)
 {
-    return p_base_name(DumpShort) + " size=" + size.DumpShort;
+    return HW_PR_BASE_GETTER_NAME(DumpShort) + " size=" + size.DumpShort;
 }
 
 SearchResult<Feature> NumberType::DeclarationsForType(DeclarationType const& target) const

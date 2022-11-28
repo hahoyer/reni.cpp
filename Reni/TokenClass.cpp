@@ -38,7 +38,7 @@ Ref<Syntax> const DefineableToken::CreateSyntax(Optional<Ref<Syntax>> const left
     return new ExpressionSyntax(*this, left, part, right);
 };
 
-p_virtual_header_implementation(DefineableToken, int, priority);
+HW_PR_VIRTUAL_GETTER_WRAPPER(DefineableToken, int, priority);
 
 tc_Search_implementation(InstanceToken, TypeType);
 tc_Search_implementation(PlusToken, NumberType);

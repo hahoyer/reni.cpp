@@ -41,10 +41,10 @@ function<Optional<size_t> (const std::string&)> HWLib::Find(std::string expected
 }
 
 
-p_implementation(String, char const*, RawData) { return _data.c_str(); }
+HW_PR_IMPL_GETTER(String, char const*, RawData) { return _data.c_str(); }
 
 
-p_implementation(String, char*, RawDataCopy)
+HW_PR_IMPL_GETTER(String, char*, RawDataCopy)
 {
   const auto result = new char[Count + 1];
   const auto data = _data.c_str();
@@ -54,7 +54,7 @@ p_implementation(String, char*, RawDataCopy)
 }
 
 
-p_implementation(String, std::size_t, HashCode) { return std::hash<std::string>()(_data); };
+HW_PR_IMPL_GETTER(String, std::size_t, HashCode) { return std::hash<std::string>()(_data); };
 
 
 string CharQuote(const char character)
@@ -220,7 +220,7 @@ public:
       , _index(0) { }
 
 protected:
-  p_function(bool, IsValid) override
+  HW_PR_DECL_GETTER(bool, IsValid) override
   {
     return _index < _parent.size();
   }

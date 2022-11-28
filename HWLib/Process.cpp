@@ -24,7 +24,7 @@ public:
 
     Pipe();
     ~Pipe();
-    p_mutable(string, Data);
+    HW_PR_VAR(string, Data);
 
   private:
     static void CloseHandle(HANDLE& handle);
@@ -59,10 +59,10 @@ public:
   string data{};
   string errorData{};
   int Result = 0;
-  p_mutable(bool, IsValid) { return isValid; }
+  HW_PR_VAR(bool, IsValid) { return isValid; }
 };
 
-p_mutator_implementation(Process::internal, bool, IsValid)
+HW_PR_IMPL_SETTER(Process::internal, bool, IsValid)
 {
   if(value)
     Ensure();
@@ -88,7 +88,7 @@ Process::internal::Pipe::~Pipe()
   CloseHandle(ReadHandle);
 }
 
-p_implementation(Process::internal::Pipe, string, Data)
+HW_PR_IMPL_GETTER(Process::internal::Pipe, string, Data)
 {
   CloseHandle(WriteHandle);
   string result;
@@ -104,7 +104,7 @@ p_implementation(Process::internal::Pipe, string, Data)
   }
 }
 
-p_mutator_implementation(Process::internal::Pipe, string, Data)
+HW_PR_IMPL_SETTER(Process::internal::Pipe, string, Data)
 {
   DWORD bytesWritten;
   WriteFile(WriteHandle, value.c_str(), static_cast<DWORD>(value.size()), &bytesWritten, nullptr);
@@ -172,19 +172,19 @@ void Process::internal::Reset()
 Process::Process(const string& command) : _internal(new internal(command)) {};
 Process::Process(const string& applicationName, const string& command) : _internal(new internal(applicationName, command)) {};
 
-p_implementation(Process, string, data)
+HW_PR_IMPL_GETTER(Process, string, data)
 {
   const_cast<Process&>(*this)._internal->IsValid = true;
   return _internal->data;
 };
 
-p_implementation(Process, string, errorData)
+HW_PR_IMPL_GETTER(Process, string, errorData)
 {
   const_cast<Process&>(*this)._internal->IsValid = true;
   return _internal->errorData;
 };
 
-p_implementation(Process, int, result)
+HW_PR_IMPL_GETTER(Process, int, result)
 {
   const_cast<Process&>(*this)._internal->IsValid = true;
   return _internal->Result;

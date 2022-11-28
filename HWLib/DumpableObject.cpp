@@ -11,80 +11,83 @@
 using namespace HWLib;
 using namespace std;
 
-DumpableObject::DumpableObject() 
-: isDumpStringValid(false)
-, dumpString("")
-, dumpShortString("")
-, isInDump(false)
-, SetDumpStringToDo(nullptr)
+DumpableObject::DumpableObject()
+  : isDumpStringValid(false)
+    , dumpString("")
+    , dumpShortString("")
+    , isInDump(false)
+    , SetDumpStringToDo(nullptr)
 {};
 
-DumpableObject::DumpableObject(DumpableObject const&other)
-: isDumpStringValid(other.isDumpStringValid)
-, dumpString(other.dumpString)
-, dumpShortString(other.dumpShortString)
-, isInDump(false)
-, SetDumpStringToDo(nullptr)
+DumpableObject::DumpableObject(DumpableObject const& other)
+  : isDumpStringValid(other.isDumpStringValid)
+    , dumpString(other.dumpString)
+    , dumpShortString(other.dumpShortString)
+    , isInDump(false)
+    , SetDumpStringToDo(nullptr)
 {};
 
 
-DumpableObject::~DumpableObject(){
-    SetDumpStringQueueEntry::Remove(SetDumpStringToDo);
+DumpableObject::~DumpableObject()
+{
+  SetDumpStringQueueEntry::Remove(SetDumpStringToDo);
 }
 
 bool DumpableObject::EnableSetDumpString = false;
 bool DumpableObject::EnableSetDumpStringAsync = true;
 
-void DumpableObject::SetDumpString(){
-    if(!HW_CONSOLE.IsDebuggerPresent)
-        return;
-    
-    if(!EnableSetDumpString)
-        return;
-    
-    if(EnableSetDumpStringAsync)
-        SetDumpStringToDo = SetDumpStringQueueEntry::Insert(*this);
-    else
-        SetDumpStringWorker();
+void DumpableObject::SetDumpString()
+{
+  if(!HW_CONSOLE.IsDebuggerPresent)
+    return;
+
+  if(!EnableSetDumpString)
+    return;
+
+  if(EnableSetDumpStringAsync)
+    SetDumpStringToDo = SetDumpStringQueueEntry::Insert(*this);
+  else
+    SetDumpStringWorker();
 }
 
-void DumpableObject::SetDumpStringQueueEntryWait(){
-    SetDumpStringQueueEntry::Wait();
+void DumpableObject::SetDumpStringQueueEntryWait()
+{
+  SetDumpStringQueueEntry::Wait();
 }
 
 string DumpableObject::SetDumpStringWorker() const
 {
-    dumpString = DumpLong.c_str();
-    dumpShortString = DumpShort.c_str();
-    isDumpStringValid = true;
-    return dumpString;
+  dumpString = DumpLong.c_str();
+  dumpShortString = DumpShort.c_str();
+  isDumpStringValid = true;
+  return dumpString;
 }
 
-p_implementation(DumpableObject, string, Dump){
-    return DumpLong;
+HW_PR_IMPL_GETTER(DumpableObject, string, Dump)
+{
+  return DumpLong;
 }
 
-p_virtual_header_implementation(DumpableObject, string, DumpHeader);
+HW_PR_VIRTUAL_GETTER_WRAPPER(DumpableObject, string, DumpHeader);
+HW_PR_IMPL_GETTER(DumpableObject, string, DumpHeader) { return DumpTypeName(*this); };
 
-p_implementation(DumpableObject, string, DumpHeader){return HWLib::DumpTypeName(*this);};
+HW_PR_IMPL_GETTER(DumpableObject, string, DumpLong)
+{
+  auto result = DumpHeader;
+  Array<string> dataResult{"..."};
 
-p_implementation(DumpableObject, string, DumpLong){
-    auto result = DumpHeader;
-    Array<string> dataResult { "..." };
+  if(!isInDump)
+  {
+    LevelValue<bool> inDump(isInDump, true);
+    dataResult = DumpData;
+  }
 
-    if (!isInDump)
-    {
-        LevelValue<bool> inDump (isInDump, true);
-        dataResult = DumpData;
-    }
-    
-    return DumpHeader + String::Surround("{", dataResult, "}");
+  return DumpHeader + String::Surround("{", dataResult, "}");
 };
 
-p_virtual_implementation(DumpableObject, string, DumpShort){
-    return DumpHeader;
-};
+HW_PR_VIRTUAL_GETTER_WRAPPER(DumpableObject, string, DumpShort);
+HW_PR_IMPL_GETTER(DumpableObject, string, DumpShort) { return DumpHeader; };
 
-p_virtual_header_implementation(DumpableObject, Array<string>, DumpData);
+HW_PR_VIRTUAL_GETTER_WRAPPER(DumpableObject, Array<string>, DumpData);
 
 #include "TemplateInstances.h"

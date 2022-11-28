@@ -19,10 +19,10 @@ namespace Reni
         WeakRef<Global> _global;
     public:
         RootContext();
-        ThisRef;
+        HW_PR_THISREF;
     private:
-        p_function(WeakRef<FunctionCallContext>, functionContext) override{ HW_BREAK_AND_THROW; };
-        p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(Array<string>,DumpData) override;
+        HW_PR_DECL_GETTER(WeakRef<FunctionCallContext>, functionContext) override{ HW_BREAK_AND_THROW; };
+        HW_PR_DECL_GETTER(WeakRef<Global>, global) override{ return _global; };
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override;
     };
 }

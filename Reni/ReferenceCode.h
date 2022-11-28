@@ -13,9 +13,9 @@ namespace Reni
     public:
         explicit ReferenceCode(ContainerContext const& value);
     private:
-        p_function(Array<string>, DumpData) override;
-        p_function(Size, size) override{return Size::Address;}
-        p_function(Closure, closure) override;
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override;
+        HW_PR_DECL_GETTER(Size, size) override{return Size::Address;}
+        HW_PR_DECL_GETTER(Closure, closure) override;
 
         Ref<CodeItem> ReferencePlus(Size offset) const override;
         Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;

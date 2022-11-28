@@ -3,9 +3,9 @@
 
 #include "Array.h"
 #include "DefaultOperators.h"
-#include "Properties.h"
 #include <string>
 #include "ExtensionMethodBase.h"
+#include "Properties.h"
 
 namespace HWLib
 {
@@ -16,6 +16,7 @@ namespace HWLib
   {
     using thisType = String;
     std::string _data;
+
   public:
     String();
     String(char data);
@@ -26,12 +27,12 @@ namespace HWLib
 
     HW_DO_PLACEMENT_ASSIGN;
 
-    p(size_t, Count) { return _data.length(); }
-    p(size_t, HashCode);
-    p(String, Quote) { return GetQuote(Data); };
-    p(std::string, Data) { return _data; };
-    p(char const*, RawData);
-    p(char *, RawDataCopy);
+    HW_PR_GET(size_t, Count) { return _data.length(); }
+    HW_PR_GET(size_t, HashCode);
+    HW_PR_GET(String, Quote) { return GetQuote(Data); };
+    HW_PR_GET(std::string, Data) { return _data; };
+    HW_PR_GET(char const*, RawData);
+    HW_PR_GET(char *, RawDataCopy);
 
     static bool BeginsWith(const std::string& target, std::string expected);
     static auto CastLeft(const std::string& target, size_t count, char padChar) -> std::string;
@@ -96,7 +97,12 @@ namespace HWLib
   inline auto Contains(char expected, size_t start = 0) { return Pivot(&String::Contains1, expected, start); }
   inline auto Contains(std::string expected, size_t start = 0) { return Pivot(&String::Contains, expected, start); }
   inline auto EndsWith(std::string expected) { return Pivot(&String::EndsWith, expected); }
-  inline auto Replace(std::string oldValue, std::string newValue) { return Pivot(&String::Replace, oldValue, newValue); }
+
+  inline auto Replace(std::string oldValue, std::string newValue)
+  {
+    return Pivot(&String::Replace, oldValue, newValue);
+  }
+
   function<Optional<size_t> (const std::string&)> Find(std::string expected, size_t start = 0);
   inline auto Stringify(std::string delimiter) { return Pivot(&String::Stringify, delimiter); }
 }

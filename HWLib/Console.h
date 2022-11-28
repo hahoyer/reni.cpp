@@ -17,12 +17,12 @@ namespace HWLib
     Console();
     void Write(const std::string& text, bool isLine = false) const;
     void WriteLine(const std::string& text) const { Write(text, true); };
-    bool BreakTrace(const std::string& condition, const std::string& fileName, int line, const std::string& data);
+    bool BreakTrace(const std::string& condition, const std::string& fileName, int line, const std::string& data) const;
     template <typename T>
     void FunctionTrace(const std::string& function, const T& object);
 
-    p_nonconst(LevelValue<int>, IndentLevel);
-    p(bool, IsDebuggerPresent);
+    HW_PR_MUTABLE_GET(LevelValue<int>, IndentLevel);
+    HW_PR_GET(bool, IsDebuggerPresent);
     static Console Instance;
   };
 

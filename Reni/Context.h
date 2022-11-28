@@ -37,11 +37,11 @@ namespace Reni
         using thisType = Context;
 
     public:
-        p_virtual(bool, isRecursion) { return false; };
-        p_virtual(WeakRef<Global>, global) = 0;
-        p_virtual(WeakRef<FunctionCallContext>, functionContext) = 0;
-        p_virtual(WeakRef<RecursionContext>, recursionContext) = 0;
-        p(int, alignBits) { return 3; };
+        HW_PR_VIRTUAL_GET(bool, isRecursion) { return false; };
+        HW_PR_VIRTUAL_GET(WeakRef<Global>, global) = 0;
+        HW_PR_VIRTUAL_GET(WeakRef<FunctionCallContext>, functionContext) = 0;
+        HW_PR_VIRTUAL_GET(WeakRef<RecursionContext>, recursionContext) = 0;
+        HW_PR_GET(int, alignBits) { return 3; };
 
         virtual WeakRef<Type> const FunctionType(FunctionSyntax const& body) const = 0;
         virtual ResultData const ReferenceResult(Category category, External::Function const& external) const;
@@ -76,7 +76,7 @@ namespace Reni
             return *ff;
         };
     private:
-        p_function(WeakRef<RecursionContext>, recursionContext) override;
+        HW_PR_DECL_GETTER(WeakRef<RecursionContext>, recursionContext) override;
     };
 
     class ChildContext : public RegularContext
@@ -93,12 +93,12 @@ namespace Reni
         {
         }
 
-        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(parent)}; }
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override{ return{HW_D_VALUE(parent)}; }
 
         SearchResult<AccessFeature> const DeclarationsForType(DefineableToken const& token) const override;;
     private:
-        p_function(WeakRef<Global>, global) override{ return parent.global; };
-        p_function(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
+        HW_PR_DECL_GETTER(WeakRef<Global>, global) override{ return parent.global; };
+        HW_PR_DECL_GETTER(WeakRef<FunctionCallContext>, functionContext) override{ return parent.functionContext; };
     };
 }
 

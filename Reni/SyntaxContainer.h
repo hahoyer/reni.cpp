@@ -22,13 +22,13 @@ namespace Reni
         SyntaxContainer(SyntaxContainer const&) = delete;
         virtual ~SyntaxContainer(){};
 
-        ThisRef;
+        HW_PR_THISREF;
 
         void Add(Ref<Syntax> const& definitionTarget, Ref<Syntax> const&value);
         void Add(Optional<Ref<Syntax>> const& value);
     private:
-        p_function(string, SmartDump) override;
-        p_function(int, priority) override{ return -12; }
+        HW_PR_DECL_GETTER(string, SmartDump) override;
+        HW_PR_DECL_GETTER(int, priority) override{ return -12; }
         void AddTo(SyntaxContainer&) const override;
         ResultData GetResultData(const Context& context, Category const& category) const override;
         WeakRef<Reni::Type> GetType(Context const& context) const;

@@ -42,7 +42,7 @@ class ArgToken final : public TerminalTokenClass {
     using baseType = TerminalTokenClass;
     using thisType = ArgToken;
 public:
-    p(string, name){ return "^"; };
+    HW_PR_GET(string, name){ return "^"; };
 
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const;
 
@@ -58,7 +58,7 @@ class NewValueToken final : public TerminalTokenClass {
     using baseType = TerminalTokenClass;
     using thisType = NewValueToken;
 public:
-    p(string, name){ return "new_value"; };
+    HW_PR_GET(string, name){ return "new_value"; };
     ResultData const GetResultData(Context const&context, Category category, SourcePart const&)const{
         return context.ReferenceResult(category, External::Function::NewValue::Instance);
     }
@@ -73,7 +73,7 @@ class ElseToken final : public InfixTokenClass {
     using baseType = InfixTokenClass;
     using thisType = ElseToken;
 public:
-    p(string, name){ return "else"; };
+    HW_PR_GET(string, name){ return "else"; };
 
 private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const& part, Ref<Syntax>const right)const override final
@@ -88,7 +88,7 @@ class ThenToken final : public InfixTokenClass {
     using baseType = InfixTokenClass;
     using thisType = ThenToken;
 public:
-    p(string, name){ return "then"; };
+    HW_PR_GET(string, name){ return "then"; };
 
 private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
@@ -101,7 +101,7 @@ class Colon final : public InfixTokenClass{
     typedef InfixTokenClass baseType;
     typedef Colon thisType;
 public:
-    p(string, name){return ":";}
+    HW_PR_GET(string, name){return ":";}
 private:
     Ref<Syntax> const Create(Ref<Syntax>const left, SourcePart const&part, Ref<Syntax>const right)const override final{
         Ref<SyntaxContainer> result = new SyntaxContainer(part);
@@ -131,7 +131,7 @@ private:
 class TypeToken final : public SuffixTokenClass{
     typedef SuffixTokenClass baseType; typedef TypeToken thisType;
 public:
-    p(string, name){ return "type"; }
+    HW_PR_GET(string, name){ return "type"; }
 private:
     Ref<Syntax > const Create(Ref<Syntax >const left, SourcePart const&part)const  override final{
         return left->TypeOperator(part);

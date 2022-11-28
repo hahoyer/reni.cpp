@@ -93,7 +93,7 @@ namespace Reni
     bool IsConsistent(ResultData const& other) const;
     ResultData operator&(Category const& other) const;
     bool operator==(thisType const& other) const;
-    p(Category, complete)
+    HW_PR_GET(Category, complete)
     {
       return Category::Instance(hollow.IsValid, size.IsValid, !code.IsEmpty, !type.IsEmpty, closure.IsValid);
     }
@@ -101,10 +101,10 @@ namespace Reni
     ResultData Replace(ReplaceVisitor const& arg) const;
     ResultData Replace(External const& tag, ResultCache const& result) const;
     ResultData Convert(Type const& destination) const;
-    p(ResultData, asFunctionResult);
+    HW_PR_GET(ResultData, asFunctionResult);
 
   private:
-    p_function(Array<string>, DumpData) override;
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override;
     void AssertValid() const;
     static Optional<bool> ReplenishHollow(Category const& category, function<Ref<CodeItem>()> getCode,
                                           function<WeakRef<Type>()> getType);

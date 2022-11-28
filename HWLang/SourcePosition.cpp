@@ -22,11 +22,11 @@ SourcePosition::SourcePosition(Source const& source, size_t position)
 }
 
 
-p_implementation(SourcePosition, bool, IsEnd){
+HW_PR_IMPL_GETTER(SourcePosition, bool, IsEnd){
     return _source->IsEnd(_position);
 }
 
-p_implementation(SourcePosition, Optional<size_t>, End){
+HW_PR_IMPL_GETTER(SourcePosition, Optional<size_t>, End){
     if (IsEnd)
         return 0;
     return Optional<size_t>(
@@ -34,7 +34,7 @@ p_implementation(SourcePosition, Optional<size_t>, End){
     ;
 }
 
-p_implementation(SourcePosition, char, First){
+HW_PR_IMPL_GETTER(SourcePosition, char, First){
     if (IsEnd)
         return 0;
     return Part(1)[0];
@@ -54,21 +54,21 @@ bool SourcePosition::BeginsWith(string const&value) const
     return _source->BeginsWith(_position, value);
 }
 
-p_implementation(SourcePosition, string, DumpCurrent){
+HW_PR_IMPL_GETTER(SourcePosition, string, DumpCurrent){
     return IsEnd ? string() : string(1,First);
 }
 
 const size_t DumpWidth = 100;
 
-p_implementation(SourcePosition, string, DumpAfterCurrent){
+HW_PR_IMPL_GETTER(SourcePosition, string, DumpAfterCurrent){
     return _source->DumpAfterCurrent(_position, 1, DumpWidth);
 }
 
-p_implementation(SourcePosition, string, DumpBeforeCurrent){
+HW_PR_IMPL_GETTER(SourcePosition, string, DumpBeforeCurrent){
     return _source->DumpBeforeCurrent(_position, DumpWidth);
 }
 
-p_implementation(SourcePosition, Array<string>, DumpData){
+HW_PR_IMPL_GETTER(SourcePosition, Array<string>, DumpData){
     auto result = (_source->DumpAroundCurrent(_position, 1, DumpWidth))|Quote();
     return{ result };
 }
@@ -79,32 +79,32 @@ SourcePart::operator string const()const{
     return _source->Part(_position, _count);
 }
 
-p_implementation(SourcePart, string, DumpCurrent){
+HW_PR_IMPL_GETTER(SourcePart, string, DumpCurrent){
     return *this;
 }
 
-p_implementation(SourcePart, bool, IsStart){
+HW_PR_IMPL_GETTER(SourcePart, bool, IsStart){
     return _position == 0 && _count == 0;
 }
 
-p_implementation(SourcePart, bool, IsEnd){
+HW_PR_IMPL_GETTER(SourcePart, bool, IsEnd){
     return _source->IsEnd(_position);
 }
 
-p_implementation(SourcePart, string, DumpAfterCurrent){
+HW_PR_IMPL_GETTER(SourcePart, string, DumpAfterCurrent){
     return _source->DumpAfterCurrent(_position, _count, DumpWidth);
 }
 
-p_implementation(SourcePart, string, DumpBeforeCurrent){
+HW_PR_IMPL_GETTER(SourcePart, string, DumpBeforeCurrent){
     return _source->DumpBeforeCurrent(_position, DumpWidth);
 }
 
 
-p_implementation(SourcePart, Array<string>, DumpData){
+HW_PR_IMPL_GETTER(SourcePart, Array<string>, DumpData){
     auto result = (_source->DumpAroundCurrent(_position, _count, DumpWidth))|Quote();
     return{ result };
 }
 
-p_implementation(SourcePart, string, DumpShort){
+HW_PR_IMPL_GETTER(SourcePart, string, DumpShort){
     return _source->DumpAroundCurrent(_position, _count, 10);
 }

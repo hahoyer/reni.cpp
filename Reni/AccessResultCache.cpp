@@ -15,6 +15,6 @@ AccessResultCache::AccessResultCache(AccessData const&data)
 {
 }
 
-p_implementation(AccessResultCache, Array<string>,DumpData){ return data->p_name(DumpData)(); }
+HW_PR_IMPL_GETTER(AccessResultCache, Array<string>,DumpData){ return data->HW_PR_GETTER_NAME(DumpData)(); }
 
 ResultData AccessResultCache::GetResultData(Category const&category) const{return data->GetResultData(category);}

@@ -35,14 +35,14 @@ namespace HWLang{
             SetDumpString();
         };
 
-        p(bool, IsStart);
-        p(bool, IsEnd);
+        HW_PR_GET(bool, IsStart);
+        HW_PR_GET(bool, IsEnd);
         operator string const()const;
     private:
-        p_function(Array<string>,DumpData) override;
-        p_function(string, DumpShort) override;
-        p(string, DumpCurrent);
-        p(string, DumpAfterCurrent);
-        p(string, DumpBeforeCurrent);
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override;
+        HW_PR_DECL_GETTER(string, DumpShort) override;
+        HW_PR_GET(string, DumpCurrent);
+        HW_PR_GET(string, DumpAfterCurrent);
+        HW_PR_GET(string, DumpBeforeCurrent);
     };
 }

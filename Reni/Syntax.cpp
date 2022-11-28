@@ -29,14 +29,14 @@ public:
         SetDumpString();
     }
 
-    ThisRef;
+    HW_PR_THISREF;
 private:
-    p_function(string, SmartDump) override{
+    HW_PR_DECL_GETTER(string, SmartDump) override{
         return
         target->SmartDumpFrame(priority)
         + " type";
     }
-    p_function(int, priority) override{ return 0; }
+    HW_PR_DECL_GETTER(int, priority) override{ return 0; }
 
     ResultData GetResultData(const Context& context, Category const& category) const override;
 };
@@ -49,10 +49,10 @@ ResultData TypeOperatorSyntax::GetResultData(const Context& context, Category co
     return context.global->voidType.GetResultDataEmpty(category);
 }
 
-p_virtual_header_implementation(Syntax, string, SmartDump);
-p_virtual_header_implementation(Syntax, int, priority);
+HW_PR_VIRTUAL_GETTER_WRAPPER(Syntax, string, SmartDump);
+HW_PR_VIRTUAL_GETTER_WRAPPER(Syntax, int, priority);
 
-p_implementation(Syntax, Array<string>,DumpData)
+HW_PR_IMPL_GETTER(Syntax, Array<string>,DumpData)
 {
     return{SmartDumpFrame(priority)};
 }
@@ -142,7 +142,7 @@ Ref<Syntax> Syntax::TypeOperator(SourcePart const& part) const
     return new TypeOperatorSyntax(thisRef, part);
 }
 
-p_implementation(InfixSyntax, string, SmartDump)
+HW_PR_IMPL_GETTER(InfixSyntax, string, SmartDump)
 {
     return
         left->SmartDumpFrame(priority)
@@ -153,7 +153,7 @@ p_implementation(InfixSyntax, string, SmartDump)
 };
 
 
-p_implementation(PrefixSyntax, string, SmartDump)
+HW_PR_IMPL_GETTER(PrefixSyntax, string, SmartDump)
 {
     return
         string(part)
@@ -162,7 +162,7 @@ p_implementation(PrefixSyntax, string, SmartDump)
 };
 
 
-p_implementation(SuffixSyntax, string, SmartDump)
+HW_PR_IMPL_GETTER(SuffixSyntax, string, SmartDump)
 {
     return
         left->SmartDumpFrame(priority)

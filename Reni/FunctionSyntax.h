@@ -22,11 +22,11 @@ namespace Reni{
             SetDumpString();
         }
 
-        ThisRef;
+        HW_PR_THISREF;
 
     private:
-        p_function(string, SmartDump) override; 
-        p_function(int, priority) override{ return 0; }
+        HW_PR_DECL_GETTER(string, SmartDump) override; 
+        HW_PR_DECL_GETTER(int, priority) override{ return 0; }
 
         ResultData GetResultData(const Context& context, Category const& category) const override;
     };

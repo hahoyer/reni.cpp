@@ -32,17 +32,17 @@ namespace Reni
         SearchResult<Feature> const Declarations(TypeType const&) const override;
         SearchResult<Feature> const Declarations(EnableCutType const&) const override;
         SearchResult<Feature> const Declarations(AccessType const&) const override;
-        p_virtual(int, priority) { return 0; };
+        HW_PR_VIRTUAL_GET(int, priority) { return 0; };
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;;
 
-        p_function(Array<string>, DumpData) override
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override
         {
             auto result = name|Quote();
             return{result};
         };
 
-        p_function(string, DumpShort) override{return Dump;};
+        HW_PR_DECL_GETTER(string, DumpShort) override{return Dump;};
     };
 
 

@@ -39,9 +39,9 @@ Category::Category()
 {
 };
 
-p_implementation(Category, Category, typed){return *this | Type;}
+HW_PR_IMPL_GETTER(Category, Category, typed){return *this | Type;}
 
-p_implementation(Category, Category, replenished)
+HW_PR_IMPL_GETTER(Category, Category, replenished)
 {
     auto result = *this;
     if (result.hasCode)
@@ -121,7 +121,7 @@ bool Category::operator<=(Category const& other)const
     return true;
 }
 
-p_implementation(Category, Array<string>, DumpData)
+HW_PR_IMPL_GETTER(Category, Array<string>, DumpData)
 {
   const auto result =
         _({

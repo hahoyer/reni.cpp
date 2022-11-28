@@ -149,7 +149,7 @@ public:
       Sleep(50);
   };
 
-  p(string, Value)
+  HW_PR_GET(string, Value)
   {
     return value;
   };

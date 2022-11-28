@@ -1,46 +1,53 @@
 #pragma once
 
-namespace HWLang{
-    class SourcePart; 
+namespace HWLang
+{
+  class SourcePart;
 
-    template<class TTokenClass>
-    class Token final : public DumpableObject{
-        using baseType = DumpableObject;
-        using thisType = Token;
-    public:
-        typedef TTokenClass TokenClass;
-        
-        TokenClass const&Class;
-        SourcePart const Part;
+  template <class TTokenClass>
+  class Token final : public DumpableObject
+  {
+    using baseType = DumpableObject;
+    using thisType = Token;
 
-        Token(TokenClass const&class_, SourcePart const& part)
-            : Class(class_)
-            , Part(part){
-            SetDumpString();
-        };
+  public:
+    typedef TTokenClass TokenClass;
 
-        HW_DO_PLACEMENT_ASSIGN;
+    TokenClass const& Class;
+    SourcePart const Part;
 
-        p(string, Name){
-            if (IsEnd)
-                return PrioTableConst::End;
-            if (IsStart)
-                return PrioTableConst::Start;
-            return Part;
-        };
-
-        p(bool, IsEnd){ return Part.IsEnd; };
-        p(bool, IsStart){ return Part.IsStart; };
-
-    private:
-        p_function(Array<string>,DumpData) override{
-            return{
-                HW_D_VALUE(Class),
-                HW_D_VALUE(Part)
-            };
-        };
-        p_function(string,DumpShort) override{
-            return p_base_name(DumpShort) + "{" + Name + "}";
-        };
+    Token(TokenClass const& class_, SourcePart const& part)
+      : Class(class_)
+        , Part(part)
+    {
+      SetDumpString();
     };
-}   
+
+    HW_DO_PLACEMENT_ASSIGN;
+
+    HW_PR_GET(string, Name)
+    {
+      if(IsEnd)
+        return End;
+      if(IsStart)
+        return Start;
+      return Part;
+    };
+
+    HW_PR_GET(bool, IsEnd) { return Part.IsEnd; };
+    HW_PR_GET(bool, IsStart) { return Part.IsStart; };
+
+  private:
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override
+    {
+      return {
+        HW_D_VALUE(Class),
+        HW_D_VALUE(Part)
+      };
+    };
+    HW_PR_DECL_GETTER(string, DumpShort) override
+    {
+      return HW_PR_BASE_GETTER_NAME(DumpShort) + "{" + Name + "}";
+    };
+  };
+}

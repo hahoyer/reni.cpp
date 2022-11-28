@@ -20,7 +20,7 @@ namespace Reni
     public:
         explicit NumberType(WeakRef<ArrayType> const parent);
         NumberType(NumberType const&) = delete;
-        ThisRef;
+        HW_PR_THISREF;
 
         template<class TTokenClass>
         SearchResult<Feature> const DeclarationsForType() const;
@@ -28,12 +28,12 @@ namespace Reni
         SearchResult<Feature> const Declarations(EnableCutType const& provider) const override;
         WeakRef<NumberType> const Resize(size_t newSize)const;
     private:
-        p_function(bool, hollow) { return false; };
-        p_function(Size, size) override;
-        p_function(WeakRef<Global>, global) override;
-        p_function(Array<string>, DumpData) override;
-        p_function(string, DumpShort) override;
-        p_function(Optional<WeakRef<NumberType>>, asNumberType)override{ return WeakRef<NumberType>(thisRef); }
+        HW_PR_DECL_GETTER(bool, hollow) { return false; };
+        HW_PR_DECL_GETTER(Size, size) override;
+        HW_PR_DECL_GETTER(WeakRef<Global>, global) override;
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override;
+        HW_PR_DECL_GETTER(string, DumpShort) override;
+        HW_PR_DECL_GETTER(Optional<WeakRef<NumberType>>, asNumberType)override{ return WeakRef<NumberType>(thisRef); }
 
         SearchResult<Feature> DeclarationsForType(DeclarationType const& token) const override;
 

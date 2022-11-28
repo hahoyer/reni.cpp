@@ -31,10 +31,10 @@ namespace Reni
                 && isSetter == other.isSetter;
         };
 
-        p(string,cppCode);
-        p(string, cppDeclaration);
+        HW_PR_GET(string,cppCode);
+        HW_PR_GET(string, cppDeclaration);
     private:
-        p_function(Array<string>, DumpData) override
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override
         {
             return
                 {

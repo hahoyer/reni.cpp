@@ -15,9 +15,9 @@ namespace HWLang
         SourcePosition(Source const& source, size_t position = 0);
         virtual ~SourcePosition(){};
 
-        p(Optional<size_t>, End);
-        p(bool, IsEnd);
-        p(char, First);
+        HW_PR_GET(Optional<size_t>, End);
+        HW_PR_GET(bool, IsEnd);
+        HW_PR_GET(char, First);
 
         void operator+=(size_t index)
         {
@@ -43,9 +43,9 @@ namespace HWLang
 
         bool BeginsWith(string const&value) const;
     private:
-        p_function(HWLib::Array<std::string>,DumpData) override;
-        p(std::string, DumpCurrent);
-        p(std::string, DumpAfterCurrent);
-        p(std::string, DumpBeforeCurrent);
+        HW_PR_DECL_GETTER(HWLib::Array<std::string>,DumpData) override;
+        HW_PR_GET(std::string, DumpCurrent);
+        HW_PR_GET(std::string, DumpAfterCurrent);
+        HW_PR_GET(std::string, DumpBeforeCurrent);
     };
 }

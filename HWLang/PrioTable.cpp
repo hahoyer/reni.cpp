@@ -92,7 +92,7 @@ Tag PrioTable::Relation(const string& newTokenName, const string& recentTokenNam
   return Relation(Index(newTokenName), Index(recentTokenName));
 }
 
-p_implementation(PrioTable, Array<string>, DumpData)
+HW_PR_IMPL_GETTER(PrioTable, Array<string>, DumpData)
 {
   if(Count == 0)
     return {HW_D_VALUE(Count)};

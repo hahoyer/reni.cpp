@@ -1,54 +1,55 @@
 #pragma once
 
-#define p_name(NAME) get_##NAME
-#define p_mutator_name(NAME) set_##NAME
+#define HW_PR_GETTER_NAME(NAME) get_##NAME
+#define HW_PR_SETTER_NAME(NAME) set_##NAME
 
-#define p_definition(TYPE, NAME) _declspec ( property ( get = p_name(NAME)) ) TYPE NAME
-#define p_mutator_definition(TYPE, NAME) _declspec ( property ( put = p_mutator_name(NAME)) ) TYPE NAME
-#define p_mutable_definition(TYPE, NAME) _declspec ( property ( get = p_name(NAME), put = p_mutator_name(NAME)) ) TYPE NAME
-#define p_virtual_definition(TYPE, NAME) _declspec ( property ( get = p_virtual_name(NAME)) ) TYPE NAME
-#define p_virtual_mutator_definition(TYPE, NAME) _declspec ( property ( put = p_virtual_mutator_name(NAME)) ) TYPE NAME
+#define HW_PR_GETTER_SPECIFICATION(TYPE, NAME) _declspec ( property ( get = HW_PR_GETTER_NAME(NAME)) ) TYPE NAME
+#define HW_PR_SETTER_SPECIFICATION(TYPE, NAME) _declspec ( property ( put = HW_PR_SETTER_NAME(NAME)) ) TYPE NAME
+#define HW_PR_VARIABLE_SPECIFICATION(TYPE, NAME) _declspec ( property ( get = HW_PR_GETTER_NAME(NAME), put = HW_PR_SETTER_NAME(NAME)) ) TYPE NAME
 
-#define p_function(TYPE, NAME) TYPE const p_name(NAME)()const
-#define p_nonconst_function(TYPE, NAME) TYPE p_name(NAME)()
-#define p_mutator_function(TYPE, NAME) void p_mutator_name(NAME)(TYPE const&value)
+// inline implementations
+#define HW_PR_DECL_GETTER(TYPE, NAME) TYPE HW_PR_GETTER_NAME(NAME)()const
+#define HW_PR_DECL_MUTABLE_GETTER(TYPE, NAME) TYPE HW_PR_GETTER_NAME(NAME)()
+#define HW_PR_DECL_SETTER(TYPE, NAME) void HW_PR_SETTER_NAME(NAME)(TYPE const&value)
 
-#define p_nonconst_implementation(CLASS, TYPE, NAME) TYPE CLASS::p_name(NAME)()
-#define p_implementation(CLASS, TYPE, NAME) TYPE const CLASS::p_name(NAME)()const
-#define p_mutator_implementation(CLASS, TYPE, NAME) void CLASS::p_mutator_name(NAME)(TYPE const&value)
+// implementations outside class
+#define HW_PR_IMPL_GETTER(CLASS, TYPE, NAME) TYPE CLASS::HW_PR_GETTER_NAME(NAME)()const
+#define HW_PR_IMPL_MUTABLE_GETTER(CLASS, TYPE, NAME) TYPE CLASS::HW_PR_GETTER_NAME(NAME)()
+#define HW_PR_IMPL_SETTER(CLASS, TYPE, NAME) void CLASS::HW_PR_SETTER_NAME(NAME)(TYPE const&value)
 
-#define p_nonconst(TYPE, NAME) p_definition(TYPE,NAME); p_nonconst_function(TYPE,NAME)
-#define p(TYPE, NAME) p_definition(TYPE,NAME); p_function(TYPE,NAME)
+// specification and function declaration, getter function is at end
+#define HW_PR_GET(TYPE, NAME) HW_PR_GETTER_SPECIFICATION(TYPE,NAME); HW_PR_DECL_GETTER(TYPE,NAME)
+#define HW_PR_MUTABLE_GET(TYPE, NAME) HW_PR_GETTER_SPECIFICATION(TYPE,NAME); HW_PR_DECL_MUTABLE_GETTER(TYPE,NAME)
+#define HW_PR_VAR(TYPE, NAME) HW_PR_VARIABLE_SPECIFICATION(TYPE,NAME); HW_PR_DECL_SETTER(TYPE,NAME); HW_PR_DECL_GETTER(TYPE,NAME)
+// specification and function declaration, setter function is at end
+#define HW_PR_SET(TYPE, NAME) HW_PR_SETTER_SPECIFICATION(TYPE,NAME); HW_PR_DECL_SETTER(TYPE,NAME)
+#define HW_PR_VAR_SETTER(TYPE, NAME) HW_PR_VARIABLE_SPECIFICATION(TYPE,NAME); HW_PR_DECL_GETTER(TYPE,NAME); HW_PR_DECL_SETTER(TYPE,NAME)
 
-#define p_mutator(TYPE, NAME) p_mutator_definition(TYPE,NAME); p_mutator_function(TYPE,NAME)
-#define p_mutable(TYPE, NAME) p_mutable_definition(TYPE,NAME); p_mutator_function(TYPE,NAME); p_function(TYPE,NAME)
-#define p_mutable_set(TYPE, NAME) p_mutable_definition(TYPE,NAME); p_function(TYPE,NAME); p_mutator_function(TYPE,NAME)
 
+// Virtual properties
+#define HW_PR_VIRTUAL_GETTER_NAME(NAME) virtual_get_##NAME
+#define HW_PR_VIRTUAL_SETTER_NAME(NAME) virtual_set_##NAME
 
-#define p_virtual_name(NAME) virtual_get_##NAME
-#define p_virtual_mutator_name(NAME) virtual_set_##NAME
+#define HW_PR_VIRTUAL_GETTER_SPECIFICATION(TYPE, NAME) _declspec ( property ( get = HW_PR_VIRTUAL_GETTER_NAME(NAME)) ) TYPE NAME
+#define HW_PR_VIRTUAL_SETTER_SPECIFICATION(TYPE, NAME) _declspec ( property ( put = HW_PR_VIRTUAL_SETTER_NAME(NAME)) ) TYPE NAME
+#define HW_PR_VIRTUAL_VARIABLE_SPECIFICATION(TYPE, NAME) _declspec ( property ( get = HW_PR_VIRTUAL_GETTER_NAME(NAME), put = HW_PR_VIRTUAL_SETTER_NAME(NAME)) ) TYPE NAME
 
-#define p_virtual_function(TYPE, NAME) TYPE const p_virtual_name(NAME)()const
-#define p_virtual_mutator_function(TYPE, NAME) virtual void p_virtual_mutator_name(NAME)(TYPE const&value)
+#define HW_PR_DECL_VIRTUAL_GETTER(TYPE, NAME) TYPE HW_PR_VIRTUAL_GETTER_NAME(NAME)()const
+#define HW_PR_DECL_VIRTUAL_SETTER(TYPE, NAME) void HW_PR_VIRTUAL_SETTER_NAME(NAME)(TYPE const&value)
 
-#define p_virtual(TYPE, NAME) p_virtual_definition(TYPE,NAME);\
-    p_virtual_function(TYPE,NAME);\
-    virtual p_function(TYPE,NAME)
-#define p_virtual_inline(TYPE, NAME) p_virtual_definition(TYPE,NAME);\
-    p_virtual_function(TYPE,NAME){ return p_name(NAME)(); };\
-    virtual p_function(TYPE,NAME)
+#define HW_PR_VIRTUAL_GET(TYPE, NAME) HW_PR_VIRTUAL_GETTER_SPECIFICATION(TYPE,NAME);\
+    HW_PR_DECL_VIRTUAL_GETTER(TYPE,NAME);\
+    virtual HW_PR_DECL_GETTER(TYPE,NAME)
 
-#define p_virtual_header_implementation_header(CLASS, TYPE, NAME) TYPE const CLASS::p_virtual_name(NAME)()const
-#define p_virtual_header_implementation(CLASS, TYPE, NAME) p_virtual_header_implementation_header(CLASS, TYPE, NAME) { return p_name(NAME)(); };
-#define p_virtual_mutator_header_implementation(CLASS, TYPE, NAME) void CLASS::p_virtual_mutator_name(NAME)(TYPE const&value){p_mutator_name(NAME)(value);}
+#define HW_PR_VIRTUAL_GET_INLINE(TYPE, NAME) HW_PR_VIRTUAL_GETTER_SPECIFICATION(TYPE,NAME);\
+    HW_PR_DECL_VIRTUAL_GETTER(TYPE,NAME){ return HW_PR_GETTER_NAME(NAME)(); };\
+    virtual HW_PR_DECL_GETTER(TYPE,NAME)
 
-#define p_virtual_implementation(CLASS, TYPE, NAME) \
-    p_virtual_header_implementation(CLASS, TYPE, NAME);\
-    p_implementation(CLASS, TYPE, NAME)
+#define HW_PR_VIRTUAL_GETTER_WRAPPER(CLASS, TYPE, NAME) TYPE CLASS::HW_PR_VIRTUAL_GETTER_NAME(NAME)()const { return HW_PR_GETTER_NAME(NAME)(); };
+#define HW_PR_VIRTUAL_SETTER_WRAPPER(CLASS, TYPE, NAME) void CLASS::HW_PR_VIRTUAL_SETTER_NAME(NAME)(TYPE const&value){HW_PR_SETTER_NAME(NAME)(value);}
 
-#define p_base_name(NAME) baseType::get_##NAME()
-
-#define ThisRef p_nonconst(thisType&, thisRef)const{return const_cast<thisType&>(*this);}
-
+// convenient macros
+#define HW_PR_BASE_GETTER_NAME(NAME) baseType::get_##NAME()
+#define HW_PR_THISREF HW_PR_MUTABLE_GET(thisType&, thisRef)const{return const_cast<thisType&>(*this);}
 
 #include "_EditorTemplates.h"

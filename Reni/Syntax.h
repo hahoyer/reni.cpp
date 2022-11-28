@@ -45,7 +45,7 @@ namespace Reni
       HW_BREAK_AND_THROW;
     };
 
-    ThisRef;
+    HW_PR_THISREF;
     Optional<WeakRef<Type>> CachedType(const RegularContext& context) const;
 
     Size GetSize(const Context& context) const;
@@ -61,14 +61,14 @@ namespace Reni
     virtual void AddTo(SyntaxContainer& syntaxContainer) const;
     Ref<Syntax> TypeOperator(const SourcePart& part) const;
 
-    p_virtual(int, priority) = 0;
+    HW_PR_VIRTUAL_GET(int, priority) = 0;
     string SmartDumpFrame(int priority) const;
   protected:
     virtual ResultData GetResultData(const Context& context, Category const& category) const;
-    p_virtual(string, SmartDump) = 0;
+    HW_PR_VIRTUAL_GET(string, SmartDump) = 0;
     friend class ResultFromSyntaxAndContext;
   private:
-    p_function(Array<string>, DumpData) final;
+    HW_PR_DECL_GETTER(Array<string>, DumpData) final;
   };
 
 
@@ -92,7 +92,7 @@ namespace Reni
     }
 
   private:
-    p_function(string, SmartDump) override;
+    HW_PR_DECL_GETTER(string, SmartDump) override;
   };
 
 
@@ -111,7 +111,7 @@ namespace Reni
     }
 
   private:
-    p_function(string, SmartDump) override;
+    HW_PR_DECL_GETTER(string, SmartDump) override;
   };
 
 
@@ -130,6 +130,6 @@ namespace Reni
     }
 
   private:
-    p_function(string, SmartDump) override;
+    HW_PR_DECL_GETTER(string, SmartDump) override;
   };
 };

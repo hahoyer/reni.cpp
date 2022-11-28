@@ -65,7 +65,7 @@ namespace HWLang
         PrioTable Level(TagTable const& subTable, Array<string> const& leftToken,
                         Array<string> const& rightToken) const;
         Tag Relation(string const& newTokenName, string const& recentTokenName) const;
-        p_function(Array<string>,DumpData) override;
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override;
 
         static bool Trace;
 
@@ -73,7 +73,7 @@ namespace HWLang
         Array<string> const tokens{};
         Array<Array<Tag>> const data;
 
-        p(size_t, Count){ return tokens.Count; };
+        HW_PR_GET(size_t, Count){ return tokens.Count; };
 
         size_t Index(string const& name) const;
         Tag Relation(size_t newIndex, size_t recentIndex) const;

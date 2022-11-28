@@ -28,7 +28,7 @@ SyntaxContainer::SyntaxContainer(SourcePart const&part)
     SetDumpString();
 }
 
-p_implementation(SyntaxContainer, string, SmartDump)
+HW_PR_IMPL_GETTER(SyntaxContainer, string, SmartDump)
 {
     return( _({HW_D_VALUE(statements)}) +
         names

@@ -51,7 +51,7 @@ public:
         , syntaxCache(l_(syntax))
     {}
 
-    p(string, cppCode)
+    HW_PR_GET(string, cppCode)
     {
       const auto codes = codeCache.Value;
       const auto main = codes.cppMain;
@@ -90,7 +90,7 @@ ${functions}
     };
 
 private:
-    p(Ref<Syntax>,syntax){return GetSyntaxFromFile(fileName);};
+    HW_PR_GET(Ref<Syntax>,syntax){return GetSyntaxFromFile(fileName);};
     
     static Ref<Syntax> GetSyntaxFromFile(string const& file) {return GetSyntax(*Source::CreateFromFile(file));};
 
@@ -100,7 +100,7 @@ private:
         return Parse<Ref<Syntax>, TokenClass, Token>(PrioTable::Main(), scannerInstance);
     };
 
-    p(CodeBase,code)
+    HW_PR_GET(CodeBase,code)
     {
         auto syntax = syntaxCache.Value;
         const Ref<CodeItem> main = syntax->GetCode(rootContext);

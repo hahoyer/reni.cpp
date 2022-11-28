@@ -19,11 +19,11 @@ namespace Reni
 
         CodeBase(Ref<CodeItem> const& main, Array<Global::Function> const& functions);
 
-        p(string, cppMain);
-        p(string, cppFunctions);
-        p(string, cppDeclarations);
+        HW_PR_GET(string, cppMain);
+        HW_PR_GET(string, cppFunctions);
+        HW_PR_GET(string, cppDeclarations);
     private:
-        p_function(Array<string>,DumpData) override
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override
         {
             return{HW_D_VALUE(main), HW_D_VALUE(functions)};
         }

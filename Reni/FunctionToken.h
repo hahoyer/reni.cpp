@@ -12,7 +12,7 @@ namespace Reni
         using baseType = TokenClass;
         using thisType = FunctionToken;
     public:
-        p(string, name){ return "/\\"; }
+        HW_PR_GET(string, name){ return "/\\"; }
     private:
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const&part, Optional<Ref<Syntax>>const right)const override;
     };

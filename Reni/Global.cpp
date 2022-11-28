@@ -11,7 +11,7 @@ static bool Trace = true;
 struct Global::internal
 {
     mutable Array<FunctionCallResultCache const*> functionIndexCache;
-    p(Array<Function>, functions)
+    HW_PR_GET(Array<Function>, functions)
     {
         auto newEntries = false;
         do
@@ -47,7 +47,7 @@ struct Global::Function::Xetter final : public DumpableObject
     
     bool Ensure(function<CodeFunction()> getCode) const;
 private:
-    p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(isRequired),HW_D_VALUE(code)}; }
+    HW_PR_DECL_GETTER(Array<string>,DumpData) override{ return{HW_D_VALUE(isRequired),HW_D_VALUE(code)}; }
 };
 
 Global::Global()
@@ -73,12 +73,12 @@ size_t const Global::FunctionIndex(FunctionCallResultCache const& target) const
     return _internal->functionIndexCache.Count - 1;
 }
 
-p_implementation(Global, Array<Global::Function>, functions)
+HW_PR_IMPL_GETTER(Global, Array<Global::Function>, functions)
 {
     return _internal->functions;
 }
 
-p_implementation(Global, Array<string>,DumpData)
+HW_PR_IMPL_GETTER(Global, Array<string>,DumpData)
 {
     return{
         HW_D_VALUE(bitType),
@@ -90,7 +90,7 @@ p_implementation(Global, Array<string>,DumpData)
 Global::Function::Function(): setter(new Xetter), getter(new Xetter)
 {}
 
-p_implementation(Global::Function, Array<string>,DumpData)
+HW_PR_IMPL_GETTER(Global::Function, Array<string>,DumpData)
 {
     return{ };
 }
@@ -103,14 +103,14 @@ bool Global::Function::Ensure(FunctionCallResultCache const&source)const
         setter->Ensure(l_(source.setter));
 };
 
-p_implementation(Global::Function, string, cppCode)
+HW_PR_IMPL_GETTER(Global::Function, string, cppCode)
 {
     auto g = getter->code.IsValid ? getter->code.Value.cppCode : "";
     auto s = setter->code.IsValid ? setter->code.Value.cppCode : "";
     return g + s;
 }
 
-p_implementation(Global::Function, string, cppDeclarations)
+HW_PR_IMPL_GETTER(Global::Function, string, cppDeclarations)
 {
     auto g = getter->code.IsValid ? getter->code.Value.cppDeclaration : "";
     auto s = setter->code.IsValid ? setter->code.Value.cppDeclaration : "";
@@ -145,12 +145,12 @@ CodeFunction::CodeFunction(
     HW_ASSERT(index >= 0, HW_D_VALUE(index));
 }
 
-p_implementation(CodeFunction, string,cppCode)
+HW_PR_IMPL_GETTER(CodeFunction, string,cppCode)
 {
     return MainCodeVisitor::GetterVisit(index, body);
 }
 
-p_implementation(CodeFunction, string, cppDeclaration)
+HW_PR_IMPL_GETTER(CodeFunction, string, cppDeclaration)
 {
     return MainCodeVisitor::GetterFunctionDeclaration(index) + ";\n";
 }

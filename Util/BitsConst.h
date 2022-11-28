@@ -38,13 +38,13 @@ namespace Util{
         }
         operator size_t const()const;
 
-        p(Size, size);
-        p(bool, isEmpty){ return !size.value; }
+        HW_PR_GET(Size, size);
+        HW_PR_GET(bool, isEmpty){ return !size.value; }
         bool operator==(BitsConst const& other) const { return value == other.value; };
-        p(string, format);
-        p(Array<dataChunkType>, ToArray);
+        HW_PR_GET(string, format);
+        HW_PR_GET(Array<dataChunkType>, ToArray);
     private:
-        p_function(Array<string>,DumpData) override{ return{ value.toStrDec() }; };
-        p_function(string, DumpShort) override;
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{ return{ value.toStrDec() }; };
+        HW_PR_DECL_GETTER(string, DumpShort) override;
     };
 }

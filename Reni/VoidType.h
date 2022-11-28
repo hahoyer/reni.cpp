@@ -14,11 +14,11 @@ namespace Reni{
             SetDumpString();
         }
 
-        ThisRef;
+        HW_PR_THISREF;
 
     private:
-        p_function(Size,size) override { return 0; };
-        p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(bool, hollow) { return true; };
+        HW_PR_DECL_GETTER(Size,size) override { return 0; };
+        HW_PR_DECL_GETTER(WeakRef<Global>, global) override{ return _global; };
+        HW_PR_DECL_GETTER(bool, hollow) { return true; };
     };
 }

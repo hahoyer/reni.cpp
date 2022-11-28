@@ -32,10 +32,10 @@ namespace Reni
     explicit Closure(Array<WeakRef<External>> const& other);
 
   public:
-    ThisRef;
+    HW_PR_THISREF;
     HW_DO_PLACEMENT_ASSIGN;
 
-    p(bool, isEmpty) { return data.Count == 0; }
+    HW_PR_GET(bool, isEmpty) { return data.Count == 0; }
 
     Closure const operator+(Closure const& other) const;
     Closure const operator-(Closure const& other) const;
@@ -46,8 +46,8 @@ namespace Reni
     Optional<thisType> const Replace(ReplaceVisitor const& arg) const;
 
   private:
-    p_function(string, DumpHeader) override { return ""; };
-    p_function(Array<string>, DumpData) override;
-    p_function(string, DumpShort) override { return Dump; };
+    HW_PR_DECL_GETTER(string, DumpHeader) override { return ""; };
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override;
+    HW_PR_DECL_GETTER(string, DumpShort) override { return Dump; };
   };
 }

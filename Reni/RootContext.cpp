@@ -26,7 +26,7 @@ RootContext::RootContext()
     SetDumpString();
 }
 
-p_implementation(RootContext, Array<string>,DumpData)
+HW_PR_IMPL_GETTER(RootContext, Array<string>,DumpData)
 {
     return{};
 };

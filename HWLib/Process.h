@@ -9,9 +9,9 @@ namespace HWLib{
     public:
         Process(std::string const& command);
         Process(const std::string& applicationName, const std::string& command);
-        p(std::string, data);
-        p(std::string, errorData);
-        p(int, result);
+        HW_PR_GET(std::string, data);
+        HW_PR_GET(std::string, errorData);
+        HW_PR_GET(int, result);
         void Execute();
     };
 

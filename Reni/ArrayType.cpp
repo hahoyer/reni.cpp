@@ -5,6 +5,6 @@ using namespace Reni;
 static bool Trace = true;
 
 
-p_implementation(ArrayType, Size, size){
+HW_PR_IMPL_GETTER(ArrayType, Size, size){
     return elementType.size * count;
 }

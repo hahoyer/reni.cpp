@@ -35,7 +35,7 @@ namespace Reni
     class MainCodeVisitor final : public CodeVisitor{
         typedef CodeVisitor baseType;
         typedef MainCodeVisitor thisType;
-        p_function(Array<string>, DumpData) override { return{}; };
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override { return{}; };
         string Const(Size const size, BitsConst const& value) const override;
         string DumpPrintNumber(Size const size) const override;
         string FiberConnection(Array<Ref<CodeItem>> const&items, Ref<FiberConnectorItem> const&connector) const override;

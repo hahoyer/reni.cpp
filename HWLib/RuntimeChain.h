@@ -17,7 +17,7 @@ namespace HWLib
         : current(begin) { }
 
     protected:
-      p_function(bool, IsValid) override
+      HW_PR_DECL_GETTER(bool, IsValid) override
       {
         return !!current;
       };

@@ -11,9 +11,9 @@ namespace Reni
         typedef DumpableObject baseType;
         typedef ReplaceSyntaxVisitor thisType;
     public:
-        p_virtual(Ref<Syntax>, arg) = 0;
+        HW_PR_VIRTUAL_GET(Ref<Syntax>, arg) = 0;
     private:
-        p_function(Array<string>,DumpData) override{ return{}; };
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{ return{}; };
     };
 
     class SyntaxArgVisitor : public ReplaceSyntaxVisitor
@@ -24,11 +24,11 @@ namespace Reni
     public:
         SyntaxArgVisitor(Ref<Syntax> const& value) : value(value){ SetDumpString(); }
     private:
-        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(value)}; };
-        p_function(Ref<Syntax>,arg) override{ return value; };
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{ return{HW_D_VALUE(value)}; };
+        HW_PR_DECL_GETTER(Ref<Syntax>,arg) override{ return value; };
     };
 }
 
 using namespace Reni;
 
-inline p_virtual_header_implementation(ReplaceSyntaxVisitor, Ref<Syntax>, arg);
+inline HW_PR_VIRTUAL_GETTER_WRAPPER(ReplaceSyntaxVisitor, Ref<Syntax>, arg);

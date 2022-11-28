@@ -13,7 +13,7 @@
 #pragma warning (error   : 4239) // C4239 nonstandard extension used : 'token' : conversion from 'type' to 'type'
 #pragma warning (error   : 4244) // C4244 'conversion' conversion from 'type1' to 'type2', possible loss of data
 #pragma warning (error   : 4245) // C4245 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatchconversion from 'type1' to 'type2', signed/unsigned mismatch
-#pragma warning (error   : 4267) // C4267 'var' : conversion from 'size_t' to 'type', possible loss of data#pragma warning (disable : 4275) // C4275 non – DLL-interface classkey 'identifier' used as Data for DLL-interface classkey 'identifier'
+#pragma warning (error   : 4267) // C4267 'HW_PR_VAR' : conversion from 'size_t' to 'type', possible loss of data#pragma warning (disable : 4275) // C4275 non – DLL-interface classkey 'identifier' used as Data for DLL-interface classkey 'identifier'
 #pragma warning (disable : 4291) // C4291 'declaration' : no matching operator delete found; memory will not be freed if initialization throws an exception
 #pragma warning (disable : 4297) // C4297 'function' : function assumed not to throw an exception but does
 #pragma warning (disable : 4309) // C4309 'conversion' : truncation of constant value

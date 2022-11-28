@@ -47,7 +47,7 @@ void Profiler::internal::Reset()
     delete entry;
 };
 
-p_implementation(Profiler::internal, __int64, ticks)
+HW_PR_IMPL_GETTER(Profiler::internal, __int64, ticks)
 {
   __int64 result = 0;
   for(const auto entry : Entries)

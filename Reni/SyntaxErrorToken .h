@@ -10,7 +10,7 @@ namespace Reni{
         SyntaxErrorToken(String const text) : text(text){}
     private:
         Ref<Syntax> const Create(SourcePart const&part)const override final;
-        p_function(Array<string>,DumpData) override{
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{
             return{HW_D_VALUE(text)};
         };
     };

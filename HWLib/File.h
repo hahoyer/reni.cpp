@@ -11,10 +11,10 @@ namespace HWLib
   public:
     File(const std::string& name);
 
-    p(std::string, FullName);
-    p_mutable(std::string, Name);
-    p_mutable(std::string, Data);
-    p(bool, IsValid);
-    p_mutable(bool, IsValidFolder);
+    HW_PR_GET(std::string, FullName);
+    HW_PR_VAR(std::string, Name);
+    HW_PR_VAR(std::string, Data);
+    HW_PR_GET(bool, IsValid);
+    HW_PR_VAR(bool, IsValidFolder);
   };
 }

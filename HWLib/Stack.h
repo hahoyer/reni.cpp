@@ -14,8 +14,8 @@ namespace HWLib
 
         void Push(T target){ _internal.push_back(target); };
         T const Pop(){ auto result = _internal.back(); _internal.pop_back(); return result; };
-        p(T, Top) { return _internal.back(); };
-        p(bool, IsEmpty){ return _internal.size() == 0; };
+        HW_PR_GET(T, Top) { return _internal.back(); };
+        HW_PR_GET(bool, IsEmpty){ return _internal.size() == 0; };
     };
 
 }

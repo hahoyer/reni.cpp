@@ -2,10 +2,10 @@
 //#pragma message(__FILE__ "(" STRING(__LINE__) "): ")
 
 #include "_.h"
-#include "Common.h"
-#include "Enumerable.h"
 #include <vector>
 #include <queue>
+
+#include "Enumerable.h"
 
 namespace HWLib
 {
@@ -86,8 +86,8 @@ namespace HWLib
 
     HW_DO_PLACEMENT_ASSIGN;
 
-    p(size_t, Count) { return _count; }
-    p(T const*, RawData) { return _data; }
+    HW_PR_GET(size_t, Count) { return _count; }
+    HW_PR_GET(T const*, RawData) { return _data; }
 
     const T& operator[](size_t Index) const { return _data[Index]; }
     T& operator[](size_t Index) { return _data[Index]; }
@@ -118,13 +118,13 @@ namespace HWLib
           , _index(0)
       { }
 
-      p_function(bool, IsValid) override { return _index >= 0 && _index < _parent.Count; }
+      HW_PR_DECL_GETTER(bool, IsValid) override { return _index >= 0 && _index < _parent.Count; }
       T Step() override { return _parent[_index++]; }
 
       void operator=(const LocalIterator&) = delete;
     };
 
-    p_nonconst_function(CtrlRef<typename Enumerable<T>::Iterator>, ToIterator) const override
+    HW_PR_DECL_MUTABLE_GETTER(CtrlRef<typename Enumerable<T>::Iterator>, ToIterator) const override
     {
       return new LocalIterator(*this);
     }

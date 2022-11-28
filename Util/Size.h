@@ -30,11 +30,11 @@ namespace Util{
 
         Size Align(size_t alignBits) const;
 
-        p(String, format){ return String::Convert(value); }
+        HW_PR_GET(String, format){ return String::Convert(value); }
         static thisType const Address;
     private:
-        p_function(Array<string>,DumpData) override{return{ HWLib::Dump(value) };};
-        p_function(string, DumpShort) override{return HWLib::Dump(value);};
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{return{ HWLib::Dump(value) };};
+        HW_PR_DECL_GETTER(string, DumpShort) override{return HWLib::Dump(value);};
 
     };
 

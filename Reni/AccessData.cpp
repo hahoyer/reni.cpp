@@ -65,40 +65,40 @@ ResultData const AccessData::SetResultData(Category category) const
         );
 }
 
-p_implementation(AccessData, WeakRef<Global>, global){ return container.global; }
+HW_PR_IMPL_GETTER(AccessData, WeakRef<Global>, global){ return container.global; }
 
 
-p_implementation(AccessData, Closure, XetClosure){ return Closure(container.asExternal); }
-p_implementation(AccessData, bool, GetHollow){ return dataResultCache->hollow; }
-p_implementation(AccessData, bool, SetHollow){ return true; }
-p_implementation(AccessData, Size, SetSize){ return 0; }
-p_implementation(AccessData, WeakRef<Type>, SetType){ return global->voidType.thisRef; }
+HW_PR_IMPL_GETTER(AccessData, Closure, XetClosure){ return Closure(container.asExternal); }
+HW_PR_IMPL_GETTER(AccessData, bool, GetHollow){ return dataResultCache->hollow; }
+HW_PR_IMPL_GETTER(AccessData, bool, SetHollow){ return true; }
+HW_PR_IMPL_GETTER(AccessData, Size, SetSize){ return 0; }
+HW_PR_IMPL_GETTER(AccessData, WeakRef<Type>, SetType){ return global->voidType.thisRef; }
 
-p_implementation(AccessData, Size, GetSize)
+HW_PR_IMPL_GETTER(AccessData, Size, GetSize)
 {
     if(dataResultCache->hollow)
         return 0;
     return Size::Address;
 }
 
-p_implementation(AccessData, WeakRef<Type>, GetType)
+HW_PR_IMPL_GETTER(AccessData, WeakRef<Type>, GetType)
 {
     if(dataResultCache->hollow)
         return &dataResultCache->type->thisRef;
     return new AccessType(*this);
 }
 
-p_implementation(AccessData, Ref<CodeItem>, GetCode)
+HW_PR_IMPL_GETTER(AccessData, Ref<CodeItem>, GetCode)
 {
     return ThisCode;
 }
 
-p_implementation(AccessData, Ref<CodeItem>, SetCode)
+HW_PR_IMPL_GETTER(AccessData, Ref<CodeItem>, SetCode)
 {
     return CodeItem::Assign(dataResultCache->type->thisRef, ThisCode);
 }
 
-p_implementation(AccessData, Ref<CodeItem>, ThisCode)
+HW_PR_IMPL_GETTER(AccessData, Ref<CodeItem>, ThisCode)
 {
     auto backOffset = Size(0);
     for(auto position = 0; position <= statementIndex; position++)

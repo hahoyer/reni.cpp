@@ -50,41 +50,38 @@ namespace Reni
 
   public:
     Type(const Type&) = delete;
-    ThisRef;
+    HW_PR_THISREF;
 
     bool operator==(const Type& other) const { return this == &other; }
 
-    p_virtual(bool, hollow) = 0;
-    p_virtual(Size, size) = 0;
-    p_virtual(WeakRef<Global>, global) = 0;
-    p_virtual_definition(WeakRef<Type>, toTypeTarget);
-    p_virtual_function(WeakRef<Type>, toTypeTarget);
-    virtual const WeakRef<Type> get_toTypeTarget() const { return thisRef; };
-    p_virtual(Address, toAddress);
-    p_virtual(bool, isCopyable) { return true; };
+    HW_PR_VIRTUAL_GET(bool, hollow) = 0;
+    HW_PR_VIRTUAL_GET(Size, size) = 0;
+    HW_PR_VIRTUAL_GET(WeakRef<Global>, global) = 0;
+    HW_PR_VIRTUAL_GET(WeakRef<Type>, toTypeTarget) { return thisRef; };
+    HW_PR_VIRTUAL_GET(Address, toAddress);
+    HW_PR_VIRTUAL_GET(bool, isCopyable) { return true; };
 
-    const WeakRef<Type> array(size_t count) const;
-    p(WeakRef<NumberType>, numberType);
-    p_definition(WeakRef<TypeType>, typeType);
-    const WeakRef<TypeType> get_typeType() const;
-    p(WeakRef<Type>, indirectType);
-    p(WeakRef<EnableCutType>, enableCutType);
-    p_virtual(WeakRef<Type>, asFunctionResult);
+    WeakRef<Type> array(size_t count) const;
+    HW_PR_GET(WeakRef<NumberType>, numberType);
+    HW_PR_GET(WeakRef<TypeType>, typeType);
+    HW_PR_GET(WeakRef<Type>, indirectType);
+    HW_PR_GET(WeakRef<EnableCutType>, enableCutType);
+    HW_PR_VIRTUAL_GET(WeakRef<Type>, asFunctionResult);
 
   protected:
-    p_virtual(Optional<WeakRef<NumberType>>, asNumberType) { return {}; };
+    HW_PR_VIRTUAL_GET(Optional<WeakRef<NumberType>>, asNumberType) { return {}; };
 
   public:
     template <class TDestination>
-    const Optional<WeakRef<TDestination>> As() const;
+    Optional<WeakRef<TDestination>> As() const;
 
     template <>
-    const Optional<WeakRef<NumberType>> As() const { return asNumberType; }
+    Optional<WeakRef<NumberType>> As() const { return asNumberType; }
 
-    const ResultData GetResultData(Category category, function<Ref<CodeItem>()> getCode,
-                                   function<Closure()> getClosure) const;
-    const ResultData GetResultDataSmartClosure(Category category, function<Ref<CodeItem>()> getCode) const;
-    const ResultData GetResultDataEmpty(Category category) const;
+    ResultData GetResultData(Category category, function<Ref<CodeItem>()> getCode,
+                             function<Closure()> getClosure) const;
+    ResultData GetResultDataSmartClosure(Category category, function<Ref<CodeItem>()> getCode) const;
+    ResultData GetResultDataEmpty(Category category) const;
 
     virtual SearchResult<Feature> DeclarationsForType(const DeclarationType& target) const;
     const WeakRef<NumberType> CreateNumberType() const;
@@ -100,7 +97,7 @@ namespace Reni
     virtual Array<Ref<FiberItem>> ConvertFiber(const Type& destination) const;
 
   private:
-    p_function(Array<string>, DumpData) override
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override
     {
       return {};
     };
@@ -121,15 +118,15 @@ namespace Reni
       HW_ASSERT_(!this->value.hollow);
     }
 
-    ThisRef;
+    HW_PR_THISREF;
 
   private:
-    p_function(Array<string>, DumpData) override { return {HW_D_VALUE(value)}; };
-    p_function(bool, hollow) { return false; };
-    p_function(Size, size) override { return value.size; }
-    p_function(WeakRef<Global>, global) override { return value.global; }
-    p_function(Optional<WeakRef<NumberType>>, asNumberType) override { return value.As<NumberType>(); }
-    p_function(Address, toAddress) override;
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override { return {HW_D_VALUE(value)}; };
+    HW_PR_DECL_GETTER(bool, hollow) { return false; };
+    HW_PR_DECL_GETTER(Size, size) override { return value.size; }
+    HW_PR_DECL_GETTER(WeakRef<Global>, global) override { return value.global; }
+    HW_PR_DECL_GETTER(Optional<WeakRef<NumberType>>, asNumberType) override { return value.As<NumberType>(); }
+    HW_PR_DECL_GETTER(Address, toAddress) override;
     SearchResult<Feature> DeclarationsForType(const DeclarationType& target) const override;
   };
 

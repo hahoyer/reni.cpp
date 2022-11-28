@@ -21,11 +21,11 @@ namespace Reni
             SetDumpString();
         }
 
-        ThisRef;
+        HW_PR_THISREF;
     private:
-        p_function(Size, size) override{ return 1; }
-        p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(bool, hollow) { return false; };
+        HW_PR_DECL_GETTER(Size, size) override{ return 1; }
+        HW_PR_DECL_GETTER(WeakRef<Global>, global) override{ return _global; };
+        HW_PR_DECL_GETTER(bool, hollow) { return false; };
     };
 
     class BoolType final : public Type
@@ -40,10 +40,10 @@ namespace Reni
             SetDumpString();
         }
 
-        ThisRef;
+        HW_PR_THISREF;
     private:
-        p_function(Size, size) override{ return 1; }
-        p_function(WeakRef<Global>, global) override{ return _global; };
-        p_function(bool, hollow) { return false; };
+        HW_PR_DECL_GETTER(Size, size) override{ return 1; }
+        HW_PR_DECL_GETTER(WeakRef<Global>, global) override{ return _global; };
+        HW_PR_DECL_GETTER(bool, hollow) { return false; };
     };
 }

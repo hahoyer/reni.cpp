@@ -29,6 +29,6 @@ namespace HWLib
     T const* operator->() const { return &*value; };
     T& operator*() { return *value; };
     T* operator->() { return &*value; };
-    bool const operator==(thisType const& other) const { return value == other.value; };
+    bool operator==(thisType const& other) const { return value == other.value; };
   };
 }

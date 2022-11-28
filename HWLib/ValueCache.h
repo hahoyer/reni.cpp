@@ -5,55 +5,55 @@ using std::function;
 
 namespace HWLib
 {
-    template<typename T>
-    class ValueCache final 
+  template <typename T>
+  class ValueCache final
+  {
+    using thisType = ValueCache;
+
+    mutable Optional<T> value;
+    mutable bool isBusy;
+
+  public:
+    function<T()> const getValue;
+
+    ValueCache(function<T()> getValue)
+      : getValue(getValue)
+        , isBusy(false)
+    { }
+
+    HW_PR_VAR(bool, IsValid) { return value.IsValid; }
+    HW_PR_GET(bool, IsBusy) { return isBusy; }
+
+    HW_PR_MUTABLE_GET(T, Value) const
     {
-        using thisType = ValueCache;
+      Ensure();
+      return value.Value;
+    }
 
-        mutable Optional<T> value;
-        mutable bool isBusy;
-    public:
-        function<T()> const getValue;
-
-        ValueCache(function<T()> getValue) 
-            : getValue(getValue)
-            , isBusy(false)
-        {
-        }
-
-        p_mutable(bool, IsValid){ return value.IsValid; }
-        p(bool, IsBusy){ return isBusy; }
-
-        p_nonconst(T, Value)const
-        {
-            Ensure();
-            return value.Value;
-        };
-    private:
-        void Ensure()const
-        {
-            HW_ASSERT_(!isBusy);
-            if(value.IsValid)
-                return;
-            isBusy = true;
-            value = getValue();
-            isBusy = false;
-        }
-
-        void Reset()const
-        {
-            HW_ASSERT_(!isBusy);
-            value = {};
-        }
-
-    };
-
-    template<typename T>
-    inline void ValueCache<T>::p_mutator_name(IsValid)(bool const&value)
+  private:
+    void Ensure() const
     {
-        if(value)
-            Ensure();
-        else
-            Reset();
-    };
+      HW_ASSERT_(!isBusy);
+      if(value.IsValid)
+        return;
+      isBusy = true;
+      value = getValue();
+      isBusy = false;
+    }
+
+    void Reset() const
+    {
+      HW_ASSERT_(!isBusy);
+      value = {};
+    }
+  };
+
+  template <typename T>
+  void ValueCache<T>::HW_PR_SETTER_NAME(IsValid)(bool const& value)
+  {
+    if(value)
+      Ensure();
+    else
+      Reset();
+  };
 }

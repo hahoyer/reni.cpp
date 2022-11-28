@@ -103,6 +103,7 @@ class LookAheadIterator final : public Enumerable<T>::Iterator
 {
   CtrlRef<typename Enumerable<T>::Iterator> parent;
   Optional<CtrlRef<T>> _current;
+
 public:
   LookAheadIterator(const Enumerable<T>& parent)
     : parent(parent.ToIterator)
@@ -110,9 +111,9 @@ public:
     Align();
   }
 
-  p(CtrlRef<T>, current) { return _current.Value; }
+  HW_PR_GET(CtrlRef<T> const, current) { return _current.Value; }
 
-  p_function(bool, IsValid) override { return !_current.IsEmpty; }
+  HW_PR_DECL_GETTER(bool, IsValid) override { return !_current.IsEmpty; }
 
   T Step() override
   {
@@ -136,6 +137,7 @@ template <typename T>
 class SkipIterator final : public Enumerable<T>::Iterator
 {
   CtrlRef<typename Enumerable<T>::Iterator> _parent;
+
 public:
   SkipIterator(const Enumerable<T>& parent, size_t count)
     : _parent(parent.ToIterator)
@@ -148,7 +150,7 @@ public:
   }
 
 protected:
-  p_function(bool, IsValid) override
+  HW_PR_DECL_GETTER(bool, IsValid) override
   {
     return _parent->IsValid;
   }
@@ -163,6 +165,7 @@ class TakeIterator final : public Enumerable<T>::Iterator
   using thisType = TakeIterator;
   CtrlRef<typename Enumerable<T>::Iterator> _parent;
   size_t _count;
+
 public:
   TakeIterator(const Enumerable<T>& parent, size_t count)
     : _parent(parent.ToIterator)
@@ -175,7 +178,7 @@ public:
   { }
 
 protected:
-  p_function(bool, IsValid) override
+  HW_PR_DECL_GETTER(bool, IsValid) override
   {
     return _count > 0 && _parent->IsValid;
   }
@@ -193,6 +196,7 @@ class PlusIterator final : public Enumerable<T>::Iterator
 {
   CtrlRef<typename Enumerable<T>::Iterator> _left;
   CtrlRef<typename Enumerable<T>::Iterator> _right;
+
 public:
   PlusIterator(const Enumerable<T>& left, const Enumerable<T>& right)
     : _left(left.ToIterator)
@@ -200,7 +204,7 @@ public:
   { }
 
 private:
-  p_function(bool, IsValid) override
+  HW_PR_DECL_GETTER(bool, IsValid) override
   {
     return _left->IsValid || _right->IsValid;
   }
@@ -221,6 +225,7 @@ class MergeIterator final : public Enumerable<T>::Iterator
   LookAheadIterator<T> _right;
   function<bool(T, T)> isLess;
   const bool removeDuplicates;
+
 public:
   MergeIterator(const Enumerable<T>& left, const Enumerable<T>& right, function<bool(T, T)> isLess,
                 bool removeDuplicates)
@@ -231,7 +236,7 @@ public:
   { }
 
 private:
-  p_function(bool, IsValid) override { return _left.IsValid || _right.IsValid; }
+  HW_PR_DECL_GETTER(bool, IsValid) override { return _left.IsValid || _right.IsValid; }
 
   T Step() override
   {
@@ -253,6 +258,7 @@ class WhereIterator final : public Enumerable<T>::Iterator
 {
   LookAheadIterator<T> parent;
   function<bool(T)> selector;
+
 public:
   WhereIterator(const Enumerable<T>& parent, function<bool(T)> selector)
     : parent(parent)
@@ -268,7 +274,7 @@ public:
   }
 
 protected:
-  p_function(bool, IsValid) override { return parent.IsValid; }
+  HW_PR_DECL_GETTER(bool, IsValid) override { return parent.IsValid; }
 
   T Step() override
   {
@@ -284,6 +290,7 @@ class SelectIterator final : public Enumerable<TResult>::Iterator
 {
   CtrlRef<typename Enumerable<T>::Iterator> _parent;
   function<TResult(T)> _selector;
+
 public:
   SelectIterator(const Enumerable<T>& parent, function<TResult(T)> selector)
     : _parent(parent.ToIterator)
@@ -291,7 +298,7 @@ public:
   { }
 
 protected:
-  p_function(bool, IsValid) override { return _parent->IsValid; }
+  HW_PR_DECL_GETTER(bool, IsValid) override { return _parent->IsValid; }
   TResult Step() override { return _selector(_parent->Step()); }
 };
 
@@ -302,6 +309,7 @@ class ConvertManyIterator final : public Enumerable<TResult>::Iterator
   CtrlRef<typename Enumerable<T>::Iterator> _parent;
   Optional<CtrlRef<T>> _subData;
   Optional<CtrlRef<typename Enumerable<TResult>::Iterator>> _subParent;
+
 public:
   ConvertManyIterator(const Enumerable<T>& parent)
     : _parent(parent.ToIterator)
@@ -310,7 +318,7 @@ public:
   }
 
 protected:
-  p_function(bool, IsValid) override
+  HW_PR_DECL_GETTER(bool, IsValid) override
   {
     return !_subParent.IsEmpty && _subParent.Value->IsValid;
   }
@@ -345,6 +353,7 @@ class PairIterator final : public Enumerable<std::pair<T, TOther>>::Iterator
   Optional<CtrlRef<T>> leftResult;
   const Enumerable<TOther>& right;
   Optional<CtrlRef<typename Enumerable<TOther>::Iterator>> rightIterator;
+
 public:
   PairIterator(const Enumerable<T>& left, const Enumerable<TOther>& right)
     : leftIterator(left.ToIterator)
@@ -355,7 +364,7 @@ public:
   };
 
 protected:
-  p_function(bool, IsValid) override
+  HW_PR_DECL_GETTER(bool, IsValid) override
   {
     HW_ASSERT_(rightIterator.IsValid);
     return rightIterator.Value->IsValid;
@@ -370,6 +379,7 @@ protected:
     Align();
     return result;
   };
+
 private:
   void Align()
   {
@@ -416,18 +426,19 @@ template <typename T, typename TResult>
 class ConvertIterator final : public Enumerable<TResult>::Iterator
 {
   CtrlRef<typename Enumerable<T>::Iterator> _parent;
+
 public:
   ConvertIterator(const Enumerable<T>& parent)
     : _parent(parent.ToIterator)
   { }
 
 protected:
-  p_function(bool, IsValid) override { return _parent->IsValid; }
+  HW_PR_DECL_GETTER(bool, IsValid) override { return _parent->IsValid; }
   TResult Step() override { return _parent->Step(); }
 };
 
 template <typename T>
-p_implementation(Enumerable<T>, T, Last)
+HW_PR_IMPL_GETTER(Enumerable<T>, T, Last)
 {
   auto i = ToIterator;
   if(!i->IsValid)
@@ -483,13 +494,13 @@ Optional<size_t> Enumerable<T>::FirstIndex(function<bool(T)> selector) const
 }
 
 template <typename T>
-p_implementation(Enumerable<T>, Array<T>, ToArray)
+HW_PR_IMPL_GETTER(Enumerable<T>, Array<T>, ToArray)
 {
   return ToIterator->ToArray;
 }
 
 template <typename T>
-p_nonconst_implementation(Enumerable<T>::Iterator, Array<T>, ToArray)
+HW_PR_IMPL_MUTABLE_GETTER(Enumerable<T>::Iterator, Array<T>, ToArray)
 {
   auto result = queue<unique_ptr<T>>();
   while(IsValid)
@@ -521,7 +532,7 @@ inline string Enumerable<string>::Stringify(const string& delimiter) const
 }
 
 template <typename T>
-p_implementation(Enumerable<T>, size_t, Count)
+HW_PR_IMPL_GETTER(Enumerable<T>, size_t, Count)
 {
   auto result = 0;
   for(auto element : *this)
@@ -530,13 +541,13 @@ p_implementation(Enumerable<T>, size_t, Count)
 }
 
 template <typename T>
-p_implementation(Enumerable<T>, bool, Any)
+HW_PR_IMPL_GETTER(Enumerable<T>, bool, Any)
 {
   return ToIterator->IsValid;
 }
 
 template <typename T>
-p_implementation(Enumerable<T>, T, First)
+HW_PR_IMPL_GETTER(Enumerable<T>, T, First)
 {
   return ToIterator->Step();
 }
@@ -619,10 +630,10 @@ CtrlRef<Enumerable<TResult>> Enumerable<T>::Convert() const
 };
 
 template <typename TBase, typename TRealm>
-p_implementation(WithId<TBase COMMA TRealm>, string, DumpHeader)
+HW_PR_IMPL_GETTER(WithId<TBase COMMA TRealm>, string, DumpHeader)
 {
   auto objectId = Dump(ObjectId);
-  return p_base_name(DumpHeader) + ".Id" + objectId;
+  return HW_PR_BASE_GETTER_NAME(DumpHeader) + ".Id" + objectId;
 };
 
 
@@ -710,6 +721,7 @@ class NumbersIterator final : public Enumerable<size_t>::Iterator
 
   const size_t count;
   size_t index;
+
 public:
   explicit NumbersIterator(size_t count)
     : count(count)
@@ -717,7 +729,7 @@ public:
   {}
 
 private:
-  p_function(bool, IsValid) override { return index < count; }
+  HW_PR_DECL_GETTER(bool, IsValid) override { return index < count; }
   virtual size_t Step() override { return index++; }
 };
 
@@ -725,9 +737,10 @@ template <typename T>
 class Enumerable<T>::Container final : public Enumerable<T>
 {
   CtrlRef<Iterator> _iterator;
+
 public:
   Container(Iterator* iterator) : _iterator(iterator) {}
-  p_nonconst_function(CtrlRef<Iterator>, ToIterator) const override { return _iterator; }
+  HW_PR_DECL_MUTABLE_GETTER(CtrlRef<Iterator>, ToIterator) const override { return _iterator; }
 };
 
 

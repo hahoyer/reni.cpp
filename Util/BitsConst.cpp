@@ -22,7 +22,7 @@ BitsConst::operator const size_t() const
   return value.toUlong();
 }
 
-p_implementation(BitsConst, Size, size)
+HW_PR_IMPL_GETTER(BitsConst, Size, size)
 {
   if(value == BigInt::Rossi(0))
     return 0;
@@ -45,7 +45,7 @@ p_implementation(BitsConst, Size, size)
   return result;
 }
 
-p_implementation(BitsConst, string, format)
+HW_PR_IMPL_GETTER(BitsConst, string, format)
 {
   return
     Array<BigInt::Ulong>(value.ToArray())
@@ -54,7 +54,7 @@ p_implementation(BitsConst, string, format)
 }
 
 
-p_implementation(BitsConst, string, DumpShort)
+HW_PR_IMPL_GETTER(BitsConst, string, DumpShort)
 {
   return value.toStrDec() + string(" size=") + size.DumpShort;
 };

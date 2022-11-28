@@ -9,9 +9,9 @@ namespace Reni{
         using baseType = WithId<DumpableObject, DefinitionPoint>;
         using thisType = DefinitionPoint;
     public:
-        ThisRef;
+        HW_PR_THISREF;
     private:
-        p_function(Array<string>,DumpData) override{ return{}; };
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{ return{}; };
     };
 
     template <typename T>

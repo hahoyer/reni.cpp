@@ -21,7 +21,7 @@ namespace Reni
         static string Text() { return "-"; }
     private:
         tc_Search(NumberType);
-        p_function(int, priority) override{ return -4; }
+        HW_PR_DECL_GETTER(int, priority) override{ return -4; }
     };
     
     struct PlusToken final : public NamedDefinableToken<PlusToken>
@@ -29,7 +29,7 @@ namespace Reni
         static string Text() { return "+"; }
     private:
         tc_Search(NumberType);
-        p_function(int, priority) override{ return -4; }
+        HW_PR_DECL_GETTER(int, priority) override{ return -4; }
     };
     
     struct StarToken final : public NamedDefinableToken<StarToken>
@@ -37,7 +37,7 @@ namespace Reni
         static string Text() { return "*"; }
     private:
         tc_Search(NumberType);
-        p_function(int, priority) override{ return -2; }
+        HW_PR_DECL_GETTER(int, priority) override{ return -2; }
     };
 
     struct EnableCutToken final : public NamedDefinableToken<EnableCutToken>

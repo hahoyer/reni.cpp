@@ -63,18 +63,18 @@ void ResultCache::Ensure(const Category& category)const
     return ;
 }
 
-p_virtual_header_implementation(ResultCache, bool, isRecursion) ;
+HW_PR_VIRTUAL_GETTER_WRAPPER(ResultCache, bool, isRecursion) ;
 
-p_implementation(ResultCache, Category, complete){ return data.complete; };
-p_implementation(ResultCache, bool, hollow){ return Get(Category::Hollow).hollow; };
-p_implementation(ResultCache, Size, size){ return Get(Category::Size).size; };
-p_implementation(ResultCache, Ref<CodeItem>, code){ return Get(Category::Code).code; };
-p_implementation(ResultCache, WeakRef<Type>, type){ return Get(Category::Type).type; };
-p_implementation(ResultCache, Closure, closure){ return Get(Category::Closure).closure; };
+HW_PR_IMPL_GETTER(ResultCache, Category, complete){ return data.complete; };
+HW_PR_IMPL_GETTER(ResultCache, bool, hollow){ return Get(Category::Hollow).hollow; };
+HW_PR_IMPL_GETTER(ResultCache, Size, size){ return Get(Category::Size).size; };
+HW_PR_IMPL_GETTER(ResultCache, Ref<CodeItem>, code){ return Get(Category::Code).code; };
+HW_PR_IMPL_GETTER(ResultCache, WeakRef<Type>, type){ return Get(Category::Type).type; };
+HW_PR_IMPL_GETTER(ResultCache, Closure, closure){ return Get(Category::Closure).closure; };
 
-p_implementation(ResultCache, Optional<WeakRef<Type>>, cachedType){return data.type;}
+HW_PR_IMPL_GETTER(ResultCache, Optional<WeakRef<Type>>, cachedType){return data.type;}
 
-p_implementation(ResultCache, Array<string>,DumpData)
+HW_PR_IMPL_GETTER(ResultCache, Array<string>,DumpData)
 {
     return{
         HW_D_VALUE(pending),
@@ -121,9 +121,9 @@ ResultData ResultFromSyntaxAndContext::GetResultDataRecursive(Category const& ca
     HW_BREAK_AND_THROW;
 }
 
-p_implementation(ResultFromSyntaxAndContext, Array<string>,DumpData)
+HW_PR_IMPL_GETTER(ResultFromSyntaxAndContext, Array<string>,DumpData)
 {
-  const auto baseDump = p_base_name(DumpData);
+  const auto baseDump = HW_PR_BASE_GETTER_NAME(DumpData);
     const auto thisDump = Array<string>({
         HW_D_VALUE(context),
         HW_D_VALUE(syntax)
@@ -131,7 +131,7 @@ p_implementation(ResultFromSyntaxAndContext, Array<string>,DumpData)
     return baseDump + thisDump;
 };
 
-p_implementation(ResultFromSyntaxAndContext, bool, isRecursion)
+HW_PR_IMPL_GETTER(ResultFromSyntaxAndContext, bool, isRecursion)
 {
     return !!dynamic_cast<RecursionContext const*>(&context);
 }
@@ -312,7 +312,7 @@ ResultData ResultData::Replace(External const& tag, ResultCache const& result) c
     return Replace(visitor);
 }
 
-p_implementation(ResultData, Array<string>,DumpData)
+HW_PR_IMPL_GETTER(ResultData, Array<string>,DumpData)
 {
     return{
         HW_D_VALUE(hollow),
@@ -323,7 +323,7 @@ p_implementation(ResultData, Array<string>,DumpData)
     };
 }
 
-p_implementation(ResultData, ResultData, asFunctionResult)
+HW_PR_IMPL_GETTER(ResultData, ResultData, asFunctionResult)
 {
     return GetSmartHollowSize
         (

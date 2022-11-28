@@ -14,13 +14,13 @@ namespace Reni
     public:
         LeftParenthesisToken(int level) : level(level){}
 
-        p(string, name){
+        HW_PR_GET(string, name){
             HW_ASSERT_IS(level, > , 0);
             HW_ASSERT_IS(level, < , 4);
             return string(1,level[" {[("]);
         }
     private:
-        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(level)}; };
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{ return{HW_D_VALUE(level)}; };
 
         class OpenSyntax final : public Syntax
         {
@@ -43,8 +43,8 @@ namespace Reni
                     return baseType::ParenthesisMatch(level, part);
                 return right || Ref<Syntax>(new EmptySyntax(part));
             };
-            p_function(string, SmartDump) override{return HW_D_VALUE(right);}
-            p_function(int, priority) override{ return 0; }
+            HW_PR_DECL_GETTER(string, SmartDump) override{return HW_D_VALUE(right);}
+            HW_PR_DECL_GETTER(int, priority) override{ return 0; }
         };
 
         Ref<Syntax> const CreateSyntax(Optional<Ref<Syntax>>const left, SourcePart const& part, Optional<Ref<Syntax>>const right)const override final
@@ -63,7 +63,7 @@ namespace Reni
     public:
         RightParenthesisToken(int level) : level(level){}
 
-        p(string, name)
+        HW_PR_GET(string, name)
         {
             HW_ASSERT_IS(level, >, 0);
             HW_ASSERT_IS(level, <, 4);
@@ -75,7 +75,7 @@ namespace Reni
             return left->ParenthesisMatch(level, part);
         };
 
-        p_function(Array<string>,DumpData) override
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override
         {
             return{HW_D_VALUE(level)};
         };

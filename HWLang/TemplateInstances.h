@@ -73,7 +73,7 @@ ScannerInstance<Token, TokenFactory, Scanner>
 
 
 template <class Token, class TokenFactory, class Scanner>
-p_implementation(ScannerInstance<Token COMMA TokenFactory COMMA Scanner>, Array<string>, DumpData)
+HW_PR_IMPL_GETTER(ScannerInstance<Token COMMA TokenFactory COMMA Scanner>, Array<string>, DumpData)
 {
   return {
     HW_D_VALUE(position)

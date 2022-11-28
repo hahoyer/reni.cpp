@@ -19,18 +19,18 @@ namespace HWLib
     Optional(T const& data) : data(data) { Initialize(); };
     Optional(thisType const& other) : data(other.data) { Initialize(); };
     HW_DO_PLACEMENT_ASSIGN;
-    p(bool, IsValid) { return data.has_value(); };
-    p(bool, IsEmpty) { return !data.has_value(); };
+    HW_PR_GET(bool, IsValid) { return data.has_value(); };
+    HW_PR_GET(bool, IsEmpty) { return !data.has_value(); };
 
-    p_definition(T, Value);
+    HW_PR_GETTER_SPECIFICATION(T, Value);
 
-    T p_name(Value)() const
+    T HW_PR_GETTER_NAME(Value)() const
     {
       HW_ASSERT_(IsValid);
       return *data;
     };
 
-    T p_name(Value)()
+    T HW_PR_GETTER_NAME(Value)()
     {
       HW_ASSERT_(IsValid);
       return *data;

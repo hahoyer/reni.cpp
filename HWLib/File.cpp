@@ -30,16 +30,16 @@ public:
     : Name(name)
   {};
 
-  p_mutable(string, Data);
+  HW_PR_VAR(string, Data);
 
-  p_mutable(bool, IsValid)
+  HW_PR_VAR(bool, IsValid)
   {
     struct _stat buf{};
     const auto result = _stat(Name.c_str(), &buf);
     return result == 0;
   }
 
-  p_mutable(bool, IsValidFolder)
+  HW_PR_VAR(bool, IsValidFolder)
   {
     struct _stat buf{};
     const auto result = _stat(Name.c_str(), &buf);
@@ -90,7 +90,7 @@ private:
 };
 
 
-p_mutator_implementation(File::internal, bool, IsValidFolder)
+HW_PR_IMPL_SETTER(File::internal, bool, IsValidFolder)
 {
   if(value)
     CreateFolderChain();
@@ -98,7 +98,7 @@ p_mutator_implementation(File::internal, bool, IsValidFolder)
     DeleteFolder();
 }
 
-p_mutator_implementation(File::internal, bool, IsValid)
+HW_PR_IMPL_SETTER(File::internal, bool, IsValid)
 {
   if(value)
     Data = "";
@@ -114,7 +114,7 @@ FILE* OpenFile(const char* name, bool isWrite)
   return file;
 }
 
-p_implementation(File::internal, string, Data)
+HW_PR_IMPL_GETTER(File::internal, string, Data)
 {
   const auto file = OpenFile(Name.c_str(), false);
   if(file == nullptr)
@@ -128,7 +128,7 @@ p_implementation(File::internal, string, Data)
   return result;
 }
 
-p_mutator_implementation(File::internal, string, Data)
+HW_PR_IMPL_SETTER(File::internal, string, Data)
 {
   FILE* file = OpenFile(Name.c_str(), true);
   HW_ASSERT(file, string("Error: ") + HWLib::Dump(errno) + ":" + System::FormatLastErrorMessage());
@@ -145,7 +145,7 @@ p_mutator_implementation(File::internal, string, Data)
 File::File(const string& name)
   : _internal(new internal(name)) {}
 
-p_implementation(File, string, FullName)
+HW_PR_IMPL_GETTER(File, string, FullName)
 {
   const auto temporaryResult = _fullpath(nullptr, Name.c_str(), 0);
   const auto result = string(temporaryResult);
@@ -153,12 +153,12 @@ p_implementation(File, string, FullName)
   return result;
 }
 
-p_implementation(File, string, Name)
+HW_PR_IMPL_GETTER(File, string, Name)
 {
   return _internal->Name;
 }
 
-p_mutator_implementation(File, string, Name)
+HW_PR_IMPL_SETTER(File, string, Name)
 {
   if(Name == value)
     return;
@@ -168,27 +168,27 @@ p_mutator_implementation(File, string, Name)
   HW_ASSERT_IS(rc, ==, 0);
 }
 
-p_implementation(File, string, Data)
+HW_PR_IMPL_GETTER(File, string, Data)
 {
   return _internal->Data;
 }
 
-p_mutator_implementation(File, string, Data)
+HW_PR_IMPL_SETTER(File, string, Data)
 {
   _internal->Data = value;
 }
 
-p_implementation(File, bool, IsValid)
+HW_PR_IMPL_GETTER(File, bool, IsValid)
 {
   return _internal->IsValid;
 }
 
-p_implementation(File, bool, IsValidFolder)
+HW_PR_IMPL_GETTER(File, bool, IsValidFolder)
 {
   return _internal->IsValidFolder;
 }
 
-p_mutator_implementation(File, bool, IsValidFolder)
+HW_PR_IMPL_SETTER(File, bool, IsValidFolder)
 {
   _internal->IsValidFolder = value;
 }

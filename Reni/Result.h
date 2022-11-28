@@ -24,13 +24,13 @@ namespace Reni
 
     ResultCache();
 
-    ThisRef;
-    p(bool, hollow);
-    p(Size, size);
-    p(Ref<CodeItem >, code);
-    p(WeakRef<Type>, type);
-    p(Closure, closure);
-    p(Optional<WeakRef<Type>>, cachedType);
+    HW_PR_THISREF;
+    HW_PR_GET(bool, hollow);
+    HW_PR_GET(Size, size);
+    HW_PR_GET(Ref<CodeItem >, code);
+    HW_PR_GET(WeakRef<Type>, type);
+    HW_PR_GET(Closure, closure);
+    HW_PR_GET(Optional<WeakRef<Type>>, cachedType);
 
     ResultData operator &(const Category& category) const { return Get(category); }
     ResultData Get(const Category& category) const;
@@ -39,13 +39,13 @@ namespace Reni
     void Ensure(const Category& category) const;
 
   protected:
-    p_function(Array<string>, DumpData) override;
-    p_virtual(bool, isRecursion) { return false; };
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override;
+    HW_PR_VIRTUAL_GET(bool, isRecursion) { return false; };
     virtual ResultData GetResultData(const Category& category) const = 0;
     virtual ResultData GetResultDataRecursive(const Category& category) const;
 
   private:
-    p(Category, complete);
+    HW_PR_GET(Category, complete);
   };
 
 
@@ -63,8 +63,8 @@ namespace Reni
     ResultFromSyntaxAndContext(const Syntax& syntax, const Context& context);
 
   private:
-    p_function(Array<string>, DumpData) override;
-    p_function(bool, isRecursion) override;
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override;
+    HW_PR_DECL_GETTER(bool, isRecursion) override;
     ResultData GetResultData(const Category& category) const override;
     ResultData GetResultDataRecursive(const Category& category) const override;
   };

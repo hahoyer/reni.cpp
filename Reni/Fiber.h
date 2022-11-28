@@ -17,10 +17,10 @@ namespace Reni{
         typedef DumpableObject baseType;
         typedef FiberItem thisType;
     public:
-        ThisRef;
-        p_virtual(Size, argSize) { return 0; };
-        p_virtual(Size, size) { return 0; };
-        p_virtual(Closure, closure){ return{}; };
+        HW_PR_THISREF;
+        HW_PR_VIRTUAL_GET(Size, argSize) { return 0; };
+        HW_PR_VIRTUAL_GET(Size, size) { return 0; };
+        HW_PR_VIRTUAL_GET(Closure, closure){ return{}; };
         virtual string ToCpp(CodeVisitor const& visitor) const;
         virtual Optional<Ref<FiberItem>> Replace(ReplaceVisitor const& arg) const;
         static Array<Ref<FiberItem>> const CopyFromAddress(Type const& target);
@@ -37,12 +37,12 @@ namespace Reni{
     private:
         virtual Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;
         Ref<FiberCode> operator+(Array<Ref<FiberItem>> const&items) const override;
-        p_function(Array<string>,DumpData) override{ return{HW_D_VALUE(head), HW_D_VALUE(items)}; };
-        p_function(Size,size) override;
-        p_function(Closure, closure)override;
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{ return{HW_D_VALUE(head), HW_D_VALUE(items)}; };
+        HW_PR_DECL_GETTER(Size,size) override;
+        HW_PR_DECL_GETTER(Closure, closure)override;
         Optional<Ref<FiberCode>> ReCreate(Optional<Ref<CodeItem>> const& head, Array<Optional<Ref<FiberItem>>> const& items)const;
         virtual string ToCpp(CodeVisitor const&) const override;
-        p(bool, IsValid);
+        HW_PR_GET(bool, IsValid);
     };
 
     class FiberConnectorItem 
@@ -58,11 +58,11 @@ namespace Reni{
             : objectId(nextObjectId++) {}
 
     public:
-        ThisRef;
-        p_virtual(int, inCount) = 0;
-        p_virtual(Size, size) = 0;
-        p_virtual(Closure, closure){ return{}; };
-        p_virtual(string, prefix) = 0;
+        HW_PR_THISREF;
+        HW_PR_VIRTUAL_GET(int, inCount) = 0;
+        HW_PR_VIRTUAL_GET(Size, size) = 0;
+        HW_PR_VIRTUAL_GET(Closure, closure){ return{}; };
+        HW_PR_VIRTUAL_GET(string, prefix) = 0;
         virtual Size InSize(int index)const = 0;
         virtual string ToCpp(CodeVisitor const& visitor)const = 0;
         virtual Optional<Ref<FiberItem>> Replace(ReplaceVisitor const&arg) const = 0;

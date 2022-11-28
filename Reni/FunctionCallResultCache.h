@@ -25,20 +25,20 @@ namespace Reni
 
         FunctionCallResultCache(FunctionCallContext const& context, size_t bodyIndex);
 
-        p(CodeFunction, getter);
-        p(CodeFunction, setter);
+        HW_PR_GET(CodeFunction, getter);
+        HW_PR_GET(CodeFunction, setter);
     private:
-        p(Optional<WeakRef<Type const>>, arg){ return context.arg; }
-        p(ContainerContext const&, container){return context.container;}
-        p_function(Array<string>,DumpData) override{return{HW_D_VALUE(bodyIndex), HW_D_VALUE(context)};}
+        HW_PR_GET(Optional<WeakRef<Type const>>, arg){ return context.arg; }
+        HW_PR_GET(ContainerContext const&, container){return context.container;}
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override{return{HW_D_VALUE(bodyIndex), HW_D_VALUE(context)};}
 
         ResultData GetResultDataRecursive(Category const& category) const override;
         ResultData GetResultData(Category const& category)const override;
-        p(Ref<CodeItem>, codeGet);
-        p(Closure, extsGet);
-        p(Ref<CodeItem>, CodeSet);
-        p(WeakRef<Type>, valueType);
-        p(size_t, codeIndex);
-        p(FunctionSyntax const&, body);
+        HW_PR_GET(Ref<CodeItem>, codeGet);
+        HW_PR_GET(Closure, extsGet);
+        HW_PR_GET(Ref<CodeItem>, CodeSet);
+        HW_PR_GET(WeakRef<Type>, valueType);
+        HW_PR_GET(size_t, codeIndex);
+        HW_PR_GET(FunctionSyntax const&, body);
     };
 };

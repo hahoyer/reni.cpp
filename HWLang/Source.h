@@ -31,8 +31,8 @@ namespace HWLang
         HW_DO_PLACEMENT_ASSIGN;
         operator Source& ()const{ return const_cast<Source&>(*this); }
 
-        p(string, Text);
-        p(size_t, Count);
+        HW_PR_GET(string, Text);
+        HW_PR_GET(size_t, Count);
 
         bool IsEnd(size_t position) const;
         string Part(size_t start, size_t count) const;
@@ -47,6 +47,6 @@ namespace HWLang
         string DumpBeforeCurrent(size_t position, size_t dumpWidth) const;
         string DumpAroundCurrent(size_t position, size_t count, size_t dumpWidth) const;
     private:
-        p_function(Array<string>,DumpData) override;
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override;
     };
 }

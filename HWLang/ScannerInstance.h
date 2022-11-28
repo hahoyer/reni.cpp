@@ -23,10 +23,10 @@ namespace HWLang{
 
         HW_DO_PLACEMENT_ASSIGN;
 
-        p_function(bool,IsValid) override{ return !endTokenReturned; };
+        HW_PR_DECL_GETTER(bool,IsValid) override{ return !endTokenReturned; };
         TToken Step() override;
     private:
         TToken Step(size_t count, TokenClass const& tokenClass);
-        p_function(Array<string>,DumpData) override;
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override;
     };
 }

@@ -45,8 +45,8 @@ namespace HWLib
     CtrlRef(const CtrlRef<const T>& other) : baseType(other) { };
 
     HW_DO_PLACEMENT_ASSIGN;
-    const T& operator*() const { return *baseType::value; };
-    const T* operator->() const { return &*baseType::value; };
+    T const& operator*() const { return *baseType::value; };
+    T const* operator->() const { return &*baseType::value; };
 
   private:
     T& operator*();

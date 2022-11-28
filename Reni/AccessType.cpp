@@ -13,71 +13,69 @@ static bool Trace = true;
 
 
 AccessType::AccessType(AccessData const& data)
-    : data(data.thisRef)
+  : data(data.thisRef)
 {
-    SetDumpString();
+  SetDumpString();
 }
 
-p_implementation(AccessType, Array<string>,DumpData) { return data->p_name(DumpData)(); }
-p_implementation(AccessType, WeakRef<Global>, global){ return data->global; }
-p_implementation(AccessType, WeakRef<Type>, value){return data->dataResultCache->type;}
-p_implementation(AccessType, Optional<WeakRef<NumberType>>, asNumberType){ return value->As<NumberType>(); }
+HW_PR_IMPL_GETTER(AccessType, Array<string>, DumpData) { return data->HW_PR_GETTER_NAME(DumpData)(); }
+HW_PR_IMPL_GETTER(AccessType, WeakRef<Global>, global) { return data->global; }
+HW_PR_IMPL_GETTER(AccessType, WeakRef<Type>, value) { return data->dataResultCache->type; }
+HW_PR_IMPL_GETTER(AccessType, Optional<WeakRef<NumberType>>, asNumberType) { return value->As<NumberType>(); }
 
 SearchResult<Feature> AccessType::DeclarationsForType(DeclarationType const& target) const
 {
-    auto dircetResult = target.Declarations(*this);
-    if(dircetResult.IsValid)
-        return dircetResult;
+  auto dircetResult = target.Declarations(*this);
+  if(dircetResult.IsValid)
+    return dircetResult;
 
-    auto parentResult = value->DeclarationsForType(target);
-    if(parentResult.IsValid)
-        return parentResult.found + thisRef;
+  auto parentResult = value->DeclarationsForType(target);
+  if(parentResult.IsValid)
+    return parentResult.found + thisRef;
 
-    return{};
+  return {};
 }
 
 Ref<ResultCache> AccessType::DirectConvert() const
 {
-    return new FunctionResultCache
-        ([&](Category category) -> ResultData const
+  return new FunctionResultCache([&](Category category) -> ResultData const
     {
-        return ResultData::GetSmartHollowSizeClosure
-            (
-            category,
-            l_(DirectConvertCode()),
-            l_(WeakRef<Type>(thisRef))
-            );
+      return ResultData::GetSmartHollowSizeClosure
+      (
+        category,
+        l_(DirectConvertCode()),
+        l_(WeakRef<Type>(thisRef))
+      );
     }
-    );
+  );
 }
 
-Ref<CodeItem> const AccessType::DirectConvertCode() const
+Ref<CodeItem> AccessType::DirectConvertCode() const
 {
-    return CodeItem::Arg(*value->indirectType);
+  return CodeItem::Arg(*value->indirectType);
 }
 
-Optional<WeakRef<AccessType>> const AccessType::Convert(Type const& target)
+Optional<WeakRef<AccessType>> AccessType::Convert(Type const& target)
 {
-    auto result = dynamic_cast<AccessType*>(&target.thisRef);
-    if(result)
-        return WeakRef<AccessType>(result);
-    return{};
+  if(const auto result = dynamic_cast<AccessType*>(&target.thisRef))
+    return WeakRef<AccessType>(result);
+  return {};
 }
 
 
 ResultData AccessType::AssignmentFeature::Result(Category const& category, Type const& target, Type const& arg) const
 {
-    bool Trace = false;
-    HW_D_METHOD(category, target, arg);
-    auto typedTarget = Convert(target);
-    auto rawResult = typedTarget.Value->data->SetResultData(category);
-    if(category <= Category::Type.replenished)
-        return_d(rawResult);
+  bool Trace = false;
+  HW_D_METHOD(category, target, arg);
+  auto typedTarget = Convert(target);
+  auto rawResult = typedTarget.Value->data->SetResultData(category);
+  if(category <= Category::Type.replenished)
+    return_d(rawResult);
 
-    HW_BREAK_IF(Trace, HW_D_VALUE(rawResult));
+  HW_BREAK_IF(Trace, HW_D_VALUE(rawResult));
 
-    ReplaceVisitor visitor;
-    visitor.SetResults(External::Args::Instance, *arg.ConvertTo(typedTarget.Value->value->thisRef));
-    auto result = rawResult.Replace(visitor);
-    return_db(result);
+  ReplaceVisitor visitor;
+  visitor.SetResults(External::Args::Instance, *arg.ConvertTo(typedTarget.Value->value->thisRef));
+  auto result = rawResult.Replace(visitor);
+  return_db(result);
 }

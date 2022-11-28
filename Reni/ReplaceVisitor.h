@@ -54,7 +54,7 @@ namespace Reni
         void AssumeFunctionArg(External::Function const&tag, Type const&arg) const;
 
     private:
-        p_function(Array<string>, DumpData) override;
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override;
     };
 }
 

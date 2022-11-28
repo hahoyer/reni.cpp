@@ -32,7 +32,7 @@ namespace HWLib
         StackTrace(Thread const& thread);
         std::string Format(size_t StartLevel = 0)const;
     private:
-        p(HANDLE, Process){ return GetCurrentProcess(); };
+        HW_PR_GET(HANDLE, Process){ return GetCurrentProcess(); };
     };
 
 
@@ -58,7 +58,7 @@ namespace HWLib
         bool operator ==(Thread const& x) const { return handle == x.handle; };
         bool operator !=(Thread const& x) const { return !(*this == x); };
 
-        p(HANDLE, Handle){ return handle; };
+        HW_PR_GET(HANDLE, Handle){ return handle; };
 
         void Suspend() const;
         void Resume() const;

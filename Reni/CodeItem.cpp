@@ -18,10 +18,10 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-p_virtual_header_implementation(CodeItem, Size, size);
-p_virtual_header_implementation(CodeItem, bool, isReference);
-p_virtual_header_implementation(CodeItem, Closure, closure);
-p_virtual_header_implementation(CodeItem, bool, isEmpty);
+HW_PR_VIRTUAL_GETTER_WRAPPER(CodeItem, Size, size);
+HW_PR_VIRTUAL_GETTER_WRAPPER(CodeItem, bool, isReference);
+HW_PR_VIRTUAL_GETTER_WRAPPER(CodeItem, Closure, closure);
+HW_PR_VIRTUAL_GETTER_WRAPPER(CodeItem, bool, isEmpty);
 
 bool CodeItem::operator==(const thisType& other) const
 {
@@ -213,7 +213,7 @@ string ConstCode::ToCpp(const CodeVisitor& visitor) const
   return visitor.Const(size, value);
 };
 
-p_implementation(ConstCode, bool, isEmpty) { return value.isEmpty; }
+HW_PR_IMPL_GETTER(ConstCode, bool, isEmpty) { return value.isEmpty; }
 
 
 string DumpPrintNumberCode::ToCpp(const CodeVisitor& visitor) const
@@ -224,8 +224,8 @@ string DumpPrintNumberCode::ToCpp(const CodeVisitor& visitor) const
 TypedCode::TypedCode(const Type& type): type(type)
 {}
 
-p_implementation(TypedCode, Array<string>, DumpData) { return {HW_D_VALUE(type)}; };
-p_implementation(TypedCode, Size, size) { return type.size; }
+HW_PR_IMPL_GETTER(TypedCode, Array<string>, DumpData) { return {HW_D_VALUE(type)}; };
+HW_PR_IMPL_GETTER(TypedCode, Size, size) { return type.size; }
 
 
 ArgCode::ArgCode(const Type& type) : baseType(type)
@@ -234,7 +234,7 @@ ArgCode::ArgCode(const Type& type) : baseType(type)
   HW_BREAK_IF(ObjectId == -10, Dump);
 }
 
-p_implementation(ArgCode, Closure, closure) { return Closure(External::Args::Instance); }
+HW_PR_IMPL_GETTER(ArgCode, Closure, closure) { return Closure(External::Args::Instance); }
 
 string ArgCode::ToCpp(const CodeVisitor& visitor) const
 {
@@ -274,7 +274,7 @@ ThisCode::ThisCode(const Type& type): baseType(type)
   SetDumpString();
 }
 
-p_implementation(ThisCode, Closure, closure) { return Closure(External::This::Instance); }
+HW_PR_IMPL_GETTER(ThisCode, Closure, closure) { return Closure(External::This::Instance); }
 
 string ThisCode::ToCpp(const CodeVisitor& visitor) const
 {
@@ -320,7 +320,7 @@ FiberConnector::FiberConnector(const Array<Ref<CodeItem>>& items, const Ref<Fibe
   HW_ASSERT(IsValid, Dump);
 }
 
-p_implementation(FiberConnector, Closure, closure)
+HW_PR_IMPL_GETTER(FiberConnector, Closure, closure)
 {
   return items
     .Aggregate<Closure>

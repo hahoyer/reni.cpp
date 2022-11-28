@@ -27,7 +27,7 @@ namespace Reni
         }
 
     private:
-        p_function(Array<string>,DumpData) override
+        HW_PR_DECL_GETTER(Array<string>,DumpData) override
         {
             return
                 {
@@ -36,8 +36,8 @@ namespace Reni
                 };
         };
 
-        p_function(Size, size) override{return Size::Address;}
-        p_function(Closure, closure) override{ return Closure(external); };
+        HW_PR_DECL_GETTER(Size, size) override{return Size::Address;}
+        HW_PR_DECL_GETTER(Closure, closure) override{ return Closure(external); };
 
         Ref<CodeItem> ReferencePlus(Size offset) const override;
         Optional<Ref<CodeItem>> ReplaceImpl(ReplaceVisitor const& arg) const override;
@@ -77,7 +77,7 @@ ResultData const FunctionCallContext::ReferenceResult(Category category, Externa
     return_d(result);
 }
 
-p_implementation(FunctionCallContext, WeakRef<Type>, objectType)
+HW_PR_IMPL_GETTER(FunctionCallContext, WeakRef<Type>, objectType)
 {
     return container.dataType;
 }

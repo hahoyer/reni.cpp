@@ -13,11 +13,16 @@
 
 namespace HWLib
 {
-    class Console;
+  class Console;
 
-    class DebugException: public std::exception{};
-    class BreakpointException : public DebugException{};
-    class AssertionException : public DebugException{};
+  class DebugException : public std::exception
+  {};
+
+  class BreakpointException : public DebugException
+  {};
+
+  class AssertionException : public DebugException
+  {};
 }
 
 #undef HW_ASSERT_

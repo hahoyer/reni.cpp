@@ -129,7 +129,7 @@ bool const Closure::Contains(External const& item) const
         ->Any;
 }
 
-p_implementation(Closure, Array<string>, DumpData)
+HW_PR_IMPL_GETTER(Closure, Array<string>, DumpData)
 {
     return data
         .Select<string>

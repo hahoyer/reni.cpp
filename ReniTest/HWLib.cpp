@@ -270,6 +270,7 @@ namespace TestValueCache
   class Container
   {
     const int valueItSelf;
+
   public:
     Container(int value)
       : valueItSelf(value)

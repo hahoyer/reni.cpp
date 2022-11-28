@@ -62,12 +62,12 @@ RegularContext::RegularContext()
   : _internal(new internal(*this))
 {}
 
-p_virtual_header_implementation(Context, bool, isRecursion) ;
-p_virtual_header_implementation(Context, WeakRef<Global>, global) ;
-p_virtual_header_implementation(Context, WeakRef<FunctionCallContext>, functionContext);
-p_virtual_header_implementation(Context, WeakRef<RecursionContext>, recursionContext);
+HW_PR_VIRTUAL_GETTER_WRAPPER(Context, bool, isRecursion) ;
+HW_PR_VIRTUAL_GETTER_WRAPPER(Context, WeakRef<Global>, global) ;
+HW_PR_VIRTUAL_GETTER_WRAPPER(Context, WeakRef<FunctionCallContext>, functionContext);
+HW_PR_VIRTUAL_GETTER_WRAPPER(Context, WeakRef<RecursionContext>, recursionContext);
 
-p_implementation(RegularContext, WeakRef<RecursionContext>, recursionContext)
+HW_PR_IMPL_GETTER(RegularContext, WeakRef<RecursionContext>, recursionContext)
 {
   return _internal->recursionContext.Value;
 }
@@ -129,7 +129,7 @@ ContainerContext::ContainerContext(const RegularContext& parent, const SyntaxCon
 };
 
 
-p_implementation(ContainerContext, Size, dataSize) { return containerData->GetSize(parent); }
+HW_PR_IMPL_GETTER(ContainerContext, Size, dataSize) { return containerData->GetSize(parent); }
 
 const Ref<ResultCache> ContainerContext::AccessResult(const Type& argsType, size_t statementIndex) const
 {
@@ -156,9 +156,9 @@ const Size ContainerContext::PartSize(size_t position) const
   return accessData(position)->dataResultCache->size;
 }
 
-p_implementation(ContainerContext, Array<string>, DumpData) 
+HW_PR_IMPL_GETTER(ContainerContext, Array<string>, DumpData) 
 {
-  return p_base_name(DumpData) +
+  return HW_PR_BASE_GETTER_NAME(DumpData) +
     _({
       HW_D_VALUE(containerData),
       HW_D_VALUE(viewIndex)
@@ -183,14 +183,14 @@ ResultData FunctionCallResultCache::GetResultData(Category const&category) const
   return ResultData::GetSmartHollowSize(category, l_(codeGet), l_(valueType), l_(extsGet));
 }
 
-p_implementation(FunctionCallResultCache, size_t, codeIndex) { return context.global->FunctionIndex(*this); };
+HW_PR_IMPL_GETTER(FunctionCallResultCache, size_t, codeIndex) { return context.global->FunctionIndex(*this); };
 
-p_implementation(FunctionCallResultCache, FunctionSyntax const&, body)
+HW_PR_IMPL_GETTER(FunctionCallResultCache, FunctionSyntax const&, body)
 {
   return dynamic_cast<const FunctionSyntax&>(*context.container.containerData->statements[bodyIndex]);
 };
 
-p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
+HW_PR_IMPL_GETTER(FunctionCallResultCache, Ref<CodeItem>, codeGet)
 {
   auto Trace = false; //context.ObjectId == 7 && bodyIndex == 0; 
   HW_D_METHOD_;
@@ -216,7 +216,7 @@ p_implementation(FunctionCallResultCache, Ref<CodeItem>, codeGet)
   HW_BREAK_AND_THROW;
 }
 
-p_implementation(FunctionCallResultCache, Closure, extsGet)
+HW_PR_IMPL_GETTER(FunctionCallResultCache, Closure, extsGet)
 {
   return body
          .getter
@@ -226,7 +226,7 @@ p_implementation(FunctionCallResultCache, Closure, extsGet)
     - External::Function::Arg::Instance;
 }
 
-p_implementation(FunctionCallResultCache, CodeFunction, getter)
+HW_PR_IMPL_GETTER(FunctionCallResultCache, CodeFunction, getter)
 {
   HW_ASSERT(!arg.IsEmpty, "NotImpl: no arg " + Dump);
   HW_ASSERT(!body.getter.IsEmpty, "NotImpl: no function getter " + Dump);
@@ -252,13 +252,13 @@ p_implementation(FunctionCallResultCache, CodeFunction, getter)
   HW_BREAK_AND_THROW;
 }
 
-p_implementation(FunctionCallResultCache, CodeFunction, setter)
+HW_PR_IMPL_GETTER(FunctionCallResultCache, CodeFunction, setter)
 {
   HW_D_METHOD_;
   HW_BREAK_AND_THROW;
 }
 
-p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
+HW_PR_IMPL_GETTER(FunctionCallResultCache, WeakRef<Type>, valueType)
 {
   return body
          .getter
@@ -268,7 +268,7 @@ p_implementation(FunctionCallResultCache, WeakRef<Type>, valueType)
 }
 
 
-p_implementation(RecursionContext, WeakRef<RecursionContext>, recursionContext)
+HW_PR_IMPL_GETTER(RecursionContext, WeakRef<RecursionContext>, recursionContext)
 {
   HW_D_METHOD_;
   HW_BREAK_AND_THROW;
@@ -306,10 +306,10 @@ FunctionBodyType::FunctionBodyType(const Context& context, const FunctionSyntax&
 {}
 
 
-p_implementation(FunctionBodyType, WeakRef<Global>, global) { return context.global; }
+HW_PR_IMPL_GETTER(FunctionBodyType, WeakRef<Global>, global) { return context.global; }
 
-p_implementation(ContainerType, Size, size) { return parent.dataSize; }
-p_implementation(ContainerType, WeakRef<Global>, global) { return parent.global; }
+HW_PR_IMPL_GETTER(ContainerType, Size, size) { return parent.dataSize; }
+HW_PR_IMPL_GETTER(ContainerType, WeakRef<Global>, global) { return parent.global; }
 
 string External::Context::internalDump() const
 {

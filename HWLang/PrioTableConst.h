@@ -10,7 +10,7 @@ namespace HWLang
       const char value;
       explicit Tag(const char value) : value(value) {};
       bool operator==(const Tag& other) const { return value == other.value; };
-      p(string, Dump)
+      HW_PR_GET(string, Dump)
       {
         switch(value)
         {
@@ -22,7 +22,7 @@ namespace HWLang
         }
       }
 
-      p(bool, IsValid)
+      HW_PR_GET(bool, IsValid)
       {
         switch(value)
         {

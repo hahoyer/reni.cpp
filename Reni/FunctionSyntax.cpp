@@ -8,7 +8,7 @@
 using namespace Reni;
 
 
-p_implementation(FunctionSyntax, string, SmartDump) 
+HW_PR_IMPL_GETTER(FunctionSyntax, string, SmartDump) 
 {
     string result;
     if(!setter.IsEmpty)

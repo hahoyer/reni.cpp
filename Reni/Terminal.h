@@ -21,8 +21,8 @@ namespace Reni
             SetDumpString();
         }
     private:
-        p_function(string, SmartDump) override{ return part; };
-        p_function(int, priority) override{ return -2; }
+        HW_PR_DECL_GETTER(string, SmartDump) override{ return part; };
+        HW_PR_DECL_GETTER(int, priority) override{ return -2; }
 
         ResultData GetResultData(const Context& context, Category const& category)const override{
             return tokenClass.GetResultData(context, category, part);

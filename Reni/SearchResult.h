@@ -51,16 +51,16 @@ namespace Reni
             SetDumpString();
         }
 
-        p(FoundFeature<TFeature>, found)
+        HW_PR_GET(FoundFeature<TFeature>, found)
         {
             AssertValid();
             return data.Value;
         }
 
-        p(bool, IsValid){ return data.IsValid; };
+        HW_PR_GET(bool, IsValid){ return data.IsValid; };
 
     private:
-        p_function(Array<string>, DumpData) override{ return{HW_D_VALUE(data)}; };
+        HW_PR_DECL_GETTER(Array<string>, DumpData) override{ return{HW_D_VALUE(data)}; };
         void AssertValid()const{ HW_ASSERT(IsValid, Dump); }
     };
 }

@@ -12,7 +12,7 @@ CppCompilerScripting::CppCompilerScripting(const string& program)
 {}
 
 
-p_implementation(CppCompilerScripting, string, fullFileName)
+HW_PR_IMPL_GETTER(CppCompilerScripting, string, fullFileName)
 {
   const auto temp = System::EnvironmentVariable("TEMP");
   File tempDir = temp + "\\reni";
@@ -55,17 +55,17 @@ void CppCompilerScripting::Execute()
 };
 
 
-p_implementation(CppCompilerScripting, int, result)
+HW_PR_IMPL_GETTER(CppCompilerScripting, int, result)
 {
   return currentProcess.result;
 };
 
-p_implementation(CppCompilerScripting, string, output)
+HW_PR_IMPL_GETTER(CppCompilerScripting, string, output)
 {
   return currentProcess.data;
 };
 
-p_implementation(CppCompilerScripting, string, LibPath)
+HW_PR_IMPL_GETTER(CppCompilerScripting, string, LibPath)
 {
   const Array<string> list{
     VCInstallDir + R"(\lib\)" + Platform,
@@ -78,7 +78,7 @@ p_implementation(CppCompilerScripting, string, LibPath)
          ->Stringify(" ");
 };
 
-p_implementation(CppCompilerScripting, string, CompileCommand)
+HW_PR_IMPL_GETTER(CppCompilerScripting, string, CompileCommand)
 {
   return
     R"(/Zi /Zl /nologo /W4 /WX- /sdl /MP8 /Od /Oi /Oy- /D _DEBUG /Gm- /EHsc /MDd /GS /Gy- /fp:precise /Zc:wchar_t /Zc:forScope /GR /TP /analyze- /FC )"
@@ -90,7 +90,7 @@ p_implementation(CppCompilerScripting, string, CompileCommand)
     + "/OUT:\"" + fullFileName + ".exe\" ";
 };
 
-p_implementation(CppCompilerScripting, string, IncludePath)
+HW_PR_IMPL_GETTER(CppCompilerScripting, string, IncludePath)
 {
   const Array<string> list{
     VCInstallDir + "\\include",

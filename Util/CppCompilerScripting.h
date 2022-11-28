@@ -16,24 +16,24 @@ namespace Util
     CppCompilerScripting(const string& program);
 
     void Execute();
-    p(int, result);
-    p(string, output);
+    HW_PR_GET(int, result);
+    HW_PR_GET(string, output);
   private:
-    p(string, fullFileName);
-    p(string, fileName) { return "temp"; };
-    p(string, ProgramFiles86) { return System::EnvironmentVariable("ProgramFiles(x86)"); };
-    p(string, VCInstallDir) { return System::EnvironmentVariable("VS142BASEPATH"); };
-    p(string, WindowsKits) { return ProgramFiles86 + R"(\Windows Kits\10)"; };
-    p(string, ProjectDir) { return File(__FILE__ "\\..").FullName; };
-    p(string, SolutionDir) { return File(ProjectDir + "\\..").FullName; };
-    p(string, RuntimeDir) { return File(SolutionDir + "\\Runtime").FullName; };
-    p(string, IncludePath);
-    p(string, LibPath);
-    p(string, CppCompilerExecutable) { return VCInstallDir + R"(\bin\HostX64\x64\cl.exe)"; };
-    p(string, CompileCommand);
-    p(string, LinkerCommand);
-    p(string, Platform) { return "x64"; };
-    p(string, CrtVersion) { return "10.0.20348.0"; };
+    HW_PR_GET(string, fullFileName);
+    HW_PR_GET(string, fileName) { return "temp"; };
+    HW_PR_GET(string, ProgramFiles86) { return System::EnvironmentVariable("ProgramFiles(x86)"); };
+    HW_PR_GET(string, VCInstallDir) { return System::EnvironmentVariable("VS142BASEPATH"); };
+    HW_PR_GET(string, WindowsKits) { return ProgramFiles86 + R"(\Windows Kits\10)"; };
+    HW_PR_GET(string, ProjectDir) { return File(__FILE__ "\\..").FullName; };
+    HW_PR_GET(string, SolutionDir) { return File(ProjectDir + "\\..").FullName; };
+    HW_PR_GET(string, RuntimeDir) { return File(SolutionDir + "\\Runtime").FullName; };
+    HW_PR_GET(string, IncludePath);
+    HW_PR_GET(string, LibPath);
+    HW_PR_GET(string, CppCompilerExecutable) { return VCInstallDir + R"(\bin\HostX64\x64\cl.exe)"; };
+    HW_PR_GET(string, CompileCommand);
+    HW_PR_GET(string, LinkerCommand);
+    HW_PR_GET(string, Platform) { return "x64"; };
+    HW_PR_GET(string, CrtVersion) { return "10.0.20348.0"; };
 
     void InitializeFile() const;
   };

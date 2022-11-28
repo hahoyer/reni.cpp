@@ -14,7 +14,7 @@ using namespace HWLib;
 
 static bool Trace = true;
 
-p_implementation(ReplaceVisitor, Array<string>, DumpData){
+HW_PR_IMPL_GETTER(ReplaceVisitor, Array<string>, DumpData){
     return results
         .keys
         .Select<string>([&](External const* key)

@@ -22,7 +22,7 @@ ExpressionSyntax::ExpressionSyntax(DefineableToken const& tokenClass, Optional<R
     SetDumpString();
 };
 
-p_implementation(ExpressionSyntax, string, SmartDump)
+HW_PR_IMPL_GETTER(ExpressionSyntax, string, SmartDump)
 {
     return
         (left.IsEmpty? "" : (left.Value->SmartDumpFrame(priority)+ " "))
@@ -30,7 +30,7 @@ p_implementation(ExpressionSyntax, string, SmartDump)
         + (right.IsEmpty ? "" : (" " + right.Value->SmartDumpFrame(priority)));
 };
 
-p_implementation(ExpressionSyntax, int, priority) { return tokenClass.priority; };
+HW_PR_IMPL_GETTER(ExpressionSyntax, int, priority) { return tokenClass.priority; };
 
 ResultData ExpressionSyntax::GetResultData(const Context& context, Category const& category)const
 {

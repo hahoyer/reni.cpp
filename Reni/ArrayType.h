@@ -24,11 +24,11 @@ namespace Reni
       SetDumpString();
     }
 
-    ThisRef;
+    HW_PR_THISREF;
   private:
-    p_function(Size, size) override;
-    p_function(WeakRef<Global>, global) override { return elementType.global; };
-    p_function(Array<string>, DumpData) override
+    HW_PR_DECL_GETTER(Size, size) override;
+    HW_PR_DECL_GETTER(WeakRef<Global>, global) override { return elementType.global; };
+    HW_PR_DECL_GETTER(Array<string>, DumpData) override
     {
       return {
         HW_D_VALUE(elementType),
@@ -36,6 +36,6 @@ namespace Reni
       };
     }
 
-    p_function(bool, hollow) { return false; };
+    HW_PR_DECL_GETTER(bool, hollow) { return false; };
   };
 };
