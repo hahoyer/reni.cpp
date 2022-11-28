@@ -48,7 +48,7 @@
 #define HW_PR_VIRTUAL_GETTER_WRAPPER(CLASS, TYPE, NAME) TYPE CLASS::HW_PR_VIRTUAL_GETTER_NAME(NAME)()const { return HW_PR_GETTER_NAME(NAME)(); };
 #define HW_PR_VIRTUAL_SETTER_WRAPPER(CLASS, TYPE, NAME) void CLASS::HW_PR_VIRTUAL_SETTER_NAME(NAME)(TYPE const&value){HW_PR_SETTER_NAME(NAME)(value);}
 
-// convenient macros
+// convenience macros
 #define HW_PR_BASE_GETTER_NAME(NAME) baseType::get_##NAME()
 #define HW_PR_THISREF HW_PR_MUTABLE_GET(thisType&, thisRef)const{return const_cast<thisType&>(*this);}
 

@@ -4,9 +4,9 @@
 #include "AccessData.h"
 #include "CodeItems.h"
 #include "ContainerContext.h"
+#include "FunctionResultCache.h"
 #include "ReplaceVisitor.h"
 #include "SyntaxContainer.h"
-#include "FunctionResultCache.h"
 
 using namespace Reni;
 static bool Trace = true;
