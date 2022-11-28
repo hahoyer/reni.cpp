@@ -17,8 +17,13 @@ namespace Reni
   public:
     AccessResultCache(AccessData const& data);
 
-    virtual Array<string> HW_PR_GETTER_NAME(DumpData)() const override;
+    virtual HW_PR_DECL_GETTER(Array<string>, DumpData) override;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
     ResultData GetResultData(Category const& category) const override;
     HW_PR_GET(Ref<CodeItem>, codeGet);
     HW_PR_GET(Ref<CodeItem>, CodeSet);

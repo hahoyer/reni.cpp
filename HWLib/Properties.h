@@ -25,7 +25,6 @@
 #define HW_PR_SET(TYPE, NAME) HW_PR_SETTER_SPECIFICATION(TYPE,NAME); HW_PR_DECL_SETTER(TYPE,NAME)
 #define HW_PR_VAR_SETTER(TYPE, NAME) HW_PR_VARIABLE_SPECIFICATION(TYPE,NAME); HW_PR_DECL_GETTER(TYPE,NAME); HW_PR_DECL_SETTER(TYPE,NAME)
 
-
 // Virtual properties
 #define HW_PR_VIRTUAL_GETTER_NAME(NAME) virtual_get_##NAME
 #define HW_PR_VIRTUAL_SETTER_NAME(NAME) virtual_set_##NAME
@@ -37,12 +36,26 @@
 #define HW_PR_DECL_VIRTUAL_GETTER(TYPE, NAME) TYPE HW_PR_VIRTUAL_GETTER_NAME(NAME)()const
 #define HW_PR_DECL_VIRTUAL_SETTER(TYPE, NAME) void HW_PR_VIRTUAL_SETTER_NAME(NAME)(TYPE const&value)
 
+/// <summary>
+///  Declare a wrapper method and its virtual kernel.
+/// </summary>
+/// <remarks>Scope will change to protected.</remarks>
+/// <param name="TYPE">Type of the property defined.</param>
+/// <param name="NAME">Name of the property defined.</param>
 #define HW_PR_VIRTUAL_GET(TYPE, NAME) HW_PR_VIRTUAL_GETTER_SPECIFICATION(TYPE,NAME);\
     HW_PR_DECL_VIRTUAL_GETTER(TYPE,NAME);\
+    protected:\
     virtual HW_PR_DECL_GETTER(TYPE,NAME)
 
+/// <summary>
+///  Declare a wrapper method with inline implementation and its virtual kernel.
+/// </summary>
+/// <remarks>Scope will change to protected.</remarks>
+/// <param name="TYPE">Type of the property defined.</param>
+/// <param name="NAME">Name of the property defined.</param>
 #define HW_PR_VIRTUAL_GET_INLINE(TYPE, NAME) HW_PR_VIRTUAL_GETTER_SPECIFICATION(TYPE,NAME);\
     HW_PR_DECL_VIRTUAL_GETTER(TYPE,NAME){ return HW_PR_GETTER_NAME(NAME)(); };\
+    protected:\
     virtual HW_PR_DECL_GETTER(TYPE,NAME)
 
 #define HW_PR_VIRTUAL_GETTER_WRAPPER(CLASS, TYPE, NAME) TYPE CLASS::HW_PR_VIRTUAL_GETTER_NAME(NAME)()const { return HW_PR_GETTER_NAME(NAME)(); };

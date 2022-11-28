@@ -10,11 +10,10 @@ using namespace Reni;
 static bool Trace = true;
 
 
-AccessResultCache::AccessResultCache(AccessData const&data)
-    : data(&data.thisRef)
-{
-}
+AccessResultCache::AccessResultCache(AccessData const& data)
+  : data(&data.thisRef)
+{}
 
-HW_PR_IMPL_GETTER(AccessResultCache, Array<string>,DumpData){ return data->HW_PR_GETTER_NAME(DumpData)(); }
+HW_PR_IMPL_GETTER(AccessResultCache, Array<string>, DumpData) { return data->DumpData; }
 
-ResultData AccessResultCache::GetResultData(Category const&category) const{return data->GetResultData(category);}
+ResultData AccessResultCache::GetResultData(Category const& category) const { return data->GetResultData(category); }

@@ -22,15 +22,7 @@ namespace HWLib
     HW_PR_GET(bool, IsValid) { return data.has_value(); };
     HW_PR_GET(bool, IsEmpty) { return !data.has_value(); };
 
-    HW_PR_GETTER_SPECIFICATION(T, Value);
-
-    T HW_PR_GETTER_NAME(Value)() const
-    {
-      HW_ASSERT_(IsValid);
-      return *data;
-    };
-
-    T HW_PR_GETTER_NAME(Value)()
+    HW_PR_GET(T, Value)
     {
       HW_ASSERT_(IsValid);
       return *data;

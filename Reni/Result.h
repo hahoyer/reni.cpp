@@ -40,6 +40,8 @@ namespace Reni
 
   protected:
     HW_PR_DECL_GETTER(Array<string>, DumpData) override;
+
+  public:
     HW_PR_VIRTUAL_GET(bool, isRecursion) { return false; };
     virtual ResultData GetResultData(const Category& category) const = 0;
     virtual ResultData GetResultDataRecursive(const Category& category) const;

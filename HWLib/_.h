@@ -24,8 +24,7 @@ namespace HWLib
     Box_(T& data) : _data(data) {}
     Box_(const thisType& data) = delete;
 
-    HW_PR_GETTER_SPECIFICATION(T&, Data);
-    HW_PR_DECL_MUTABLE_GETTER(T&, Data) { return _data; }
+    HW_PR_MUTABLE_GET(T&, Data) { return _data; }
 
     void Delete() const { delete &_data; };
 
@@ -48,8 +47,7 @@ namespace HWLib
     Box_(T& data) : _data(data) {}
     Box_(const thisType& data) = delete;
 
-    HW_PR_GETTER_SPECIFICATION(T&, Data);
-    HW_PR_DECL_MUTABLE_GETTER(T&, Data) { return _data; }
+    HW_PR_MUTABLE_GET(T&, Data) { return _data; }
 
     void SaveDelete() const
     {
@@ -91,8 +89,7 @@ namespace HWLib
   public:
     Box_(T& data) : _data(data) {}
 
-    HW_PR_GETTER_SPECIFICATION(T&, Data);
-    HW_PR_DECL_MUTABLE_GETTER(T&, Data) { return _data; }
+    HW_PR_MUTABLE_GET(T&, Data) { return _data; }
 
     void SaveDelete() const
     {

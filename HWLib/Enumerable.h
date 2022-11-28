@@ -75,6 +75,8 @@ namespace HWLib
     public:
       virtual ~Iterator() {};
       HW_PR_VIRTUAL_GET_INLINE(bool, IsValid) = 0;
+
+    public:
       virtual T Step() = 0;
       HW_PR_MUTABLE_GET(Array<T>, ToArray);
     };
@@ -82,11 +84,10 @@ namespace HWLib
     class RangeBasedForLoopSimulator;
     class Container;
 
-    HW_PR_VIRTUAL_GETTER_SPECIFICATION(CtrlRef<Iterator>, ToIterator);
-    CtrlRef<Iterator> HW_PR_VIRTUAL_GETTER_NAME(ToIterator)() const { return HW_PR_GETTER_NAME(ToIterator)(); }
-    virtual HW_PR_DECL_MUTABLE_GETTER(CtrlRef<Iterator>, ToIterator) const = 0;
+    HW_PR_VIRTUAL_GET_INLINE(CtrlRef<Iterator>, ToIterator) = 0;
 
-    const RangeBasedForLoopSimulator begin() const { return ToIterator; }
+  public:
+    RangeBasedForLoopSimulator begin() const { return ToIterator; }
     RangeBasedForLoopSimulator end() const;
 
     class EmptySequenceException : public std::exception

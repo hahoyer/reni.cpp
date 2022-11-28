@@ -21,7 +21,14 @@ namespace HWLib
         , isBusy(false)
     { }
 
-    HW_PR_VAR(bool, IsValid) { return value.IsValid; }
+    HW_PR_VAR_SETTER(bool, IsValid) const
+    {
+      if(value)
+        Ensure();
+      else
+        Reset();
+    }
+
     HW_PR_GET(bool, IsBusy) { return isBusy; }
 
     HW_PR_MUTABLE_GET(T, Value) const
@@ -49,11 +56,5 @@ namespace HWLib
   };
 
   template <typename T>
-  void ValueCache<T>::HW_PR_SETTER_NAME(IsValid)(bool const& value)
-  {
-    if(value)
-      Ensure();
-    else
-      Reset();
-  };
+  HW_PR_IMPL_GETTER(ValueCache<T>, bool, IsValid) { return value.IsValid; }
 }

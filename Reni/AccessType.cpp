@@ -18,7 +18,7 @@ AccessType::AccessType(AccessData const& data)
   SetDumpString();
 }
 
-HW_PR_IMPL_GETTER(AccessType, Array<string>, DumpData) { return data->HW_PR_GETTER_NAME(DumpData)(); }
+HW_PR_IMPL_GETTER(AccessType, Array<string>, DumpData) { return data->DumpData; }
 HW_PR_IMPL_GETTER(AccessType, WeakRef<Global>, global) { return data->global; }
 HW_PR_IMPL_GETTER(AccessType, WeakRef<Type>, value) { return data->dataResultCache->type; }
 HW_PR_IMPL_GETTER(AccessType, Optional<WeakRef<NumberType>>, asNumberType) { return value->As<NumberType>(); }

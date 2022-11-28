@@ -40,13 +40,19 @@ namespace HWLib
     DumpableObject();
     DumpableObject(DumpableObject const&);
     virtual ~DumpableObject();
+
+  public:
     HW_PR_VIRTUAL_GET(Array<std::string>, DumpData) = 0;
+
+  public:
     HW_PR_VIRTUAL_GET(std::string, DumpHeader);
 
   public:
     void SetDumpString();
     HW_PR_GET(std::string, Dump);
     HW_PR_VIRTUAL_GET(std::string, DumpShort);
+
+  public:
     HW_PR_GET(bool, IsInDump) { return isInDump; }
     HW_PR_GET(std::string, DumpLong);
     static bool EnableSetDumpString;

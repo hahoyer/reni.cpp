@@ -55,12 +55,23 @@ namespace Reni
     bool operator==(const Type& other) const { return this == &other; }
 
     HW_PR_VIRTUAL_GET(bool, hollow) = 0;
+
+  public:
     HW_PR_VIRTUAL_GET(Size, size) = 0;
+
+  public:
     HW_PR_VIRTUAL_GET(WeakRef<Global>, global) = 0;
+
+  public:
     HW_PR_VIRTUAL_GET(WeakRef<Type>, toTypeTarget) { return thisRef; };
+
+  public:
     HW_PR_VIRTUAL_GET(Address, toAddress);
+
+  public:
     HW_PR_VIRTUAL_GET(bool, isCopyable) { return true; };
 
+  public:
     WeakRef<Type> array(size_t count) const;
     HW_PR_GET(WeakRef<NumberType>, numberType);
     HW_PR_GET(WeakRef<TypeType>, typeType);
@@ -68,7 +79,7 @@ namespace Reni
     HW_PR_GET(WeakRef<EnableCutType>, enableCutType);
     HW_PR_VIRTUAL_GET(WeakRef<Type>, asFunctionResult);
 
-  protected:
+  public:
     HW_PR_VIRTUAL_GET(Optional<WeakRef<NumberType>>, asNumberType) { return {}; };
 
   public:

@@ -27,14 +27,17 @@ namespace Reni
   {
     using baseType = WithId<DumpableObject, Syntax>;
     using thisType = Syntax;
+
   public:
     using TokenClass = TokenClass;
 
   private:
     FunctionCache<Ref<ResultFromSyntaxAndContext>, const Context*> resultCache;
+
   protected:
     const SourcePart part;
     Syntax(const SourcePart& part);
+
   public:
     Syntax(const Syntax&) = delete;
 
@@ -62,11 +65,15 @@ namespace Reni
     Ref<Syntax> TypeOperator(const SourcePart& part) const;
 
     HW_PR_VIRTUAL_GET(int, priority) = 0;
+
+  public:
     string SmartDumpFrame(int priority) const;
+
   protected:
     virtual ResultData GetResultData(const Context& context, Category const& category) const;
     HW_PR_VIRTUAL_GET(string, SmartDump) = 0;
     friend class ResultFromSyntaxAndContext;
+
   private:
     HW_PR_DECL_GETTER(Array<string>, DumpData) final;
   };
@@ -81,6 +88,7 @@ namespace Reni
     const Ref<Syntax> left;
     const TokenClass& tokenClass;
     const Ref<Syntax> right;
+
   public:
     InfixSyntax(const Ref<Syntax> left, const TokenClass& tokenClass, const SourcePart part, const Ref<Syntax> right)
       : baseType(part)
@@ -101,6 +109,7 @@ namespace Reni
     using baseType = Syntax;
     const TokenClass& tokenClass;
     const Ref<Syntax> right;
+
   public:
     PrefixSyntax(const TokenClass& tokenClass, const SourcePart part, const Ref<Syntax> right)
       : baseType(part)
@@ -120,6 +129,7 @@ namespace Reni
     using baseType = Syntax;
     const Ref<Syntax> left;
     const TokenClass& tokenClass;
+
   public:
     SuffixSyntax(const Ref<Syntax> left, const TokenClass& tokenClass, const SourcePart part)
       : baseType(part)

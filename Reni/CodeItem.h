@@ -58,9 +58,17 @@ namespace Reni
 
     virtual string ToCpp(CodeVisitor const& visitor) const;
     HW_PR_VIRTUAL_GET(bool, isReference) { return false; };
+
+  public:
     HW_PR_VIRTUAL_GET(Size, size) = 0;
+
+  public:
     HW_PR_VIRTUAL_GET(Closure, closure) = 0;
+
+  public:
     HW_PR_VIRTUAL_GET(bool, isEmpty) { return false; };
+
+  public:
     HW_PR_THISREF;
     Optional<Ref<CodeItem>> Replace(ReplaceVisitor const& arg) const;
     Ref<FiberCode> operator+(FiberItem const& item) const;
