@@ -44,8 +44,10 @@ namespace Reni
     using thisType = Type;
     struct internal;
     CtrlRef<internal> _internal;
+
   protected:
     Type();
+
   public:
     Type(const Type&) = delete;
     ThisRef;
@@ -68,8 +70,10 @@ namespace Reni
     p(WeakRef<Type>, indirectType);
     p(WeakRef<EnableCutType>, enableCutType);
     p_virtual(WeakRef<Type>, asFunctionResult);
+
   protected:
     p_virtual(Optional<WeakRef<NumberType>>, asNumberType) { return {}; };
+
   public:
     template <class TDestination>
     const Optional<WeakRef<TDestination>> As() const;
@@ -94,6 +98,7 @@ namespace Reni
     const SearchResult<Feature> Declarations(const EnableCutType&) const override;
     const SearchResult<Feature> Declarations(const AccessType&) const override;
     virtual Array<Ref<FiberItem>> ConvertFiber(const Type& destination) const;
+
   private:
     p_function(Array<string>, DumpData) override
     {
@@ -106,6 +111,7 @@ namespace Reni
   {
     typedef Type baseType;
     typedef EnableCutType thisType;
+
   public:
     const Type& value;
 

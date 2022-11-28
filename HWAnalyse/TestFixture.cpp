@@ -35,8 +35,8 @@ bool TestFixture::Data::CheckedRun(bool skipLowPriority)
   if(skipLowPriority && isLowPriority)
     return false;
   if(dependencies
-      .Where([](CtrlRef<Data> dependency) { return !dependency->isSuccessful; })
-      ->Any)
+     .Where([](CtrlRef<Data> dependency) { return !dependency->isSuccessful; })
+     ->Any)
     return false;
   isStarted = true;
   currentTest = this;
@@ -54,7 +54,7 @@ void TestFixture::Data::WatchedRun()
   try
   {
     Run();
-     isSuccessful = true;
+    isSuccessful = true;
   }
   catch(const TestFailedException& exception)
   {

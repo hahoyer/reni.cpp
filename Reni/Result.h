@@ -4,7 +4,6 @@
 
 using namespace HWLib;
 using namespace Util;
-using namespace std;
 
 
 namespace Reni
@@ -15,9 +14,11 @@ namespace Reni
   {
     typedef DumpableObject baseType;
     typedef ResultCache thisType;
+
   protected:
     mutable ResultData data;
     mutable Category pending;
+
   public:
     pod<bool> Trace;
 
@@ -33,13 +34,16 @@ namespace Reni
 
     ResultData operator &(const Category& category) const { return Get(category); }
     ResultData Get(const Category& category) const;
+
   private:
     void Ensure(const Category& category) const;
+
   protected:
     p_function(Array<string>, DumpData) override;
     p_virtual(bool, isRecursion) { return false; };
     virtual ResultData GetResultData(const Category& category) const = 0;
     virtual ResultData GetResultDataRecursive(const Category& category) const;
+
   private:
     p(Category, complete);
   };
@@ -52,6 +56,7 @@ namespace Reni
   {
     typedef ResultCache baseType;
     typedef ResultFromSyntaxAndContext thisType;
+
   public:
     const Syntax& syntax;
     const Context& context;

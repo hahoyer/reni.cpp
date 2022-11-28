@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "DefaultOperators.h"
 #include "RefBase.h"
 
@@ -12,6 +14,7 @@ namespace HWLib
     typedef CtrlRef thisType;
     friend class CtrlRef<T>;
     friend class CtrlRef<const T>;
+
   public:
     CtrlRef(T* value) : baseType(value)
     {

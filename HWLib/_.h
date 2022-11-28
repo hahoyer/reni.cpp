@@ -19,6 +19,7 @@ namespace HWLib
 
     using thisType = Box_<T>;
     T& _data;
+
   public:
     Box_(T& data) : _data(data) {}
     Box_(const thisType& data) = delete;
@@ -42,6 +43,7 @@ namespace HWLib
     using T = TPointer*;
 
     T& _data;
+
   public:
     Box_(T& data) : _data(data) {}
     Box_(const thisType& data) = delete;
@@ -85,6 +87,7 @@ namespace HWLib
     using T = TPointer*const;
 
     T& _data;
+
   public:
     Box_(T& data) : _data(data) {}
 

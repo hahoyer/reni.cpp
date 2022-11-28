@@ -17,6 +17,7 @@ namespace HWLib
 
     const size_t _count;
     T* const _data;
+
   public:
     Array() : _count(0), _data(nullptr) { }
 
@@ -75,7 +76,7 @@ namespace HWLib
       }
     }
 
-    ~Array() override
+    virtual ~Array() override
     {
       for(auto i = 0; i < _count; i++)
         _data[i].~T();
@@ -91,22 +92,26 @@ namespace HWLib
     const T& operator[](size_t Index) const { return _data[Index]; }
     T& operator[](size_t Index) { return _data[Index]; }
     thisType operator+(const thisType& other) const { return baseType::operator+(other)->ToArray; }
+
     thisType operator+(const T& other) const
     {
       auto otherBox = {other};
       return *this + otherBox;
     }
+
     void operator+=(const T& other) { *this = *this + other; }
     void operator+=(const thisType& other) { *this = *this + other; }
 
     bool Compare(const Array<T>& other) const;
+
   private:
     class LocalIterator final : public baseType::Iterator
     {
-      using baseType = baseType::Iterator;
+      using baseType = typename baseType::Iterator;
       using thisType = LocalIterator;
       const Array<T>& _parent;
       size_t _index;
+
     public:
       LocalIterator(const Array<T>& parent)
         : _parent(parent)
@@ -119,7 +124,10 @@ namespace HWLib
       void operator=(const LocalIterator&) = delete;
     };
 
-    p_nonconst_function(CtrlRef<Enumerable<T>::Iterator>, ToIterator) const override { return new LocalIterator(*this); }
+    p_nonconst_function(CtrlRef<typename Enumerable<T>::Iterator>, ToIterator) const override
+    {
+      return new LocalIterator(*this);
+    }
   };
 
   template <typename T>

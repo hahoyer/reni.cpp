@@ -1,4 +1,7 @@
 #include "Import.h"
+
+#include <format>
+
 #include "Parser.h"
 #include "Reni.h"
 #include "HWLib.h"
@@ -7,16 +10,15 @@
 
 void MainEntry()
 {
-    DumpableObject::EnableSetDumpString = true;
-    DumpableObject::EnableSetDumpStringAsync = true;
-    HW_TM_ITEM(TestReni::Negative).isLowPriority = true;
-    HW_TM_ITEM(TestReni::Function).WatchedRun();
-    HWAnalysis::TestFixture::RunAll();
+  DumpableObject::EnableSetDumpString = true;
+  DumpableObject::EnableSetDumpStringAsync = true;
+  HW_TM_ITEM(TestReni::Negative).isLowPriority = true;
+  HW_TM_ITEM(TestReni::Function).WatchedRun();
+  HWAnalysis::TestFixture::RunAll();
 }
-
 
 int main()
 {
-    MainEntry();
-    return 0;
+  MainEntry();
+  return 0;
 }
